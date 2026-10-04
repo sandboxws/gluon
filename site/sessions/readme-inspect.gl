@@ -1,4 +1,0 @@
-# The README's tour: questions answered without a build.
-type P struct{ A bool; B int64; C bool; D string }
-:layout P
-:impl bytes.Buffer, io.Writer

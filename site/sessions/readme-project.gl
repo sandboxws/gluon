@@ -1,5 +1,0 @@
-%host shop
-%sh gluon init -no-prompt -write -local
-:use .
-pricing.Total(pricing.Sample()).String()
-:query SELECT plan, count(*) AS customers FROM users GROUP BY plan ORDER BY customers DESC

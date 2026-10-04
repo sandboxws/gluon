@@ -1,3 +1,0 @@
-%host shop
-%attach
-:routes api.Routes(nil)

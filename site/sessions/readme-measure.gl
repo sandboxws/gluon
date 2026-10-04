@@ -1,2 +1,0 @@
-n := 42
-:bench strconv.Itoa(n), fmt.Sprint(n)

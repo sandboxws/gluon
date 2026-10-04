@@ -1,9 +1,0 @@
-gluon> n := 42
-gluon> :bench strconv.Itoa(n), fmt.Sprint(n)
-a  strconv.Itoa(n)
-b  fmt.Sprint(n)
-
-           a   b     b/a
-ns/op      2  38  19.00x
-B/op       0   2     n/a
-allocs/op  0   1     n/a
