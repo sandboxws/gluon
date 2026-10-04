@@ -116,6 +116,33 @@ func TestMemprofNamesTheAllocationSite(t *testing.T) {
 	}
 }
 
+// TestMemprofMeasuresOnlyTheExpression: the session replays before the
+// expression runs, and none of what it allocates is the expression's.
+//
+// The rewrite sets the rate to 1 right before the expression, and until that
+// line the runtime samples at its default of one allocation per 512KB — while
+// the allocations profile keeps every sample since the process started. So
+// the replay, and every package's init, reached the report whenever a sample
+// landed on them: in CI, `:memprof 1 + 1` once named syscall's copy of the
+// environment. Eight megabytes replayed is sampled all but certainly, so this
+// fails on every run that measures the replay.
+func TestMemprofMeasuresOnlyTheExpression(t *testing.T) {
+	c := testCore(t)
+	for _, line := range []string{"func alloc() []byte { return make([]byte, 8<<20) }", "big := alloc()"} {
+		if res := c.Submit(line); res.Err {
+			t.Fatalf("setup %q: %s", line, res.Out)
+		}
+	}
+
+	res := c.Submit(":memprof 1 + 1")
+	if res.Err {
+		t.Fatalf(":memprof 1 + 1: %s", res.Out)
+	}
+	if out := stripStyles(res.Out); !strings.Contains(out, "no allocation recorded") {
+		t.Errorf("the replayed session was reported as the expression's allocations:\n%s", out)
+	}
+}
+
 // TestProfileWritesOutsideTheHostProject is invariant 1's standing assertion on
 // this path. The failure behind it is a tracked 3.1 MB binary in another repo's
 // history that .gitignore did not cover, and a profile is exactly that kind of

@@ -72,6 +72,35 @@ func TestProfileSourceCarriesNoPath(t *testing.T) {
 	}
 }
 
+// TestMemprofGodebugKeepsTheUsersSettings: the child starts with the profiler
+// off, and a GODEBUG the user runs with is extended rather than replaced. Ours
+// goes last, because the runtime keeps the last value it reads for a key.
+func TestMemprofGodebugKeepsTheUsersSettings(t *testing.T) {
+	for _, tc := range []struct{ user, want string }{
+		{"", "GODEBUG=memprofilerate=0"},
+		{"http2client=0", "GODEBUG=http2client=0,memprofilerate=0"},
+		{"memprofilerate=1", "GODEBUG=memprofilerate=1,memprofilerate=0"},
+	} {
+		if got := memprofGodebug(tc.user); got != tc.want {
+			t.Errorf("memprofGodebug(%q) = %q, want %q", tc.user, got, tc.want)
+		}
+	}
+}
+
+// TestMemprofOpensItsFileBeforeMeasuring: the open is gluon's, so it happens
+// while the child's rate is still 0. Opened after the collection, it reached
+// the report whenever nothing else had been recorded.
+func TestMemprofOpensItsFileBeforeMeasuring(t *testing.T) {
+	for _, void := range []bool{false, true} {
+		src := profileSource("parse(doc)", memProfile, void)
+		open := strings.Index(src, "os.Create(")
+		rate := strings.Index(src, "runtime.MemProfileRate = 1")
+		if open < 0 || rate < 0 || open > rate {
+			t.Errorf("void=%v: the profile file is not opened before the rate is raised:\n%s", void, src)
+		}
+	}
+}
+
 // TestProfileSourceUsesTheReservedPrefix. Every identifier the rewrite
 // introduces is __gluon-prefixed, the convention __gluonPrint and __gluonMute
 // already follow. These names reach the profile, and invariant 9 records what

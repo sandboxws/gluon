@@ -24,6 +24,7 @@ import (
 	"context"
 	"errors"
 	"fmt"
+	"os"
 	"os/exec"
 	"path/filepath"
 	"regexp"
@@ -81,6 +82,25 @@ func (k profileKind) file() string {
 // into the child.
 const profileEnv = "GLUON_PROFILE"
 
+// memprofGodebug is the child's GODEBUG under :memprof: the user's own
+// settings, then memprofilerate=0, so the runtime samples no allocation at all
+// until the rewrite sets the rate to 1 right before the expression.
+//
+// Setting the rate in the rewrite alone was not enough. Until that line runs,
+// the runtime samples at its default of one allocation per 512KB, and the
+// allocations profile keeps every sample since the process started — so every
+// package's init and the whole replayed session reached the report whenever a
+// sample landed on them. Measured with a program shaped like the rewrite: 47
+// runs of 400 reported an allocation made before the rate was set, and none
+// started with memprofilerate=0. The setting goes last because the runtime
+// reads GODEBUG left to right at startup, and the last value for a key wins.
+func memprofGodebug(user string) string {
+	if user == "" {
+		return "GODEBUG=memprofilerate=0"
+	}
+	return "GODEBUG=" + user + ",memprofilerate=0"
+}
+
 // profileSource is the rewrite the two commands evaluate.
 //
 // It is deliberately small, and every statement in it is one a line you could
@@ -107,14 +127,24 @@ func profileSource(arg string, kind profileKind, void bool) string {
 	b.WriteString("func() string {\n")
 
 	if kind == memProfile {
+		// The file is opened first, while the rate is still 0, so opening it
+		// is never measured. Opened after the collection below it was
+		// measured anyway in some runs: when nothing else has been
+		// recorded, runtime.MemProfile finds its published profile empty,
+		// takes that to mean no collection has run yet, and folds in every
+		// allocation made since — the open's among them — so `:memprof 1 + 1`
+		// reported os.newFile as the expression's.
+		b.WriteString(profileCreate())
 		// MemProfileRate samples one allocation per 512KB by default, which
 		// records nothing at all for an expression that allocates a few
 		// kilobytes — every REPL expression. 1 records every allocation, which
 		// is what `go test -memprofilerate=1` does for the same reason.
 		//
-		// The runtime asks that the rate be set once and as early as possible.
-		// Here is as early as gluon can reach: everything above is the
-		// session replaying, and that is the part this must not measure.
+		// The runtime asks that the rate be set once and as early as
+		// possible. Here is deliberately later: everything above is the
+		// session replaying, and that is the part this must not measure. The
+		// child starts with the rate at 0 — memprofGodebug — so nothing before
+		// this line is sampled at all, and from here every allocation is.
 		b.WriteString("\truntime.MemProfileRate = 1\n")
 		b.WriteString(profileAssign(arg, void))
 		// The heap profile's in-use side is only accurate after a collection.
@@ -122,7 +152,6 @@ func profileSource(arg string, kind profileKind, void bool) string {
 		// does not need one — but a GC here costs nothing next to a build and
 		// makes the other three measures in the same file worth opening.
 		b.WriteString("\truntime.GC()\n")
-		b.WriteString(profileCreate())
 		b.WriteString("\t__gluonErr = pprof.WriteHeapProfile(__gluonPF)\n")
 		b.WriteString("\t__gluonPF.Close()\n")
 		b.WriteString(profileKeepAlive(void))
@@ -221,8 +250,11 @@ func (c *Core) captureProfile(arg string, kind profileKind) Result {
 	// rather than guessing, because `pprof` resolves to two standard library
 	// packages. Invariant 14 still holds — EvalLive snapshots the imports and
 	// pops the entry exactly as EvalTransient does.
-	res, err := c.ev.EvalLive(c.sess, entry, profileImports(kind, target.Void),
-		[]string{profileEnv + "=" + path}, nil)
+	env := []string{profileEnv + "=" + path}
+	if kind == memProfile {
+		env = append(env, memprofGodebug(os.Getenv("GODEBUG")))
+	}
+	res, err := c.ev.EvalLive(c.sess, entry, profileImports(kind, target.Void), env, nil)
 	if err != nil {
 		return Result{Out: "error: " + err.Error(), Err: true}
 	}
