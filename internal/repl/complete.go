@@ -1,6 +1,7 @@
 package repl
 
 import (
+	"context"
 	"os"
 	"os/exec"
 	"path"
@@ -31,6 +32,13 @@ type completions struct {
 	mu       sync.RWMutex
 	std      map[string]string
 	stdOther []string
+
+	// stdStop and stdDone end that `go list std` and wait for it, so a closed
+	// Core leaves no child running. A go process that outlives its session
+	// keeps writing — its telemetry, on Linux under $XDG_CONFIG_HOME — after
+	// the session's directories are gone.
+	stdStop context.CancelFunc
+	stdDone chan struct{}
 
 	// names is the session's scope, valid for generation namesGen.
 	names    []string
@@ -106,8 +114,12 @@ func (c *Core) fresh() {
 // complete to `rand` — but with no member list behind them, which leaves the
 // choice where it belongs.
 func (c *Core) startStdIndex() {
+	ctx, stop := context.WithCancel(context.Background())
+	done := make(chan struct{})
+	c.comp.stdStop, c.comp.stdDone = stop, done
 	go func() {
-		cmd := exec.Command("go", "list", "std")
+		defer close(done)
+		cmd := exec.CommandContext(ctx, "go", "list", "std")
 		cmd.Env = append(os.Environ(), "GOFLAGS=", "GOWORK=off", "GOPROXY=off", "GOTOOLCHAIN=local")
 		out, err := cmd.Output()
 		if err != nil {
@@ -134,6 +146,17 @@ func (c *Core) startStdIndex() {
 		c.comp.std, c.comp.stdOther = std, other
 		c.comp.mu.Unlock()
 	}()
+}
+
+// stopStdIndex ends the stdlib listing if it is still running, and waits until
+// it has.
+func (c *Core) stopStdIndex() {
+	if c.comp.stdStop == nil {
+		return
+	}
+	c.comp.stdStop()
+	<-c.comp.stdDone
+	c.comp.stdStop = nil
 }
 
 // Complete returns whole-line completions for a partly typed line.

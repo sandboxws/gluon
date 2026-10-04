@@ -587,8 +587,9 @@ func configuredDB(dbs []config.Database) string {
 
 func (c *Core) Close() error {
 	// The goroutine holds only a channel and a directory, but a session that
-	// has gone should not still be stat-ing a tree.
+	// has gone should not still be stat-ing a tree — nor running a go command.
 	c.StopWatch()
+	c.stopStdIndex()
 	if c.bufDir != "" {
 		// The buffer's text is the session's; the module around it was only
 		// ever scaffolding for an editor to open.
