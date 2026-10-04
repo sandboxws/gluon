@@ -1,0 +1,49 @@
+# gluon's palette for a light terminal.
+#
+# The same theme as go.toml read from the other end. Its greys are a ladder —
+# a comment recedes furthest, then `dim` (furniture you read), then
+# punctuation, then code at full weight — and on a white ground that ladder
+# inverts rather than changes: what was "brighter than a comment" is now
+# "darker than one". The rungs below are go.toml's own greys, one step along.
+#
+# It exists because six of gluon's sixteen roles describe a REPL rather than a
+# highlighter, so no editor theme can answer them and every conversion falls
+# back to gluon's own. Falling back to go.toml put `search = #F5B843` on white,
+# which is a smear rather than a colour. `gluon theme import` picks this file
+# as the base whenever the theme it is reading was drawn for a light ground,
+# so the six light themes gluon ships inherit values that can be read.
+#
+# It is not the default and will not be chosen for you. `[theme] name` is how
+# you say your terminal is white, because gluon paints no background and has no
+# way to find out.
+about      = "gluon's own palette, for a light terminal"
+appearance = "light"
+
+[theme]
+# Source. The hues of go.toml at the weight a white ground needs.
+keyword     = "#7C3AED"  # violet — the one hue with no ANSI equivalent
+string      = "#15803D"  # green
+type        = "#0E7490"  # cyan, the Go accent, as text on a light ground
+comment     = "#8E8E96"
+number      = "#27272A"
+builtin     = "#1D4ED8"  # blue, and only where the name is actually called
+punctuation = "#55555C"
+ident       = "#27272A"  # the default weight of code
+
+# Values, the REPL, and the CLI.
+error       = "#B91C1C"
+prompt      = "#0E7490"
+mode        = "#7C3AED"  # the palette's violet: on white the prompt's teal has no
+                         # warm neighbour far enough from it
+annotation  = "#8E8E96"
+note        = "#92400E"
+dim         = "#6E6E76"  # darker than a comment on purpose, which is the same
+                         # rule go.toml states as "brighter": this is furniture
+                         # you read, not content that should recede.
+search      = "#9A3412"  # amber says "you are in a mode", and on white the
+                         # amber that says it is a burnt one. It never shares a
+                         # line with `note`, which is the near neighbour.
+border      = "#C4C4CC"  # a rule you look past, which on white means the
+                         # lightest value here rather than the darkest. NOT
+                         # go.toml's #55555C: that is punctuation on this
+                         # ground and would draw a box you cannot look past.

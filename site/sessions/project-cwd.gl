@@ -1,0 +1,11 @@
+# A line runs in the session's own directory, not the project's; the project's
+# own way of finding its files is what finds them.
+%host shop
+%env SHOP_CONFIG=$HOST/config.yaml
+%attach
+wd, _ := os.Getwd()
+filepath.Base(wd)
+_, err := os.Stat("config.yaml")
+errors.Is(err, fs.ErrNotExist)
+v, _ := config.Load()
+v.GetString("log_level")

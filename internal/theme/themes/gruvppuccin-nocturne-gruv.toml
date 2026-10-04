@@ -1,0 +1,26 @@
+# Nocturne Gruv: Nocturne's darker ground with the family's warm accents back.
+# In a terminal, where gluon takes no background, what remains of that is the
+# greys — a dimmer comment and a quieter border than Mocha's. See
+# gruvppuccin-mocha.toml for how the conversion works.
+about      = "Gruvppuccin Nocturne Gruv: mocha's accents, dimmer greys"
+appearance = "dark"
+source     = "Nocturne Gruv, an IntelliJ colour scheme"
+
+[theme]
+keyword     = "#C28FD6"
+string      = "#A9B665"
+type        = "#D8A657"
+comment     = "#635D54"
+number      = "#E78A4E"
+builtin     = "#7DAEA3"
+punctuation = "#7C7269"
+ident       = "#D4BE98"
+
+error       = "#EA6962"
+prompt      = "#7DAEA3"
+mode        = "#C28FD6"  # the family's violet
+annotation  = "#635D54"
+note        = "#D8A657"
+dim         = "#A69A8A"
+search      = "#F5B843"
+border      = "#4A4642"

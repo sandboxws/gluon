@@ -1,0 +1,45 @@
+gluon> :iface io.Writer
+io.Writer  1 method
+╭───────┬───────────────────────────────╮
+│ Write │ (p []byte) (n int, err error) │
+╰───────┴───────────────────────────────╯
+  implemented by  fmt.State, io.ReadWriteCloser, io.ReadWriteSeeker, io.ReadWriter, io.WriteCloser, io.WriteSeeker
+  by pointer  *bytes.Buffer, *io.OffsetWriter, *io.PipeWriter, *os.File
+gluon> :embeds bufio.ReadWriter
+!clip 12
+bufio.ReadWriter  embeds  *Reader, *Writer
+╭──────────────────┬────────────────────────────────────────────────────────────────────────────────────┬─────────────╮
+│ Available        │ () int                                                                             │ from Writer │
+│ AvailableBuffer  │ () []byte                                                                          │ from Writer │
+│ Discard          │ (n int) (discarded int, err error)                                                 │ from Reader │
+│ Flush            │ () error                                                                           │ from Writer │
+│ Peek             │ (n int) ([]byte, error)                                                            │ from Reader │
+│ Read             │ (p []byte) (n int, err error)                                                      │ from Reader │
+│ ReadByte         │ () (byte, error)                                                                   │ from Reader │
+│ ReadBytes        │ (delim byte) ([]byte, error)                                                       │ from Reader │
+│ ReadFrom         │ (r io.Reader) (n int64, err error)                                                 │ from Writer │
+│ ReadLine         │ () (line []byte, isPrefix bool, err error)                                         │ from Reader │
+│ ReadRune         │ () (r rune, size int, err error)                                                   │ from Reader │
+│ ReadSlice        │ (delim byte) (line []byte, err error)                                              │ from Reader │
+│ ReadString       │ (delim byte) (string, error)                                                       │ from Reader │
+│ UnreadByte       │ () error                                                                           │ from Reader │
+│ UnreadRune       │ () error                                                                           │ from Reader │
+│ Write            │ (p []byte) (nn int, err error)                                                     │ from Writer │
+│ WriteByte        │ (c byte) error                                                                     │ from Writer │
+│ WriteRune        │ (r rune) (size int, err error)                                                     │ from Writer │
+│ WriteString      │ (s string) (int, error)                                                            │ from Writer │
+│ WriteTo          │ (w io.Writer) (n int64, err error)                                                 │ from Reader │
+│ collectFragments │ (delim byte) (fullBuffers [][]byte, finalFragment []byte, totalLen int, err error) │ from Reader │
+│ fill             │ ()                                                                                 │ from Reader │
+│ readErr          │ () error                                                                           │ from Reader │
+│ reset            │ (buf []byte, r io.Reader)                                                          │ from Reader │
+│ writeBuf         │ (w io.Writer) (int64, error)                                                       │ from Reader │
+╰──────────────────┴────────────────────────────────────────────────────────────────────────────────────┴─────────────╯
+  ambiguous  Buffered is promoted from both Reader and Writer — the selector does not compile
+  ambiguous  Reset is promoted from both Reader and Writer — the selector does not compile
+  ambiguous  Size is promoted from both Reader and Writer — the selector does not compile
+gluon> :gen atomic.Pointer
+atomic.Pointer[T any]  1 type parameter
+╭───┬─────╮
+│ T │ any │
+╰───┴─────╯

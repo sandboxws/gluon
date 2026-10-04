@@ -1,0 +1,32 @@
+gluon> func hot(n int) int {
+  ...> 	total := 0
+  ...> 	for i := 0; i < n; i++ {
+  ...> 		for j := 0; j < n; j++ {
+  ...> 			total += i ^ j
+  ...> 		}
+  ...> 	}
+  ...> 	return total
+  ...> }
+gluon> :profile hot(30000)
+cpu profile  42 samples
+  too few samples to draw a conclusion from — read the ranking below as a hint, not a measurement
+
+  380ms  90.48%  main.hot  entry 1   total += i ^ j
+   40ms   9.52%  main.hot  entry 1   for j := 0; j < n; j++ {
+
+cpu profile  $TMPDIR/gluon-session-2330176384/cpu-1790205309984019000-1.pprof
+             go tool pprof $TMPDIR/gluon-session-2330176384/cpu-1790205309984019000-1.pprof
+gluon> func grow(n int) []string {
+  ...> 	var out []string
+  ...> 	for i := 0; i < n; i++ {
+  ...> 		out = append(out, fmt.Sprint(i))
+  ...> 	}
+  ...> 	return out
+  ...> }
+gluon> :memprof len(grow(50000))
+mem profile, allocated bytes  4.93MB allocated
+
+  4.90MB  99.48%  main.grow  entry 2   out = append(out, fmt.Sprint(i))
+
+mem profile  $TMPDIR/gluon-session-2330176384/mem-1790205311185323000-2.pprof
+             go tool pprof $TMPDIR/gluon-session-2330176384/mem-1790205311185323000-2.pprof

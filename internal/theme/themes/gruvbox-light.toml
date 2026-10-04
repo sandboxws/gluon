@@ -1,0 +1,36 @@
+# Gruvbox Light, converted from the TextMate theme by `gluon theme import`.
+#
+# Medium only, for the reason gruvbox-dark.toml gives. This theme scopes
+# `string.quoted.single` and never `string`, so until the conversion learned to
+# answer a general question from a specific rule its strings came out the colour
+# of ordinary text.
+#
+# Re-run:  gluon theme import <file> --print
+#          github.com/subnut/gruvbox-tmTheme, gruvbox (Light) (Medium).tmTheme
+#
+# Kept from gluon's own go-light, because nothing in an editor theme means
+# them: `note`, `dim`, `search`, `border`.
+about      = "Gruvbox Light: red keywords, olive strings, amber types"
+appearance = "light"
+source     = "gruvbox (Light) (Medium), a TextMate theme"
+
+[theme]
+# Source.
+keyword     = "#9d0006"
+string      = "#79740e"
+type        = "#b57614"
+comment     = "#928374"
+number      = "#8f3f71"
+builtin     = "#427b58"
+punctuation = "#282828"
+ident       = "#3c3836"
+
+# Values, the REPL, and the CLI.
+error       = "#9d0006"
+prompt      = "#b57614"
+mode        = "#076678"  # gruvbox blue, against gruvbox yellow
+annotation  = "#928374"
+note        = "#92400E"
+dim         = "#6E6E76"
+search      = "#9A3412"
+border      = "#C4C4CC"

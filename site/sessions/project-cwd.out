@@ -1,0 +1,9 @@
+gluon> wd, _ := os.Getwd()
+gluon> filepath.Base(wd)
+(string) "gluon-session-2812318039"  len=24
+gluon> _, err := os.Stat("config.yaml")
+gluon> errors.Is(err, fs.ErrNotExist)
+(bool) true
+gluon> v, _ := config.Load()
+gluon> v.GetString("log_level")
+(string) "debug"  len=5

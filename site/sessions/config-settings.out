@@ -1,0 +1,50 @@
+gluon> :settings
+!view
+!clip 22
+settings
+╭───────────────────┬──────────────────────────────────────────────────────┬───────┬────────────────────────────────────────────────────────┬─────────────────────────────────────────────────────┬─────────╮
+│ setting           │ what it does                                         │ value │ default                                                │ allowed                                             │ from    │
+├───────────────────┼──────────────────────────────────────────────────────┼───────┼────────────────────────────────────────────────────────┼─────────────────────────────────────────────────────┼─────────┤
+│ imports           │ imports a line may name without a goimports pass     │ none  │ none                                                   │ import paths                                        │ default │
+│ editor            │ what :edit opens, over $VISUAL and $EDITOR           │       │ $VISUAL, then $EDITOR, then a terminal editor on $PATH │ a command with its flags, or builtin                │ default │
+│ timeout           │ how long one evaluation may take                     │       │ 30s                                                    │ a Go duration, positive                             │ default │
+│ banner            │ how much the startup screen says                     │       │ full                                                   │ full, compact, off                                  │ default │
+│ hosts             │ per-module imports the host's own index cannot offer │ none  │ none                                                   │ a table per module path                             │ default │
+│ database          │ how to reach a project's database, not its password  │ none  │ none                                                   │ [[database]] blocks                                 │ default │
+│ input.mode        │ how the prompt reads keys                            │       │ emacs                                                  │ emacs, vim                                          │ default │
+│ value.form        │ the shape a value is drawn in                        │       │ table                                                  │ table, line, tree, columns, literal                 │ default │
+│ value.items       │ how many elements of a collection are described      │       │ 200                                                    │ a whole number, 1 to 100000                         │ default │
+│ value.depth       │ how many levels of a value are described             │       │ 6                                                      │ a whole number, 1 to 100000                         │ default │
+│ value.form.list   │ the form a list takes, over value.form               │       │ whatever value.form says                               │ table, line, tree, columns, literal                 │ default │
+│ value.form.map    │ the form a map takes, over value.form                │       │ whatever value.form says                               │ table, line, tree, columns, literal                 │ default │
+│ value.form.struct │ the form a struct takes, over value.form             │       │ whatever value.form says                               │ table, line, tree, columns, literal                 │ default │
+│ scratch.pad       │ the scratchpad an interactive session lands in       │       │ default                                                │ a scratchpad name, or - for none                    │ default │
+│ plugins.disable   │ library plugins that must not activate               │ none  │ nothing disabled                                       │ plugin names — :plugins lists them                  │ default │
+│ theme.name        │ the colour palette                                   │       │ go                                                     │ an installed theme — :theme lists them              │ default │
+│ theme.<role>      │ one colour, on top of whichever theme is on          │       │ whatever the chosen theme says                         │ a hex triple (#5fafd7), an ANSI number (6), or none │ default │
+╰───────────────────┴──────────────────────────────────────────────────────┴───────┴────────────────────────────────────────────────────────┴─────────────────────────────────────────────────────┴─────────╯
+:settings <key> <value> changes one, :settings <key> - puts it back · ~/.config/gluon/config.toml
+gluon> :settings timeout
+  timeout
+
+  how long one evaluation may take
+
+  now        —    default
+  default    30s
+  accepts    a Go duration, positive
+  effect     this session
+
+  The whole session replays on every line, so this bounds the replay and not
+  just the newest expression.
+
+  :settings timeout 2m   writes  timeout = "2m"
+gluon> :settings timeout 2m
+timeout is 2m · timeout = "2m" in ~/.config/gluon/config.toml
+gluon> :settings banner compact
+banner is compact · banner = "compact" in ~/.config/gluon/config.toml
+  the next run reads it; this session is already running
+$ cat ~/.config/gluon/config.toml
+timeout = "2m"
+banner = "compact"
+gluon> :settings timeout -
+timeout is back to 30s · dropped timeout = "2m" from ~/.config/gluon/config.toml

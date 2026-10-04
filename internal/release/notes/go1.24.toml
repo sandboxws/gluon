@@ -1,0 +1,37 @@
+# Go 1.24 — an alias may take type parameters.
+
+version = "1.24"
+
+[[note]]
+name = "generic-type-aliases"
+title = "generic type aliases"
+needs = "1.23"
+below = "error"
+issue = 46477
+text = """
+A type alias may declare type parameters, so `type StringPair[V any] =
+Pair[string, V]` names a partially instantiated generic type. Aliases could
+already refer to an instantiated generic type; what this added is parameters on
+the alias itself, which is what lets one argument be pinned and the rest left
+open.
+
+An alias is still not a new type: StringPair[int] and Pair[string, int] are the
+same type, assignable in both directions with no conversion.
+
+The two numbers here differ, and the difference is the point. Go 1.24 is the
+release that turned this on by default — under 1.23 it needed
+GOEXPERIMENT=aliastypeparams — but the language version the compiler gates it
+at is go1.23, which is what a go.mod directive has to reach. So a current
+toolchain accepts it under `go 1.23` and rejects it under `go 1.22`, and the
+release it is filed under is not the number to put in a go.mod.
+"""
+snippet = """
+type Pair[K comparable, V any] struct {
+	Key K
+	Val V
+}
+type StringPair[V any] = Pair[string, V]
+p := StringPair[int]{Key: "a", Val: 1}
+var q Pair[string, int] = p
+q
+"""

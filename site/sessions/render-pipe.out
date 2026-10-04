@@ -1,0 +1,2 @@
+$ gluon -e '[]int{3, 1, 2}' | cat
+([]int) [3 1 2]  len=3 cap=3

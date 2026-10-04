@@ -1,0 +1,29 @@
+gluon> x := []int{3, 1, 2}
+gluon> slices.Sort(x)
+gluon> x
+([]int) len=3 cap=3
+╭───┬───────╮
+│ # │ value │
+├───┼───────┤
+│ 0 │ 1     │
+│ 1 │ 2     │
+│ 2 │ 3     │
+╰───┴───────╯
+gluon> it[0]
+(int) 1
+gluon> :src
+!lang go
+package main
+
+import (
+	"slices"
+)
+
+func main() {
+	x := []int{3, 1, 2}
+	_ = x
+	slices.Sort(x)
+	_1 := x
+	__gluonPrint(_1)
+	__gluonPrint(_1[0])
+}

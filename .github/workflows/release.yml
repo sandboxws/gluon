@@ -1,0 +1,37 @@
+# Pushing a v* tag builds and publishes the release. Requires one repository
+# secret: HOMEBREW_TAP_GITHUB_TOKEN, a fine-grained PAT with contents:write
+# on sandboxws/homebrew-tap, which GoReleaser pushes the formula to.
+#
+# Release binaries are built with the newest stable Go, not the go.mod floor:
+# the in-process type checker is the go/types of the toolchain that built
+# gluon, so a newer one is a better one, and it carries the security fixes
+# the floor's .0 release does not.
+name: release
+
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write
+
+jobs:
+  goreleaser:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-go@v7
+        with:
+          go-version: stable
+      - name: vet and test before publishing anything
+        run: go vet ./... && go test ./...
+      - uses: goreleaser/goreleaser-action@v7
+        with:
+          distribution: goreleaser
+          version: "~> v2"
+          args: release --clean
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          HOMEBREW_TAP_GITHUB_TOKEN: ${{ secrets.HOMEBREW_TAP_GITHUB_TOKEN }}

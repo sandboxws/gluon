@@ -1,0 +1,29 @@
+# What gluon looked like before the default became "go": your terminal's own
+# sixteen slots, so gluon matches the palette you already chose.
+#
+# The ten roles that existed then keep the exact numbers they had, and a test
+# pins them. The five source roles are new and had to be chosen; they are the
+# slots that keep a keyword, a type, a builtin and a comment distinguishable
+# from each other on a sixteen-colour terminal.
+about      = "your terminal's own sixteen colours"
+appearance = "either"
+
+[theme]
+keyword     = "5"     # magenta
+string      = "2"     # green
+type        = "6"     # cyan
+comment     = "8"     # bright black
+number      = "7"     # white
+builtin     = "4"     # blue
+punctuation = "none"  # ANSI 7 is "white", which on a light background is the
+ident       = "none"  # terminal's own text colour is right and 7 is not. Unlike
+                      # `number`, these two would cover most of a line.
+error       = "1"
+prompt      = "6"
+mode        = "5"        # magenta: not the prompt's cyan and not search's
+                         # yellow
+annotation  = "8"
+note        = "3"
+dim         = "8"
+search      = "3"
+border      = "8"

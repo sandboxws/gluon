@@ -1,0 +1,5 @@
+%host shop
+%sh gluon init -no-prompt -write -local
+%attach
+:query SELECT plan, count(*) AS customers FROM users GROUP BY plan ORDER BY customers DESC
+:query SELECT id, email FROM users ORDER BY id LIMIT 3

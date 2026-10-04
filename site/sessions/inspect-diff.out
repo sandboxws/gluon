@@ -1,0 +1,15 @@
+gluon> type User struct{ Name string; Age int; Tags []string }
+gluon> got := User{"ada", 36, []string{"admin"}}
+gluon> want := User{"ada", 37, []string{"admin", "ops"}}
+gluon> :diff got, want
+╭──────────┬───────┬───────┬──────────────╮
+│ path     │ got   │ want  │              │
+├──────────┼───────┼───────┼──────────────┤
+│ .Age     │ 36    │ 37    │              │
+│ .Tags    │ len 1 │ len 2 │ length       │
+│ .Tags[1] │ —     │ "ops" │ only in want │
+╰──────────┴───────┴───────┴──────────────╯
+gluon> :err fmt.Errorf("load config: %w", fmt.Errorf("open: %w", fs.ErrNotExist))
+  *fmt.wrapError       load config: open: file does not exist
+  *fmt.wrapError       open: file does not exist
+  *errors.errorString  file does not exist

@@ -1,0 +1,15 @@
+gluon> x := []int{3, 1, 2}
+gluon> slices.Sort(x)
+gluon> x
+([]int) len=3 cap=3
+╭───┬───────╮
+│ # │ value │
+├───┼───────┤
+│ 0 │ 1     │
+│ 1 │ 2     │
+│ 2 │ 3     │
+╰───┴───────╯
+gluon> "héllo"[1]
+(uint8) 195 (0xc3)
+gluon> :t strconv.Atoi("12")
+(int, error)  2 values

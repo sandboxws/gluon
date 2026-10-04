@@ -1,0 +1,18 @@
+# Questions for the type checker: a type, and a method set.
+Shot types
+Alt :t on a call that returns two values and on a string index, then a pasted type with three methods, and :m listing its method set and the interface it satisfies
+Caption Ask the type checker, not your memory: :t for a type, :m for a method set and the interfaces it satisfies. No build — a millisecond each.
+Headline Ask the type checker, not your memory
+Promo 4:5
+Grid 76x22
+Line :t strconv.Atoi("12")
+Line :t "héllo"[1]
+Paste <<
+type ByLen []string
+func (s ByLen) Len() int           { return len(s) }
+func (s ByLen) Less(i, j int) bool { return len(s[i]) < len(s[j]) }
+func (s ByLen) Swap(i, j int)      { s[i], s[j] = s[j], s[i] }
+>>
+Wait Prompt
+Line :m ByLen
+Screenshot

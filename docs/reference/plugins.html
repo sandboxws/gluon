@@ -1,0 +1,585 @@
+<!doctype html>
+<!-- generated from site/ by `just docs`: edit the source, not this file -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Plugins — gluon</title>
+<meta name="description" content="What each built-in plugin adds for its library — commands, renderers, imports — and what turns it on.">
+<meta name="theme-color" content="#0A0A0A">
+<script>(function(d,m){try{m=/[?&]palette=(gruv|go)\b/.exec(location.search);m=m?m[1]:localStorage.getItem("gluon:theme")}catch(e){}if(m==="gruv")d.documentElement.setAttribute("data-theme","gruv")})(document)</script>
+<link rel="canonical" href="https://sandboxws.github.io/gluon/reference/plugins.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Plugins — gluon">
+<meta property="og:description" content="What each built-in plugin adds for its library — commands, renderers, imports — and what turns it on.">
+<meta property="og:url" content="https://sandboxws.github.io/gluon/reference/plugins.html">
+<meta property="og:image" content="https://sandboxws.github.io/gluon/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="gluon's startup screen in a Go project, beside the words: A Go REPL that stands in your project">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sandboxws.github.io/gluon/img/og.png">
+<meta name="twitter:title" content="Plugins — gluon">
+<meta name="twitter:description" content="What each built-in plugin adds for its library — commands, renderers, imports — and what turns it on.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A0A0A'/%3E%3Cpath d='M9 9l7 7-7 7' stroke='%2300ADD8' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M18 23h6' stroke='%2300ADD8' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/gluon.css?v=980f3e8a">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="field" aria-hidden="true"></div>
+<div class="nav" id="nav">
+  <div class="nav-in">
+    <a class="nav-t" href="../index.html">gluon</a>
+    <span class="nav-sp"></span>
+    <a class="nav-m" href="../guide/index.html">Guides</a>
+    <a class="nav-m" href="../reference/index.html">Reference</a>
+    <span class="nav-m opt">v0.1.0</span>
+  </div>
+</div>
+
+<header class="hero wrap page">
+  <p class="eyebrow">Reference</p>
+  <h1 id="bigTitle">Plugins</h1>
+  <p class="sub">What each built-in plugin adds for its library — commands, renderers, imports — and what turns it on.</p>
+</header>
+
+<div class="wrap cols">
+  <nav class="side" aria-label="Sections"><div class="side-in">
+    <p class="grp-h">This page</p>
+    <a href="#f-standard-library"><span class="rn">6</span><span class="rt">standard library</span></a>
+<a href="#f-databases"><span class="rn">7</span><span class="rt">databases</span></a>
+<a href="#f-identifiers-and-numbers"><span class="rn">2</span><span class="rt">identifiers and numbers</span></a>
+<a href="#f-web-and-command-line"><span class="rn">8</span><span class="rt">web and command-line</span></a>
+<a href="#f-dependency-injection"><span class="rn">2</span><span class="rt">dependency injection</span></a>
+<a href="#f-configuration"><span class="rn">2</span><span class="rt">configuration</span></a>
+<a href="#f-encodings"><span class="rn">5</span><span class="rt">encodings</span></a>
+<a href="#f-RPC"><span class="rn">1</span><span class="rt">RPC</span></a>
+
+    <p class="grp-h">Reference</p>
+    <a href="../reference/index.html"><span class="rt">Reference</span></a>
+    <a href="../reference/commands.html"><span class="rt">Commands</span></a>
+    <a href="../reference/plugins.html" aria-current="page" class="here"><span class="rt">Plugins</span></a>
+    <a href="../reference/settings.html"><span class="rt">Settings</span></a>
+    <a href="../reference/cli.html"><span class="rt">The gluon command</span></a>
+    <a href="../reference/mcp.html"><span class="rt">MCP tools</span></a>
+    <a href="../reference/themes.html"><span class="rt">Themes</span></a>
+    
+  </div></nav>
+  <main id="main">
+    
+<div class="flt-w" hidden><input class="flt" type="search" placeholder="/ to filter — a plugin, a module, a command" aria-label="Filter the plugins" data-filter=".ref"><span class="flt-n" aria-live="polite"></span></div>
+
+<section class="card" id="f-standard-library" data-group>
+  <div class="card-head"><span class="idx">6</span><div class="hd"><h2>standard library</h2></div></div>
+  <div class="card-body">
+  
+    <article class="ref" id="http" data-f="http  ">
+      <h3><a class="pl" href="#http">http</a><span class="ref-s">responses and headers as what they are, not as twenty struct fields</span></h3>
+      <div class="chips"><span class="chip o">standard library · always active</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        
+        <tr><td class="mono">renders</td><td><code>*http.Response</code>, <code>http.Header</code>, <code>http.Response</code></td></tr>
+        <tr><td class="mono">imports</td><td><code>net/http</code>, <code>net/http/httptest</code>, <code>net/url</code></td></tr>
+        
+      </tbody></table></div>
+      
+    </article>
+  
+    <article class="ref" id="json" data-f="json  :json ">
+      <h3><a class="pl" href="#json">json</a><span class="ref-s">:json to marshal anything, and a readable json.RawMessage</span></h3>
+      <div class="chips"><span class="chip o">standard library · always active</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">commands</td><td><a href="commands.html#json"><code>:json</code></a></td></tr>
+        <tr><td class="mono">renders</td><td><code>json.RawMessage</code></td></tr>
+        <tr><td class="mono">imports</td><td><code>encoding/json</code></td></tr>
+        
+      </tbody></table></div>
+      
+    </article>
+  
+    <article class="ref" id="xml" data-f="xml  :xml ">
+      <h3><a class="pl" href="#xml">xml</a><span class="ref-s">:xml to marshal anything the way encoding/xml writes it</span></h3>
+      <div class="chips"><span class="chip o">standard library · always active</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">commands</td><td><a href="commands.html#xml"><code>:xml</code></a></td></tr>
+        
+        <tr><td class="mono">imports</td><td><code>encoding/xml</code></td></tr>
+        
+      </tbody></table></div>
+      
+    </article>
+  
+    <article class="ref" id="csv" data-f="csv  :csv ">
+      <h3><a class="pl" href="#csv">csv</a><span class="ref-s">:csv to see a sequence of records as the table it becomes</span></h3>
+      <div class="chips"><span class="chip o">standard library · always active</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">commands</td><td><a href="commands.html#csv"><code>:csv</code></a></td></tr>
+        
+        <tr><td class="mono">imports</td><td><code>encoding/csv</code>, <code>reflect</code></td></tr>
+        
+      </tbody></table></div>
+      
+    </article>
+  
+    <article class="ref" id="time" data-f="time  :when ">
+      <h3><a class="pl" href="#time">time</a><span class="ref-s">durations with their nanosecond count, and :when for a time.Time</span></h3>
+      <div class="chips"><span class="chip o">standard library · always active</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">commands</td><td><a href="commands.html#when"><code>:when</code></a></td></tr>
+        <tr><td class="mono">renders</td><td><code>time.Duration</code></td></tr>
+        <tr><td class="mono">imports</td><td><code>time</code></td></tr>
+        
+      </tbody></table></div>
+      
+    </article>
+  
+    <article class="ref" id="slog" data-f="slog  :slog ">
+      <h3><a class="pl" href="#slog">slog</a><span class="ref-s">:slog shows how a value comes out of a structured logger</span></h3>
+      <div class="chips"><span class="chip o">standard library · always active</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">commands</td><td><a href="commands.html#slog"><code>:slog</code></a></td></tr>
+        
+        <tr><td class="mono">imports</td><td><code>log/slog</code></td></tr>
+        
+      </tbody></table></div>
+      
+    </article>
+  
+  </div>
+</section>
+
+<section class="card" id="f-databases" data-group>
+  <div class="card-head"><span class="idx">7</span><div class="hd"><h2>databases</h2></div></div>
+  <div class="card-body">
+  
+    <article class="ref" id="sql" data-f="sql  ">
+      <h3><a class="pl" href="#sql">sql</a><span class="ref-s">NULL columns as NULL, not as a value plus a boolean</span></h3>
+      <div class="chips"><span class="chip o">standard library · always active</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        
+        <tr><td class="mono">renders</td><td><code>sql.NullBool</code>, <code>sql.NullByte</code>, <code>sql.NullFloat64</code>, <code>sql.NullInt16</code>, <code>sql.NullInt32</code>, <code>sql.NullInt64</code>, <code>sql.NullString</code>, <code>sql.NullTime</code></td></tr>
+        <tr><td class="mono">imports</td><td><code>database/sql</code></td></tr>
+        
+      </tbody></table></div>
+      
+    </article>
+  
+    <article class="ref" id="gorm" data-f="gorm gorm.io/gorm :sql ">
+      <h3><a class="pl" href="#gorm">gorm</a><span class="ref-s">:sql shows the SQL a builder chain produces, without running it</span></h3>
+      <div class="chips"><span class="chip">gorm.io/gorm</span><span class="chip a">active when the build list has it</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">commands</td><td><a href="commands.html#sql"><code>:sql</code></a></td></tr>
+        
+        <tr><td class="mono">imports</td><td><code>gorm.io/gorm</code></td></tr>
+        <tr><td class="mono">:get</td><td><code>gorm → gorm.io/gorm</code></td></tr>
+      </tbody></table></div>
+      
+    </article>
+  
+    <article class="ref" id="sqlx" data-f="sqlx github.com/jmoiron/sqlx :expand ">
+      <h3><a class="pl" href="#sqlx">sqlx</a><span class="ref-s">:expand shows what named parameters and IN clauses rewrote to</span></h3>
+      <div class="chips"><span class="chip">github.com/jmoiron/sqlx</span><span class="chip a">active when the build list has it</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">commands</td><td><a href="commands.html#expand"><code>:expand</code></a></td></tr>
+        
+        <tr><td class="mono">imports</td><td><code>github.com/jmoiron/sqlx</code></td></tr>
+        <tr><td class="mono">:get</td><td><code>sqlx → github.com/jmoiron/sqlx</code></td></tr>
+      </tbody></table></div>
+      
+    </article>
+  
+    <article class="ref" id="pgx" data-f="pgx github.com/jackc/pgx ">
+      <h3><a class="pl" href="#pgx">pgx</a><span class="ref-s">pool statistics as labelled counters, not as three depths of unexported fields</span></h3>
+      <div class="chips"><span class="chip">github.com/jackc/pgx</span><span class="chip a">active when the build list has it</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        
+        <tr><td class="mono">renders</td><td><code>*pgxpool.Stat</code>, <code>pgxpool.Stat</code></td></tr>
+        <tr><td class="mono">imports</td><td><code>github.com/jackc/pgx/v5</code>, <code>github.com/jackc/pgx/v5/pgxpool</code></td></tr>
+        <tr><td class="mono">:get</td><td><code>pgx → github.com/jackc/pgx/v5</code></td></tr>
+      </tbody></table></div>
+      
+    </article>
+  
+    <article class="ref" id="ent" data-f="ent entgo.io/ent :schema ">
+      <h3><a class="pl" href="#ent">ent</a><span class="ref-s">:schema — the tables, columns and edges the generated code describes</span></h3>
+      <div class="chips"><span class="chip">entgo.io/ent</span><span class="chip a">active when the build list has it</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">commands</td><td><a href="commands.html#schema"><code>:schema</code></a></td></tr>
+        
+        <tr><td class="mono">imports</td><td><code>entgo.io/ent</code>, <code>entgo.io/ent/dialect/sql/schema</code>, <code>entgo.io/ent/schema/field</code></td></tr>
+        <tr><td class="mono">:get</td><td><code>ent → entgo.io/ent</code></td></tr>
+      </tbody></table></div>
+      <details class="guide"><summary><code>:guide</code> — its cheatsheet</summary><pre># ent
+
+## What this plugin answers
+
+    :schema migrate.Tables
+
+The tables ent generated, their columns with types and constraints, and the
+edges as the foreign keys they became. Nothing is opened and no migration is
+planned — every descriptor printed is one the generated package is already
+holding in memory.
+
+## What it does not answer, and why
+
+There is no `:sql` for ent.
+
+gorm gets one because gorm has DryRun: a session flag that makes the builder
+assemble the statement and stop. ent has no equivalent. In v0.14.6 the two
+methods on a generated query builder that produce SQL are both unexported —
+`querySpec()` and `sqlQuery()` — and the builder carries no
+`ToSQL`, no `String`, and no dry-run option.
+
+`client.Debug()` is the near miss. It prints the statement, so it looks
+like the answer, but `dialect.DebugDriver` logs the query on its way to
+the driver and then runs it. It shows you the SQL *because* it executed it.
+
+So a `:sql` for ent could only be a command that queried. It would take
+gorm&#39;s argument, print gorm&#39;s output, and quietly hit your database. That is a
+worse thing to ship than the gap.
+
+## What to do instead
+
+- `:schema migrate.Tables` — the structure, free.
+- `:query EXPLAIN ...` — the plan for a statement you already have,
+  read-only by default and through the project&#39;s configured connection.
+- `client.Debug()` in your own code, when you accept that the query runs.
+</pre></details>
+    </article>
+  
+    <article class="ref" id="goose" data-f="goose github.com/pressly/goose :migrations ">
+      <h3><a class="pl" href="#goose">goose</a><span class="ref-s">:migrations reads goose_db_version through the project&#39;s database</span></h3>
+      <div class="chips"><span class="chip">github.com/pressly/goose</span><span class="chip a">active when the build list has it</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">commands</td><td><a href="commands.html#migrations"><code>:migrations</code></a></td></tr>
+        
+        <tr><td class="mono">imports</td><td><code>github.com/pressly/goose/v3</code></td></tr>
+        <tr><td class="mono">:get</td><td><code>goose → github.com/pressly/goose/v3</code></td></tr>
+      </tbody></table></div>
+      
+    </article>
+  
+    <article class="ref" id="migrate" data-f="migrate github.com/golang-migrate/migrate :migrations ">
+      <h3><a class="pl" href="#migrate">migrate</a><span class="ref-s">:migrations reads schema_migrations, including the dirty flag</span></h3>
+      <div class="chips"><span class="chip">github.com/golang-migrate/migrate</span><span class="chip a">active when the build list has it</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">commands</td><td><a href="commands.html#migrations"><code>:migrations</code></a></td></tr>
+        
+        <tr><td class="mono">imports</td><td><code>github.com/golang-migrate/migrate/v4</code></td></tr>
+        <tr><td class="mono">:get</td><td><code>migrate → github.com/golang-migrate/migrate/v4</code></td></tr>
+      </tbody></table></div>
+      
+    </article>
+  
+  </div>
+</section>
+
+<section class="card" id="f-identifiers-and-numbers" data-group>
+  <div class="card-head"><span class="idx">2</span><div class="hd"><h2>identifiers and numbers</h2></div></div>
+  <div class="card-body">
+  
+    <article class="ref" id="uuid" data-f="uuid github.com/google/uuid ">
+      <h3><a class="pl" href="#uuid">uuid</a><span class="ref-s">UUIDs as UUIDs, with the version and variant decoded</span></h3>
+      <div class="chips"><span class="chip">github.com/google/uuid</span><span class="chip a">active when the build list has it</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        
+        <tr><td class="mono">renders</td><td><code>uuid.UUID</code></td></tr>
+        <tr><td class="mono">imports</td><td><code>github.com/google/uuid</code></td></tr>
+        <tr><td class="mono">:get</td><td><code>uuid → github.com/google/uuid</code></td></tr>
+      </tbody></table></div>
+      
+    </article>
+  
+    <article class="ref" id="decimal" data-f="decimal github.com/shopspring/decimal :dec ">
+      <h3><a class="pl" href="#decimal">decimal</a><span class="ref-s">:dec reads a decimal, which prints as a big.Int and an exponent</span></h3>
+      <div class="chips"><span class="chip">github.com/shopspring/decimal</span><span class="chip a">active when the build list has it</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">commands</td><td><a href="commands.html#dec"><code>:dec</code></a></td></tr>
+        
+        <tr><td class="mono">imports</td><td><code>github.com/shopspring/decimal</code></td></tr>
+        <tr><td class="mono">:get</td><td><code>decimal → github.com/shopspring/decimal</code></td></tr>
+      </tbody></table></div>
+      
+    </article>
+  
+  </div>
+</section>
+
+<section class="card" id="f-web-and-command-line" data-group>
+  <div class="card-head"><span class="idx">8</span><div class="hd"><h2>web and command-line</h2></div></div>
+  <div class="card-body">
+  
+    <article class="ref" id="chi" data-f="chi github.com/go-chi/chi :routes ">
+      <h3><a class="pl" href="#chi">chi</a><span class="ref-s">:routes walks a chi mux, including everything mounted under it</span></h3>
+      <div class="chips"><span class="chip">github.com/go-chi/chi</span><span class="chip a">active when the build list has it</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">commands</td><td><a href="commands.html#routes"><code>:routes</code></a></td></tr>
+        
+        <tr><td class="mono">imports</td><td><code>github.com/go-chi/chi/v5</code></td></tr>
+        <tr><td class="mono">:get</td><td><code>chi → github.com/go-chi/chi/v5</code></td></tr>
+      </tbody></table></div>
+      
+    </article>
+  
+    <article class="ref" id="gin" data-f="gin github.com/gin-gonic/gin :routes ">
+      <h3><a class="pl" href="#gin">gin</a><span class="ref-s">:routes lists a gin engine&#39;s routes with their handlers</span></h3>
+      <div class="chips"><span class="chip">github.com/gin-gonic/gin</span><span class="chip a">active when the build list has it</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">commands</td><td><a href="commands.html#routes"><code>:routes</code></a></td></tr>
+        
+        <tr><td class="mono">imports</td><td><code>github.com/gin-gonic/gin</code></td></tr>
+        <tr><td class="mono">:get</td><td><code>gin → github.com/gin-gonic/gin</code></td></tr>
+      </tbody></table></div>
+      
+    </article>
+  
+    <article class="ref" id="echo" data-f="echo github.com/labstack/echo :routes ">
+      <h3><a class="pl" href="#echo">echo</a><span class="ref-s">:routes lists an echo instance&#39;s routes with their handlers</span></h3>
+      <div class="chips"><span class="chip">github.com/labstack/echo</span><span class="chip a">active when the build list has it</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">commands</td><td><a href="commands.html#routes"><code>:routes</code></a></td></tr>
+        
+        <tr><td class="mono">imports</td><td><code>github.com/labstack/echo/v4</code></td></tr>
+        <tr><td class="mono">:get</td><td><code>echo → github.com/labstack/echo/v4</code></td></tr>
+      </tbody></table></div>
+      
+    </article>
+  
+    <article class="ref" id="fiber" data-f="fiber github.com/gofiber/fiber :routes ">
+      <h3><a class="pl" href="#fiber">fiber</a><span class="ref-s">:routes lists a fiber app&#39;s routes, HEAD pairs included</span></h3>
+      <div class="chips"><span class="chip">github.com/gofiber/fiber</span><span class="chip a">active when the build list has it</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">commands</td><td><a href="commands.html#routes"><code>:routes</code></a></td></tr>
+        
+        <tr><td class="mono">imports</td><td><code>github.com/gofiber/fiber/v2</code></td></tr>
+        <tr><td class="mono">:get</td><td><code>fiber → github.com/gofiber/fiber/v2</code></td></tr>
+      </tbody></table></div>
+      
+    </article>
+  
+    <article class="ref" id="hertz" data-f="hertz github.com/cloudwego/hertz :routes ">
+      <h3><a class="pl" href="#hertz">hertz</a><span class="ref-s">:routes lists a hertz engine&#39;s routes with their handlers</span></h3>
+      <div class="chips"><span class="chip">github.com/cloudwego/hertz</span><span class="chip a">active when the build list has it</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">commands</td><td><a href="commands.html#routes"><code>:routes</code></a></td></tr>
+        
+        <tr><td class="mono">imports</td><td><code>github.com/cloudwego/hertz/pkg/app/server</code>, <code>github.com/cloudwego/hertz/pkg/app</code></td></tr>
+        <tr><td class="mono">:get</td><td><code>hertz → github.com/cloudwego/hertz</code></td></tr>
+      </tbody></table></div>
+      
+    </article>
+  
+    <article class="ref" id="iris" data-f="iris github.com/kataras/iris :routes ">
+      <h3><a class="pl" href="#iris">iris</a><span class="ref-s">:routes lists an iris application&#39;s routes with their handlers</span></h3>
+      <div class="chips"><span class="chip">github.com/kataras/iris</span><span class="chip a">active when the build list has it</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">commands</td><td><a href="commands.html#routes"><code>:routes</code></a></td></tr>
+        
+        <tr><td class="mono">imports</td><td><code>github.com/kataras/iris/v12</code></td></tr>
+        <tr><td class="mono">:get</td><td><code>iris → github.com/kataras/iris/v12</code></td></tr>
+      </tbody></table></div>
+      
+    </article>
+  
+    <article class="ref" id="mux" data-f="mux github.com/gorilla/mux :routes ">
+      <h3><a class="pl" href="#mux">mux</a><span class="ref-s">:routes walks a gorilla/mux router, subrouters included</span></h3>
+      <div class="chips"><span class="chip">github.com/gorilla/mux</span><span class="chip a">active when the build list has it</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">commands</td><td><a href="commands.html#routes"><code>:routes</code></a></td></tr>
+        
+        <tr><td class="mono">imports</td><td><code>github.com/gorilla/mux</code></td></tr>
+        <tr><td class="mono">:get</td><td><code>mux → github.com/gorilla/mux</code></td></tr>
+      </tbody></table></div>
+      
+    </article>
+  
+    <article class="ref" id="cobra" data-f="cobra github.com/spf13/cobra :tree ">
+      <h3><a class="pl" href="#cobra">cobra</a><span class="ref-s">:tree draws a command tree, which prints as forty struct fields</span></h3>
+      <div class="chips"><span class="chip">github.com/spf13/cobra</span><span class="chip a">active when the build list has it</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">commands</td><td><a href="commands.html#tree"><code>:tree</code></a></td></tr>
+        
+        <tr><td class="mono">imports</td><td><code>github.com/spf13/cobra</code></td></tr>
+        <tr><td class="mono">:get</td><td><code>cobra → github.com/spf13/cobra</code></td></tr>
+      </tbody></table></div>
+      
+    </article>
+  
+  </div>
+</section>
+
+<section class="card" id="f-dependency-injection" data-group>
+  <div class="card-head"><span class="idx">2</span><div class="hd"><h2>dependency injection</h2></div></div>
+  <div class="card-body">
+  
+    <article class="ref" id="do" data-f="do github.com/samber/do :services :graph ">
+      <h3><a class="pl" href="#do">do</a><span class="ref-s">:services and :graph read a samber/do injector, terminal form only</span></h3>
+      <div class="chips"><span class="chip">github.com/samber/do</span><span class="chip a">active when the build list has it</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">commands</td><td><a href="commands.html#services"><code>:services</code></a> <a href="commands.html#graph"><code>:graph</code></a></td></tr>
+        
+        <tr><td class="mono">imports</td><td><code>github.com/samber/do/v2</code></td></tr>
+        <tr><td class="mono">:get</td><td><code>do → github.com/samber/do/v2</code></td></tr>
+      </tbody></table></div>
+      
+    </article>
+  
+    <article class="ref" id="dig" data-f="dig go.uber.org/dig :services :graph ">
+      <h3><a class="pl" href="#dig">dig</a><span class="ref-s">:services and :graph read a dig container, DOT included</span></h3>
+      <div class="chips"><span class="chip">go.uber.org/dig</span><span class="chip a">active when the build list has it</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">commands</td><td><a href="commands.html#services"><code>:services</code></a> <a href="commands.html#graph"><code>:graph</code></a></td></tr>
+        
+        <tr><td class="mono">imports</td><td><code>go.uber.org/dig</code></td></tr>
+        <tr><td class="mono">:get</td><td><code>dig → go.uber.org/dig</code></td></tr>
+      </tbody></table></div>
+      
+    </article>
+  
+  </div>
+</section>
+
+<section class="card" id="f-configuration" data-group>
+  <div class="card-head"><span class="idx">2</span><div class="hd"><h2>configuration</h2></div></div>
+  <div class="card-body">
+  
+    <article class="ref" id="viper" data-f="viper github.com/spf13/viper :config ">
+      <h3><a class="pl" href="#viper">viper</a><span class="ref-s">:config lists every key viper resolved, from wherever it resolved it</span></h3>
+      <div class="chips"><span class="chip">github.com/spf13/viper</span><span class="chip a">active when the build list has it</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">commands</td><td><a href="commands.html#config"><code>:config</code></a></td></tr>
+        
+        <tr><td class="mono">imports</td><td><code>github.com/spf13/viper</code></td></tr>
+        <tr><td class="mono">:get</td><td><code>viper → github.com/spf13/viper</code></td></tr>
+      </tbody></table></div>
+      
+    </article>
+  
+    <article class="ref" id="koanf" data-f="koanf github.com/knadh/koanf :config ">
+      <h3><a class="pl" href="#koanf">koanf</a><span class="ref-s">:config lists every key koanf resolved, in the dotted form it stores</span></h3>
+      <div class="chips"><span class="chip">github.com/knadh/koanf</span><span class="chip a">active when the build list has it</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">commands</td><td><a href="commands.html#config"><code>:config</code></a></td></tr>
+        
+        <tr><td class="mono">imports</td><td><code>github.com/knadh/koanf/v2</code></td></tr>
+        <tr><td class="mono">:get</td><td><code>koanf → github.com/knadh/koanf/v2</code></td></tr>
+      </tbody></table></div>
+      
+    </article>
+  
+  </div>
+</section>
+
+<section class="card" id="f-encodings" data-group>
+  <div class="card-head"><span class="idx">5</span><div class="hd"><h2>encodings</h2></div></div>
+  <div class="card-body">
+  
+    <article class="ref" id="yaml" data-f="yaml go.yaml.in/yaml/v3 :yaml ">
+      <h3><a class="pl" href="#yaml">yaml</a><span class="ref-s">:yaml shows what the yaml tags produce, through the maintained v3</span></h3>
+      <div class="chips"><span class="chip">go.yaml.in/yaml/v3</span><span class="chip a">active when the build list has it</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">commands</td><td><a href="commands.html#yaml"><code>:yaml</code></a></td></tr>
+        
+        <tr><td class="mono">imports</td><td><code>go.yaml.in/yaml/v3</code></td></tr>
+        <tr><td class="mono">:get</td><td><code>yaml → go.yaml.in/yaml/v3</code></td></tr>
+      </tbody></table></div>
+      
+    </article>
+  
+    <article class="ref" id="yaml.v3" data-f="yaml.v3 gopkg.in/yaml.v3 :yaml ">
+      <h3><a class="pl" href="#yaml.v3">yaml.v3</a><span class="ref-s">:yaml for the archived gopkg.in path — the same library, the same output</span></h3>
+      <div class="chips"><span class="chip">gopkg.in/yaml.v3</span><span class="chip a">active when the build list has it</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">commands</td><td><a href="commands.html#yaml"><code>:yaml</code></a></td></tr>
+        
+        <tr><td class="mono">imports</td><td><code>gopkg.in/yaml.v3</code></td></tr>
+        <tr><td class="mono">:get</td><td><code>yaml.v3 → gopkg.in/yaml.v3</code></td></tr>
+      </tbody></table></div>
+      
+    </article>
+  
+    <article class="ref" id="toml" data-f="toml github.com/BurntSushi/toml :toml ">
+      <h3><a class="pl" href="#toml">toml</a><span class="ref-s">:toml shows the document a config struct actually writes</span></h3>
+      <div class="chips"><span class="chip">github.com/BurntSushi/toml</span><span class="chip a">active when the build list has it</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">commands</td><td><a href="commands.html#toml"><code>:toml</code></a></td></tr>
+        
+        <tr><td class="mono">imports</td><td><code>github.com/BurntSushi/toml</code></td></tr>
+        <tr><td class="mono">:get</td><td><code>toml → github.com/BurntSushi/toml</code></td></tr>
+      </tbody></table></div>
+      
+    </article>
+  
+    <article class="ref" id="msgpack" data-f="msgpack github.com/vmihailenco/msgpack/v5 :msgpack ">
+      <h3><a class="pl" href="#msgpack">msgpack</a><span class="ref-s">:msgpack shows the wire bytes a value encodes to, and how many</span></h3>
+      <div class="chips"><span class="chip">github.com/vmihailenco/msgpack/v5</span><span class="chip a">active when the build list has it</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">commands</td><td><a href="commands.html#msgpack"><code>:msgpack</code></a></td></tr>
+        
+        <tr><td class="mono">imports</td><td><code>github.com/vmihailenco/msgpack/v5</code>, <code>encoding/hex</code></td></tr>
+        <tr><td class="mono">:get</td><td><code>msgpack → github.com/vmihailenco/msgpack/v5</code></td></tr>
+      </tbody></table></div>
+      
+    </article>
+  
+    <article class="ref" id="protobuf" data-f="protobuf google.golang.org/protobuf :pb ">
+      <h3><a class="pl" href="#protobuf">protobuf</a><span class="ref-s">:pb shows what a message serialises to, in bytes and in text</span></h3>
+      <div class="chips"><span class="chip">google.golang.org/protobuf</span><span class="chip a">active when the build list has it</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">commands</td><td><a href="commands.html#pb"><code>:pb</code></a></td></tr>
+        
+        <tr><td class="mono">imports</td><td><code>google.golang.org/protobuf/proto</code>, <code>google.golang.org/protobuf/encoding/prototext</code></td></tr>
+        <tr><td class="mono">:get</td><td><code>protobuf → google.golang.org/protobuf</code></td></tr>
+      </tbody></table></div>
+      
+    </article>
+  
+  </div>
+</section>
+
+<section class="card" id="f-RPC" data-group>
+  <div class="card-head"><span class="idx">1</span><div class="hd"><h2>RPC</h2></div></div>
+  <div class="card-body">
+  
+    <article class="ref" id="grpc" data-f="grpc google.golang.org/grpc :grpc ">
+      <h3><a class="pl" href="#grpc">grpc</a><span class="ref-s">:grpc lists what a server exposes, and calls a unary method on it</span></h3>
+      <div class="chips"><span class="chip">google.golang.org/grpc</span><span class="chip a">active when the build list has it</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">commands</td><td><a href="commands.html#grpc"><code>:grpc</code></a></td></tr>
+        
+        <tr><td class="mono">imports</td><td><code>google.golang.org/grpc</code></td></tr>
+        <tr><td class="mono">:get</td><td><code>grpc → google.golang.org/grpc</code></td></tr>
+      </tbody></table></div>
+      
+    </article>
+  
+  </div>
+</section>
+
+
+    <nav class="pn" aria-label="Pages beside this one">
+  <a class="pg" href="../reference/commands.html"><span class="pg-k">← previous</span><b>Commands</b></a>
+  <a class="pg next" href="../reference/settings.html"><span class="pg-k">next →</span><b>Settings</b></a>
+</nav>
+  </main>
+</div>
+
+<footer class="foot"><div class="wrap fgrid">
+    <div><div class="fh">The site</div><ul>
+        <li><a href="../index.html">gluon</a> — what it is, in one page</li>
+        <li><a href="../guide/index.html">Guides</a> — every feature, with the lines to type</li>
+        <li><a href="../reference/index.html">Reference</a> — generated from the code that defines it</li>
+      </ul></div>
+    <div><div class="fh">This page</div><ul>
+        <li>v0.1.0 · <code>github.com/sandboxws/gluon</code></li>
+        <li>Generated from <code>site/</code> by <code>just docs</code></li>
+        <li>No analytics, no cookies; the palette choice is one localStorage key</li>
+        <li><a href="https://github.com/sandboxws/gluon">Source</a></li>
+      </ul></div>
+</div></footer>
+<script src="../assets/gluon.js?v=0b5d44bf"></script>
+</body>
+</html>

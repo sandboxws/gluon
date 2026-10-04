@@ -1,0 +1,19 @@
+{% define "side" %}{% range .Reg.CLI %}<a href="#{% .Anchor %}"><span class="rt">{% .Path %}</span></a>
+{% end %}{% end %}
+{% define "main" %}
+<section class="card" id="cli-note">
+  <div class="card-head"><span class="idx">$</span><div class="hd"><h2>The gluon command</h2></div></div>
+  <div class="card-body"><p class="lead">Every subcommand and flag, from the cobra tree <code>gluon --help</code> prints. A long flag is written here with one dash, the way it has always been documented; two work too.</p></div>
+</section>
+{% range .Reg.CLI %}
+<section class="card" id="{% .Anchor %}">
+  <div class="card-head"><span class="idx">$</span><div class="hd"><h2>{% .Path %}</h2><div class="chips"><span class="chip">{% .Short %}</span></div></div></div>
+  <div class="card-body">
+    <pre class="sig">{% .Use %}</pre>
+    {% with .Long %}<div class="prose"><pre class="long">{% . %}</pre></div>{% end %}
+    {% if .Flags %}<div class="tw"><table class="kv"><tbody>{% range .Flags %}<tr id="{% .Anchor %}"><td class="mono">{% .Label %}</td><td>{% .Help %}</td></tr>{% end %}</tbody></table></div>{% end %}
+    {% with .Example %}<div class="cmd"><div class="cmd-bar"><span class="ck">Shell</span><span class="cv">examples</span></div><pre>{% . %}</pre></div>{% end %}
+  </div>
+</section>
+{% end %}
+{% end %}

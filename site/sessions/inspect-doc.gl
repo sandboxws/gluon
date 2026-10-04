@@ -1,0 +1,6 @@
+:doc strings.Cut
+%clip 12
+:doc -src strings.Cut
+%clip 16
+:doc -examples strings
+:doc -url github.com/google/uuid.New

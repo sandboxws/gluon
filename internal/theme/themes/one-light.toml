@@ -1,0 +1,32 @@
+# One Light, converted from the VS Code port of Atom's theme by `gluon theme
+# import`. See one-dark.toml: it is the same theme and the same two corrections.
+#
+# Re-run:  gluon theme import <file> --print
+#          github.com/akamud/vscode-theme-onelight, themes/OneLight.json
+#
+# Kept from gluon's own go-light, because nothing in an editor theme means
+# them: `error`, `note`, `search`.
+about      = "One Light: purple keywords, green strings, amber types"
+appearance = "light"
+source     = "One Light, a VS Code theme"
+
+[theme]
+# Source.
+keyword     = "#A626A4"
+string      = "#50A14F"
+type        = "#C18401"
+comment     = "#A0A1A7"
+number      = "#986801"
+builtin     = "#0184BC"
+punctuation = "#383A42"
+ident       = "#383A42"
+
+# Values, the REPL, and the CLI.
+error       = "#B91C1C"
+prompt      = "#C18401"
+mode        = "#0184BC"  # One's blue, against its gold prompt
+annotation  = "#A0A1A7"
+note        = "#92400E"
+dim         = "#9D9D9F"
+search      = "#9A3412"
+border      = "#DBDBDC"

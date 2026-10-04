@@ -1,0 +1,5 @@
+%sh printf 'type Money int64\n\nfunc (m Money) String() string { return fmt.Sprintf("$%%d.%%02d", m/100, m%%100) }\n\nprice := Money(1250)\n' > snippets.go
+:load snippets.go
+price.String()
+:test price.String()
+:test -table strings.Fields(" a b ")

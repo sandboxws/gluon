@@ -1,0 +1,6 @@
+type User struct{ ID int; Name, Email string }
+users := make([]User, 480)
+for i := range users { users[i] = User{i, fmt.Sprintf("user%03d", i), fmt.Sprintf("user%03d@example.com", i)} }
+len(users)
+%clip 12
+:inspect users

@@ -1,0 +1,29 @@
+gluon> type ByLen []string
+gluon> func (s ByLen) Len() int           { return len(s) }
+gluon> func (s ByLen) Less(i, j int) bool { return len(s[i]) < len(s[j]) }
+gluon> func (s ByLen) Swap(i, j int)      { s[i], s[j] = s[j], s[i] }
+gluon> :m ByLen
+ByLen  3 methods
+╭─┬──────┬─────────────────────╮
+│ │ Len  │ () int              │
+│ │ Less │ (i int, j int) bool │
+│ │ Swap │ (i int, j int)      │
+╰─┴──────┴─────────────────────╯
+  satisfies  sort.Interface
+gluon> :m strings.Builder{}
+strings.Builder  11 methods
+╭──┬─────────────┬─────────────────────────╮
+│ *│ Cap         │ () int                  │
+│ *│ Grow        │ (n int)                 │
+│ *│ Len         │ () int                  │
+│ *│ Reset       │ ()                      │
+│ *│ String      │ () string               │
+│ *│ Write       │ (p []byte) (int, error) │
+│ *│ WriteByte   │ (c byte) error          │
+│ *│ WriteRune   │ (r rune) (int, error)   │
+│ *│ WriteString │ (s string) (int, error) │
+│ *│ copyCheck   │ ()                      │
+│ *│ grow        │ (n int)                 │
+╰──┴─────────────┴─────────────────────────╯
+  * = pointer receiver: in *strings.Builder's method set, not strings.Builder's
+  *strings.Builder satisfies  fmt.Stringer, io.Writer

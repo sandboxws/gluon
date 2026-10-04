@@ -1,0 +1,38 @@
+# Dracula, converted from the TextMate theme by `gluon theme import`.
+#
+# The most-installed theme there is, and the one that shows what the conversion
+# had to learn. Dracula paints `variable` pink — the same pink as a keyword — so
+# gluon's `ident`, which is every identifier a line of Go has and not just a
+# local, used to come out the colour of `func`. It is the editor's own foreground
+# now. Its `invalid` is white ink on a pink field, and gluon takes no field, so
+# the red below is gluon's.
+#
+# Re-run:  gluon theme import <file> --print
+#          github.com/dracula/textmate, Dracula.tmTheme
+#
+# Kept from gluon's own go, because nothing in an editor theme means
+# them: `note`, `dim`, `search`, `border`.
+about      = "Dracula: pink keywords, yellow strings, cyan types"
+appearance = "dark"
+source     = "Dracula, a TextMate theme"
+
+[theme]
+# Source.
+keyword     = "#ff79c6"
+string      = "#f1fa8c"
+type        = "#66d9ef"
+comment     = "#6272a4"
+number      = "#bd93f9"
+builtin     = "#8be9fd"
+punctuation = "#f8f8f2"
+ident       = "#f8f8f2"
+
+# Values, the REPL, and the CLI.
+error       = "#F83333"
+prompt      = "#66d9ef"
+mode        = "#ffb86c"  # Dracula's orange, against a cyan prompt
+annotation  = "#6272a4"
+note        = "#E3B341"
+dim         = "#7C7C84"
+search      = "#F5B843"
+border      = "#55555C"

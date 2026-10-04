@@ -1,0 +1,12 @@
+gluon> x := 2
+gluon> y := x * 10
+gluon> y
+(int) 20
+gluon> :edit
+!editor x := 3
+!editor y := x * 10
+!editor y
+(int) 30
+reloaded (3 entries)
+gluon> y
+(int) 30

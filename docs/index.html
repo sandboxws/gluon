@@ -1,0 +1,420 @@
+<!doctype html>
+<!-- generated from site/ by `just docs`: edit the source, not this file -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>gluon — a REPL and scratch runner for Go</title>
+<meta name="description" content="gluon is a REPL and scratch runner for Go. It compiles every line with your real Go toolchain, type-checks in-process in about a millisecond, and never ships an interpreter that can disagree with the compiler.">
+<meta name="theme-color" content="#0A0A0A">
+<script>(function(d,m){try{m=/[?&]palette=(gruv|go)\b/.exec(location.search);m=m?m[1]:localStorage.getItem("gluon:theme")}catch(e){}if(m==="gruv")d.documentElement.setAttribute("data-theme","gruv")})(document)</script>
+<meta property="og:type" content="website">
+<meta property="og:title" content="gluon — a REPL and scratch runner for Go">
+<meta property="og:description" content="For when you want to check what s[i] prints without writing a main package first. Real toolchain, no interpreter, ~1ms for the lines that do not need to run.">
+<link rel="canonical" href="https://sandboxws.github.io/gluon/">
+<meta property="og:url" content="https://sandboxws.github.io/gluon/">
+<meta property="og:image" content="https://sandboxws.github.io/gluon/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="gluon's startup screen in a Go project, beside the words: A Go REPL that stands in your project">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sandboxws.github.io/gluon/img/og.png">
+<meta name="twitter:title" content="gluon — a REPL and scratch runner for Go">
+<meta name="twitter:description" content="Real Go toolchain, no interpreter. Type errors in ~1ms; only the lines that must run pay for a build.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A0A0A'/%3E%3Cpath d='M9 9l7 7-7 7' stroke='%2300ADD8' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M18 23h6' stroke='%2300ADD8' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="assets/gluon.css?v=980f3e8a">
+</head>
+<body>
+<a class="skip" href="#install">Skip to content</a>
+<div class="field" aria-hidden="true"></div>
+<div class="nav" id="nav">
+  <div class="nav-in">
+    <span class="nav-t">gluon</span>
+    <span class="nav-sp"></span>
+    <a class="nav-m" href="guide/index.html">Guides</a>
+    <a class="nav-m" href="reference/index.html">Reference</a>
+    <span class="nav-m opt">v0.1.0</span>
+  </div>
+</div>
+
+<header class="hero wrap">
+  <p class="eyebrow">REPL · Scratch runner · Go 1.27+</p>
+  <h1 id="bigTitle">gluon</h1>
+  <p class="sub">A REPL and scratch runner for Go, for when you want to check what <code>s[i]</code> prints
+    without writing a <b>main</b> package first. Every line re-renders the whole session into a genuine Go
+    program and compiles it with <b>your real toolchain</b> — so nothing here can teach you Go that the
+    compiler disagrees with.</p>
+
+  <div class="hero-grid">
+    <div class="repl term" id="demo">
+      <div class="tabs" role="tablist" aria-label="What gluon does">
+        <button type="button" class="tab on" role="tab" aria-selected="true"  aria-controls="tp-repl" data-panel="repl"><span class="dot"></span>repl</button>
+        <button type="button" class="tab"    role="tab" aria-selected="false" aria-controls="tp-plug" data-panel="plug"><span class="dot"></span>plugins</button>
+        <button type="button" class="tab"    role="tab" aria-selected="false" aria-controls="tp-db"   data-panel="db"><span class="dot"></span>database</button>
+        <button type="button" class="tab"    role="tab" aria-selected="false" aria-controls="tp-measure" data-panel="measure"><span class="dot"></span>measure</button>
+        <button type="button" class="tab"    role="tab" aria-selected="false" aria-controls="tp-mcp"  data-panel="mcp"><span class="dot"></span>mcp</button>
+      </div>
+      <div class="cmd-bar">
+        <span class="ck">gluon</span><span class="cv" id="demoCap">a session, replayed at its real speed</span>
+        <button type="button" class="copy" id="demoBtn" aria-label="Pause the replay">Pause</button>
+      </div>
+      <div class="term-body" id="tp-repl" role="tabpanel" data-cap="a session, replayed at its real speed">
+<div class="tl in" data-wait="300"><span class="pr">gluon&gt;</span> <span class="txt">x <span class="p">:=</span> <span class="p">[</span><span class="p">]</span><span class="ty">int</span><span class="p">{</span><span class="nu">3</span><span class="p">,</span> <span class="nu">1</span><span class="p">,</span> <span class="nu">2</span><span class="p">}</span></span></div>
+<div class="tl in" data-wait="220"><span class="pr">gluon&gt;</span> <span class="txt">slices<span class="p">.</span>Sort<span class="p">(</span>x<span class="p">)</span></span></div>
+<div class="tl in" data-wait="220"><span class="pr">gluon&gt;</span> <span class="txt">x</span></div>
+<div class="tl out" data-wait="290"><span class="txt"><span class="ty">([]int)</span> len=3 cap=3</span></div>
+<div class="tl out bx" data-wait="45"><span class="txt"><span class="p">╭───┬───────╮</span></span></div>
+<div class="tl out bx" data-wait="45"><span class="txt"><span class="p">│</span> # <span class="p">│</span> value <span class="p">│</span></span></div>
+<div class="tl out bx" data-wait="45"><span class="txt"><span class="p">├───┼───────┤</span></span></div>
+<div class="tl out bx" data-wait="45"><span class="txt"><span class="p">│</span> 0 <span class="p">│</span> 1     <span class="p">│</span></span></div>
+<div class="tl out bx" data-wait="45"><span class="txt"><span class="p">│</span> 1 <span class="p">│</span> 2     <span class="p">│</span></span></div>
+<div class="tl out bx" data-wait="45"><span class="txt"><span class="p">│</span> 2 <span class="p">│</span> 3     <span class="p">│</span></span></div>
+<div class="tl out bx" data-wait="45"><span class="txt"><span class="p">╰───┴───────╯</span></span></div>
+<div class="tl in" data-wait="500"><span class="pr">gluon&gt;</span> <span class="txt"><span class="s">&#34;héllo&#34;</span><span class="p">[</span><span class="nu">1</span><span class="p">]</span></span></div>
+<div class="tl out" data-wait="290"><span class="txt"><span class="ty">(uint8)</span> 195 (0xc3)</span></div>
+<div class="tl in" data-wait="500"><span class="pr">gluon&gt;</span> <span class="txt"><span class="kw">:t</span> strconv<span class="p">.</span>Atoi<span class="p">(</span><span class="s">&#34;12&#34;</span><span class="p">)</span></span></div>
+<div class="tl out" data-wait="290"><span class="txt"><span class="ty">(int, error)</span>  2 values</span></div>
+      </div>
+
+      <div class="term-body" id="tp-plug" role="tabpanel" hidden data-cap="a library it knows, drawn as what it is">
+<div class="tl in" data-wait="300"><span class="pr">gluon&gt;</span> <span class="txt">e <span class="p">:=</span> events<span class="p">.</span>Sample<span class="p">(</span><span class="p">)</span></span></div>
+<div class="tl in" data-wait="220"><span class="pr">gluon&gt;</span> <span class="txt">e<span class="p">.</span>Customer</span></div>
+<div class="tl out" data-wait="290"><span class="txt"><span class="ty">(uuid.UUID)</span> 5f0c2c1e-8a7b-4e0f-9c6d-3b2a1f0e9d8c  v4 random, RFC 4122</span></div>
+<div class="tl in" data-wait="500"><span class="pr">gluon&gt;</span> <span class="txt"><span class="kw">:when</span> e<span class="p">.</span>At</span></div>
+<div class="tl out" data-wait="290"><span class="txt"><span class="ty">(struct { RFC3339 string; Local string; Zone string; Unix int64 })</span></span></div>
+<div class="tl out bx" data-wait="45"><span class="txt"><span class="p">╭─────────┬────────────────────────╮</span></span></div>
+<div class="tl out bx" data-wait="45"><span class="txt"><span class="p">│</span> field   <span class="p">│</span> value                  <span class="p">│</span></span></div>
+<div class="tl out bx" data-wait="45"><span class="txt"><span class="p">├─────────┼────────────────────────┤</span></span></div>
+<div class="tl out bx" data-wait="45"><span class="txt"><span class="p">│</span> RFC3339 <span class="p">│</span> &#34;2026-09-01T09:30:00Z&#34; <span class="p">│</span></span></div>
+<div class="tl out bx" data-wait="45"><span class="txt"><span class="p">│</span> Local   <span class="p">│</span> &#34;2026-09-01 09:30:00&#34;  <span class="p">│</span></span></div>
+<div class="tl out bx" data-wait="45"><span class="txt"><span class="p">│</span> Zone    <span class="p">│</span> &#34;UTC+00:00&#34;            <span class="p">│</span></span></div>
+<div class="tl out bx" data-wait="45"><span class="txt"><span class="p">│</span> Unix    <span class="p">│</span> 1788255000             <span class="p">│</span></span></div>
+<div class="tl out bx" data-wait="45"><span class="txt"><span class="p">╰─────────┴────────────────────────╯</span></span></div>
+      </div>
+
+      <div class="term-body" id="tp-db" role="tabpanel" hidden data-cap="the database the project is standing next to">
+<div class="tl in" data-wait="300"><span class="pr">gluon&gt;</span> <span class="txt"><span class="kw">:query</span> <span class="kw">SELECT</span> plan<span class="p">,</span> <span class="f">count</span><span class="p">(</span><span class="p">*</span><span class="p">)</span> <span class="kw">AS</span> customers <span class="kw">FROM</span> users <span class="kw">GROUP</span> <span class="kw">BY</span> plan <span class="kw">ORDER</span> <span class="kw">BY</span> customers <span class="kw">DESC</span></span></div>
+<div class="tl out bx" data-wait="290"><span class="txt"><span class="p">╭──────┬───────────╮</span></span></div>
+<div class="tl out bx" data-wait="45"><span class="txt"><span class="p">│</span> plan <span class="p">│</span> customers <span class="p">│</span></span></div>
+<div class="tl out bx" data-wait="45"><span class="txt"><span class="p">├──────┼───────────┤</span></span></div>
+<div class="tl out bx" data-wait="45"><span class="txt"><span class="p">│</span> free <span class="p">│</span> 274       <span class="p">│</span></span></div>
+<div class="tl out bx" data-wait="45"><span class="txt"><span class="p">│</span> pro  <span class="p">│</span> 138       <span class="p">│</span></span></div>
+<div class="tl out bx" data-wait="45"><span class="txt"><span class="p">│</span> team <span class="p">│</span> 68        <span class="p">│</span></span></div>
+<div class="tl out bx" data-wait="45"><span class="txt"><span class="p">╰──────┴───────────╯</span></span></div>
+<div class="tl out" data-wait="45"><span class="txt">  3 rows · ~/src/shop/data/shop.db</span></div>
+<div class="tl in" data-wait="500"><span class="pr">gluon&gt;</span> <span class="txt"><span class="kw">:query</span> <span class="kw">SELECT</span> id<span class="p">,</span> email <span class="kw">FROM</span> users <span class="kw">ORDER</span> <span class="kw">BY</span> id <span class="kw">LIMIT</span> <span class="nu">3</span></span></div>
+<div class="tl out bx" data-wait="290"><span class="txt"><span class="p">╭────┬───────────────────────╮</span></span></div>
+<div class="tl out bx" data-wait="45"><span class="txt"><span class="p">│</span> id <span class="p">│</span> email                 <span class="p">│</span></span></div>
+<div class="tl out bx" data-wait="45"><span class="txt"><span class="p">├────┼───────────────────────┤</span></span></div>
+<div class="tl out bx" data-wait="45"><span class="txt"><span class="p">│</span> 1  <span class="p">│</span> ada@example.com       <span class="p">│</span></span></div>
+<div class="tl out bx" data-wait="45"><span class="txt"><span class="p">│</span> 2  <span class="p">│</span> grace@example.com     <span class="p">│</span></span></div>
+<div class="tl out bx" data-wait="45"><span class="txt"><span class="p">│</span> 3  <span class="p">│</span> katherine@example.com <span class="p">│</span></span></div>
+<div class="tl out bx" data-wait="45"><span class="txt"><span class="p">╰────┴───────────────────────╯</span></span></div>
+<div class="tl out" data-wait="45"><span class="txt">  3 rows · ~/src/shop/data/shop.db</span></div>
+      </div>
+
+      <div class="term-body" id="tp-measure" role="tabpanel" hidden data-cap="testing.B, and the compiler's own layout">
+<div class="tl in" data-wait="300"><span class="pr">gluon&gt;</span> <span class="txt">n <span class="p">:=</span> <span class="nu">42</span></span></div>
+<div class="tl in" data-wait="220"><span class="pr">gluon&gt;</span> <span class="txt"><span class="kw">:bench</span> strconv<span class="p">.</span>Itoa<span class="p">(</span>n<span class="p">)</span><span class="p">,</span> fmt<span class="p">.</span>Sprint<span class="p">(</span>n<span class="p">)</span></span></div>
+<div class="tl out" data-wait="290"><span class="txt">a  strconv.Itoa(n)</span></div>
+<div class="tl out" data-wait="45"><span class="txt">b  fmt.Sprint(n)</span></div>
+<div class="tl out" data-wait="45"><span class="txt"></span></div>
+<div class="tl out" data-wait="45"><span class="txt">           a   b     b/a</span></div>
+<div class="tl out" data-wait="45"><span class="txt">ns/op      2  38  19.00x</span></div>
+<div class="tl out" data-wait="45"><span class="txt">B/op       0   2     n/a</span></div>
+<div class="tl out" data-wait="45"><span class="txt">allocs/op  0   1     n/a</span></div>
+<div class="tl in" data-wait="500"><span class="pr">gluon&gt;</span> <span class="txt"><span class="kw">:layout</span> <span class="kw">struct</span><span class="p">{</span> a <span class="ty">bool</span><span class="p">;</span> b <span class="ty">int64</span><span class="p">;</span> c <span class="ty">bool</span> <span class="p">}</span></span></div>
+<div class="tl out" data-wait="290"><span class="txt">struct{a bool; b int64; c bool} 24 bytes, align 8</span></div>
+<div class="tl out bx" data-wait="45"><span class="txt"><span class="p">╭────────┬───────────────────┬───────┬──────╮</span></span></div>
+<div class="tl out bx" data-wait="45"><span class="txt"><span class="p">│</span> offset <span class="p">│</span> field             <span class="p">│</span> type  <span class="p">│</span> size <span class="p">│</span></span></div>
+<div class="tl out bx" data-wait="45"><span class="txt"><span class="p">├────────┼───────────────────┼───────┼──────┤</span></span></div>
+<div class="tl out bx" data-wait="45"><span class="txt"><span class="p">│</span>      0 <span class="p">│</span> a                 <span class="p">│</span> bool  <span class="p">│</span>    1 <span class="p">│</span></span></div>
+<div class="tl out bx" data-wait="45"><span class="txt"><span class="p">│</span>        <span class="p">│</span> ← 7 bytes padding <span class="p">│</span>       <span class="p">│</span>      <span class="p">│</span></span></div>
+<div class="tl out bx" data-wait="45"><span class="txt"><span class="p">│</span>      8 <span class="p">│</span> b                 <span class="p">│</span> int64 <span class="p">│</span>    8 <span class="p">│</span></span></div>
+<div class="tl out bx" data-wait="45"><span class="txt"><span class="p">│</span>     16 <span class="p">│</span> c                 <span class="p">│</span> bool  <span class="p">│</span>    1 <span class="p">│</span></span></div>
+<div class="tl out bx" data-wait="45"><span class="txt"><span class="p">│</span>        <span class="p">│</span> ← 7 bytes padding <span class="p">│</span>       <span class="p">│</span>      <span class="p">│</span></span></div>
+<div class="tl out bx" data-wait="45"><span class="txt"><span class="p">╰────────┴───────────────────┴───────┴──────╯</span></span></div>
+<div class="tl out" data-wait="45"><span class="txt">  reordering as b, a, c would be 16 bytes — 8 saved</span></div>
+      </div>
+
+      <div class="term-body" id="tp-mcp" role="tabpanel" hidden data-cap="the inspectors, served to a coding agent">
+<div class="tl in" data-wait="260"><span class="pr">$</span> <span class="txt">cat .mcp.json</span></div>
+<div class="tl out" data-wait="200"><span class="txt">{<span class="s">"mcpServers"</span>: {<span class="s">"gluon"</span>: {<span class="s">"command"</span>: <span class="s">"gluon"</span>, <span class="s">"args"</span>: [<span class="s">"mcp"</span>]}}}</span></div>
+<div class="tl out" data-wait="300"><span class="txt"><span class="c"># 15 tools a bare gluon mcp serves — they build and run nothing</span></span></div>
+<div class="tl out" data-wait="45"><span class="txt"><span class="ty">go_type  go_methods  go_implements  go_satisfies  go_cast</span></span></div>
+<div class="tl out" data-wait="45"><span class="txt"><span class="ty">go_interface  go_embeds  go_generics  go_mock  go_spy</span></span></div>
+<div class="tl out" data-wait="45"><span class="txt"><span class="ty">go_scope  go_doc  go_layout  session_source</span></span></div>
+<div class="tl out" data-wait="45"><span class="txt"><span class="ty">session_history</span></span></div>
+<div class="tl out" data-wait="300"><span class="txt"><span class="c"># 18 more with gluon mcp --eval — these run code</span></span></div>
+<div class="tl out" data-wait="45"><span class="txt"><span class="ty">session_reset  go_since  go_slice_headers  go_diff</span></span></div>
+<div class="tl out" data-wait="45"><span class="txt"><span class="ty">go_err_chain  go_bench  go_profile  go_memprof  go_trace</span></span></div>
+<div class="tl out" data-wait="45"><span class="txt"><span class="ty">go_escape  go_inline  go_asm  go_vet  go_race</span></span></div>
+<div class="tl out" data-wait="45"><span class="txt"><span class="ty">session_undo  go_test  session_refresh  go_eval</span></span></div>
+<div class="tl out" data-wait="300"><span class="txt"><span class="c"># and each active plugin's command, with --eval</span></span></div>
+      </div>
+    </div>
+
+    <div class="group">
+      <div class="g-h">Measured · darwin/arm64</div>
+      <div class="rows">
+        <div class="row fast"><span class="rk">Type check</span><span class="rv">~1ms<span class="rs">in process, warm — no build</span></span></div>
+        <div class="row"><span class="rk">go build</span><span class="rv">~190ms<span class="rs">one-file temp module, warm cache</span></span></div>
+        <div class="row attn"><span class="rk">Fresh exec</span><span class="rv">~105ms<span class="rs">macOS validating the Mach-O</span></span></div>
+        <div class="row"><span class="rk">goimports</span><span class="rv">~135ms<span class="rs">only when it can't resolve the name</span></span></div>
+        <div class="row fast"><span class="rk">Completion</span><span class="rv">12–22µs<span class="rs">per warm keystroke</span></span></div>
+        <div class="row fast"><span class="rk">Line the checker answers</span><span class="rv">~1ms<span class="rs">errors, decls, constants, <code>:t</code></span></span></div>
+        <div class="row"><span class="rk">Line that must run</span><span class="rv">~290ms<span class="rs">build + exec, the honest floor</span></span></div>
+        <div class="row fast"><span class="rk">Attached to a project</span><span class="rv">~330ms<span class="rs">the same as standalone</span></span></div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="wrap cols">
+  <nav class="side" aria-label="Sections"><div class="side-in">
+      <a href="#install"><span class="rn">01</span><span class="rt">Install</span></a>
+      <a href="#first"><span class="rn">02</span><span class="rt">The first five minutes</span></a>
+      <a href="#see"><span class="rn">03</span><span class="rt">In a real terminal</span></a>
+      <a href="#does"><span class="rn">04</span><span class="rt">What it does</span></a>
+      <a href="#premise"><span class="rn">05</span><span class="rt">Not an interpreter</span></a>
+      <a href="#compare"><span class="rn">06</span><span class="rt">How it compares</span></a>
+      <a href="#limitation"><span class="rn">07</span><span class="rt">The honest limitation</span></a>
+      <a href="#docs"><span class="rn">08</span><span class="rt">Documentation</span></a>
+  </div></nav>
+  <main>
+  <section class="card" id="install">
+    <div class="card-head">
+      <span class="idx">01</span>
+      <div class="hd"><h2>Install</h2><div class="chips"><span class="chip c">Go 1.27+</span><span class="chip n">macOS · Linux · WSL</span><span class="chip n">v0.1.0</span></div></div>
+    </div>
+    <div class="card-body">
+      <p class="lead">gluon is one binary and no daemon. It needs a Go toolchain on <code>PATH</code>, because
+        the toolchain <em>is</em> the evaluator — there is nothing to install alongside it.</p>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="ck">Shell</span><span class="cv">no clone needed</span></div>
+<pre>go install github.com/sandboxws/gluon/cmd/gluon@latest</pre>
+      </div>
+      <p>Or <code>brew install sandboxws/tap/gluon</code>, or a binary from <a href="https://github.com/sandboxws/gluon/releases">the releases page</a>.</p>
+      <div class="cmd">
+        <div class="cmd-bar"><span class="ck">Shell</span><span class="cv">verify, and start</span></div>
+<pre>gluon doctor                   <span class="c"># what gluon can see from here</span>
+gluon                          <span class="c"># and you are in</span></pre>
+      </div>
+      <p><a href="guide/start.html#install">The first guide</a> has the rest: where the binary lands, shell
+        completion and a man page, and the 105ms of every line that macOS adds and you can take back.</p>
+    </div>
+  </section>
+
+  <section class="card" id="first">
+    <div class="card-head">
+      <span class="idx">02</span>
+      <div class="hd"><h2>The first five minutes</h2><div class="chips"><span class="chip o">Start here</span></div></div>
+    </div>
+    <div class="card-body">
+      <p class="lead">Type Go. gluon writes the import lines, silences the errors Go raises about scratch code,
+        and prints the value with its type and the facts about it you would otherwise print a second time.</p>
+      <div class="repl"><div class="cmd-bar"><span class="ck">gluon</span><span class="cv">a value, and the truth attached to it</span></div><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> x <span class="p">:=</span> <span class="p">[</span><span class="p">]</span><span class="ty">int</span><span class="p">{</span><span class="nu">3</span><span class="p">,</span> <span class="nu">1</span><span class="p">,</span> <span class="nu">2</span><span class="p">}</span></div><div class="tl"><span class="pr">gluon&gt;</span> slices<span class="p">.</span>Sort<span class="p">(</span>x<span class="p">)</span></div><div class="tl"><span class="pr">gluon&gt;</span> x</div><div class="tl out"><span class="ty">([]int)</span> len=3 cap=3</div><div class="tl out bx"><span class="p">╭───┬───────╮</span></div><div class="tl out bx"><span class="p">│</span> # <span class="p">│</span> value <span class="p">│</span></div><div class="tl out bx"><span class="p">├───┼───────┤</span></div><div class="tl out bx"><span class="p">│</span> 0 <span class="p">│</span> 1     <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> 1 <span class="p">│</span> 2     <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> 2 <span class="p">│</span> 3     <span class="p">│</span></div><div class="tl out bx"><span class="p">╰───┴───────╯</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="s">&#34;héllo&#34;</span><span class="p">[</span><span class="nu">1</span><span class="p">]</span></div><div class="tl out"><span class="ty">(uint8)</span> 195 (0xc3)</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="s">&#34;héllo&#34;</span></div><div class="tl out"><span class="ty">(string)</span> &#34;héllo&#34;  len=6 bytes, 5 runes</div></div></div>
+      <p>Nothing in that session imports <code>slices</code>, and nothing uses <code>x</code> after declaring it —
+        Go rejects both, and a REPL that made you write them would be a worse REPL. Errors and panics name the
+        line you typed, not a file under a temp directory:</p>
+      <div class="repl"><div class="cmd-bar"><span class="ck">gluon</span><span class="cv">a compile error, and a panic</span></div><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> x <span class="p">:=</span> <span class="p">[</span><span class="p">]</span><span class="ty">int</span><span class="p">{</span><span class="nu">1</span><span class="p">,</span> <span class="nu">2</span><span class="p">,</span> <span class="nu">3</span><span class="p">}</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">func</span> f<span class="p">(</span>a <span class="ty">int</span><span class="p">)</span> <span class="ty">int</span> <span class="p">{</span></div><div class="tl"><span class="an">  ...&gt;</span>     <span class="kw">return</span> a <span class="p">+</span> bogus</div><div class="tl"><span class="an">  ...&gt;</span> <span class="p">}</span></div><div class="tl out"><span class="er">error: undefined: bogus</span></div><div class="tl out"><span class="er">        return a + bogus</span></div><div class="tl out"><span class="er">                ^</span></div><div class="tl"><span class="pr">gluon&gt;</span> x<span class="p">[</span><span class="nu">10</span><span class="p">]</span></div><div class="tl out"><span class="er">panic: runtime error: index out of range [10] with length 3</span></div><div class="tl out"><span class="er"></span></div><div class="tl out"><span class="er">goroutine 1 [running]:</span></div><div class="tl out"><span class="er">main.main()</span></div><div class="tl out"><span class="er">	x[10] +0x24</span></div><div class="tl out"><span class="er">[exit status 2]</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:undo</span></div><div class="tl out">undone (1 entry left)</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="f">len</span><span class="p">(</span>x<span class="p">)</span></div><div class="tl out"><span class="ty">(int)</span> 3</div></div></div>
+      <p><a href="guide/start.html">The first five minutes</a> goes on from here: <code>it</code> and
+        <code>_N</code>, pasting a block, and help for every command.</p>
+    </div>
+  </section>
+
+  <section class="card" id="see">
+    <div class="card-head">
+      <span class="idx">03</span>
+      <div class="hd"><h2>In a real terminal</h2><div class="chips"><span class="chip n">Screenshots</span></div></div>
+    </div>
+    <div class="card-body">
+      <p class="lead">The transcripts on these pages are recorded; these are screenshots, each taken in a fresh
+        Ghostty window running the release, in the palette this page is in — the switch at the top swaps them.</p>
+      <div class="gallery">
+        <figure class="shot"><figcaption class="cmd-bar"><span class="ck">Screenshot</span><span class="cv">starting in a project</span></figcaption><a href="img/shots/hero.go.webp?v=7b410c2b"><img class="v-go" src="img/shots/hero.go.webp?v=7b410c2b" width="723" height="503" alt="gluon starting in a Go project: the wordmark and version, a row each for the scratchpad it opened, the module it attached to, the database it found and the plugins the project&#39;s build list turned on, then a line of the project&#39;s own code evaluated at the prompt" loading="lazy" decoding="async"></a><a href="img/shots/hero.gruv.webp?v=2479aef8"><img class="v-gruv" src="img/shots/hero.gruv.webp?v=2479aef8" width="723" height="503" alt="gluon starting in a Go project: the wordmark and version, a row each for the scratchpad it opened, the module it attached to, the database it found and the plugins the project&#39;s build list turned on, then a line of the project&#39;s own code evaluated at the prompt" loading="lazy" decoding="async"></a></figure>
+        <figure class="shot"><figcaption class="cmd-bar"><span class="ck">Screenshot</span><span class="cv">:db, and a query</span></figcaption><a href="img/shots/db.go.webp?v=b677f0e2"><img class="v-go" src="img/shots/db.go.webp?v=b677f0e2" width="859" height="610" alt=":db listing the one database the project configures — its driver, its file, read-only and ready — then :query selecting five users through that driver, as a table with the row count" loading="lazy" decoding="async"></a><a href="img/shots/db.gruv.webp?v=063dfc58"><img class="v-gruv" src="img/shots/db.gruv.webp?v=063dfc58" width="859" height="610" alt=":db listing the one database the project configures — its driver, its file, read-only and ready — then :query selecting five users through that driver, as a table with the row count" loading="lazy" decoding="async"></a></figure>
+        <figure class="shot"><figcaption class="cmd-bar"><span class="ck">Screenshot</span><span class="cv">:since, a view</span></figcaption><a href="img/shots/since.go.webp?v=b0fa20dc"><img class="v-go" src="img/shots/since.go.webp?v=b0fa20dc" width="893" height="663" alt=":since&#39;s view: every Go release, newest first, with how many standard library symbols each added, across how many packages, and how many language changes" loading="lazy" decoding="async"></a><a href="img/shots/since.gruv.webp?v=6dd0a09f"><img class="v-gruv" src="img/shots/since.gruv.webp?v=6dd0a09f" width="893" height="663" alt=":since&#39;s view: every Go release, newest first, with how many standard library symbols each added, across how many packages, and how many language changes" loading="lazy" decoding="async"></a></figure>
+        <figure class="shot"><figcaption class="cmd-bar"><span class="ck">Screenshot</span><span class="cv">:theme, previewing</span></figcaption><a href="img/shots/theme.go.webp?v=97105256"><img class="v-go" src="img/shots/theme.go.webp?v=97105256" width="893" height="720" alt=":theme&#39;s chooser: every theme gluon ships, with the one in use under the cursor and previewed on a sample of code" loading="lazy" decoding="async"></a><a href="img/shots/theme.gruv.webp?v=a13487a3"><img class="v-gruv" src="img/shots/theme.gruv.webp?v=a13487a3" width="893" height="720" alt=":theme&#39;s chooser: every theme gluon ships, with the one in use under the cursor and previewed on a sample of code" loading="lazy" decoding="async"></a></figure>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="does">
+    <div class="card-head">
+      <span class="idx">04</span>
+      <div class="hd"><h2>What it does</h2><div class="chips"><span class="chip n">63 built in</span><span class="chip c">20 from 33 plugins</span></div></div>
+    </div>
+    <div class="card-body">
+      <p class="lead">Every feature, a guide at a time — each with the lines to type and what they printed, recorded
+        from a real session.</p>
+      <div class="pgs">
+      <a class="pg" href="guide/start.html"><span class="pg-k">Guide 01 · 3 commands</span><b>The first five minutes</b><span>Install gluon, type Go, and read what comes back: a value with the truth attached, it and _N, errors that name your line, and help for every command.</span></a>
+      <a class="pg" href="guide/inspecting.html"><span class="pg-k">Guide 02 · 17 commands</span><b>Inspecting</b><span>What is this, and what can it do: types, method sets, interfaces, memory layout, documentation and what each Go release added — most of it answered by the type checker, without a build.</span></a>
+      <a class="pg" href="guide/measuring.html"><span class="pg-k">Guide 03 · 10 commands</span><b>Measuring</b><span>How fast it is, where the time and the allocations went, and what the compiler decided about it — through testing.B, pprof, the compiler&#39;s own reports, vet and the race detector.</span></a>
+      <a class="pg" href="guide/rendering.html"><span class="pg-k">Guide 04 · 2 commands</span><b>Rendering</b><span>How a value is drawn: five shapes, cycles and sharing said out loud, how much of a value you see, and a view that scrolls for the large ones.</span></a>
+      <a class="pg" href="guide/session.html"><span class="pg-k">Guide 05 · 14 commands</span><b>The session</b><span>The program your lines became, why every line replays and what that costs, and the commands that edit, snapshot, recall and test a session.</span></a>
+      <a class="pg" href="guide/scratchpads.html"><span class="pg-k">Guide 06 · 3 commands</span><b>Scratchpads</b><span>A session kept on disk under a name, graduated into a module you can open in an editor or a debugger, or shared as a playground link.</span></a>
+      <a class="pg" href="guide/editing.html"><span class="pg-k">Guide 07 · 2 commands</span><b>Editing</b><span>Completion from the type checker, readline and vim keys, the session in your editor, a buffer for more than a line, and gluon&#39;s own editor.</span></a>
+      <a class="pg" href="guide/project.html"><span class="pg-k">Guide 08 · 9 commands</span><b>In a project</b><span>Attach to the module you are standing in: its internal packages, a reload after you edit it, modules you add, its environment and config, and requests to it.</span></a>
+      <a class="pg" href="guide/database.html"><span class="pg-k">Guide 09 · 2 commands</span><b>The database</b><span>What gluon found and where, written down as a reference and never a password, then queried through the project&#39;s own driver.</span></a>
+      <a class="pg" href="guide/plugins.html"><span class="pg-k">Guide 10 · 23 commands</span><b>Plugins</b><span>What each library plugin adds — renderers, and a command for the question worth asking — worked through against a real service, and how to write your own.</span></a>
+      <a class="pg" href="guide/configuration.html"><span class="pg-k">Guide 11 · 1 command</span><b>Configuration</b><span>Every setting from the prompt, config.toml, the startup screen, and the environment variables gluon reads.</span></a>
+      <a class="pg" href="guide/themes.html"><span class="pg-k">Guide 12 · 1 command</span><b>Themes</b><span>Twenty-three palettes chosen while looking at your own code, the ground each was drawn for, your own, and one converted from an editor theme.</span></a>
+      <a class="pg" href="guide/scripting.html"><span class="pg-k">Guide 13</span><b>Scripting</b><span>gluon -e, pipes and -json: every inspector as a shell one-liner, against a project or not, and a struct held to its layout in CI.</span></a>
+      <a class="pg" href="guide/mcp.html"><span class="pg-k">Guide 14</span><b>MCP</b><span>gluon mcp: the inspectors as tools a coding agent calls, in two tiers, with execution granted by whoever edits the config.</span></a>
+      <a class="pg" href="guide/design.html"><span class="pg-k">Guide 15 · 1 command</span><b>How it works</b><span>Why the real compiler, where a line&#39;s time goes, what replaying the session costs, how gluon compares, and what it never does.</span></a>
+      
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="premise">
+    <div class="card-head">
+      <span class="idx">05</span>
+      <div class="hd"><h2>Why it isn't an interpreter</h2><div class="chips"><span class="chip c">The premise</span></div></div>
+    </div>
+    <div class="card-body">
+      <p class="lead">This is the decision everything else falls out of. gluon compiles with your real Go
+        toolchain; it does not embed a second implementation of Go that can disagree with the first.</p>
+      <p>The alternative was embedding an interpreter, and both mature ones lag the toolchain badly:
+        <strong>yaegi</strong>'s stdlib symbol tables target Go 1.21/1.22, and <strong>gomacro</strong> does not
+        import generic stdlib functions at all — which breaks <code>slices.Sort</code> and
+        <code>maps.Keys</code>, i.e. most of modern Go.</p>
+      <div class="call why">
+        <span class="lbl">The argument in one line</span>
+        <p>If you are using a REPL to <em>learn</em> the language, semantics that quietly differ from the
+          compiler teach you wrong Go.</p>
+      </div>
+      <p>The cost is latency, and most lines do not pay it. gluon type-checks in its own process first, in about a
+        millisecond — so a type error, a declaration, a constant expression and every <code>:t</code> or
+        <code>:m</code> never reach the toolchain at all. <code>:time on</code> shows where each line's time went:</p>
+      <div class="repl"><div class="cmd-bar"><span class="ck">gluon</span><span class="cv">:time on — where the latency went</span></div><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:time</span> on</div><div class="tl out">timing on</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">type</span> Point <span class="kw">struct</span><span class="p">{</span> X<span class="p">,</span> Y <span class="ty">int</span> <span class="p">}</span></div><div class="tl out">  [gofmt 300µs · typecheck 102.9ms · total 103.2ms]</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="nu">1</span> <span class="p">&lt;&lt;</span> <span class="nu">20</span></div><div class="tl out"><span class="ty">(int)</span> 1048576</div><div class="tl out">  [gofmt 100µs · typecheck 1.1ms · total 1.2ms]</div><div class="tl"><span class="pr">gluon&gt;</span> strings<span class="p">.</span>Repeat<span class="p">(</span><span class="s">&#34;ab&#34;</span><span class="p">)</span></div><div class="tl out"><span class="er">error: not enough arguments in call to strings.Repeat</span></div><div class="tl out"><span class="er">    strings.Repeat(&#34;ab&#34;)</span></div><div class="tl out"><span class="er">                       ^</span></div><div class="tl out"><span class="er">  [goimports 11.8ms · typecheck 69.2ms · total 81ms]</span></div><div class="tl"><span class="pr">gluon&gt;</span> Point<span class="p">{</span><span class="nu">1</span><span class="p">,</span> <span class="nu">2</span><span class="p">}</span></div><div class="tl out"><span class="ty">(main.Point)</span></div><div class="tl out bx"><span class="p">╭───────┬───────╮</span></div><div class="tl out bx"><span class="p">│</span> field <span class="p">│</span> value <span class="p">│</span></div><div class="tl out bx"><span class="p">├───────┼───────┤</span></div><div class="tl out bx"><span class="p">│</span> X     <span class="p">│</span> 1     <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> Y     <span class="p">│</span> 2     <span class="p">│</span></div><div class="tl out bx"><span class="p">╰───────┴───────╯</span></div><div class="tl out">  [gofmt 0s · typecheck 2ms · build 100.5ms · goimports 14.8ms · build 205.1ms · run 114.1ms · total 436.6ms]</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:time</span> off</div><div class="tl out">timing off</div></div></div>
+      <p>The type checker is deliberately <strong>never an authority</strong>: when it cannot answer, the compiler
+        is asked, and <code>GLUON_NO_TYPECHECK=1</code> turns it off entirely. <a href="guide/design.html">How it
+        works</a> has the rest.</p>
+    </div>
+  </section>
+
+  <section class="card" id="compare">
+    <div class="card-head">
+      <span class="idx">06</span>
+      <div class="hd"><h2>How it compares</h2></div>
+    </div>
+    <div class="card-body">
+      <p class="lead"><strong>gore</strong> is the closest relative — also a real-toolchain REPL, mature and
+        MIT-licensed, with gopls-backed completion. The differences are the reasons gluon exists.</p>
+      <div class="tw"><table>
+        <thead><tr><th></th><th>gluon</th><th>gore</th><th>yaegi · gomacro</th></tr></thead>
+        <tbody>
+          <tr><td>Semantics</td><td>the compiler's</td><td>the compiler's</td><td>an interpreter's</td></tr>
+          <tr><td>A type error</td><td>~1ms, no build</td><td>a full <code>go run</code></td><td>fast</td></tr>
+          <tr><td>Replayed output</td><td>muted</td><td>printed again</td><td>—</td></tr>
+          <tr><td>Your project's <code>internal/</code></td><td>imports</td><td>—</td><td>—</td></tr>
+          <tr><td>Database, plugins</td><td>yes</td><td>—</td><td>—</td></tr>
+          <tr><td>A coding agent</td><td><code>gluon mcp</code></td><td>—</td><td>—</td></tr>
+        </tbody>
+      </table></div>
+      <p>Lines that actually run cost about 300ms in both gluon and gore: that is the price of the real compiler,
+        and neither can cheat it. <strong>gophernotes</strong> is a Jupyter kernel over gomacro — the same trade
+        behind a different surface; gluon is a terminal tool, not a kernel.</p>
+    </div>
+  </section>
+
+  <section class="card" id="limitation">
+    <div class="card-head">
+      <span class="idx">07</span>
+      <div class="hd"><h2>The honest limitation</h2><div class="chips"><span class="chip h">Read this</span><span class="chip o">:pin is the defence</span></div></div>
+    </div>
+    <div class="card-body">
+      <p class="lead">Every line replays the entire session, so <strong>side effects repeat</strong>: an HTTP
+        call fires again, a file gets written again.</p>
+      <p>Output from replayed entries is muted at the file-descriptor level — not diffed, because diffing breaks
+        the moment a program ranges over a map — so you only ever see the newest line's output. But the
+        re-execution is real.</p>
+
+      <div class="viz" id="vz-replay">
+        <div class="cmd-bar"><span class="ck">Figure</span><span class="cv">every column is one line you typed · toggle the pin and watch the call count</span></div>
+        <div class="viz-b">
+          <div class="rg" data-rg></div>
+          <div class="lg">
+            <span><i class="print"></i>runs, and prints</span>
+            <span><i class="run"></i>runs — output muted as replay</span>
+            <span><i class="mute"></i>declaration: built, not run</span>
+            <span><i class="skip"></i>pinned: not in the program</span>
+          </div>
+        </div>
+        <div class="ctl">
+          <button type="button" class="vbtn" data-act="pin" aria-pressed="false">Pin entry 2</button>
+          <span class="sep"></span>
+          <button type="button" class="vbtn" data-act="reset" aria-label="Back to the first line">Reset</button>
+          <button type="button" class="vbtn" data-act="back" aria-label="Step back one line">&#9664;</button>
+          <button type="button" class="vbtn" data-act="fwd" aria-label="Step forward one line">Step &#9654;</button>
+          <button type="button" class="vbtn" data-act="play">Play</button>
+          <span class="st" data-st></span>
+        </div>
+      </div>
+      <p>Four lines typed, and the <code>http.Get</code> on entry 2 has fired <strong>three times</strong> —
+        once when you typed it, and once more for each line after it. <code>:pin</code> takes an entry out of the
+        program — you are saying it has already happened — and gluon refuses rather than guesses when a later
+        line needs what the pinned one bound. <a href="guide/session.html#replay">The session</a> works it
+        through.</p>
+      <div class="call check">
+        <span class="lbl">The general rule</span>
+        <p>Where gluon differs from a real <code>main</code>, it tells you in the output rather than hiding the
+          difference — the same instinct behind refusing an interpreter, and refusing to guess.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="card" id="docs">
+    <div class="card-head">
+      <span class="idx">08</span>
+      <div class="hd"><h2>Documentation</h2></div>
+    </div>
+    <div class="card-body">
+      <p class="lead">The guides are the long form, written by hand; the reference is generated from the code that
+        defines each thing, so it cannot say what <code>:help</code> does not.</p>
+      <div class="pgs">
+        <a class="pg" href="guide/index.html"><span class="pg-k">15 guides</span><b>Guides</b><span>Every feature a task at a time, with a session to type along with.</span></a>
+        <a class="pg" href="reference/commands.html"><span class="pg-k">63 built in · 20 from plugins</span><b>Commands</b><span>What each takes, its flags, lines to type, and where it goes next.</span></a>
+        <a class="pg" href="reference/plugins.html"><span class="pg-k">33 plugins</span><b>Plugins</b><span>What each library's plugin adds, and what turns it on.</span></a>
+        <a class="pg" href="reference/settings.html"><span class="pg-k">17 settings</span><b>Settings</b><span>Every key of config.toml, its default, and what it accepts.</span></a>
+        <a class="pg" href="reference/cli.html"><span class="pg-k">the shell</span><b>The gluon command</b><span>Subcommands and flags, for the times you are not at the prompt.</span></a>
+        <a class="pg" href="reference/mcp.html"><span class="pg-k">15 static · 18 with --eval</span><b>MCP tools</b><span>What gluon mcp serves a coding agent, exactly as it receives it.</span></a>
+        <a class="pg" href="reference/themes.html"><span class="pg-k">23 themes</span><b>Themes</b><span>Every built-in palette, drawn in itself.</span></a>
+      </div>
+    </div>
+  </section>
+  </main>
+</div>
+
+<footer class="foot"><div class="wrap fgrid">
+    <div><div class="fh">Built on</div><ul>
+        <li><a href="https://github.com/charmbracelet/bubbletea">Bubble Tea</a> · <a href="https://github.com/charmbracelet/bubbles">bubbles</a> — the inline REPL</li>
+        <li><a href="https://github.com/charmbracelet/lipgloss">lipgloss</a> — tables and the palette</li>
+        <li><a href="https://github.com/spf13/cobra">cobra</a> + <a href="https://github.com/charmbracelet/fang">fang</a> — the shell, help and man page</li>
+        <li><code>golang.org/x/tools</code> — goimports, in process</li>
+        <li><code>go/types</code> — every answer that arrives in a millisecond</li>
+      </ul></div>
+    <div><div class="fh">Borrowed from</div><ul>
+        <li><code>:t</code> and <code>:m</code> — Ruby's <code>.class</code> and <code>.methods</code></li>
+        <li><code>:ls</code>, <code>:doc -src</code>, <code>:edit</code> — pry</li>
+        <li><code>it</code> — irb's <code>_</code>, which Go cannot spell</li>
+        <li><code>gluon -e</code> — the <code>ruby -e</code> shape</li>
+        <li><code>:bench</code> — <code>go test -bench</code>, unchanged</li>
+      </ul></div>
+    <div><div class="fh">This site</div><ul>
+        <li>v0.1.0 · <code>github.com/sandboxws/gluon</code></li>
+        <li>Every transcript recorded from a real session</li>
+        <li>No analytics, no cookies; the palette choice is one localStorage key</li>
+        <li><a href="https://github.com/sandboxws/gluon">Source</a></li>
+      </ul></div>
+</div></footer>
+
+<script src="assets/gluon.js?v=0b5d44bf"></script>
+</body>
+</html>

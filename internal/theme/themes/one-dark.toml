@@ -1,0 +1,37 @@
+# One Dark, converted from the VS Code port of Atom's theme by `gluon theme
+# import`.
+#
+# Atom is gone and this outlived it. `ident` is the editor's own foreground
+# rather than One's red `variable`, and `punctuation` is too: the theme styles
+# `source.elixir readwrite.module punctuation`, which is a rule about Elixir and
+# not about commas, and gluon has one punctuation colour for every language.
+#
+# Re-run:  gluon theme import <file> --print
+#          github.com/akamud/vscode-theme-onedark, themes/OneDark.json
+#
+# Kept from gluon's own go, because nothing in an editor theme means
+# them: `error`, `note`, `search`, `border`.
+about      = "One Dark: purple keywords, green strings, yellow types"
+appearance = "dark"
+source     = "One Dark, a VS Code theme"
+
+[theme]
+# Source.
+keyword     = "#C678DD"
+string      = "#98C379"
+type        = "#E5C07B"
+comment     = "#5C6370"
+number      = "#D19A66"
+builtin     = "#56B6C2"
+punctuation = "#ABB2BF"
+ident       = "#ABB2BF"
+
+# Values, the REPL, and the CLI.
+error       = "#FF7373"
+prompt      = "#E5C07B"
+mode        = "#56B6C2"  # One's cyan, against its gold prompt
+annotation  = "#5C6370"
+note        = "#E3B341"
+dim         = "#636D83"
+search      = "#F5B843"
+border      = "#55555C"

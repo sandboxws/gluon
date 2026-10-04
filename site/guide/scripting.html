@@ -1,0 +1,51 @@
+{% define "side" %}<a href="#e"><span class="rn">1</span><span class="rt">One-shots</span></a>
+<a href="#json"><span class="rn">2</span><span class="rt">JSON for a program</span></a>
+<a href="#host"><span class="rn">3</span><span class="rt">Against a project</span></a>
+<a href="#ci"><span class="rn">4</span><span class="rt">In CI</span></a>{% end %}
+{% define "main" %}
+<section class="card" id="e">
+  <div class="card-head"><span class="idx">1</span><div class="hd"><h2>One-shots and pipes</h2></div></div>
+  <div class="card-body">
+    <p class="lead"><code>gluon -e</code> is the <code>ruby -e</code> shape: evaluate, print, exit. It takes Go and meta commands alike, so every inspector is a shell one-liner, and a pipe into <code>gluon</code> is the same engine with no banner.</p>
+    {% session "scripting" "from a shell" %}
+    <p>Repeated <code>-e</code> arguments land as one batch — one build — and every expression that prints, prints. A compile error goes to the terminal as it would at the prompt and the exit status says it failed, so a script can tell. None of it opens a scratchpad: a one-shot can neither inherit nor change the session you have open elsewhere.</p>
+    <p>What a script reads is the plain form, one line per value, and it is a compatibility surface: no setting reaches it — not {% setting "value.form" %}, not a theme, not a plugin's renderer — so a script written against it keeps working. <a href="rendering.html#pipes">Rendering</a> has the difference.</p>
+  </div>
+</section>
+
+<section class="card" id="json">
+  <div class="card-head"><span class="idx">2</span><div class="hd"><h2>JSON, for a program to read</h2></div></div>
+  <div class="card-body">
+    <p class="lead"><code>-json</code> prints one object instead of the plain rendering. An evaluation answers with its values, each with its type, kind and text; a meta command answers with <code>ok</code>, the command, and its text.</p>
+    <p>Every envelope carries <code>ok</code>, and an error comes back as JSON on standard output too, so nothing has to read standard error to find out what happened. <code>ok</code> says the command did its job, not what it found: an <code>:impl</code> that answers no is still <code>ok</code>, so a check reads the text. {% cmd ":query" "-json" %} answers with rows a program can read, and <code>gluon doctor -json</code> and <code>gluon init -json</code> answer with reports. The envelopes are compatibility surfaces, held to their shape by gluon's own tests.</p>
+  </div>
+</section>
+
+<section class="card" id="host">
+  <div class="card-head"><span class="idx">3</span><div class="hd"><h2>Against a project</h2></div></div>
+  <div class="card-body">
+    <p class="lead"><code>-host .</code> attaches a one-shot to the module you are standing in, the way it attaches the REPL. The attach line goes to standard error, so standard output is only what the line printed.</p>
+    {% session "scripting-host" "in ~/src/shop" %}
+  </div>
+</section>
+
+<section class="card" id="ci">
+  <div class="card-head"><span class="idx">4</span><div class="hd"><h2>In CI</h2></div></div>
+  <div class="card-body">
+    <p class="lead">Because the inspectors are one-liners with a stable output, a build can hold a property the compiler does not: that a hot struct stays packed, that a type keeps satisfying an interface, that a function stays inlinable.</p>
+    <div class="cmd">
+      <div class="cmd-bar"><span class="ck">justfile</span><span class="cv">a struct that must not grow</span></div>
+<pre><span class="c"># fails while reordering the fields would save bytes</span>
+check-layout:
+    gluon -host . -e <span class="s">':layout pricing.LineItem'</span> -json \
+      | jq -e <span class="s">'.text | test("reordering") | not'</span>
+
+<span class="c"># fails the day the service stops satisfying its generated interface</span>
+check-orders:
+    gluon -host . -e <span class="s">':impl *rpc.Orders, shopv1.OrdersServer'</span> -json \
+      | jq -e <span class="s">'.text | test("does not implement") | not'</span></pre>
+    </div>
+    <p>A one-shot pays for the toolchain like any line that runs — a few hundred milliseconds warm — and the inspectors answered by the type checker pay for none of it. <code>gluon doctor</code> in a CI job reports the toolchain and module it found, and exits non-zero only when something gluon depends on is broken.</p>
+  </div>
+</section>
+{% end %}

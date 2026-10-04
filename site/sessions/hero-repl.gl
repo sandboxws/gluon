@@ -1,0 +1,6 @@
+# The landing page's first tab.
+x := []int{3, 1, 2}
+slices.Sort(x)
+x
+"héllo"[1]
+:t strconv.Atoi("12")

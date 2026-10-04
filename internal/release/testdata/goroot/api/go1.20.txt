@@ -1,0 +1,5 @@
+# freebsd riscv64 port
+pkg errors, func Join(...error) error #53435
+pkg syscall (freebsd-riscv64), type SysProcAttr struct, Pdeathsig Signal #53466
+pkg syscall (linux-386), type SysProcAttr struct, Pdeathsig Signal #53466
+pkg syscall (linux-amd64), type SysProcAttr struct, Pdeathsig Signal #53466

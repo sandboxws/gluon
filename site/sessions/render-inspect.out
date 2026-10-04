@@ -1,0 +1,64 @@
+gluon> type User struct{ ID int; Name, Email string }
+gluon> users := make([]User, 480)
+gluon> for i := range users { users[i] = User{i, fmt.Sprintf("user%03d", i), fmt.Sprintf("user%03d@example.com", i)} }
+gluon> len(users)
+(int) 480
+gluon> :inspect users
+!view
+!clip 12
+([]main.User) len=480 cap=480
+╭────┬────────────────────────────────────────────────────╮
+│ #  │ value                                              │
+├────┼────────────────────────────────────────────────────┤
+│ 0  │ {ID:0 Name:"user000" Email:"user000@example.com"}  │
+│ 1  │ {ID:1 Name:"user001" Email:"user001@example.com"}  │
+│ 2  │ {ID:2 Name:"user002" Email:"user002@example.com"}  │
+│ 3  │ {ID:3 Name:"user003" Email:"user003@example.com"}  │
+│ 4  │ {ID:4 Name:"user004" Email:"user004@example.com"}  │
+│ 5  │ {ID:5 Name:"user005" Email:"user005@example.com"}  │
+│ 6  │ {ID:6 Name:"user006" Email:"user006@example.com"}  │
+│ 7  │ {ID:7 Name:"user007" Email:"user007@example.com"}  │
+│ 8  │ {ID:8 Name:"user008" Email:"user008@example.com"}  │
+│ 9  │ {ID:9 Name:"user009" Email:"user009@example.com"}  │
+│ 10 │ {ID:10 Name:"user010" Email:"user010@example.com"} │
+│ 11 │ {ID:11 Name:"user011" Email:"user011@example.com"} │
+│ 12 │ {ID:12 Name:"user012" Email:"user012@example.com"} │
+│ 13 │ {ID:13 Name:"user013" Email:"user013@example.com"} │
+│ 14 │ {ID:14 Name:"user014" Email:"user014@example.com"} │
+│ 15 │ {ID:15 Name:"user015" Email:"user015@example.com"} │
+│ 16 │ {ID:16 Name:"user016" Email:"user016@example.com"} │
+│ 17 │ {ID:17 Name:"user017" Email:"user017@example.com"} │
+│ 18 │ {ID:18 Name:"user018" Email:"user018@example.com"} │
+│ 19 │ {ID:19 Name:"user019" Email:"user019@example.com"} │
+│ 20 │ {ID:20 Name:"user020" Email:"user020@example.com"} │
+│ 21 │ {ID:21 Name:"user021" Email:"user021@example.com"} │
+│ 22 │ {ID:22 Name:"user022" Email:"user022@example.com"} │
+│ 23 │ {ID:23 Name:"user023" Email:"user023@example.com"} │
+│ 24 │ {ID:24 Name:"user024" Email:"user024@example.com"} │
+│ 25 │ {ID:25 Name:"user025" Email:"user025@example.com"} │
+│ 26 │ {ID:26 Name:"user026" Email:"user026@example.com"} │
+│ 27 │ {ID:27 Name:"user027" Email:"user027@example.com"} │
+│ 28 │ {ID:28 Name:"user028" Email:"user028@example.com"} │
+│ 29 │ {ID:29 Name:"user029" Email:"user029@example.com"} │
+│ 30 │ {ID:30 Name:"user030" Email:"user030@example.com"} │
+│ 31 │ {ID:31 Name:"user031" Email:"user031@example.com"} │
+│ 32 │ {ID:32 Name:"user032" Email:"user032@example.com"} │
+│ 33 │ {ID:33 Name:"user033" Email:"user033@example.com"} │
+│ 34 │ {ID:34 Name:"user034" Email:"user034@example.com"} │
+│ 35 │ {ID:35 Name:"user035" Email:"user035@example.com"} │
+│ 36 │ {ID:36 Name:"user036" Email:"user036@example.com"} │
+│ 37 │ {ID:37 Name:"user037" Email:"user037@example.com"} │
+│ 38 │ {ID:38 Name:"user038" Email:"user038@example.com"} │
+│ 39 │ {ID:39 Name:"user039" Email:"user039@example.com"} │
+│ 40 │ {ID:40 Name:"user040" Email:"user040@example.com"} │
+│ 41 │ {ID:41 Name:"user041" Email:"user041@example.com"} │
+│ 42 │ {ID:42 Name:"user042" Email:"user042@example.com"} │
+│ 43 │ {ID:43 Name:"user043" Email:"user043@example.com"} │
+│ 44 │ {ID:44 Name:"user044" Email:"user044@example.com"} │
+│ 45 │ {ID:45 Name:"user045" Email:"user045@example.com"} │
+│ 46 │ {ID:46 Name:"user046" Email:"user046@example.com"} │
+│ 47 │ {ID:47 Name:"user047" Email:"user047@example.com"} │
+│ 48 │ {ID:48 Name:"user048" Email:"user048@example.com"} │
+│ 49 │ {ID:49 Name:"user049" Email:"user049@example.com"} │
+│    │ … 430 more                                         │
+╰────┴────────────────────────────────────────────────────╯

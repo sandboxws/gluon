@@ -1,0 +1,91 @@
+# Three runners on purpose: ubuntu-24.04-arm is linux/arm64 — Docker on Apple
+# Silicon, Graviton, Raspberry Pi — where a syscall the runtime once used did
+# not exist. The integration tier really invokes the toolchain and runs the
+# children, so that class of break fails here as a runtime job, not just in
+# the cross-compile loop.
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, ubuntu-24.04-arm, macos-15]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+
+      - name: gofmt
+        run: test -z "$(gofmt -l .)" || (gofmt -l . && exit 1)
+
+      - name: vet
+        run: go vet ./...
+
+      - name: go.mod is tidy
+        run: go mod tidy -diff
+
+      - name: unit tests
+        run: go test ./...
+
+      - name: unit tests with the race detector
+        if: matrix.os == 'ubuntu-latest'
+        run: go test -race ./...
+
+      # The db integration fixture requires modernc.org/sqlite in the module
+      # cache — it is the *fixture's* dependency, not gluon's, so `go mod
+      # download` never fetches it. The version here must match sqliteVersion
+      # in internal/repl/db_integration_test.go.
+      - name: warm the module cache with the db fixture's driver
+        run: cd "$(mktemp -d)" && go mod init warm && go get modernc.org/sqlite@v1.49.1
+
+      - name: integration tests
+        run: go test -tags=integration -v ./... 2>&1 | tee "$RUNNER_TEMP/integration.log"; exit ${PIPESTATUS[0]}
+
+      # The db tests skip rather than fail on a cold cache, so a broken warm
+      # step would yield a green CI that tested nothing — exactly the failure
+      # mode the integration tier exists to prevent. Green must mean ran.
+      #
+      # "race detector unavailable" is in the list because every platform this
+      # job runs on supports it: a skip there is a broken environment, not an
+      # unsupported target.
+      #
+      # The last two are :since. "no toolchain release data" means $GOROOT/api
+      # could not be read, which voids that whole tier; "does not build below
+      # go" is the note check stepping under gluon's own runtime floor, which
+      # no note in tree does today and which would quietly stop checking the
+      # claim if one ever did.
+      - name: integration tests really ran (silent-skip guard)
+        run: |
+          if grep -E 'SKIP.*(module cache|does not build offline|no go toolchain|no network|race detector unavailable|no toolchain release data|does not build below go)' "$RUNNER_TEMP/integration.log"; then
+            echo "::error::integration tests skipped silently — the tier proved nothing"
+            exit 1
+          fi
+
+  cross-compile:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-go@v7
+        with:
+          go-version-file: go.mod
+      - name: build every supported platform
+        run: |
+          set -e
+          for os in darwin linux; do
+            for arch in amd64 arm64; do
+              echo "== $os/$arch"
+              GOOS=$os GOARCH=$arch go build ./...
+            done
+          done

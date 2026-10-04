@@ -1,0 +1,23 @@
+{% define "side" %}<a href="#settings"><span class="rn">{% len .Reg.Settings %}</span><span class="rt">config.toml</span></a>{% end %}
+{% define "main" %}
+<section class="card" id="settings">
+  <div class="card-head"><span class="idx">{% len .Reg.Settings %}</span><div class="hd"><h2>Every setting</h2><div class="chips"><span class="chip">~/.config/gluon/config.toml</span></div></div></div>
+  <div class="card-body">
+    <p class="lead"><code>:settings</code> lists these with what each is now; <code>:settings &lt;key&gt; &lt;value&gt;</code> writes one line of config.toml and leaves every other byte alone.</p>
+    <div class="flt-w" hidden><input class="flt" type="search" placeholder="/ to filter — a key or a word" aria-label="Filter the settings" data-filter=".ref"><span class="flt-n" aria-live="polite"></span></div>
+  {% range .Reg.Settings %}
+    <article class="ref" id="{% .Anchor %}" data-f="{% .Key %} {% .Summary %}">
+      <h3><a class="pl" href="#{% .Anchor %}">{% .Key %}</a><span class="ref-s">{% .Summary %}</span></h3>
+      <div class="chips">{% with .Effect %}<span class="chip">{% . %}</span>{% end %}{% with .Why %}<span class="chip a">listed, not settable</span>{% end %}</div>
+      <div class="tw"><table class="kv"><tbody>
+        {% with .Default %}<tr><td class="mono">default</td><td>{% . %}</td></tr>{% end %}
+        {% with .Allowed %}<tr><td class="mono">accepts</td><td>{% . %}</td></tr>{% end %}
+        {% range .Values %}<tr><td class="mono">{% .Label %}</td><td>{% .Help %}</td></tr>{% end %}
+        {% with .Sample %}<tr><td class="mono">e.g.</td><td><code>{% . %}</code></td></tr>{% end %}
+      </tbody></table></div>
+      <div class="prose">{% .Detail %}{% with .Why %}<p>{% . %}</p>{% end %}</div>
+    </article>
+  {% end %}
+  </div>
+</section>
+{% end %}

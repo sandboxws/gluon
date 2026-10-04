@@ -1,0 +1,71 @@
+{% define "side" %}<a href="#bench"><span class="rn">1</span><span class="rt">How fast</span></a>
+<a href="#profile"><span class="rn">2</span><span class="rt">Where the time went</span></a>
+<a href="#compiler"><span class="rn">3</span><span class="rt">What the compiler decided</span></a>
+<a href="#vet"><span class="rn">4</span><span class="rt">Vet and the race detector</span></a>
+<a href="#trace"><span class="rn">5</span><span class="rt">The stack</span></a>
+<a href="#time"><span class="rn">6</span><span class="rt">Where a line's latency goes</span></a>{% end %}
+{% define "main" %}
+<section class="card" id="bench">
+  <div class="card-head"><span class="idx">1</span><div class="hd"><h2>How fast</h2><div class="chips"><span class="chip">testing.B</span></div></div></div>
+  <div class="card-body">
+    <p class="lead">{% cmd ":bench" %} runs an expression through a real <code>testing.B</code> — the numbers <code>go test -bench</code> would give for the same expression, without the test file.</p>
+    {% session "measure-bench" "one expression, five runs, two side by side, two CPU counts" %}
+    {% shot "bench" "two expressions side by side, in a terminal" %}
+    <p>B/op and allocs/op are always reported; there is no <code>-mem</code> flag, because there would be nothing for it to turn on. The flags say how the benchmark is run, never what is measured, and they are read only while they lead — everything from the first word that is not one of them is the expression, verbatim.</p>
+    <p>{% cmd ":bench" "-count" %} runs it more than once and reports the spread, which is what lets a number be trusted or distrusted. It gives the minimum, median and maximum rather than a standard deviation: at five runs a deviation is computed from too few samples to mean what a reader assumes, and these three numbers were all actually seen.</p>
+    <p>Two expressions separated by a comma are measured side by side, with the ratio between them — the comparison you would otherwise run twice and hold in your head. Both run in one evaluation, so neither is timed against a different replay of the session, and a comma inside brackets, braces or a literal is not the separator. A quantity that is zero on the left has no ratio, and says so rather than printing an infinity.</p>
+    <p>{% cmd ":bench" "-cpu" %} runs once per <code>GOMAXPROCS</code> value and labels each, the one way to see a contention effect from a prompt. {% cmd ":bench" "-profile" %} keeps the run's CPU profile and prints the command that opens it. It goes into the session's own temp directory: gluon never writes into your project.</p>
+  </div>
+</section>
+
+<section class="card" id="profile">
+  <div class="card-head"><span class="idx">2</span><div class="hd"><h2>Where the time went</h2><div class="chips"><span class="chip">pprof</span></div></div></div>
+  <div class="card-body">
+    <p class="lead"><code>:bench</code> says how much. {% cmd ":profile" %} says where: it runs the expression once with the CPU profiler on and ranks the functions that took the time, naming the session entry and the line each came from. {% cmd ":memprof" %} does the same against the heap.</p>
+    {% session "measure-profile" "a CPU profile and a heap profile, from real runs" %}
+    <p><strong>Read the sample count first.</strong> It is the number that says whether the ranking under it means anything, and for a REPL expression it often does not. Go asks for 100 samples a second, so an expression that finishes in a hundredth of a second contributes none, and the report is empty by construction. Below a hundred samples the leading share carries more than ten percent of error and can swap places between two runs of the same expression — which is why the report says so rather than letting a ranking speak for itself.</p>
+    <p>That threshold is further off than the arithmetic suggests. The loop above ran for a little over half a second — fifty-odd samples at the rate Go asks for — and 38 came back, because the rate is what the profiler asks the operating system for, not what it gets; macOS in particular delivers a fraction of it. Profile a workload, not a line, and believe the count over the clock.</p>
+    <p>A heap profile carries four measures that answer different questions, so <code>:memprof</code> names the one it shows — allocated bytes, which pairs with the B/op <code>:bench</code> prints — and leaves the other three in the file. What the summary cannot tell you, the file can: <code>go tool pprof</code> opens it, and <code>-http=:0</code> draws the flame graph gluon does not try to. Neither command takes a port: each line is a program that runs and exits, so there is no live process to serve a profile from, and these capture one from a run that really happened instead.</p>
+  </div>
+</section>
+
+<section class="card" id="compiler">
+  <div class="card-head"><span class="idx">3</span><div class="hd"><h2>What the compiler decided</h2><div class="chips"><span class="chip">builds, never runs</span></div></div></div>
+  <div class="card-body">
+    <p class="lead">Escape analysis, inlining and the assembly listing are answered by the compiler itself, in its own words rather than a paraphrase. Each costs a build and never runs anything.</p>
+    {% session "measure-compiler" %}
+    {% shot "compiler" %}
+    <p>{% cmd ":esc" %} asks whether a value reaches the heap, and the answer depends on context — which the output says every time. The same 32-byte slice stays on the stack while nothing keeps it, and escapes the moment it is handed to <code>fmt.Sprint</code> as an <code>any</code>. For the flatter question, <em>does this allocate</em>, <code>:bench</code>'s allocs/op is the better answer: it is measured, and context does not change it.</p>
+    <p>{% cmd ":inline" %} reports, for a line, every call the compiler flattened, and for a function you declared, whether it can be inlined at all and what it costs against the budget. <code>fizzbuzz</code> cannot: its cost is more than three times what the compiler allows.</p>
+    <p>{% cmd ":asm" %} is the listing for one function or method the session declared — <code>F</code>, <code>T.M</code> or <code>(*T).M</code> — with every position naming the entry it came from. Only the session's own functions: widening the listing to the standard library would recompile it under different flags and throw away the warm build cache every line depends on, so <code>:asm strings.Index</code> is refused with that reason rather than answered slowly. This one is arm64, because that is where it was recorded.</p>
+  </div>
+</section>
+
+<section class="card" id="vet">
+  <div class="card-head"><span class="idx">4</span><div class="hd"><h2>Vet and the race detector</h2></div></div>
+  <div class="card-body">
+    <p class="lead">{% cmd ":vet" %} runs the toolchain's own analysers over the session, and {% cmd ":race" %} runs one expression under the race detector.</p>
+    {% session "measure-vet" %}
+    <p><code>:vet</code> reports each finding against the line you typed; with an expression, it vets the session with that line added. Findings in the code gluon generates around your lines are never shown, because there is nothing you could do about one. It vets the session, not the module you are attached to — that has its own <code>go vet ./...</code> — and there is no <code>:lint</code>, because staticcheck and its neighbours are dependencies gluon does not have.</p>
+    <p><code>:race</code> is the one question here that has to run, because a data race is a runtime fact no build can be asked about. The value is printed either way: a race is something that happened during the run, not instead of it. It observes <strong>one run</strong> — finding nothing is not proof there is no race, since the detector sees one interleaving, and the output says so every time rather than implying a verdict it cannot give. The first <code>:race</code> in a session builds an instrumented binary beside the ordinary one, and the first on a machine compiles the race-instrumented standard library as well, which takes a few seconds; later ones reuse both.</p>
+  </div>
+</section>
+
+<section class="card" id="trace">
+  <div class="card-head"><span class="idx">5</span><div class="hd"><h2>The stack</h2></div></div>
+  <div class="card-body">
+    <p class="lead">{% cmd ":trace" %} evaluates an expression and captures the stack it was evaluated on, each frame named by the session entry it came from.</p>
+    {% session "measure-trace" %}
+    <p>It holds the expression's callers, not its callees — a function it is about to call has not been entered yet, and by the time the call returns its frame is gone. At the prompt the chain is usually one line long, and the output says why rather than showing an empty list: gluon compiles each line into a program whose <code>main</code> runs it directly, so there is no process to pause and no breakpoint to set. For what a call does underneath, <code>:save -debug</code> writes the session out as a module with a debugger launch configuration beside it, and names the command that starts one — <a href="scratchpads.html">Scratchpads</a> has it.</p>
+  </div>
+</section>
+
+<section class="card" id="time">
+  <div class="card-head"><span class="idx">6</span><div class="hd"><h2>Where a line's latency goes</h2></div></div>
+  <div class="card-body">
+    <p class="lead">{% cmd ":time" %} on makes every line report where its latency went: gofmt, the type check, the build and the run.</p>
+    {% session "measure-time" %}
+    <p>The two lines are the whole design, measured. The first had to run, so it paid for the build and the run — a few hundred milliseconds, which is the price of the real compiler. The second has a type error, which the in-process checker found in about a millisecond; nothing was built. The same is true of declarations, constant expressions, and every question on the <a href="inspecting.html">inspecting</a> page that is marked <em>no build</em>. <a href="design.html">How it works</a> has the numbers for each kind of line.</p>
+  </div>
+</section>
+{% end %}

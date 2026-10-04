@@ -1,0 +1,66 @@
+{% define "layout" %}<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>{% .Page.Title %} — gluon</title>
+<meta name="description" content="{% .Page.Lead %}">
+<meta name="theme-color" content="#0A0A0A">
+<script>(function(d,m){try{m=/[?&]palette=(gruv|go)\b/.exec(location.search);m=m?m[1]:localStorage.getItem("gluon:theme")}catch(e){}if(m==="gruv")d.documentElement.setAttribute("data-theme","gruv")})(document)</script>
+<link rel="canonical" href="{% abs .Page.Path %}">
+<meta property="og:type" content="website">
+<meta property="og:title" content="{% .Page.Title %} — gluon">
+<meta property="og:description" content="{% .Page.Lead %}">
+<meta property="og:url" content="{% abs .Page.Path %}">
+<meta property="og:image" content="{% og %}">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="gluon's startup screen in a Go project, beside the words: A Go REPL that stands in your project">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="{% og %}">
+<meta name="twitter:title" content="{% .Page.Title %} — gluon">
+<meta name="twitter:description" content="{% .Page.Lead %}">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A0A0A'/%3E%3Cpath d='M9 9l7 7-7 7' stroke='%2300ADD8' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M18 23h6' stroke='%2300ADD8' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="{% asset "assets/gluon.css" %}">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="field" aria-hidden="true"></div>
+<div class="nav" id="nav">
+  <div class="nav-in">
+    <a class="nav-t" href="{% rel "index.html" %}">gluon</a>
+    <span class="nav-sp"></span>
+    <a class="nav-m" href="{% rel "guide/index.html" %}">Guides</a>
+    <a class="nav-m" href="{% rel "reference/index.html" %}">Reference</a>
+    <span class="nav-m opt">v{% .Site.Release %}</span>
+  </div>
+</div>
+
+<header class="hero wrap page">
+  <p class="eyebrow">{% .Page.Eyebrow %}</p>
+  <h1 id="bigTitle">{% .Page.Title %}</h1>
+  <p class="sub">{% .Page.Lead %}</p>
+</header>
+
+<div class="wrap cols">
+  <nav class="side" aria-label="Sections"><div class="side-in">
+    <p class="grp-h">This page</p>
+    {% block "side" . %}{% end %}
+    {% if .Section %}<p class="grp-h">{% .Page.Section %}</p>
+    {% range .Section %}<a href="{% rel .Path %}"{% if here . %} aria-current="page" class="here"{% end %}><span class="rt">{% .Title %}</span></a>
+    {% end %}{% end %}
+  </div></nav>
+  <main id="main">
+    {% block "main" . %}{% end %}
+    {% template "pn" . %}
+  </main>
+</div>
+
+{% template "foot" . %}
+<script src="{% asset "assets/gluon.js" %}"></script>
+</body>
+</html>
+{% end %}

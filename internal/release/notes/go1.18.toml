@@ -1,0 +1,62 @@
+# Go 1.18 — type parameters, and the type sets that constrain them.
+#
+# Snippets in this directory import nothing. A note is about the language, and
+# an import would put goimports between the reader and the thing being shown.
+
+version = "1.18"
+
+[[note]]
+name = "type-parameters"
+title = "type parameters on functions and types"
+needs = "1.18"
+below = "error"
+issue = 43651
+text = """
+A function or a type may take type parameters, written in square brackets
+before its ordinary parameters. The compiler instantiates one implementation
+per set of type arguments, and infers those arguments from the call where it
+can — so Map below is called without naming T or U.
+
+This is the change that made a typed Map, Filter and Reduce expressible at all.
+Before it, the choices were interface{} and a type assertion at every use, or
+code generation.
+"""
+snippet = """
+func Map[T, U any](s []T, f func(T) U) []U {
+	out := make([]U, 0, len(s))
+	for _, v := range s {
+		out = append(out, f(v))
+	}
+	return out
+}
+Map([]int{1, 2, 3}, func(n int) int { return n * n })
+"""
+
+[[note]]
+name = "type-sets"
+title = "interfaces as type sets, and ~"
+needs = "1.18"
+below = "error"
+issue = 45346
+text = """
+An interface may list types as well as methods, and a constraint is exactly
+such an interface. The union operator | offers a choice; the tilde ~int means
+"any type whose underlying type is int", which is what lets a constraint accept
+a defined type like `type Celsius float64` rather than only float64 itself.
+
+An interface with a type list is a constraint and nothing else: it cannot be
+used as an ordinary variable type. That restriction is why the two roles did
+not have to become one thing at runtime.
+"""
+snippet = """
+type Number interface{ ~int | ~float64 }
+type Celsius float64
+func Sum[T Number](s []T) T {
+	var t T
+	for _, v := range s {
+		t += v
+	}
+	return t
+}
+Sum([]Celsius{1.5, 2.5})
+"""

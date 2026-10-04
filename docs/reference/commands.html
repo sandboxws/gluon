@@ -1,0 +1,1357 @@
+<!doctype html>
+<!-- generated from site/ by `just docs`: edit the source, not this file -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Commands — gluon</title>
+<meta name="description" content="Every meta command: what it takes, its flags, lines to type, and the commands beside it — the page :help prints, for all of them at once.">
+<meta name="theme-color" content="#0A0A0A">
+<script>(function(d,m){try{m=/[?&]palette=(gruv|go)\b/.exec(location.search);m=m?m[1]:localStorage.getItem("gluon:theme")}catch(e){}if(m==="gruv")d.documentElement.setAttribute("data-theme","gruv")})(document)</script>
+<link rel="canonical" href="https://sandboxws.github.io/gluon/reference/commands.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Commands — gluon">
+<meta property="og:description" content="Every meta command: what it takes, its flags, lines to type, and the commands beside it — the page :help prints, for all of them at once.">
+<meta property="og:url" content="https://sandboxws.github.io/gluon/reference/commands.html">
+<meta property="og:image" content="https://sandboxws.github.io/gluon/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="gluon's startup screen in a Go project, beside the words: A Go REPL that stands in your project">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sandboxws.github.io/gluon/img/og.png">
+<meta name="twitter:title" content="Commands — gluon">
+<meta name="twitter:description" content="Every meta command: what it takes, its flags, lines to type, and the commands beside it — the page :help prints, for all of them at once.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A0A0A'/%3E%3Cpath d='M9 9l7 7-7 7' stroke='%2300ADD8' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M18 23h6' stroke='%2300ADD8' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/gluon.css?v=980f3e8a">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="field" aria-hidden="true"></div>
+<div class="nav" id="nav">
+  <div class="nav-in">
+    <a class="nav-t" href="../index.html">gluon</a>
+    <span class="nav-sp"></span>
+    <a class="nav-m" href="../guide/index.html">Guides</a>
+    <a class="nav-m" href="../reference/index.html">Reference</a>
+    <span class="nav-m opt">v0.1.0</span>
+  </div>
+</div>
+
+<header class="hero wrap page">
+  <p class="eyebrow">Reference</p>
+  <h1 id="bigTitle">Commands</h1>
+  <p class="sub">Every meta command: what it takes, its flags, lines to type, and the commands beside it — the page :help prints, for all of them at once.</p>
+</header>
+
+<div class="wrap cols">
+  <nav class="side" aria-label="Sections"><div class="side-in">
+    <p class="grp-h">This page</p>
+    <a href="#g-the-session"><span class="rn">8</span><span class="rt">the session</span></a>
+<a href="#g-inspecting"><span class="rn">30</span><span class="rt">inspecting</span></a>
+<a href="#g-the-module-it-can-see"><span class="rn">6</span><span class="rt">the module it can see</span></a>
+<a href="#g-the-transcript"><span class="rn">19</span><span class="rt">the transcript</span></a>
+<a href="#g-from-plugins"><span class="rn">20</span><span class="rt">from plugins</span></a>
+
+    <p class="grp-h">Reference</p>
+    <a href="../reference/index.html"><span class="rt">Reference</span></a>
+    <a href="../reference/commands.html" aria-current="page" class="here"><span class="rt">Commands</span></a>
+    <a href="../reference/plugins.html"><span class="rt">Plugins</span></a>
+    <a href="../reference/settings.html"><span class="rt">Settings</span></a>
+    <a href="../reference/cli.html"><span class="rt">The gluon command</span></a>
+    <a href="../reference/mcp.html"><span class="rt">MCP tools</span></a>
+    <a href="../reference/themes.html"><span class="rt">Themes</span></a>
+    
+  </div></nav>
+  <main id="main">
+    
+<div class="flt-w" hidden><input class="flt" type="search" placeholder="/ to filter — a name, a flag, a word, a plugin" aria-label="Filter the commands" data-filter=".ref"><span class="flt-n" aria-live="polite"></span></div>
+
+<section class="card" id="g-the-session" data-group>
+  <div class="card-head"><span class="idx">8</span><div class="hd"><h2>the session</h2></div></div>
+  <div class="card-body">
+  
+    <article class="ref" id="help" data-f=":help this, or detail on one command  :h">
+      <h3><a class="pl" href="#help">:help</a><span class="ref-s">this, or detail on one command</span></h3>
+      <pre class="sig">:help [command]</pre>
+      <div class="chips"><span class="chip">takes words</span><span class="chip">also :h</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">command</td><td>a command — :help lists them</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:help</span> :http</div><div class="tl says"><span class="an">    one command&#39;s page — :http --help prints the same</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:help</span></div><div class="tl says"><span class="an">    every command, and at a terminal a view to browse them</span></div></div></div>
+      <div class="prose"></div>
+      <p class="see">See also <a href="#plugins"><code>:plugins</code></a> · <a href="#guide"><code>:guide</code></a></p>
+      <p class="see">Worked through in <a href="../guide/start.html">The first five minutes</a></p>
+    </article>
+  
+    <article class="ref" id="q" data-f=":q quit  :quit :exit">
+      <h3><a class="pl" href="#q">:q</a><span class="ref-s">quit</span></h3>
+      <pre class="sig">:q</pre>
+      <div class="chips"><span class="chip">takes nothing</span><span class="chip">also :quit</span><span class="chip">also :exit</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:q</span></div><div class="tl says"><span class="an">    ctrl-d does the same</span></div></div></div>
+      <div class="prose"></div>
+      <p class="see">See also <a href="#scratch"><code>:scratch</code></a></p>
+      
+    </article>
+  
+    <article class="ref" id="clear" data-f=":clear clear the screen (ctrl-l), keeping the session  :cls">
+      <h3><a class="pl" href="#clear">:clear</a><span class="ref-s">clear the screen (ctrl-l), keeping the session</span></h3>
+      <pre class="sig">:clear</pre>
+      <div class="chips"><span class="chip">takes nothing</span><span class="chip">also :cls</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:clear</span></div><div class="tl says"><span class="an">    ctrl-l does the same, and the session is untouched</span></div></div></div>
+      <div class="prose"></div>
+      <p class="see">See also <a href="#reset"><code>:reset</code></a></p>
+      
+    </article>
+  
+    <article class="ref" id="reset" data-f=":reset clear the session, and with -deps its modules too session_reset · with --eval -deps">
+      <h3><a class="pl" href="#reset">:reset</a><span class="ref-s">clear the session, and with -deps its modules too</span></h3>
+      <pre class="sig">:reset [-deps]</pre>
+      <div class="chips"><span class="chip">takes words</span><span class="chip c">MCP · session_reset · with --eval</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr id="reset-deps"><td class="mono">-deps</td><td>remove the modules :get added, too</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:reset</span></div><div class="tl says"><span class="an">    no entries, the same modules</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:reset</span> -deps</div><div class="tl says"><span class="an">    no entries and no added modules</span></div></div></div>
+      <div class="prose"><p>Bare <a href="commands.html#reset"><code>:reset</code></a> clears the entries and leaves the requirements alone, so a session cleared to try the same library a different way does not have to fetch it again.</p>
+<p>-deps clears both, removing every module <a href="commands.html#get"><code>:get</code></a> added — which deactivates the plugins that depended on them. A requirement the attached host owns is left alone: it belongs to the host&#39;s go.mod, which gluon never edits.</p>
+</div>
+      <p class="see">See also <a href="#undo"><code>:undo</code></a> · <a href="#get"><code>:get</code></a> · <a href="#scratch"><code>:scratch</code></a></p>
+      <p class="see">Worked through in <a href="../guide/session.html">The session</a></p>
+    </article>
+  
+    <article class="ref" id="theme" data-f=":theme the colour themes, and switch between them  :themes">
+      <h3><a class="pl" href="#theme">:theme</a><span class="ref-s">the colour themes, and switch between them</span></h3>
+      <pre class="sig">:theme [name]</pre>
+      <div class="chips"><span class="chip">takes words</span><span class="chip">also :themes</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">name</td><td>a theme — :theme lists them</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:theme</span></div><div class="tl says"><span class="an">    the picker: the session repaints as the selection moves</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:theme</span> gruvppuccin-mocha</div><div class="tl says"><span class="an">    switch, and write it into config.toml</span></div></div></div>
+      <div class="prose"><p>With a name, switches to it and writes <code>[theme] name</code> into config.toml, so the next session starts in it too.</p>
+<p>With none, opens the picker: moving the selection repaints the session underneath it, because the only useful preview of a palette is your own code in it. Enter keeps the highlighted theme, esc puts back the one you started in.</p>
+<p>Per-role overrides in config.toml still apply on top of whichever theme is chosen. <code>gluon theme import</code> is how an editor theme becomes one of these.</p>
+</div>
+      <p class="see">See also <a href="#settings"><code>:settings</code></a></p>
+      <p class="see">Worked through in <a href="../guide/themes.html">Themes</a></p>
+    </article>
+  
+    <article class="ref" id="settings" data-f=":settings every setting gluon has, and change one  :set">
+      <h3><a class="pl" href="#settings">:settings</a><span class="ref-s">every setting gluon has, and change one</span></h3>
+      <pre class="sig">:settings [key [value | -]]</pre>
+      <div class="chips"><span class="chip">takes words</span><span class="chip">also :set</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">key</td><td>a setting — :settings lists them</td></tr>
+        <tr><td class="mono">value</td><td>what to set it to, or - for its default; key=value works too</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:settings</span></div><div class="tl says"><span class="an">    every setting, its value, and where the value came from</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:settings</span> value.form</div><div class="tl says"><span class="an">    one setting explained</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:settings</span> timeout 2m</div><div class="tl says"><span class="an">    written into config.toml as one line</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:settings</span> timeout -</div><div class="tl says"><span class="an">    back to its default</span></div></div></div>
+      <div class="prose"><p>With nothing, lists them: what each does, what it is now, what it would be otherwise, what it accepts, and whether the value came from config.toml or from a default.</p>
+<p>With a key, explains that one. With a key and a value, writes it into config.toml — one line, leaving every other byte alone, so the comments you put there survive. <code>:settings &lt;key&gt; -</code> puts it back to its default.</p>
+<p>Both spellings work: <code>:settings timeout 2m</code> and <code>:settings timeout=2m</code>.</p>
+<p>A few settings are listed and not settable — an array is not one line, and rewriting one wholesale would take the comments inside it. Those say so.</p>
+<p><code>:settings value.form</code> is the one that changes what you see: table is the bordered box, and tree, columns, line and literal are the other four shapes a value can take. It changes what a terminal draws and nothing else — a pipe, <code>gluon -e</code> and the -json envelopes never see a form.</p>
+</div>
+      <p class="see">See also <a href="#theme"><code>:theme</code></a></p>
+      <p class="see">Worked through in <a href="../guide/rendering.html">Rendering</a> · <a href="../guide/configuration.html">Configuration</a></p>
+    </article>
+  
+    <article class="ref" id="plugins" data-f=":plugins which library plugins are active here, and why ">
+      <h3><a class="pl" href="#plugins">:plugins</a><span class="ref-s">which library plugins are active here, and why</span></h3>
+      <pre class="sig">:plugins</pre>
+      <div class="chips"><span class="chip">takes nothing</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:plugins</span></div></div></div>
+      <div class="prose"><p>A plugin is inert until the session can actually see its library, so a command that is simply absent looks the same as a broken install. This is what says which. [plugins] disable = [...] in config.toml turns one off.</p>
+</div>
+      <p class="see">See also <a href="#guide"><code>:guide</code></a> · <a href="#get"><code>:get</code></a> · <a href="#help"><code>:help</code></a></p>
+      <p class="see">Worked through in <a href="../guide/plugins.html">Plugins</a></p>
+    </article>
+  
+    <article class="ref" id="guide" data-f=":guide a plugin&#39;s cheatsheet ">
+      <h3><a class="pl" href="#guide">:guide</a><span class="ref-s">a plugin&#39;s cheatsheet</span></h3>
+      <pre class="sig">:guide &lt;plugin&gt;</pre>
+      <div class="chips"><span class="chip">takes words</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">plugin</td><td>a plugin that ships a guide</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:guide</span> ent</div><div class="tl says"><span class="an">    the ent plugin&#39;s cheatsheet</span></div></div></div>
+      <div class="prose"></div>
+      <p class="see">See also <a href="#plugins"><code>:plugins</code></a></p>
+      <p class="see">Worked through in <a href="../guide/plugins.html">Plugins</a></p>
+    </article>
+  
+  </div>
+</section>
+
+<section class="card" id="g-inspecting" data-group>
+  <div class="card-head"><span class="idx">30</span><div class="hd"><h2>inspecting</h2></div></div>
+  <div class="card-body">
+  
+    <article class="ref" id="t" data-f=":t the type of an expression      (ruby&#39;s .class) go_type · static, served without --eval :type -v -d">
+      <h3><a class="pl" href="#t">:t</a><span class="ref-s">the type of an expression      (Ruby&#39;s .class)</span></h3>
+      <pre class="sig">:t [-v | -d] &lt;exp&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go expression</span><span class="chip c">MCP · go_type · static, served without --eval</span><span class="chip">also :type</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr id="t-v"><td class="mono">-v</td><td>add the underlying type and its kind</td></tr>
+        <tr id="t-d"><td class="mono">-d</td><td>run it once for the dynamic type inside an interface</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:t</span> strconv<span class="p">.</span>Atoi<span class="p">(</span><span class="s">&#34;12&#34;</span><span class="p">)</span></div><div class="tl says"><span class="an">    two values: (int, error)</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:t</span> <span class="p">-</span>v time<span class="p">.</span>Second</div><div class="tl says"><span class="an">    the named type, what it is underneath, and its kind</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:t</span> <span class="p">-</span>d r</div><div class="tl says"><span class="an">    what is inside the interface r — this one costs a build</span></div></div></div>
+      <div class="prose"><p>Answers from go/types in gluon&#39;s own process, so it never builds and comes back in about a millisecond.</p>
+<p>-d is the exception: it reports the dynamic type — what is actually inside an interface value — which nothing but a run can know. It costs a build and an execution, and it runs your expression, so a call with a side effect has it. Only at the prompt: the MCP tool stays static and ignores the flag.</p>
+</div>
+      <p class="see">See also <a href="#m"><code>:m</code></a> · <a href="#ls"><code>:ls</code></a> · <a href="#doc"><code>:doc</code></a></p>
+      <p class="see">Worked through in <a href="../guide/start.html">The first five minutes</a> · <a href="../guide/inspecting.html">Inspecting</a></p>
+    </article>
+  
+    <article class="ref" id="m" data-f=":m its method set and interfaces  (ruby&#39;s .methods) go_methods · static, served without --eval :methods">
+      <h3><a class="pl" href="#m">:m</a><span class="ref-s">its method set and interfaces  (Ruby&#39;s .methods)</span></h3>
+      <pre class="sig">:m &lt;exp&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go expression</span><span class="chip c">MCP · go_methods · static, served without --eval</span><span class="chip">also :methods</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:m</span> strings<span class="p">.</span>Builder<span class="p">{</span><span class="p">}</span></div><div class="tl says"><span class="an">    its methods, the pointer-only ones marked — for a Builder, all of them</span></div></div></div>
+      <div class="prose"><p>Lists the value and pointer method sets together, marking the pointer-only ones — the rule that puts them in *T&#39;s set and not T&#39;s is the thing that trips people up. Satisfaction is checked against error, a few stdlib interfaces, and any interface you declared this session.</p>
+</div>
+      <p class="see">See also <a href="#t"><code>:t</code></a> · <a href="#impl"><code>:impl</code></a> · <a href="#iface"><code>:iface</code></a></p>
+      <p class="see">Worked through in <a href="../guide/inspecting.html">Inspecting</a></p>
+    </article>
+  
+    <article class="ref" id="impl" data-f=":impl does a type implement an interface, and what is missing go_implements · static, served without --eval">
+      <h3><a class="pl" href="#impl">:impl</a><span class="ref-s">does a type implement an interface, and what is missing</span></h3>
+      <pre class="sig">:impl &lt;t&gt;, &lt;i&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go name</span><span class="chip c">MCP · go_implements · static, served without --eval</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">t</td><td>the type</td></tr>
+        <tr><td class="mono">i</td><td>the interface, from anywhere the session can see</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:impl</span> <span class="p">*</span>bytes<span class="p">.</span>Buffer<span class="p">,</span> io<span class="p">.</span>Reader</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:impl</span> bytes<span class="p">.</span>Buffer<span class="p">,</span> io<span class="p">.</span>Writer</div><div class="tl says"><span class="an">    no: Write is on *bytes.Buffer, and the answer says so</span></div></div></div>
+      <div class="prose"><p>Answers against the interface you name, not a fixed list — anything the session can see: declared here, imported, or in the attached module.</p>
+<p>A no names the first method in the way and the signature the interface wants, and says when *T would have satisfied it even though T does not — which is what the compiler&#39;s own error leaves you to guess.</p>
+</div>
+      <p class="see">See also <a href="#sat"><code>:sat</code></a> · <a href="#iface"><code>:iface</code></a> · <a href="#m"><code>:m</code></a></p>
+      <p class="see">Worked through in <a href="../guide/inspecting.html">Inspecting</a></p>
+    </article>
+  
+    <article class="ref" id="sat" data-f=":sat the same question, asked of a value go_satisfies · static, served without --eval">
+      <h3><a class="pl" href="#sat">:sat</a><span class="ref-s">the same question, asked of a value</span></h3>
+      <pre class="sig">:sat &lt;exp&gt;, &lt;i&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go expression</span><span class="chip c">MCP · go_satisfies · static, served without --eval</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">exp</td><td>the value</td></tr>
+        <tr><td class="mono">i</td><td>the interface</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:sat</span> os<span class="p">.</span>Stdout<span class="p">,</span> io<span class="p">.</span>Writer</div></div></div>
+      <div class="prose"><p>The verdict is about the expression&#39;s static type. When that type is itself an interface the answer says so: what is actually inside an interface value is not known without running it.</p>
+</div>
+      <p class="see">See also <a href="#impl"><code>:impl</code></a> · <a href="#cast"><code>:cast</code></a></p>
+      <p class="see">Worked through in <a href="../guide/inspecting.html">Inspecting</a></p>
+    </article>
+  
+    <article class="ref" id="cast" data-f=":cast whether e.(t) is legal, and why not go_cast · static, served without --eval">
+      <h3><a class="pl" href="#cast">:cast</a><span class="ref-s">whether e.(t) is legal, and why not</span></h3>
+      <pre class="sig">:cast &lt;e&gt;, &lt;t&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go expression</span><span class="chip c">MCP · go_cast · static, served without --eval</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">e</td><td>an interface value</td></tr>
+        <tr><td class="mono">t</td><td>the type to assert</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:cast</span> <span class="ty">any</span><span class="p">(</span><span class="nu">1</span><span class="p">)</span><span class="p">,</span> <span class="ty">string</span></div><div class="tl says"><span class="an">    legal, and would fail when it runs</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:cast</span> io<span class="p">.</span>Reader<span class="p">(</span><span class="ty">nil</span><span class="p">)</span><span class="p">,</span> <span class="p">*</span>strings<span class="p">.</span>Builder</div><div class="tl says"><span class="an">    rejected outright: *strings.Builder has no Read</span></div></div></div>
+      <div class="prose"><p>Separates the assertion the compiler rejects outright — no value of e&#39;s type can ever be a t — from the one that compiles and may still fail at run time. The first is the useful one: Go reports it as a method you never mentioned, and this names it.</p>
+</div>
+      <p class="see">See also <a href="#sat"><code>:sat</code></a> · <a href="#impl"><code>:impl</code></a></p>
+      <p class="see">Worked through in <a href="../guide/inspecting.html">Inspecting</a></p>
+    </article>
+  
+    <article class="ref" id="iface" data-f=":iface an interface&#39;s methods, and who implements it go_interface · static, served without --eval">
+      <h3><a class="pl" href="#iface">:iface</a><span class="ref-s">an interface&#39;s methods, and who implements it</span></h3>
+      <pre class="sig">:iface &lt;name&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go name</span><span class="chip c">MCP · go_interface · static, served without --eval</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">name</td><td>an interface: declared here, imported, or in the attached module</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:iface</span> io<span class="p">.</span>Writer</div><div class="tl says"><span class="an">    its methods, and the types the session can see that implement it</span></div></div></div>
+      <div class="prose"><p>The implementor search covers what the session can name: its own types, the packages its program imports, and the attached module&#39;s packages already loaded. It never scans the module cache, and it says how many types it looked at — so &#34;nothing implements it&#34; cannot be mistaken for &#34;nothing was searched&#34;.</p>
+</div>
+      <p class="see">See also <a href="#impl"><code>:impl</code></a> · <a href="#mock"><code>:mock</code></a></p>
+      <p class="see">Worked through in <a href="../guide/inspecting.html">Inspecting</a></p>
+    </article>
+  
+    <article class="ref" id="embeds" data-f=":embeds embedded fields, and the methods they promote go_embeds · static, served without --eval">
+      <h3><a class="pl" href="#embeds">:embeds</a><span class="ref-s">embedded fields, and the methods they promote</span></h3>
+      <pre class="sig">:embeds &lt;type&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go name</span><span class="chip c">MCP · go_embeds · static, served without --eval</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:embeds</span> bufio<span class="p">.</span>ReadWriter</div><div class="tl says"><span class="an">    *Reader and *Writer, and the methods each promotes</span></div></div></div>
+      <div class="prose"><p>A method two embedded types both provide at the same depth is reported as ambiguous rather than resolved: that selector does not compile, and naming a winner would teach something false.</p>
+</div>
+      <p class="see">See also <a href="#m"><code>:m</code></a> · <a href="#layout"><code>:layout</code></a></p>
+      <p class="see">Worked through in <a href="../guide/inspecting.html">Inspecting</a></p>
+    </article>
+  
+    <article class="ref" id="gen" data-f=":gen a generic&#39;s type parameters and their constraints go_generics · static, served without --eval">
+      <h3><a class="pl" href="#gen">:gen</a><span class="ref-s">a generic&#39;s type parameters and their constraints</span></h3>
+      <pre class="sig">:gen &lt;type&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go name</span><span class="chip c">MCP · go_generics · static, served without --eval</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:gen</span> atomic<span class="p">.</span>Pointer</div><div class="tl says"><span class="an">    its type parameter, and the constraint on it</span></div></div></div>
+      <div class="prose"><p>Answers from go/types and never builds. It reads the declaration, so a generic nobody has instantiated yet can be asked what it would accept.</p>
+</div>
+      <p class="see">See also <a href="#t"><code>:t</code></a> · <a href="#doc"><code>:doc</code></a></p>
+      <p class="see">Worked through in <a href="../guide/inspecting.html">Inspecting</a></p>
+    </article>
+  
+    <article class="ref" id="mock" data-f=":mock a mock implementation of an interface go_mock · static, served without --eval">
+      <h3><a class="pl" href="#mock">:mock</a><span class="ref-s">a mock implementation of an interface</span></h3>
+      <pre class="sig">:mock &lt;type&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go name</span><span class="chip c">MCP · go_mock · static, served without --eval</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:mock</span> io<span class="p">.</span>ReadCloser</div><div class="tl says"><span class="an">    a struct with a func field per method, to paste in</span></div></div></div>
+      <div class="prose"><p>Emits the source and declares nothing: the mock enters the session only if you paste it, so it cannot collide with a name you already have. One settable func field per method, and methods that dispatch to them — including the ones an embedded interface promotes, because the method set is the one <a href="commands.html#m"><code>:m</code></a> computes.</p>
+<p>A method whose field is unset panics naming itself. Returning zero values instead is how a mock makes a test pass for the wrong reason: the assertion holds because nothing was called, and nothing says so.</p>
+<p>Nothing is built and nothing is run — this is go/types, like <a href="commands.html#iface"><code>:iface</code></a>.</p>
+</div>
+      <p class="see">See also <a href="#spy"><code>:spy</code></a> · <a href="#iface"><code>:iface</code></a> · <a href="#test"><code>:test</code></a></p>
+      <p class="see">Worked through in <a href="../guide/inspecting.html">Inspecting</a></p>
+    </article>
+  
+    <article class="ref" id="spy" data-f=":spy the same, recording what each method was called with go_spy · static, served without --eval">
+      <h3><a class="pl" href="#spy">:spy</a><span class="ref-s">the same, recording what each method was called with</span></h3>
+      <pre class="sig">:spy &lt;type&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go name</span><span class="chip c">MCP · go_spy · static, served without --eval</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:spy</span> io<span class="p">.</span>Writer</div><div class="tl says"><span class="an">    the mock, plus every call&#39;s arguments and a Count()</span></div></div></div>
+      <div class="prose"><p>A mock plus, for each method, the arguments of every call in order and a Count() that reads back how many there were. The count is len(Calls) rather than a second field, so the two cannot disagree.</p>
+</div>
+      <p class="see">See also <a href="#mock"><code>:mock</code></a></p>
+      <p class="see">Worked through in <a href="../guide/inspecting.html">Inspecting</a></p>
+    </article>
+  
+    <article class="ref" id="ls" data-f=":ls what is in scope, with types   (pry&#39;s ls) go_scope · static, served without --eval :vars">
+      <h3><a class="pl" href="#ls">:ls</a><span class="ref-s">what is in scope, with types   (pry&#39;s ls)</span></h3>
+      <pre class="sig">:ls</pre>
+      <div class="chips"><span class="chip">takes nothing</span><span class="chip c">MCP · go_scope · static, served without --eval</span><span class="chip">also :vars</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:ls</span></div><div class="tl says"><span class="an">    every name in scope with its type, and the values _1, _2… carry</span></div></div></div>
+      <div class="prose"></div>
+      <p class="see">See also <a href="#hist"><code>:hist</code></a> · <a href="#t"><code>:t</code></a></p>
+      <p class="see">Worked through in <a href="../guide/inspecting.html">Inspecting</a></p>
+    </article>
+  
+    <article class="ref" id="doc" data-f=":doc documentation, or the source   (ri / pry&#39;s show-source) go_doc · static, served without --eval :d -src -examples -url -pkg">
+      <h3><a class="pl" href="#doc">:doc</a><span class="ref-s">documentation, or the source   (ri / pry&#39;s show-source)</span></h3>
+      <pre class="sig">:doc [-src | -examples | -url | -pkg] &lt;name&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go name</span><span class="chip c">MCP · go_doc · static, served without --eval</span><span class="chip">also :d</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">name</td><td>a package, a symbol or a method, as go doc reads it</td></tr>
+        <tr id="doc-src"><td class="mono">-src</td><td>the implementation rather than the documentation</td></tr>
+        <tr id="doc-examples"><td class="mono">-examples</td><td>the package&#39;s runnable examples, read off disk</td></tr>
+        <tr id="doc-url"><td class="mono">-url</td><td>the pkg.go.dev address at the version in use</td></tr>
+        <tr id="doc-pkg"><td class="mono">-pkg</td><td>read the name as a package, never as a symbol</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:doc</span> strings<span class="p">.</span>Cut</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:doc</span> <span class="p">-</span>src strings<span class="p">.</span>Cut</div><div class="tl says"><span class="an">    the source — pry&#39;s show-source</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:doc</span> <span class="p">-</span>examples strings</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:doc</span> <span class="p">-</span>url github<span class="p">.</span>com<span class="p">/</span>google<span class="p">/</span>uuid<span class="p">.</span>New</div><div class="tl says"><span class="an">    an address at the version the build list has; nothing is fetched</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:doc</span> <span class="p">-</span>pkg errors</div><div class="tl says"><span class="an">    the package, where a symbol could have answered instead</span></div></div></div>
+      <div class="prose"><p>-examples shows the package&#39;s runnable examples, each labelled with the identifier it is an example of. <code>go doc</code> does not report them, so they are read from the sources already on disk — a package whose sources were never downloaded says so rather than reporting that it has none.</p>
+<p>-url prints the pkg.go.dev address at the version the build list has. It prints and nothing else: no fetch, no browser. When the version cannot be determined — the standard library, a replaced module, a session with no requirements — the address is version-independent and says so.</p>
+<p>-pkg says the argument names a package, so a name that is also a symbol resolves to the package or is reported as unresolved, rather than quietly answering about the other one.</p>
+<p>One flag at a time: they are four questions about a name, not four adjustments to one answer. Output past a screenful is paged, and is still printed in full through a pipe.</p>
+</div>
+      <p class="see">See also <a href="#since"><code>:since</code></a> · <a href="#t"><code>:t</code></a></p>
+      <p class="see">Worked through in <a href="../guide/inspecting.html">Inspecting</a></p>
+    </article>
+  
+    <article class="ref" id="since" data-f=":since what each go release added, from the toolchain you have go_since · with --eval -lang -pkg -run">
+      <h3><a class="pl" href="#since">:since</a><span class="ref-s">what each Go release added, from the toolchain you have</span></h3>
+      <pre class="sig">:since [-lang | -pkg &lt;path&gt; | -run &lt;name&gt;] [version]</pre>
+      <div class="chips"><span class="chip">takes words</span><span class="chip c">MCP · go_since · with --eval</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">version</td><td>a Go release — :since lists them</td></tr>
+        <tr id="since-lang"><td class="mono">-lang</td><td>the language changes alone, as prose with a snippet</td></tr>
+        <tr id="since-pkg"><td class="mono">-pkg &lt;path&gt;</td><td>every addition to one import path, across releases</td></tr>
+        <tr id="since-run"><td class="mono">-run &lt;name&gt;</td><td>evaluate a language note&#39;s snippet in this session</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:since</span></div><div class="tl says"><span class="an">    every release the installed toolchain describes</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:since</span> 1.23 -lang</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:since</span> -pkg maps</div><div class="tl says"><span class="an">    which release added maps.Keys, and what came with it</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:since</span> 1.23 -run range-over-func</div></div></div>
+      <div class="prose"><p>With no argument, every release the installed toolchain describes, newest first. With a version, that release: its language changes, its GODEBUG entries, and its standard library additions a package at a time.</p>
+<p>The additions are read from $GOROOT/api/go1.N.txt and the behaviour changes from $GOROOT/doc/godebug.md — the release record the distribution already ships. Nothing is fetched. Every api line since Go 1.19 carries the number of the proposal that accepted it, so the go.dev/issue link beside a declaration is a fact on disk rather than a guess.</p>
+<p>-lang is the language changes alone, as prose with a runnable snippet. No api file describes a change to the language, so these are written by hand, and a release nobody has written up says so rather than reporting that its syntax did not move.</p>
+<p>-pkg &lt;path&gt; is every addition to one import path across every release — which release added maps.Keys, and what else arrived with it.</p>
+<p>-run &lt;name&gt; evaluates a language note&#39;s snippet into this session. It is what the run choice on a note hands back, and it adds to the session and the scratchpad like any line you typed, so <a href="commands.html#branch"><code>:branch</code></a> first if that matters. A note needing a go directive above the one this session builds at is refused with which of the two numbers is short, rather than left to the compiler to report against a temp path you never wrote.</p>
+</div>
+      <p class="see">See also <a href="#doc"><code>:doc</code></a></p>
+      <p class="see">Worked through in <a href="../guide/inspecting.html">Inspecting</a></p>
+    </article>
+  
+    <article class="ref" id="slice" data-f=":slice slice headers, and whether they share a backing array go_slice_headers · with --eval">
+      <h3><a class="pl" href="#slice">:slice</a><span class="ref-s">slice headers, and whether they share a backing array</span></h3>
+      <pre class="sig">:slice &lt;exp&gt;[, &lt;exp&gt;...]</pre>
+      <div class="chips"><span class="chip">takes a Go expression</span><span class="chip c">MCP · go_slice_headers · with --eval</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">exp</td><td>a slice or a string</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:slice</span> x<span class="p">,</span> x<span class="p">[</span><span class="nu">1</span><span class="p">:</span><span class="nu">3</span><span class="p">]</span></div><div class="tl says"><span class="an">    both headers, and whether they share a backing array</span></div></div></div>
+      <div class="prose"><p>Shows the runtime triple — pointer, len, cap — and says when two slices are looking at the same memory. That sharing is invisible in the printed values and obvious in the pointers, which is the whole point.</p>
+</div>
+      <p class="see">See also <a href="#diff"><code>:diff</code></a> · <a href="#layout"><code>:layout</code></a></p>
+      <p class="see">Worked through in <a href="../guide/inspecting.html">Inspecting</a></p>
+    </article>
+  
+    <article class="ref" id="diff" data-f=":diff what differs between two values, and where go_diff · with --eval">
+      <h3><a class="pl" href="#diff">:diff</a><span class="ref-s">what differs between two values, and where</span></h3>
+      <pre class="sig">:diff &lt;a&gt;, &lt;b&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go expression</span><span class="chip c">MCP · go_diff · with --eval</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:diff</span> got<span class="p">,</span> want</div><div class="tl says"><span class="an">    only what differs, each with the path to it</span></div></div></div>
+      <div class="prose"><p>Reports only the differences, each with the path to it — .Name, [3], or . for the value itself. Two structs of a dozen fields that differ in one produce one row, which is the reason to have this rather than print both and read them.</p>
+<p>A difference in shape is reported as one: different types stop the comparison there rather than calling every field different, and a length or a missing key is stated as itself.</p>
+<p>Both values come from one evaluation, so a value derived from anything non-deterministic is compared against the same run it was taken from. The value printer caps a large collection, and when it did the report says the comparison covers only the part it could see.</p>
+</div>
+      <p class="see">See also <a href="#test"><code>:test</code></a> · <a href="#slice"><code>:slice</code></a></p>
+      <p class="see">Worked through in <a href="../guide/inspecting.html">Inspecting</a></p>
+    </article>
+  
+    <article class="ref" id="layout" data-f=":layout field offsets, padding, and what reordering would save go_layout · static, served without --eval">
+      <h3><a class="pl" href="#layout">:layout</a><span class="ref-s">field offsets, padding, and what reordering would save</span></h3>
+      <pre class="sig">:layout &lt;type&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go expression</span><span class="chip c">MCP · go_layout · static, served without --eval</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">type</td><td>a struct type, or a value of one</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:layout</span> <span class="kw">struct</span><span class="p">{</span> a <span class="ty">bool</span><span class="p">;</span> b <span class="ty">int64</span><span class="p">;</span> c <span class="ty">bool</span> <span class="p">}</span></div><div class="tl says"><span class="an">    24 bytes, and the order that would take 16</span></div></div></div>
+      <div class="prose"><p>Answers from go/types and never builds: sizes, offsets and alignment are the compiler&#39;s own for the platform gluon runs on. The suggested order is the one that wastes least padding, and the saving is stated in bytes.</p>
+</div>
+      <p class="see">See also <a href="#embeds"><code>:embeds</code></a> · <a href="#slice"><code>:slice</code></a></p>
+      <p class="see">Worked through in <a href="../guide/inspecting.html">Inspecting</a> · <a href="../guide/project.html">In a project</a></p>
+    </article>
+  
+    <article class="ref" id="err" data-f=":err the wrapped error chain, with the type at each level go_err_chain · with --eval">
+      <h3><a class="pl" href="#err">:err</a><span class="ref-s">the wrapped error chain, with the type at each level</span></h3>
+      <pre class="sig">:err &lt;exp&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go expression</span><span class="chip c">MCP · go_err_chain · with --eval</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:err</span> fmt<span class="p">.</span>Errorf<span class="p">(</span><span class="s">&#34;load: %w&#34;</span><span class="p">,</span> fs<span class="p">.</span>ErrNotExist<span class="p">)</span></div><div class="tl says"><span class="an">    each level of the chain, with its type</span></div></div></div>
+      <div class="prose"><p>Runs the expression once and walks the chain from the error it returned: errors.Unwrap a level at a time, and every branch of a joined error, each with its dynamic type — every level is something errors.Is can match.</p>
+</div>
+      <p class="see">See also <a href="#t"><code>:t</code></a></p>
+      <p class="see">Worked through in <a href="../guide/inspecting.html">Inspecting</a></p>
+    </article>
+  
+    <article class="ref" id="bench" data-f=":bench ns/op, b/op and allocs/op, through testing.b go_bench · with --eval -count -cpu -profile">
+      <h3><a class="pl" href="#bench">:bench</a><span class="ref-s">ns/op, B/op and allocs/op, through testing.B</span></h3>
+      <pre class="sig">:bench [-count &lt;n&gt;] [-cpu &lt;list&gt;] [-profile] &lt;exp&gt;[, &lt;other&gt;]</pre>
+      <div class="chips"><span class="chip">takes a Go expression</span><span class="chip c">MCP · go_bench · with --eval</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">other</td><td>a second expression, measured beside the first</td></tr>
+        <tr id="bench-count"><td class="mono">-count &lt;n&gt;</td><td>run it n times; report min, median and max</td></tr>
+        <tr id="bench-cpu"><td class="mono">-cpu &lt;list&gt;</td><td>once per GOMAXPROCS value, each labelled: 1,2,4</td></tr>
+        <tr id="bench-profile"><td class="mono">-profile</td><td>keep the run&#39;s CPU profile, and say where it went</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:bench</span> strings<span class="p">.</span>Repeat<span class="p">(</span><span class="s">&#34;ab&#34;</span><span class="p">,</span> <span class="nu">64</span><span class="p">)</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:bench</span> <span class="p">-</span>count <span class="nu">5</span> fmt<span class="p">.</span>Sprint<span class="p">(</span><span class="nu">42</span><span class="p">)</span><span class="p">,</span> strconv<span class="p">.</span>Itoa<span class="p">(</span><span class="nu">42</span><span class="p">)</span></div><div class="tl says"><span class="an">    side by side, with the ratio between them</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:bench</span> <span class="p">-</span>cpu <span class="nu">1</span><span class="p">,</span><span class="nu">4</span> <span class="p">-</span>profile strings<span class="p">.</span>Repeat<span class="p">(</span><span class="s">&#34;ab&#34;</span><span class="p">,</span> <span class="nu">1024</span><span class="p">)</span></div></div></div>
+      <div class="prose"><p>B/op and allocs/op are always reported; there is no -mem flag because there is nothing for it to turn on. The three flags say how the benchmark is run, never what is measured. -count exists so a measurement can be judged for consistency; -cpu is the only way to see a contention effect from the REPL.</p>
+<p>Flags are read only while they lead: everything from the first word that is not one of them is the expression, verbatim.</p>
+<p>Two expressions separated by a top-level comma are benchmarked side by side with the ratio between them — the comparison you would otherwise run twice and hold in your head. Both are measured in one evaluation, so neither is timed against a different replay of the session, and a comma inside brackets, parentheses, braces or a literal is not the separator.</p>
+</div>
+      <p class="see">See also <a href="#profile"><code>:profile</code></a> · <a href="#memprof"><code>:memprof</code></a> · <a href="#esc"><code>:esc</code></a></p>
+      <p class="see">Worked through in <a href="../guide/measuring.html">Measuring</a></p>
+    </article>
+  
+    <article class="ref" id="profile" data-f=":profile where the time went, from a real run go_profile · with --eval">
+      <h3><a class="pl" href="#profile">:profile</a><span class="ref-s">where the time went, from a real run</span></h3>
+      <pre class="sig">:profile &lt;exp&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go expression</span><span class="chip c">MCP · go_profile · with --eval</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:profile</span> sha256<span class="p">.</span>Sum256<span class="p">(</span><span class="f">make</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="ty">byte</span><span class="p">,</span> <span class="nu">64</span><span class="p">&lt;&lt;</span><span class="nu">20</span><span class="p">)</span><span class="p">)</span></div><div class="tl says"><span class="an">    the functions that took the time, and the pprof command for the rest</span></div></div></div>
+      <div class="prose"><p>Evaluates the expression once with the CPU profiler running, lists the functions that accounted for the most time, and names the file the profile went to and the <code>go tool pprof</code> command that opens it.</p>
+<p>The sample count is printed every time, and it is the first thing to read. Go samples at 100 Hz, so an expression that finishes in a millisecond contributes no samples at all and the ranking under it means nothing. Below a hundred samples the report says so.</p>
+<p>There is no <a href="commands.html#profile"><code>:profile</code></a> &lt;port&gt;. The child process exits when the evaluation ends, so there is nothing left to serve a live profile from — this captures one from a run that really happened instead.</p>
+</div>
+      <p class="see">See also <a href="#memprof"><code>:memprof</code></a> · <a href="#bench"><code>:bench</code></a></p>
+      <p class="see">Worked through in <a href="../guide/measuring.html">Measuring</a></p>
+    </article>
+  
+    <article class="ref" id="memprof" data-f=":memprof where the allocations went, from a real run go_memprof · with --eval">
+      <h3><a class="pl" href="#memprof">:memprof</a><span class="ref-s">where the allocations went, from a real run</span></h3>
+      <pre class="sig">:memprof &lt;exp&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go expression</span><span class="chip c">MCP · go_memprof · with --eval</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:memprof</span> strings<span class="p">.</span>Repeat<span class="p">(</span><span class="s">&#34;x&#34;</span><span class="p">,</span> <span class="nu">1</span><span class="p">&lt;&lt;</span><span class="nu">20</span><span class="p">)</span></div><div class="tl says"><span class="an">    the sites that allocated the most bytes</span></div></div></div>
+      <div class="prose"><p>The same capture as <a href="commands.html#profile"><code>:profile</code></a> against the heap profiler: the sites that accounted for the most allocation, and the file that holds the rest.</p>
+<p>A heap profile carries four measures that answer different questions. This reports allocated bytes, which is the one that pairs with the B/op <a href="commands.html#bench"><code>:bench</code></a> prints, and the report says so rather than showing an unlabelled number. The other three are in the file, under -sample_index.</p>
+</div>
+      <p class="see">See also <a href="#profile"><code>:profile</code></a> · <a href="#bench"><code>:bench</code></a> · <a href="#esc"><code>:esc</code></a></p>
+      <p class="see">Worked through in <a href="../guide/measuring.html">Measuring</a></p>
+    </article>
+  
+    <article class="ref" id="trace" data-f=":trace the call stack the expression is evaluated on go_trace · with --eval">
+      <h3><a class="pl" href="#trace">:trace</a><span class="ref-s">the call stack the expression is evaluated on</span></h3>
+      <pre class="sig">:trace &lt;exp&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go expression</span><span class="chip c">MCP · go_trace · with --eval</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:trace</span> fib<span class="p">(</span><span class="nu">10</span><span class="p">)</span></div><div class="tl says"><span class="an">    the stack it runs on, each frame named by the entry it came from</span></div></div></div>
+      <div class="prose"><p>Captures the stack where the expression is evaluated and names each frame by the session entry it came from, not the temp file the program was generated into.</p>
+<p>It holds the expression&#39;s callers, not its callees: a function it is about to call has not been entered yet, and by the time that call returns its frame is gone. gluon compiles each line into a program that exits, so there is no process to pause and no in-REPL breakpoint to set. For what happens underneath a call, <a href="commands.html#save"><code>:save</code></a> -debug is the way out.</p>
+</div>
+      <p class="see">See also <a href="#err"><code>:err</code></a> · <a href="#save"><code>:save</code></a></p>
+      <p class="see">Worked through in <a href="../guide/measuring.html">Measuring</a></p>
+    </article>
+  
+    <article class="ref" id="esc" data-f=":esc whether the value reaches the heap go_escape · with --eval">
+      <h3><a class="pl" href="#esc">:esc</a><span class="ref-s">whether the value reaches the heap</span></h3>
+      <pre class="sig">:esc &lt;exp&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go expression</span><span class="chip c">MCP · go_escape · with --eval</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:esc</span> <span class="f">make</span><span class="p">(</span><span class="p">[</span><span class="p">]</span><span class="ty">byte</span><span class="p">,</span> <span class="nu">32</span><span class="p">)</span></div><div class="tl says"><span class="an">    whether the backing array reaches the heap, in the compiler&#39;s words</span></div></div></div>
+      <div class="prose"><p>Builds and never runs, so it costs a build but not the run. The answer depends on context and says so: &amp;T{} kept in a local that dies at the end of its block does not escape, and the same expression returned from a function does. For the flatter question — does this allocate — <a href="commands.html#bench"><code>:bench</code></a>&#39;s allocs/op is the better tool: it is measured, and context-free.</p>
+</div>
+      <p class="see">See also <a href="#inline"><code>:inline</code></a> · <a href="#bench"><code>:bench</code></a></p>
+      <p class="see">Worked through in <a href="../guide/measuring.html">Measuring</a></p>
+    </article>
+  
+    <article class="ref" id="inline" data-f=":inline what the compiler decided about inlining go_inline · with --eval">
+      <h3><a class="pl" href="#inline">:inline</a><span class="ref-s">what the compiler decided about inlining</span></h3>
+      <pre class="sig">:inline &lt;exp|func&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go expression</span><span class="chip c">MCP · go_inline · with --eval</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">exp|func</td><td>a line whose calls to report, or a function this session declared</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:inline</span> add<span class="p">(</span><span class="nu">1</span><span class="p">,</span> <span class="nu">2</span><span class="p">)</span></div><div class="tl says"><span class="an">    every call on the line, and whether it was flattened</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:inline</span> big</div><div class="tl says"><span class="an">    whether a function you declared can be inlined, and its cost</span></div></div></div>
+      <div class="prose"><p>With an expression, reports every call on that line the compiler did or did not flatten. With the name of a function this session declared, reports whether it can be inlined at all, what it costs, and — when it cannot — the compiler&#39;s own reason, which is usually a cost against a budget.</p>
+<p>It builds and never runs, exactly as <a href="commands.html#esc"><code>:esc</code></a> does: inlining is decided at compile time, so there is nothing an execution could add. The two commands are the same build asked for a different half of its output.</p>
+<p>The wording is the compiler&#39;s, not a paraphrase of it. A decision about a function declared on an earlier line is answered by naming that function, not by asking about a line that happens to call it.</p>
+</div>
+      <p class="see">See also <a href="#esc"><code>:esc</code></a> · <a href="#asm"><code>:asm</code></a></p>
+      <p class="see">Worked through in <a href="../guide/measuring.html">Measuring</a></p>
+    </article>
+  
+    <article class="ref" id="asm" data-f=":asm the assembly emitted for one declared function go_asm · with --eval">
+      <h3><a class="pl" href="#asm">:asm</a><span class="ref-s">the assembly emitted for one declared function</span></h3>
+      <pre class="sig">:asm &lt;func&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go name</span><span class="chip c">MCP · go_asm · with --eval</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">func</td><td>a function or method this session declared: F, T.M or (*T).M</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:asm</span> add</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:asm</span> <span class="p">(</span><span class="p">*</span>Stack<span class="p">)</span><span class="p">.</span>Push</div></div></div>
+      <div class="prose"><p>Shows the listing for one function or method this session declared, and nothing else. A method is named T.M or (*T).M; either spelling finds it, because which one is right is the receiver&#39;s business rather than yours.</p>
+<p>Every position in the listing names the entry and line it came from, so no path under the temp directory appears. Long listings open in a pane; the same bytes are always in the linear output too.</p>
+<p>Only the session&#39;s own functions. The listing flag applies to the package named on the command line, deliberately — widening it to the standard library would recompile it under different flags and throw away the warm build cache every line in this REPL depends on. So <a href="commands.html#asm"><code>:asm</code></a> strings.Index is refused rather than answered slowly.</p>
+<p>A function inlined at every call site is dropped by the linker and has no listing of its own. That is reported as what it is.</p>
+</div>
+      <p class="see">See also <a href="#inline"><code>:inline</code></a> · <a href="#esc"><code>:esc</code></a></p>
+      <p class="see">Worked through in <a href="../guide/measuring.html">Measuring</a></p>
+    </article>
+  
+    <article class="ref" id="vet" data-f=":vet what go vet says about the session go_vet · with --eval">
+      <h3><a class="pl" href="#vet">:vet</a><span class="ref-s">what go vet says about the session</span></h3>
+      <pre class="sig">:vet [exp]</pre>
+      <div class="chips"><span class="chip">takes a Go expression</span><span class="chip c">MCP · go_vet · with --eval</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:vet</span></div><div class="tl says"><span class="an">    the session, each finding against the entry it belongs to</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:vet</span> fmt<span class="p">.</span>Printf<span class="p">(</span><span class="s">&#34;%d&#34;</span><span class="p">,</span> <span class="s">&#34;x&#34;</span><span class="p">)</span></div><div class="tl says"><span class="an">    the session with this line appended</span></div></div></div>
+      <div class="prose"><p>Runs the toolchain&#39;s own analysers over the session — with the expression appended when you give one — and reports each finding against the entry and line it belongs to. Nothing is built and nothing is run: vet type-checks the package itself, which is why it costs about half a second rather than a build.</p>
+<p>Findings in the code gluon generates around your lines are never shown. One there would be gluon&#39;s bug, and there is nothing you could do about it.</p>
+<p>It vets the session, not the host. <code>go vet .</code> names the main package, and an attached host&#39;s packages are compiled into it rather than analysed — their findings belong to that project&#39;s own <code>go vet ./...</code>.</p>
+<p>There is no :lint. staticcheck and its neighbours are dependencies gluon does not have; vet is the analyser the toolchain already ships.</p>
+</div>
+      <p class="see">See also <a href="#race"><code>:race</code></a></p>
+      <p class="see">Worked through in <a href="../guide/measuring.html">Measuring</a></p>
+    </article>
+  
+    <article class="ref" id="race" data-f=":race run it once under the race detector go_race · with --eval">
+      <h3><a class="pl" href="#race">:race</a><span class="ref-s">run it once under the race detector</span></h3>
+      <pre class="sig">:race &lt;exp&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go expression</span><span class="chip c">MCP · go_race · with --eval</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:race</span> incrementTwice<span class="p">(</span><span class="p">)</span></div><div class="tl says"><span class="an">    any race in that run, each frame named by its entry</span></div></div></div>
+      <div class="prose"><p>Builds the session with -race, evaluates the expression once, and names every frame of any data race by the entry it came from. The expression&#39;s own value is printed either way: a race is something that happened during the run, not instead of it.</p>
+<p>Finding nothing is not proof of anything, and the output says so every time. The detector observes one interleaving of one run; a race that needs a different schedule is still there.</p>
+<p>The first <a href="commands.html#race"><code>:race</code></a> on a machine compiles the race-instrumented standard library, which takes several seconds. Later ones reuse it and cost about what an ordinary line does. The instrumented binary is built beside the ordinary one and goes with the session directory.</p>
+<p>On a platform the detector does not support, the toolchain&#39;s own message is shown and nothing is retried without the flag — a value from a run nothing was watching, under a command called <a href="commands.html#race"><code>:race</code></a>, would be worse than no answer.</p>
+</div>
+      <p class="see">See also <a href="#vet"><code>:vet</code></a> · <a href="#trace"><code>:trace</code></a></p>
+      <p class="see">Worked through in <a href="../guide/measuring.html">Measuring</a></p>
+    </article>
+  
+    <article class="ref" id="env" data-f=":env the process environment, redacted   (rails.env&#39;s neighbour) ">
+      <h3><a class="pl" href="#env">:env</a><span class="ref-s">the process environment, redacted   (Rails.env&#39;s neighbour)</span></h3>
+      <pre class="sig">:env [pattern]</pre>
+      <div class="chips"><span class="chip">takes words</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">pattern</td><td>part of a variable&#39;s name, any case</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:env</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:env</span> database</div><div class="tl says"><span class="an">    the variables whose name contains it, secrets masked</span></div></div></div>
+      <div class="prose"><p>Sorted by name, and filtered to the names containing pattern. Nothing is built and nothing is run — this is gluon&#39;s own environment, which is what every line it evaluates inherits.</p>
+<p>A value is hidden when its <em>shape</em> says it carries a secret: a connection string, a bearer token, a vendor-prefixed key. The name of the variable is never consulted and never hidden — a NOTE holding a DSN is redacted and a PASSWORD_HINT holding &#34;ask the team&#34; is not.</p>
+<p>Shape is not a guarantee. A secret in a format gluon does not recognise is shown; a value hidden that was not one is recoverable, because the name beside it always is. There is no way to set a variable from here: it would change every later line while leaving no trace in <a href="commands.html#src"><code>:src</code></a>.</p>
+</div>
+      <p class="see">See also <a href="#conf"><code>:conf</code></a> · <a href="#db"><code>:db</code></a></p>
+      <p class="see">Worked through in <a href="../guide/project.html">In a project</a></p>
+    </article>
+  
+    <article class="ref" id="conf" data-f=":conf read a project config file, redacted ">
+      <h3><a class="pl" href="#conf">:conf</a><span class="ref-s">read a project config file, redacted</span></h3>
+      <pre class="sig">:conf [file]</pre>
+      <div class="chips"><span class="chip">takes words</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">file</td><td>a TOML, YAML or JSON file</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:conf</span></div><div class="tl says"><span class="an">    the config files the project search found, and where it looked</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:conf</span> config/app.yaml</div><div class="tl says"><span class="an">    its keys, dotted, secrets masked</span></div></div></div>
+      <div class="prose"><p>With a file, reads TOML, YAML or JSON and lists its keys in dotted form — database.primary.url — with the same shape-based redaction <a href="commands.html#env"><code>:env</code></a> uses. A file that does not parse shows no keys at all: a configuration displayed as half read hides exactly the part that is missing.</p>
+<p>With no file, lists what the project search found and where it looked, so that &#34;found nothing&#34; and &#34;did not look&#34; are different answers. It is the same bounded search <a href="commands.html#db"><code>:db</code></a> runs, ceilinged at the repository root, and the same cached result — paid for once per <a href="commands.html#use"><code>:use</code></a> rather than per line.</p>
+<p>It only reads a project&#39;s config. <code>gluon init</code> writes a project one, and <a href="commands.html#settings"><code>:settings</code></a> changes gluon&#39;s own.</p>
+</div>
+      <p class="see">See also <a href="#env"><code>:env</code></a> · <a href="#db"><code>:db</code></a> · <a href="#settings"><code>:settings</code></a></p>
+      <p class="see">Worked through in <a href="../guide/project.html">In a project</a></p>
+    </article>
+  
+    <article class="ref" id="inspect" data-f=":inspect browse a large value in a view that scrolls  :i -n">
+      <h3><a class="pl" href="#inspect">:inspect</a><span class="ref-s">browse a large value in a view that scrolls</span></h3>
+      <pre class="sig">:inspect [-n &lt;k&gt;] &lt;e&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go expression</span><span class="chip">also :i</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr id="inspect-n"><td class="mono">-n &lt;k&gt;</td><td>describe k elements, for this one view</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:inspect</span> rows</div><div class="tl says"><span class="an">    a view that scrolls; one line is left behind</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:inspect</span> <span class="p">-</span>n <span class="nu">5000</span> rows</div></div></div>
+      <div class="prose"><p>Opens the one thing a printed table cannot be. It takes the whole screen, prints nothing while it is up, and leaves one line in scrollback on close. Through a pipe it prints the ordinary rendering instead, so nothing is lost.</p>
+<p>-n k describes k elements of the collection for this one invocation, so a long slice can be browsed whole without the session&#39;s value.items moving. It is the item bound only: depth is not what a table of rows shows, and the budget on the whole value still applies, so a collection of large elements may stop short of k.</p>
+</div>
+      <p class="see">See also <a href="#settings"><code>:settings</code></a></p>
+      <p class="see">Worked through in <a href="../guide/rendering.html">Rendering</a></p>
+    </article>
+  
+    <article class="ref" id="http" data-f=":http issue a request, and render what came back  -h -d -t">
+      <h3><a class="pl" href="#http">:http</a><span class="ref-s">issue a request, and render what came back</span></h3>
+      <pre class="sig">:http &lt;method&gt; &lt;url&gt; [-H &lt;header&gt;]... [-d &lt;body&gt;] [-t &lt;duration&gt;]</pre>
+      <div class="chips"><span class="chip">takes words</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">method</td><td>GET HEAD POST PUT PATCH DELETE OPTIONS TRACE, any case</td></tr>
+        <tr><td class="mono">url</td><td>http:// or https://, written out whole</td></tr>
+        <tr id="http-H"><td class="mono">-H &lt;header&gt;</td><td>a header, written &#39;Name: value&#39;; repeat it for another</td></tr>
+        <tr id="http-d"><td class="mono">-d &lt;body&gt;</td><td>the request body</td></tr>
+        <tr id="http-t"><td class="mono">-t &lt;duration&gt;</td><td>how long to wait: 5s, 500ms, 1m (30s by default)</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:http</span> GET https://api.github.com/zen</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:http</span> POST https://httpbin.org/post -d &#39;{&#34;a&#34;: 1}&#39; -t 5s</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:http</span> GET https://api.github.com/user -H &#39;Authorization: Bearer $GH_TOKEN&#39;</div><div class="tl says"><span class="an">    the token is named, so its value reaches no history file</span></div></div></div>
+      <div class="prose"><p>Quote anything with a space in it: no shell has been near the line.</p>
+<p>A header value may name a variable rather than carry one. -H &#39;Authorization: Bearer $TOKEN&#39; resolves $TOKEN in the child, so the value reaches neither <a href="commands.html#src"><code>:src</code></a>, nor <a href="commands.html#save"><code>:save</code></a>, nor ~/.local/state/gluon/history. A value whose <em>shape</em> says it is a credential is refused instead of sent, because by then the line as typed is already in the history file and masking the display would not take it back. That is the whole of what this protects: a token written into an http.Get you typed yourself is not something gluon can catch.</p>
+<p>The body is read to 64 KiB and the notice says what was skipped. A non-textual content type is summarised — its type and size — rather than printed.</p>
+<p>Nothing survives between requests: no cookie jar, no reused connection, no client. The child process dies after every line, so there is nowhere to keep one, and a command implying otherwise would teach a lie.</p>
+<p>The response is never cached. The cache is keyed on program text alone, so the same request would otherwise answer with what it first saw.</p>
+</div>
+      <p class="see">See also <a href="#grpc"><code>:grpc</code></a> · <a href="#env"><code>:env</code></a> · <a href="#query"><code>:query</code></a></p>
+      <p class="see">Worked through in <a href="../guide/project.html">In a project</a></p>
+    </article>
+  
+  </div>
+</section>
+
+<section class="card" id="g-the-module-it-can-see" data-group>
+  <div class="card-head"><span class="idx">6</span><div class="hd"><h2>the module it can see</h2></div></div>
+  <div class="card-body">
+  
+    <article class="ref" id="use" data-f=":use attach to the go module at dir, so its packages import  -off">
+      <h3><a class="pl" href="#use">:use</a><span class="ref-s">attach to the Go module at dir, so its packages import</span></h3>
+      <pre class="sig">:use [-off] [dir]</pre>
+      <div class="chips"><span class="chip">takes words</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">dir</td><td>a directory inside the module; . is where you are</td></tr>
+        <tr id="use-off"><td class="mono">-off</td><td>detach, and be standalone again</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:use</span> .</div><div class="tl says"><span class="an">    the module you are standing in, internal/ packages included</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:use</span> ~/src/acme/api</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:use</span> -off</div></div></div>
+      <div class="prose"><p>Attaches the session to the module containing dir, so its packages — internal/ ones included — import like any other, and its requirements join the build list, which may activate plugins. It says how many packages are importable and re-runs a non-empty session against the module, so a break shows now rather than on your next line; the attach is kept either way.</p>
+<p>gluon -host &lt;dir&gt; does the same at startup.</p>
+</div>
+      <p class="see">See also <a href="#reload"><code>:reload</code></a> · <a href="#watch"><code>:watch</code></a> · <a href="#get"><code>:get</code></a></p>
+      <p class="see">Worked through in <a href="../guide/project.html">In a project</a></p>
+    </article>
+  
+    <article class="ref" id="get" data-f=":get add or remove a module, or list them  (the only one that fetches)  -rm">
+      <h3><a class="pl" href="#get">:get</a><span class="ref-s">add or remove a module, or list them  (the only one that fetches)</span></h3>
+      <pre class="sig">:get [-rm] [module]</pre>
+      <div class="chips"><span class="chip">takes words</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">module</td><td>a module, or a plugin&#39;s short name for one</td></tr>
+        <tr id="get-rm"><td class="mono">-rm</td><td>drop a requirement again, fetching nothing</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:get</span></div><div class="tl says"><span class="an">    what the session requires</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:get</span> uuid</div><div class="tl says"><span class="an">    a plugin&#39;s short name for github.com/google/uuid</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:get</span> -rm github.com/google/uuid</div></div></div>
+      <div class="prose"><p>A command rather than a fallback: an automatic <code>go get</code> would mutate go.mod, reach the network and take seconds without being asked, on a line that may simply be a typo. Bare <a href="commands.html#get"><code>:get</code></a> lists what the session already requires.</p>
+<p>-rm drops a requirement again, without fetching anything. It refuses when a session entry still imports a package of that module, naming the entries — a command that left the session unable to build would be a worse answer than a refusal you can undo with <a href="commands.html#drop"><code>:drop</code></a>. A module the attached host requires is refused too: it belongs to the host&#39;s go.mod, which gluon never edits.</p>
+<p>Removing a module drops everything the session derived from the old build list — the type checker&#39;s export data, the import cache, every cached result — and deactivates a plugin whose module has gone.</p>
+</div>
+      <p class="see">See also <a href="#plugins"><code>:plugins</code></a> · <a href="#reset"><code>:reset</code></a></p>
+      <p class="see">Worked through in <a href="../guide/project.html">In a project</a> · <a href="../guide/plugins.html">Plugins</a></p>
+    </article>
+  
+    <article class="ref" id="reload" data-f=":reload re-read the attached module after editing it  (rails&#39; reload!) ">
+      <h3><a class="pl" href="#reload">:reload</a><span class="ref-s">re-read the attached module after editing it  (Rails&#39; reload!)</span></h3>
+      <pre class="sig">:reload</pre>
+      <div class="chips"><span class="chip">takes nothing</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:reload</span></div><div class="tl says"><span class="an">    the next line sees the attached module as it is on disk now</span></div></div></div>
+      <div class="prose"><p>Drops everything the session derived from the host&#39;s source — the type checker&#39;s export data, the import cache, and every cached result — so the next line is answered against the code on disk now.</p>
+<p>The result cache is the one that matters: it is keyed on program text alone, so without this a line you have already run is answered from before the edit, and looks exactly like a line that ran.</p>
+<p>Nothing is built and nothing is run, and your entries are untouched.</p>
+</div>
+      <p class="see">See also <a href="#watch"><code>:watch</code></a> · <a href="#use"><code>:use</code></a></p>
+      <p class="see">Worked through in <a href="../guide/project.html">In a project</a></p>
+    </article>
+  
+    <article class="ref" id="watch" data-f=":watch reload by itself when the host&#39;s source changes ">
+      <h3><a class="pl" href="#watch">:watch</a><span class="ref-s">reload by itself when the host&#39;s source changes</span></h3>
+      <pre class="sig">:watch [on|off]</pre>
+      <div class="chips"><span class="chip">takes words</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">on|off</td><td>on off</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:watch</span> on</div><div class="tl says"><span class="an">    reload whenever one of the host&#39;s .go files changes</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:watch</span></div><div class="tl says"><span class="an">    whether it is on</span></div></div></div>
+      <div class="prose"><p>Polls the attached module&#39;s .go files and runs <a href="commands.html#reload"><code>:reload</code></a> when one moves, saying which file it saw. Off by default; a bare <a href="commands.html#watch"><code>:watch</code></a> reports the state.</p>
+<p>It stats on an interval rather than linking a filesystem-notification library, which is the same choice <code>gluon watch</code> makes. A reload never interrupts an evaluation: it waits for the one in flight to finish.</p>
+<p>It needs a terminal — through a pipe there is no event loop to deliver on.</p>
+</div>
+      <p class="see">See also <a href="#reload"><code>:reload</code></a> · <a href="#use"><code>:use</code></a></p>
+      <p class="see">Worked through in <a href="../guide/project.html">In a project</a></p>
+    </article>
+  
+    <article class="ref" id="db" data-f=":db the databases this project is configured to reach ">
+      <h3><a class="pl" href="#db">:db</a><span class="ref-s">the databases this project is configured to reach</span></h3>
+      <pre class="sig">:db [name]</pre>
+      <div class="chips"><span class="chip">takes words</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">name</td><td>a configured database — :db lists them</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:db</span></div><div class="tl says"><span class="an">    each database the project configures, and where that came from</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:db</span> primary</div></div></div>
+      <div class="prose"><p>Reports what gluon can connect to, and where each answer came from. Nothing is opened: <a href="commands.html#db"><code>:db</code></a> reads configuration, and <a href="commands.html#query"><code>:query</code></a> runs a statement.</p>
+<p>A connection string is never printed with its password, and gluon never stores one — a config names the variable or the file a secret lives in, and the value is read at the moment a query runs.</p>
+</div>
+      <p class="see">See also <a href="#query"><code>:query</code></a> · <a href="#conf"><code>:conf</code></a> · <a href="#env"><code>:env</code></a></p>
+      <p class="see">Worked through in <a href="../guide/database.html">The database</a></p>
+    </article>
+  
+    <article class="ref" id="query" data-f=":query run a statement against the project&#39;s database  :qq -d -w -json">
+      <h3><a class="pl" href="#query">:query</a><span class="ref-s">run a statement against the project&#39;s database</span></h3>
+      <pre class="sig">:query [-d &lt;name&gt;] [-w] [-json] &lt;sql&gt;</pre>
+      <div class="chips"><span class="chip">takes SQL</span><span class="chip">also :qq</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">sql</td><td>one statement, sent exactly as written</td></tr>
+        <tr id="query-d"><td class="mono">-d &lt;name&gt;</td><td>which database, when the project configures several</td></tr>
+        <tr id="query-w"><td class="mono">-w</td><td>allow a statement that writes</td></tr>
+        <tr id="query-json"><td class="mono">-json</td><td>rows as JSON, under gluon -e and through a pipe</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:query</span> <span class="kw">SELECT</span> id<span class="p">,</span> email <span class="kw">FROM</span> users <span class="kw">ORDER</span> <span class="kw">BY</span> id <span class="kw">LIMIT</span> <span class="nu">5</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:query</span> <span class="p">-</span>d analytics <span class="kw">SELECT</span> <span class="f">count</span><span class="p">(</span><span class="p">*</span><span class="p">)</span> <span class="kw">FROM</span> events</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:query</span> <span class="p">-</span>w <span class="kw">UPDATE</span> users <span class="kw">SET</span> plan <span class="p">=</span> <span class="s">&#39;pro&#39;</span> <span class="kw">WHERE</span> id <span class="p">=</span> <span class="nu">7</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:query</span> <span class="p">-</span><span class="ty">json</span> <span class="kw">SELECT</span> id<span class="p">,</span> email <span class="kw">FROM</span> users</div><div class="tl says"><span class="an">    column names, declared types and rows; NULL is null</span></div></div></div>
+      <div class="prose"><p>-d &lt;name&gt; picks one when a project configures several; with one, it is the one.</p>
+<p>The driver comes from the host module&#39;s own build list — gluon never links one, exactly as it never links gorm. Without a driver the message says which module to add.</p>
+<p>Read-only by default: the first word must be SELECT, WITH, EXPLAIN, SHOW, PRAGMA or DESCRIBE, and -w runs anything. That is a keyword check and not a parse — it is there to catch the paste you did not mean, not to prove a statement safe. The statement itself is never rewritten, so no LIMIT is added to a query that may already have one.</p>
+<p>The result is never cached. The cache is keyed on program text alone, so the same query would otherwise answer with the rows it first saw.</p>
+<p>-json answers with a structured envelope instead of a table, under gluon -e and through a pipe: the column names, the type the database declared for each, and the rows as arrays of cells. A cell that was SQL NULL is JSON null, which a rendered table cannot say. At a terminal the table is printed as always and a line says where the flag applies.</p>
+</div>
+      <p class="see">See also <a href="#db"><code>:db</code></a> · <a href="#conf"><code>:conf</code></a></p>
+      <p class="see">Worked through in <a href="../guide/database.html">The database</a></p>
+    </article>
+  
+  </div>
+</section>
+
+<section class="card" id="g-the-transcript" data-group>
+  <div class="card-head"><span class="idx">19</span><div class="hd"><h2>the transcript</h2></div></div>
+  <div class="card-body">
+  
+    <article class="ref" id="src" data-f=":src show the real go program your session became session_source · static, served without --eval">
+      <h3><a class="pl" href="#src">:src</a><span class="ref-s">show the real Go program your session became</span></h3>
+      <pre class="sig">:src</pre>
+      <div class="chips"><span class="chip">takes nothing</span><span class="chip c">MCP · session_source · static, served without --eval</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:src</span></div><div class="tl says"><span class="an">    the whole program the session renders into</span></div></div></div>
+      <div class="prose"></div>
+      <p class="see">See also <a href="#save"><code>:save</code></a> · <a href="#edit"><code>:edit</code></a> · <a href="#share"><code>:share</code></a></p>
+      <p class="see">Worked through in <a href="../guide/session.html">The session</a></p>
+    </article>
+  
+    <article class="ref" id="undo" data-f=":undo drop the last entry session_undo · with --eval">
+      <h3><a class="pl" href="#undo">:undo</a><span class="ref-s">drop the last entry</span></h3>
+      <pre class="sig">:undo</pre>
+      <div class="chips"><span class="chip">takes nothing</span><span class="chip c">MCP · session_undo · with --eval</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:undo</span></div></div></div>
+      <div class="prose"><p>Removes the newest entry and runs the session without it. It undoes the entry, not its effects: a line that wrote a file or sent a request did so, and the replay simply stops doing it again.</p>
+</div>
+      <p class="see">See also <a href="#drop"><code>:drop</code></a> · <a href="#hist"><code>:hist</code></a> · <a href="#bookmark"><code>:bookmark</code></a></p>
+      <p class="see">Worked through in <a href="../guide/start.html">The first five minutes</a> · <a href="../guide/session.html">The session</a></p>
+    </article>
+  
+    <article class="ref" id="test" data-f=":test the session&#39;s own judgement, written down as a go test go_test · with --eval -table">
+      <h3><a class="pl" href="#test">:test</a><span class="ref-s">the session&#39;s own judgement, written down as a Go test</span></h3>
+      <pre class="sig">:test [-table] &lt;exp&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go expression</span><span class="chip c">MCP · go_test · with --eval</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr id="test-table"><td class="mono">-table</td><td>the same assertion, shaped so a second case can join</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:test</span> strings<span class="p">.</span>ToUpper<span class="p">(</span><span class="s">&#34;hi&#34;</span><span class="p">)</span></div><div class="tl says"><span class="an">    a Go test asserting the value it has now</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:test</span> <span class="p">-</span>table strings<span class="p">.</span>Fields<span class="p">(</span><span class="s">&#34; a b &#34;</span><span class="p">)</span></div></div></div>
+      <div class="prose"><p>You tried an expression, you looked at the answer, and you decided the answer was right. That is got, want and a judgement, which is the whole content of a Go test — and gluon already holds the expression, its type and its value, so the only thing left is the typing.</p>
+<p>The expectation is the value observed now, and the doc comment says so: the test records what happened, and does not claim it was correct. That judgement stays yours, which is why this prints rather than writes. <a href="commands.html#save"><code>:save</code></a> -test keeps what has been generated.</p>
+<p>A value with no literal form — a pointer, a channel, a func — is refused with the part of the value that caused it, rather than emitted as a test that does not compile. A value whose type is not comparable with == gets reflect.DeepEqual and a comment saying why.</p>
+</div>
+      <p class="see">See also <a href="#save"><code>:save</code></a> · <a href="#diff"><code>:diff</code></a></p>
+      <p class="see">Worked through in <a href="../guide/session.html">The session</a></p>
+    </article>
+  
+    <article class="ref" id="save" data-f=":save write the session out as a runnable scratch module  -debug -test">
+      <h3><a class="pl" href="#save">:save</a><span class="ref-s">write the session out as a runnable scratch module</span></h3>
+      <pre class="sig">:save [-debug] [-test] [topic]</pre>
+      <div class="chips"><span class="chip">takes words</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">topic</td><td>names the directory; bare, in a scratchpad, refreshes it</td></tr>
+        <tr id="save-debug"><td class="mono">-debug</td><td>add a debugger launch configuration beside it</td></tr>
+        <tr id="save-test"><td class="mono">-test</td><td>write what :test generated as a test file</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:save</span> parser-bug</div><div class="tl says"><span class="an">    a runnable module, with its own go.mod so gopls works in it</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:save</span> -debug parser-bug</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:save</span> -test</div></div></div>
+      <div class="prose"><p>A directory with its own go.mod, so gopls stays alive in it — completion, hover, jump-to-definition. The topic names the directory. Flags read before it, so both fit on one line: <a href="commands.html#save"><code>:save</code></a> -debug parser-bug.</p>
+<p>-debug writes a debugger launch configuration beside the module and names the command that starts a session from a terminal. It is the answer to &#34;I need to step through this&#34;: gluon compiles each line into a program that exits, so there is no process to pause, and the way out is a real debugger on a real module.</p>
+<p>-test writes whatever <a href="commands.html#test"><code>:test</code></a> has generated as a test file beside the program. The program itself is byte-for-byte what a plain <a href="commands.html#save"><code>:save</code></a> writes.</p>
+<p>Inside a scratchpad a bare <a href="commands.html#save"><code>:save</code></a> refreshes that scratchpad&#39;s own program in place, so gopls and a debugger open the work in progress rather than a dated copy of it. <a href="commands.html#save"><code>:save</code></a> &lt;topic&gt; writes a new dated scratch either way.</p>
+</div>
+      <p class="see">See also <a href="#scratch"><code>:scratch</code></a> · <a href="#test"><code>:test</code></a> · <a href="#share"><code>:share</code></a></p>
+      <p class="see">Worked through in <a href="../guide/scratchpads.html">Scratchpads</a></p>
+    </article>
+  
+    <article class="ref" id="scratch" data-f=":scratch the scratchpad this session is saved in, and the way between them  -rm -mv -off -edit">
+      <h3><a class="pl" href="#scratch">:scratch</a><span class="ref-s">the scratchpad this session is saved in, and the way between them</span></h3>
+      <pre class="sig">:scratch [name] | -rm &lt;name&gt; | -mv &lt;name&gt; | -off | -edit</pre>
+      <div class="chips"><span class="chip">takes words</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">name</td><td>a scratchpad — :scratch lists them</td></tr>
+        <tr id="scratch-rm"><td class="mono">-rm</td><td>show a scratchpad, then remove it once you confirm</td></tr>
+        <tr id="scratch-mv"><td class="mono">-mv</td><td>rename the one you are in</td></tr>
+        <tr id="scratch-off"><td class="mono">-off</td><td>stop writing this session down</td></tr>
+        <tr id="scratch-edit"><td class="mono">-edit</td><td>open the scratchpad&#39;s own file, pins and all</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:scratch</span></div><div class="tl says"><span class="an">    every scratchpad, opened from a view</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:scratch</span> parser-bug</div><div class="tl says"><span class="an">    open it, creating it if it is new; it replays</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:scratch</span> -mv parser-fix</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:scratch</span> -rm old-idea</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:scratch</span> -off</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:scratch</span> -edit</div></div></div>
+      <div class="prose"><p>A scratchpad is a named session on disk. gluon lands on <code>default</code>, and every line you type into it is written down — the entries as you typed them, what is pinned, the host you are attached to, and the modules the session acquired. Tomorrow&#39;s gluon opens it and you are where you left off.</p>
+<p>Opening replays. The entries are installed as they were recorded and run as one program — one build for the whole session, not one per entry — so an entry that had effects has them again unless it is pinned, and pins are part of what is recorded. <code>gluon scratch show &lt;name&gt;</code> reads one without running any of it.</p>
+<p>Nothing is fetched. A recorded module is restored from the local module cache and never from the network; one the cache no longer holds is named along with the <a href="commands.html#get"><code>:get</code></a> line that would bring it back. <a href="commands.html#get"><code>:get</code></a> stays the only command that goes online.</p>
+<p>A bare <a href="commands.html#save"><code>:save</code></a> inside a scratchpad refreshes that scratchpad&#39;s own program, so gopls and a debugger open the work in progress. <a href="commands.html#save"><code>:save</code></a> &lt;topic&gt; writes a new dated scratch, exactly as before.</p>
+<p>A scratchpad that will not open is never written to: the session continues, the reason is said again when your next line lands, and the file is left byte-for-byte as it was.</p>
+</div>
+      <p class="see">See also <a href="#save"><code>:save</code></a> · <a href="#bookmark"><code>:bookmark</code></a></p>
+      <p class="see">Worked through in <a href="../guide/scratchpads.html">Scratchpads</a></p>
+    </article>
+  
+    <article class="ref" id="hist" data-f=":hist number the session&#39;s entries session_history · static, served without --eval">
+      <h3><a class="pl" href="#hist">:hist</a><span class="ref-s">number the session&#39;s entries</span></h3>
+      <pre class="sig">:hist</pre>
+      <div class="chips"><span class="chip">takes nothing</span><span class="chip c">MCP · session_history · static, served without --eval</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:hist</span></div><div class="tl says"><span class="an">    the entries, numbered for :drop and :pin</span></div></div></div>
+      <div class="prose"></div>
+      <p class="see">See also <a href="#drop"><code>:drop</code></a> · <a href="#pin"><code>:pin</code></a> · <a href="#replay"><code>:replay</code></a></p>
+      <p class="see">Worked through in <a href="../guide/session.html">The session</a></p>
+    </article>
+  
+    <article class="ref" id="drop" data-f=":drop remove one of them ">
+      <h3><a class="pl" href="#drop">:drop</a><span class="ref-s">remove one of them</span></h3>
+      <pre class="sig">:drop &lt;n&gt;</pre>
+      <div class="chips"><span class="chip">takes words</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">n</td><td>an entry number — :hist lists them</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:drop</span> 3</div></div></div>
+      <div class="prose"><p>Removes one entry by the number <a href="commands.html#hist"><code>:hist</code></a> shows and runs the rest. It is refused when a later line reads <code>it</code>, or an _N the removal would renumber, because that line would silently start meaning something else. If what is left no longer builds, the entry is put back.</p>
+</div>
+      <p class="see">See also <a href="#undo"><code>:undo</code></a> · <a href="#hist"><code>:hist</code></a> · <a href="#pin"><code>:pin</code></a></p>
+      <p class="see">Worked through in <a href="../guide/session.html">The session</a></p>
+    </article>
+  
+    <article class="ref" id="pin" data-f=":pin stop an entry re-running on replay ">
+      <h3><a class="pl" href="#pin">:pin</a><span class="ref-s">stop an entry re-running on replay</span></h3>
+      <pre class="sig">:pin [n]</pre>
+      <div class="chips"><span class="chip">takes words</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">n</td><td>an entry number — :hist lists them</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:pin</span> 2</div><div class="tl says"><span class="an">    entry 2 has happened; replay stops running it</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:pin</span></div><div class="tl says"><span class="an">    what is pinned</span></div></div></div>
+      <div class="prose"><p>Every line re-renders the whole session and runs it again, so a line that fetched a URL or wrote a file does it again on every subsequent line. <a href="commands.html#pin"><code>:pin</code></a> &lt;n&gt; takes that entry out of the program: it has already happened, and it will not happen again.</p>
+<p>A bare <a href="commands.html#pin"><code>:pin</code></a> lists what is pinned. <a href="commands.html#unpin"><code>:unpin</code></a> &lt;n&gt; puts one back.</p>
+<p>It is refused when a later entry uses what the pinned one bound, and says which entry that is. gluon does not invent the missing value — the printer&#39;s output is a display form, not a literal, so rebuilding one from it would be a guess.</p>
+</div>
+      <p class="see">See also <a href="#unpin"><code>:unpin</code></a> · <a href="#refresh"><code>:refresh</code></a> · <a href="#hist"><code>:hist</code></a></p>
+      <p class="see">Worked through in <a href="../guide/session.html">The session</a></p>
+    </article>
+  
+    <article class="ref" id="unpin" data-f=":unpin put a pinned entry back into the program ">
+      <h3><a class="pl" href="#unpin">:unpin</a><span class="ref-s">put a pinned entry back into the program</span></h3>
+      <pre class="sig">:unpin &lt;n&gt;</pre>
+      <div class="chips"><span class="chip">takes words</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">n</td><td>a pinned entry — :pin lists them</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:unpin</span> 2</div></div></div>
+      <div class="prose"></div>
+      <p class="see">See also <a href="#pin"><code>:pin</code></a> · <a href="#refresh"><code>:refresh</code></a></p>
+      <p class="see">Worked through in <a href="../guide/session.html">The session</a></p>
+    </article>
+  
+    <article class="ref" id="refresh" data-f=":refresh run the pinned entries once more session_refresh · with --eval">
+      <h3><a class="pl" href="#refresh">:refresh</a><span class="ref-s">run the pinned entries once more</span></h3>
+      <pre class="sig">:refresh</pre>
+      <div class="chips"><span class="chip">takes nothing</span><span class="chip c">MCP · session_refresh · with --eval</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:refresh</span></div><div class="tl says"><span class="an">    the pinned entries run once more; the pins stay</span></div></div></div>
+      <div class="prose"><p><a href="commands.html#pin"><code>:pin</code></a> says an entry has already happened, so replay stops running it. That is right until the code underneath it changes, at which point the session is holding a result computed against source that is gone.</p>
+<p><a href="commands.html#refresh"><code>:refresh</code></a> runs the program once with every pin lifted, and puts the pins back afterwards whether it succeeded or not. It is never served from the cached results: the program text is identical to last time — that is what a replay is — and the answer is what may have changed.</p>
+<p>Pinned entries were pinned for a reason. Running them again does whatever they did the first time.</p>
+</div>
+      <p class="see">See also <a href="#pin"><code>:pin</code></a> · <a href="#reload"><code>:reload</code></a></p>
+      <p class="see">Worked through in <a href="../guide/session.html">The session</a></p>
+    </article>
+  
+    <article class="ref" id="load" data-f=":load read a file in, line by line ">
+      <h3><a class="pl" href="#load">:load</a><span class="ref-s">read a file in, line by line</span></h3>
+      <pre class="sig">:load &lt;file&gt;</pre>
+      <div class="chips"><span class="chip">takes words</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">file</td><td>Go source, entered one construct at a time</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:load</span> snippets/setup.go</div></div></div>
+      <div class="prose"><p>Reads the file and submits it one construct at a time, as though each were typed, stopping at the first that fails. An unfinished construct at the end is left out rather than reported against text that may still be being written. The file is read once; <a href="commands.html#load"><code>:load</code></a> it again after editing it.</p>
+</div>
+      <p class="see">See also <a href="#edit"><code>:edit</code></a> · <a href="#buf"><code>:buf</code></a> · <a href="#replay"><code>:replay</code></a></p>
+      <p class="see">Worked through in <a href="../guide/session.html">The session</a></p>
+    </article>
+  
+    <article class="ref" id="bookmark" data-f=":bookmark snapshot the session under a name, or list the snapshots ">
+      <h3><a class="pl" href="#bookmark">:bookmark</a><span class="ref-s">snapshot the session under a name, or list the snapshots</span></h3>
+      <pre class="sig">:bookmark [name]</pre>
+      <div class="chips"><span class="chip">takes words</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">name</td><td>a snapshot — :bookmark lists them</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:bookmark</span> before-refactor</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:bookmark</span></div><div class="tl says"><span class="an">    the snapshots taken this session</span></div></div></div>
+      <div class="prose"><p>A snapshot of the entries, their order and what is pinned, recorded under a name and taking nothing away from the session you are in. <a href="commands.html#restore"><code>:restore</code></a> &lt;name&gt; puts it back. A bare <a href="commands.html#bookmark"><code>:bookmark</code></a> lists what has been taken.</p>
+<p>Snapshots last for this session and no longer. Nothing about them reaches the disk, so a new gluon starts with none — <a href="commands.html#scratch"><code>:scratch</code></a> is what makes a session durable, and it keeps the entries themselves rather than the program they render into.</p>
+<p>Reusing a name replaces what was under it, and the line says so.</p>
+</div>
+      <p class="see">See also <a href="#branch"><code>:branch</code></a> · <a href="#restore"><code>:restore</code></a> · <a href="#scratch"><code>:scratch</code></a></p>
+      <p class="see">Worked through in <a href="../guide/session.html">The session</a></p>
+    </article>
+  
+    <article class="ref" id="branch" data-f=":branch snapshot and keep going, naming it for you if you like ">
+      <h3><a class="pl" href="#branch">:branch</a><span class="ref-s">snapshot and keep going, naming it for you if you like</span></h3>
+      <pre class="sig">:branch [name]</pre>
+      <div class="chips"><span class="chip">takes words</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:branch</span></div><div class="tl says"><span class="an">    a snapshot under a name made up for you, printed</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:branch</span> try-generics</div></div></div>
+      <div class="prose"><p><a href="commands.html#bookmark"><code>:bookmark</code></a>, for the case where you had not decided to bookmark. It records where the session is and leaves it exactly there, so the state before an experiment is recoverable without having thought of it first — and with no name it generates a short one and prints it, because having to invent a name is the thing it exists to remove.</p>
+<p>Snapshots last for this session and no longer. <a href="commands.html#scratch"><code>:scratch</code></a> is what makes a session durable.</p>
+</div>
+      <p class="see">See also <a href="#bookmark"><code>:bookmark</code></a> · <a href="#restore"><code>:restore</code></a></p>
+      <p class="see">Worked through in <a href="../guide/session.html">The session</a></p>
+    </article>
+  
+    <article class="ref" id="restore" data-f=":restore put a snapshot back, and replay it ">
+      <h3><a class="pl" href="#restore">:restore</a><span class="ref-s">put a snapshot back, and replay it</span></h3>
+      <pre class="sig">:restore &lt;name&gt;</pre>
+      <div class="chips"><span class="chip">takes words</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">name</td><td>a snapshot — :bookmark lists them</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:restore</span> before-refactor</div></div></div>
+      <div class="prose"><p>Replaces the session with the snapshot and runs it, reinstating the entries, their order and what was pinned.</p>
+<p>If the replay fails, the session you were leaving is put back and the line says so: a restore that could destroy the state it was moving away from would be worse than no restore at all. It is the same path <a href="commands.html#edit"><code>:edit</code></a> uses to reload an edited session.</p>
+<p>An unknown name lists the ones there are.</p>
+<p>Snapshots last for this session and no longer; <a href="commands.html#scratch"><code>:scratch</code></a> is what makes a session durable.</p>
+</div>
+      <p class="see">See also <a href="#bookmark"><code>:bookmark</code></a> · <a href="#branch"><code>:branch</code></a></p>
+      <p class="see">Worked through in <a href="../guide/session.html">The session</a></p>
+    </article>
+  
+    <article class="ref" id="replay" data-f=":replay find lines in the persisted history and bring them in  -run">
+      <h3><a class="pl" href="#replay">:replay</a><span class="ref-s">find lines in the persisted history and bring them in</span></h3>
+      <pre class="sig">:replay [-run] &lt;pattern&gt;</pre>
+      <div class="chips"><span class="chip">takes words</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">pattern</td><td>text in the history line, any case</td></tr>
+        <tr id="replay-run"><td class="mono">-run</td><td>bring them in without showing them first</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:replay</span> http.Get</div><div class="tl says"><span class="an">    the matching lines, shown before any of them runs</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:replay</span> -run strings.Fields</div></div></div>
+      <div class="prose"><p>Ctrl-R searches the history one line at a time and <a href="commands.html#hist"><code>:hist</code></a> numbers the session; neither reaches the five thousand lines in the file, so the expression you got right in yesterday&#39;s session is somewhere you cannot get to without a text editor. This searches that file, case insensitively, and brings the matches into the session in the order the file holds them.</p>
+<p>They are shown before any of them runs. A history line is a line somebody typed, some of them wrote something, and the session replays every entry on every later line — so what is about to happen is printed verbatim rather than counted. Enter in the view brings them in; q leaves without running anything.</p>
+<p>The view submits <a href="commands.html#replay"><code>:replay</code></a> -run &lt;pattern&gt;, which is also the form to type when you already know what the pattern matches, and the form a pipe has — confirming needs a terminal, but listing does not.</p>
+<p>Meta commands are skipped. History holds them as typed, and a line beginning with a colon is not a session entry: replaying <a href="commands.html#reset"><code>:reset</code></a> would clear the session it was being replayed into.</p>
+</div>
+      <p class="see">See also <a href="#hist"><code>:hist</code></a> · <a href="#load"><code>:load</code></a></p>
+      <p class="see">Worked through in <a href="../guide/session.html">The session</a></p>
+    </article>
+  
+    <article class="ref" id="share" data-f=":share show the program, then publish it to the go playground ">
+      <h3><a class="pl" href="#share">:share</a><span class="ref-s">show the program, then publish it to the Go Playground</span></h3>
+      <pre class="sig">:share</pre>
+      <div class="chips"><span class="chip">takes nothing</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:share</span></div><div class="tl says"><span class="an">    the program, then a question; nothing is sent until you answer</span></div></div></div>
+      <div class="prose"><p>The program <a href="commands.html#src"><code>:src</code></a> shows, uploaded to the Go Playground, with the address it can be read at. It is the answer to &#34;look at this&#34; — the path that is otherwise <a href="commands.html#save"><code>:save</code></a>, open the file, copy it, paste it into a browser.</p>
+<p>The upload is public and cannot be withdrawn. That is why the confirmation shows the program itself rather than a count of its lines: what you read is byte-for-byte what is sent. There is no flag and no setting that skips it, because a confirmation that can be pre-authorised is one that has stopped being asked.</p>
+<p>Only the rendered program goes. Not the history, not the environment, and not the attached module&#39;s source — the program names a host&#39;s packages, and naming them is not uploading them.</p>
+<p>A program carrying anything that looks like a credential is refused outright, naming the line, rather than warned about. Sharing is the one thing here that cannot be undone.</p>
+<p>Confirming needs a terminal. Through a pipe it prints what would have gone and uploads nothing.</p>
+</div>
+      <p class="see">See also <a href="#src"><code>:src</code></a> · <a href="#save"><code>:save</code></a></p>
+      <p class="see">Worked through in <a href="../guide/scratchpads.html">Scratchpads</a></p>
+    </article>
+  
+    <article class="ref" id="edit" data-f=":edit open the session in $editor and reload it  (pry&#39;s edit) ">
+      <h3><a class="pl" href="#edit">:edit</a><span class="ref-s">open the session in $EDITOR and reload it  (pry&#39;s edit)</span></h3>
+      <pre class="sig">:edit</pre>
+      <div class="chips"><span class="chip">takes nothing</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:edit</span></div></div></div>
+      <div class="prose"><p>Opens what you typed — the entries, not the program they render into — in $EDITOR, or in gluon&#39;s own editor with editor = &#34;builtin&#34;, and replaces the session with the file when it closes. If the edited session does not replay, the one you had is put back. <a href="commands.html#src"><code>:src</code></a> is the real program, and <a href="commands.html#buf"><code>:buf</code></a> is somewhere to write code that has not run yet.</p>
+</div>
+      <p class="see">See also <a href="#buf"><code>:buf</code></a> · <a href="#src"><code>:src</code></a> · <a href="#load"><code>:load</code></a></p>
+      <p class="see">Worked through in <a href="../guide/editing.html">Editing</a></p>
+    </article>
+  
+    <article class="ref" id="buf" data-f=":buf a buffer you edit and run as one evaluation  -check -run -show -clear">
+      <h3><a class="pl" href="#buf">:buf</a><span class="ref-s">a buffer you edit and run as one evaluation</span></h3>
+      <pre class="sig">:buf [-check | -run | -show | -clear]</pre>
+      <div class="chips"><span class="chip">takes words</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr id="buf-check"><td class="mono">-check</td><td>does it compile against the session? builds nothing</td></tr>
+        <tr id="buf-run"><td class="mono">-run</td><td>evaluate it — what closing the editor does</td></tr>
+        <tr id="buf-show"><td class="mono">-show</td><td>print it</td></tr>
+        <tr id="buf-clear"><td class="mono">-clear</td><td>empty it</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:buf</span></div><div class="tl says"><span class="an">    open it in the editor; closing the editor runs it</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:buf</span> -check</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:buf</span> -run</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:buf</span> -show</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:buf</span> -clear</div></div></div>
+      <div class="prose"><p>A place to write Go that has not run yet. <a href="commands.html#buf"><code>:buf</code></a> opens it in your editor — the same one <a href="commands.html#edit"><code>:edit</code></a> uses — and closing the editor runs the whole buffer as a single evaluation: one build for however many constructs it holds, exactly as a pasted block costs one.</p>
+<p>It is not <a href="commands.html#edit"><code>:edit</code></a>. <a href="commands.html#edit"><code>:edit</code></a> opens the session and replaces it; the buffer is somewhere else entirely, and running it appends. What you write stays there across opens, so you can run it, fix it and run it again; nothing about it reaches the disk when the session ends.</p>
+<p>-check is an opinion, not a gate. When the type checker cannot answer it says so rather than guessing, and -run never asks it: the compiler decides, which is why there is nothing to override.</p>
+</div>
+      <p class="see">See also <a href="#edit"><code>:edit</code></a> · <a href="#load"><code>:load</code></a></p>
+      <p class="see">Worked through in <a href="../guide/editing.html">Editing</a></p>
+    </article>
+  
+    <article class="ref" id="time" data-f=":time show where each line&#39;s latency went ">
+      <h3><a class="pl" href="#time">:time</a><span class="ref-s">show where each line&#39;s latency went</span></h3>
+      <pre class="sig">:time [on|off]</pre>
+      <div class="chips"><span class="chip">takes words</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">on|off</td><td>on off</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:time</span> on</div><div class="tl says"><span class="an">    every line reports gofmt, type check, build and run</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:time</span> off</div></div></div>
+      <div class="prose"><p>With it on, every line reports where its latency went: gofmt, the type check, the build and the run. A line the checker answers shows no build, which is the whole design, measured.</p>
+</div>
+      <p class="see">See also <a href="#bench"><code>:bench</code></a></p>
+      <p class="see">Worked through in <a href="../guide/measuring.html">Measuring</a> · <a href="../guide/design.html">How it works</a></p>
+    </article>
+  
+  </div>
+</section>
+
+<section class="card" id="g-from-plugins" data-group>
+  <div class="card-head"><span class="idx">20</span><div class="hd"><h2>from plugins</h2></div></div>
+  <div class="card-body">
+  
+    <article class="ref" id="json" data-f=":json the value as indented json, the way it goes over a wire go_json · with --eval, while the plugin is active json">
+      <h3><a class="pl" href="#json">:json</a><span class="ref-s">the value as indented JSON, the way it goes over a wire</span></h3>
+      <pre class="sig">:json &lt;exp&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go expression</span><span class="chip c">MCP · go_json · with --eval, while the plugin is active</span><span class="chip o">json plugin</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:json</span> user</div><div class="tl says"><span class="an">    what its json tags produce, indented</span></div></div></div>
+      <div class="prose"><p>Answers what a struct&#39;s tags actually produce, which the value printer cannot show: it reports the Go field names, and json reports the tags.</p>
+</div>
+      <p class="see">See also <a href="#xml"><code>:xml</code></a> · <a href="#yaml"><code>:yaml</code></a> · <a href="#toml"><code>:toml</code></a></p>
+      <p class="see">Worked through in <a href="../guide/plugins.html">Plugins</a></p>
+    </article>
+  
+    <article class="ref" id="xml" data-f=":xml the value as indented xml, with the tags applied go_xml · with --eval, while the plugin is active xml">
+      <h3><a class="pl" href="#xml">:xml</a><span class="ref-s">the value as indented XML, with the tags applied</span></h3>
+      <pre class="sig">:xml &lt;exp&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go expression</span><span class="chip c">MCP · go_xml · with --eval, while the plugin is active</span><span class="chip o">xml plugin</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:xml</span> order</div><div class="tl says"><span class="an">    elements, attributes and nesting, as the tags say</span></div></div></div>
+      <div class="prose"><p>The question <a href="commands.html#json"><code>:json</code></a> answers, for the encoding whose tags do more: an xml tag names the element, moves a field into an attribute with <code>,attr</code>, and nests with <code>a&gt;b&gt;c</code>. None of that is visible in the printed value.</p>
+<p>encoding/xml refuses a map — it has no element name for the keys — and the error is returned as the answer rather than dropped, because finding out is often why the command was run.</p>
+</div>
+      <p class="see">See also <a href="#json"><code>:json</code></a></p>
+      <p class="see">Worked through in <a href="../guide/plugins.html">Plugins</a></p>
+    </article>
+  
+    <article class="ref" id="csv" data-f=":csv a sequence of records as csv, header included go_csv · with --eval, while the plugin is active csv">
+      <h3><a class="pl" href="#csv">:csv</a><span class="ref-s">a sequence of records as CSV, header included</span></h3>
+      <pre class="sig">:csv &lt;exp&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go expression</span><span class="chip c">MCP · go_csv · with --eval, while the plugin is active</span><span class="chip o">csv plugin</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:csv</span> rows</div><div class="tl says"><span class="an">    one record per element, the header from the fields or their tags</span></div></div></div>
+      <div class="prose"><p>Takes a slice of structs — one row each, with the header read from the field names or from their <code>csv:&#34;...&#34;</code> tags — or a slice of slices, where each element is already a row.</p>
+<p>Anything else is refused by name rather than rendered as a guess: a CSV is a table, and a scalar or a map is not one. The refusal names the shapes it does take.</p>
+<p>Quoting is encoding/csv&#39;s own, so a value containing a comma or a newline comes out as the file would hold it.</p>
+</div>
+      <p class="see">See also <a href="#json"><code>:json</code></a></p>
+      <p class="see">Worked through in <a href="../guide/plugins.html">Plugins</a></p>
+    </article>
+  
+    <article class="ref" id="when" data-f=":when a time.time in the forms you actually want to read go_when · with --eval, while the plugin is active time">
+      <h3><a class="pl" href="#when">:when</a><span class="ref-s">a time.Time in the forms you actually want to read</span></h3>
+      <pre class="sig">:when &lt;exp&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go expression</span><span class="chip c">MCP · go_when · with --eval, while the plugin is active</span><span class="chip o">time plugin</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:when</span> time<span class="p">.</span>Now<span class="p">(</span><span class="p">)</span></div><div class="tl says"><span class="an">    RFC 3339, your local time, the zone and Unix seconds</span></div></div></div>
+      <div class="prose"><p>The printed form of a time.Time is {wall:… ext:… loc:…}, because the value printer reports structure and time.Time keeps its meaning in String(). <a href="commands.html#when"><code>:when</code></a> asks the child instead, where the value is still real.</p>
+</div>
+      <p class="see">See also <a href="#t"><code>:t</code></a></p>
+      <p class="see">Worked through in <a href="../guide/plugins.html">Plugins</a></p>
+    </article>
+  
+    <article class="ref" id="slog" data-f=":slog how the value appears in a structured log line go_slog · with --eval, while the plugin is active slog">
+      <h3><a class="pl" href="#slog">:slog</a><span class="ref-s">how the value appears in a structured log line</span></h3>
+      <pre class="sig">:slog &lt;exp&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go expression</span><span class="chip c">MCP · go_slog · with --eval, while the plugin is active</span><span class="chip o">slog plugin</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:slog</span> req</div><div class="tl says"><span class="an">    the key=value form a TextHandler writes for it</span></div></div></div>
+      <div class="prose"><p>Runs the value through a real slog.TextHandler. What a type looks like in logs is a question about its LogValuer and its String method, not about its fields, so the printed form cannot answer it.</p>
+</div>
+      <p class="see">See also <a href="#json"><code>:json</code></a></p>
+      <p class="see">Worked through in <a href="../guide/plugins.html">Plugins</a></p>
+    </article>
+  
+    <article class="ref" id="dec" data-f=":dec a decimal&#39;s exact value, and what float64 would have done to it go_dec · with --eval, while the plugin is active decimal">
+      <h3><a class="pl" href="#dec">:dec</a><span class="ref-s">a decimal&#39;s exact value, and what float64 would have done to it</span></h3>
+      <pre class="sig">:dec &lt;exp&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go expression</span><span class="chip c">MCP · go_dec · with --eval, while the plugin is active</span><span class="chip o">decimal plugin</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:dec</span> decimal<span class="p">.</span>NewFromFloat<span class="p">(</span><span class="nu">0.1</span><span class="p">)</span></div><div class="tl says"><span class="an">    the exact decimal, and the float64 it would have been</span></div></div></div>
+      <div class="prose"><p>Prints the exact decimal alongside the float64 round-trip, because the reason to reach for this package at all is that the two differ.</p>
+</div>
+      <p class="see">See also <a href="#t"><code>:t</code></a></p>
+      <p class="see">Worked through in <a href="../guide/plugins.html">Plugins</a></p>
+    </article>
+  
+    <article class="ref" id="sql" data-f=":sql the sql a gorm chain produces, and its arguments go_sql · with --eval, while the plugin is active gorm">
+      <h3><a class="pl" href="#sql">:sql</a><span class="ref-s">the SQL a gorm chain produces, and its arguments</span></h3>
+      <pre class="sig">:sql &lt;chain&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go expression</span><span class="chip c">MCP · go_sql · with --eval, while the plugin is active</span><span class="chip o">gorm plugin</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:sql</span> db<span class="p">.</span>Where<span class="p">(</span><span class="s">&#34;age &gt; ?&#34;</span><span class="p">,</span> <span class="nu">30</span><span class="p">)</span><span class="p">.</span>Find<span class="p">(</span><span class="p">&amp;</span>users<span class="p">)</span></div><div class="tl says"><span class="an">    the SQL and its arguments; nothing reaches the database</span></div></div></div>
+      <div class="prose"><p>Nothing is sent to the database. gorm builds the statement in DryRun mode, which has to be set at the start of the chain — so <a href="commands.html#sql"><code>:sql</code></a> parses what you typed and injects .Session(&amp;gorm.Session{DryRun: true}) at its base.</p>
+<p>The arguments are printed separately rather than interpolated, because a query with its parameters already substituted is not the query that runs.</p>
+</div>
+      <p class="see">See also <a href="#query"><code>:query</code></a> · <a href="#expand"><code>:expand</code></a></p>
+      <p class="see">Worked through in <a href="../guide/plugins.html">Plugins</a></p>
+    </article>
+  
+    <article class="ref" id="expand" data-f=":expand the query after sqlx rewrites it, and the arguments in their new order go_expand · with --eval, while the plugin is active sqlx">
+      <h3><a class="pl" href="#expand">:expand</a><span class="ref-s">the query after sqlx rewrites it, and the arguments in their new order</span></h3>
+      <pre class="sig">:expand &lt;query&gt;[, &lt;args&gt;...]</pre>
+      <div class="chips"><span class="chip">takes a Go expression</span><span class="chip c">MCP · go_expand · with --eval, while the plugin is active</span><span class="chip o">sqlx plugin</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">query</td><td>a query with named parameters or an IN (?)</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:expand</span> <span class="s">&#34;SELECT * FROM users WHERE id IN (?)&#34;</span><span class="p">,</span> <span class="p">[</span><span class="p">]</span><span class="ty">int</span><span class="p">{</span><span class="nu">1</span><span class="p">,</span> <span class="nu">2</span><span class="p">,</span> <span class="nu">3</span><span class="p">}</span></div><div class="tl says"><span class="an">    the query after sqlx rewrote it, and the arguments in their new order</span></div></div></div>
+      <div class="prose"><p>Takes the query and the arguments you would have passed:</p>
+<pre>:expand &#34;SELECT * FROM users WHERE id IN (?)&#34;, []int{1, 2, 3}
+:expand &#34;SELECT * FROM users WHERE name = :name&#34;, map[string]any{&#34;name&#34;: &#34;Ada&#34;}</pre>
+<p>Nothing is sent to the database — sqlx.Named and sqlx.In are pure functions over the text, so this opens no connection and needs no driver.</p>
+<p>Named runs first, and only when the query really carries a named parameter: on a positional query it returns an empty argument list without an error, which would silently drop what you passed. A doubled colon is a Postgres cast rather than a parameter, and is skipped the way sqlx skips it.</p>
+<p>The placeholders come back as ?, which is what Named produces before db.Rebind translates them for the driver you are on.</p>
+<p>The arguments are printed separately rather than interpolated, because a query with its parameters already substituted is not the query that runs.</p>
+</div>
+      <p class="see">See also <a href="#sql"><code>:sql</code></a> · <a href="#query"><code>:query</code></a></p>
+      <p class="see">Worked through in <a href="../guide/plugins.html">Plugins</a></p>
+    </article>
+  
+    <article class="ref" id="schema" data-f=":schema the tables, columns and edges ent generated, without a connection go_schema · with --eval, while the plugin is active ent">
+      <h3><a class="pl" href="#schema">:schema</a><span class="ref-s">the tables, columns and edges ent generated, without a connection</span></h3>
+      <pre class="sig">:schema &lt;tables&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go expression</span><span class="chip c">MCP · go_schema · with --eval, while the plugin is active</span><span class="chip o">ent plugin</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:schema</span> migrate<span class="p">.</span>Tables</div><div class="tl says"><span class="an">    tables, columns and edges, with no connection</span></div></div></div>
+      <div class="prose"><p>Takes the generated table set, which ent writes as migrate.Tables:</p>
+<pre>:schema migrate.Tables</pre>
+<p>Everything shown is a runtime descriptor the generated package already holds — nothing is opened, and no migration is planned or applied.</p>
+<p>Edges appear as the foreign keys they became, because that is what the generated schema records: an edge to another type is a column and a reference, and a many-to-many edge is a join table of its own.</p>
+<p>There is deliberately no <a href="commands.html#sql"><code>:sql</code></a> for ent. Its query builders expose no supported way to produce a statement without running it — <a href="commands.html#guide"><code>:guide</code></a> ent has the detail, and the alternative would be a preview that queried.</p>
+</div>
+      <p class="see">See also <a href="#query"><code>:query</code></a> · <a href="#db"><code>:db</code></a></p>
+      <p class="see">Worked through in <a href="../guide/plugins.html">Plugins</a></p>
+    </article>
+  
+    <article class="ref" id="migrations" data-f=":migrations which migrations have been applied, from the tracking table go_migrations · with --eval, while the plugin is active goose migrate -d">
+      <h3><a class="pl" href="#migrations">:migrations</a><span class="ref-s">which migrations have been applied, from the tracking table</span></h3>
+      <pre class="sig">:migrations [-d &lt;name&gt;] [name]</pre>
+      <div class="chips"><span class="chip">takes words</span><span class="chip c">MCP · go_migrations · with --eval, while the plugin is active</span><span class="chip o">goose plugin</span><span class="chip o">migrate plugin</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">name</td><td>a configured database — :db lists them</td></tr>
+        <tr id="migrations-d"><td class="mono">-d &lt;name&gt;</td><td>which database, as :query -d picks one</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:migrations</span></div><div class="tl says"><span class="an">    the tracking table, newest first</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:migrations</span> -d analytics</div></div></div>
+      <div class="prose"><p>Reads goose_db_version, newest first: the version, whether it is applied, and when it was stamped.</p>
+<p>It goes through the project&#39;s configured database — the same connection and the same driver <a href="commands.html#query"><code>:query</code></a> uses, with the connection string reaching the child through its environment and never through the generated source. -d &lt;name&gt; picks one when a project configures several.</p>
+<p>Nothing is applied. This is a SELECT, checked by the same read-only allowlist <a href="commands.html#query"><code>:query</code></a> uses, and goose&#39;s own status API is deliberately not called: it can create the tracking table on a database that has none.</p>
+</div>
+      <p class="see">See also <a href="#db"><code>:db</code></a> · <a href="#query"><code>:query</code></a></p>
+      <p class="see">Worked through in <a href="../guide/plugins.html">Plugins</a></p>
+    </article>
+  
+    <article class="ref" id="routes" data-f=":routes every route registered on the router go_routes · with --eval, while the plugin is active chi gin echo fiber hertz iris mux">
+      <h3><a class="pl" href="#routes">:routes</a><span class="ref-s">every route registered on the router</span></h3>
+      <pre class="sig">:routes &lt;router&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go expression</span><span class="chip c">MCP · go_routes · with --eval, while the plugin is active</span><span class="chip o">chi plugin</span><span class="chip o">gin plugin</span><span class="chip o">echo plugin</span><span class="chip o">fiber plugin</span><span class="chip o">hertz plugin</span><span class="chip o">iris plugin</span><span class="chip o">mux plugin</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">router</td><td>the router value your code builds</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:routes</span> r</div><div class="tl says"><span class="an">    every route registered on it: method, path and handler</span></div></div></div>
+      <div class="prose"><p>chi.Walk descends into mounted sub-routers, so this is the whole tree rather than the routes registered directly on the mux you named. The walk hands over the http.Handler itself and never its name, so the handler column is unavailable rather than blank.</p>
+</div>
+      <p class="see">See also <a href="#http"><code>:http</code></a></p>
+      <p class="see">Worked through in <a href="../guide/plugins.html">Plugins</a></p>
+    </article>
+  
+    <article class="ref" id="tree" data-f=":tree a cobra command and everything under it go_tree · with --eval, while the plugin is active cobra">
+      <h3><a class="pl" href="#tree">:tree</a><span class="ref-s">a cobra command and everything under it</span></h3>
+      <pre class="sig">:tree &lt;command&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go expression</span><span class="chip c">MCP · go_tree · with --eval, while the plugin is active</span><span class="chip o">cobra plugin</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:tree</span> rootCmd</div><div class="tl says"><span class="an">    every subcommand beneath it, with its flags</span></div></div></div>
+      <div class="prose"><p>Walks the subcommand tree depth-first, with each command&#39;s short description. Hidden commands are marked rather than omitted — a tree that quietly left them out would be the wrong answer to &#34;what can this run&#34;.</p>
+</div>
+      <p class="see">See also <a href="#routes"><code>:routes</code></a></p>
+      <p class="see">Worked through in <a href="../guide/plugins.html">Plugins</a></p>
+    </article>
+  
+    <article class="ref" id="services" data-f=":services what a container has registered, and where each provider came from go_services · with --eval, while the plugin is active do dig">
+      <h3><a class="pl" href="#services">:services</a><span class="ref-s">what a container has registered, and where each provider came from</span></h3>
+      <pre class="sig">:services &lt;i&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go expression</span><span class="chip c">MCP · go_services · with --eval, while the plugin is active</span><span class="chip o">do plugin</span><span class="chip o">dig plugin</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:services</span> i</div><div class="tl says"><span class="an">    every service the container can provide</span></div></div></div>
+      <div class="prose"><p>ListProvidedServices names everything the injector can provide, in the current scope and every ancestor, whether or not it has ever been built. The scope column is do&#39;s answer to where a provider came from: it records the scope a service was registered into rather than the function.</p>
+<p>Nothing is invoked. A do provider only runs when something asks for the service, and listing is not asking.</p>
+</div>
+      <p class="see">See also <a href="#graph"><code>:graph</code></a></p>
+      <p class="see">Worked through in <a href="../guide/plugins.html">Plugins</a></p>
+    </article>
+  
+    <article class="ref" id="graph" data-f=":graph how a container&#39;s providers depend on one another go_graph · with --eval, while the plugin is active do dig">
+      <h3><a class="pl" href="#graph">:graph</a><span class="ref-s">how a container&#39;s providers depend on one another</span></h3>
+      <pre class="sig">:graph &lt;i&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go expression</span><span class="chip c">MCP · go_graph · with --eval, while the plugin is active</span><span class="chip o">do plugin</span><span class="chip o">dig plugin</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:graph</span> i</div><div class="tl says"><span class="an">    who depends on whom</span></div></div></div>
+      <div class="prose"><p>ExplainNamedService reports a service&#39;s dependencies, and do knows an edge once it has built the service that has it — a provider takes the injector and resolves what it needs by calling it, so there is nothing static to read beforehand. A service nothing has invoked yet shows —.</p>
+<p>That marker is the point of the command. Reporting no dependencies for a service do has never built would be a confident answer to a question do has not been asked.</p>
+</div>
+      <p class="see">See also <a href="#services"><code>:services</code></a></p>
+      <p class="see">Worked through in <a href="../guide/plugins.html">Plugins</a></p>
+    </article>
+  
+    <article class="ref" id="config" data-f=":config the settings this config library resolved go_config · with --eval, while the plugin is active viper koanf">
+      <h3><a class="pl" href="#config">:config</a><span class="ref-s">the settings this config library resolved</span></h3>
+      <pre class="sig">:config &lt;v&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go expression</span><span class="chip c">MCP · go_config · with --eval, while the plugin is active</span><span class="chip o">viper plugin</span><span class="chip o">koanf plugin</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:config</span> v</div><div class="tl says"><span class="an">    every key and its value, secrets masked</span></div></div></div>
+      <div class="prose"><p>AllKeys is every key viper knows about — from the config file, from Set, from a bound flag, from an environment variable and from a default — and Get answers with whichever of those won. That precedence is the thing a config file cannot tell you, and the reason this is not <a href="commands.html#conf"><code>:conf</code></a>.</p>
+<p>Values are redacted by shape on the way to the screen, by gluon and not by the generated program: the same test <a href="commands.html#env"><code>:env</code></a> and <a href="commands.html#conf"><code>:conf</code></a> use.</p>
+</div>
+      <p class="see">See also <a href="#conf"><code>:conf</code></a> · <a href="#env"><code>:env</code></a></p>
+      <p class="see">Worked through in <a href="../guide/plugins.html">Plugins</a></p>
+    </article>
+  
+    <article class="ref" id="yaml" data-f=":yaml the value as yaml, with its yaml tags applied go_yaml · with --eval, while the plugin is active yaml yaml.v3">
+      <h3><a class="pl" href="#yaml">:yaml</a><span class="ref-s">the value as YAML, with its yaml tags applied</span></h3>
+      <pre class="sig">:yaml &lt;exp&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go expression</span><span class="chip c">MCP · go_yaml · with --eval, while the plugin is active</span><span class="chip o">yaml plugin</span><span class="chip o">yaml.v3 plugin</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:yaml</span> cfg</div><div class="tl says"><span class="an">    the document its yaml tags produce</span></div></div></div>
+      <div class="prose"><p>Marshals through go.yaml.in/yaml/v3, the maintained line.</p>
+<p>The yaml tags decide the key names, what omitempty drops and what inline flattens, and none of that is visible in the printed value. The encoder that applies them is the one already in your build list, running in the child against the real value.</p>
+</div>
+      <p class="see">See also <a href="#toml"><code>:toml</code></a> · <a href="#json"><code>:json</code></a></p>
+      <p class="see">Worked through in <a href="../guide/plugins.html">Plugins</a></p>
+    </article>
+  
+    <article class="ref" id="toml" data-f=":toml the value as a toml document, with its toml tags applied go_toml · with --eval, while the plugin is active toml">
+      <h3><a class="pl" href="#toml">:toml</a><span class="ref-s">the value as a TOML document, with its toml tags applied</span></h3>
+      <pre class="sig">:toml &lt;exp&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go expression</span><span class="chip c">MCP · go_toml · with --eval, while the plugin is active</span><span class="chip o">toml plugin</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:toml</span> cfg</div><div class="tl says"><span class="an">    the document its toml tags produce</span></div></div></div>
+      <div class="prose"><p>TOML orders a document by its own rules — every scalar of a table comes before the first sub-table — so where a key lands is a property of the encoder rather than of the struct, and that is the part reading the value cannot tell you.</p>
+<p>Only a struct or a map encodes at the top level. Anything else returns the library&#39;s own refusal as the answer.</p>
+</div>
+      <p class="see">See also <a href="#yaml"><code>:yaml</code></a> · <a href="#json"><code>:json</code></a></p>
+      <p class="see">Worked through in <a href="../guide/project.html">In a project</a> · <a href="../guide/plugins.html">Plugins</a></p>
+    </article>
+  
+    <article class="ref" id="msgpack" data-f=":msgpack the msgpack bytes a value encodes to, as a hex dump go_msgpack · with --eval, while the plugin is active msgpack">
+      <h3><a class="pl" href="#msgpack">:msgpack</a><span class="ref-s">the msgpack bytes a value encodes to, as a hex dump</span></h3>
+      <pre class="sig">:msgpack &lt;exp&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go expression</span><span class="chip c">MCP · go_msgpack · with --eval, while the plugin is active</span><span class="chip o">msgpack plugin</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:msgpack</span> payload</div><div class="tl says"><span class="an">    the bytes it encodes to, as a hex dump, and how many</span></div></div></div>
+      <div class="prose"><p>The size is the first line because it is usually the question — msgpack is chosen over JSON for what it costs on a wire, and a struct tag that changes a key from &#34;identifier&#34; to &#34;id&#34; changes it.</p>
+<p>The dump&#39;s right-hand column shows the keys as text, so the tags are readable next to the type bytes that encode them.</p>
+</div>
+      <p class="see">See also <a href="#pb"><code>:pb</code></a> · <a href="#json"><code>:json</code></a></p>
+      <p class="see">Worked through in <a href="../guide/plugins.html">Plugins</a></p>
+    </article>
+  
+    <article class="ref" id="pb" data-f=":pb the wire size of a proto message, and its text form go_pb · with --eval, while the plugin is active protobuf">
+      <h3><a class="pl" href="#pb">:pb</a><span class="ref-s">the wire size of a proto message, and its text form</span></h3>
+      <pre class="sig">:pb &lt;exp&gt;</pre>
+      <div class="chips"><span class="chip">takes a Go expression</span><span class="chip c">MCP · go_pb · with --eval, while the plugin is active</span><span class="chip o">protobuf plugin</span></div>
+      
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:pb</span> msg</div><div class="tl says"><span class="an">    its size on the wire, and its text form</span></div></div></div>
+      <div class="prose"><p>A generated message prints as its Go struct — state, sizeCache and unknownFields included — which is the one view that says nothing about the message. <a href="commands.html#pb"><code>:pb</code></a> marshals it instead: the byte count is what the wire costs, and the text form is the descriptor&#39;s own view of the same value.</p>
+<p>It takes a proto.Message, which for generated code means the pointer. Loading a .proto file is a different thing and not this command.</p>
+</div>
+      <p class="see">See also <a href="#msgpack"><code>:msgpack</code></a> · <a href="#grpc"><code>:grpc</code></a></p>
+      <p class="see">Worked through in <a href="../guide/plugins.html">Plugins</a></p>
+    </article>
+  
+    <article class="ref" id="grpc" data-f=":grpc what a grpc server exposes, and one unary call against it go_grpc · with --eval, while the plugin is active grpc -h -d -t -tls">
+      <h3><a class="pl" href="#grpc">:grpc</a><span class="ref-s">what a gRPC server exposes, and one unary call against it</span></h3>
+      <pre class="sig">:grpc &lt;addr&gt; [method] [-H &lt;header&gt;]... [-d &lt;json&gt;] [-t &lt;duration&gt;] [-tls]</pre>
+      <div class="chips"><span class="chip">takes words</span><span class="chip c">MCP · go_grpc · with --eval, while the plugin is active</span><span class="chip o">grpc plugin</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">addr</td><td>host:port; a name-resolver scheme passes through as written</td></tr>
+        <tr><td class="mono">method</td><td>pkg.Service/Method, as the listing prints it</td></tr>
+        <tr id="grpc-H"><td class="mono">-H &lt;header&gt;</td><td>call metadata, written &#39;name: value&#39;; repeat it for more</td></tr>
+        <tr id="grpc-d"><td class="mono">-d &lt;json&gt;</td><td>the request, checked against the descriptor ({} by default)</td></tr>
+        <tr id="grpc-t"><td class="mono">-t &lt;duration&gt;</td><td>how long to wait: 5s, 500ms, 1m (30s by default)</td></tr>
+        <tr id="grpc-tls"><td class="mono">-tls</td><td>dial with TLS instead of plaintext</td></tr>
+        </tbody></table></div>
+      <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:grpc</span> localhost:50051</div><div class="tl says"><span class="an">    what the server exposes, discovered through reflection</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:grpc</span> localhost:50051 shop.v1.Orders/Get -d &#39;{&#34;id&#34;: 42}&#39; -t 5s</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:grpc</span> api.internal:443 shop.v1.Orders/Get -tls -H &#39;authorization: Bearer $TOKEN&#39;</div><div class="tl says"><span class="an">    the token is named, so its value reaches no history file</span></div></div></div>
+      <div class="prose"><p>With an address alone, lists the services and methods the server exposes, discovered through server reflection. A method that needs a stream is listed and marked, because gluon compiles each line into a program that exits and a stream has nowhere to live — reading one message and hanging up would return a number that looks like an answer and is not.</p>
+<p>With a <code>pkg.Service/Method</code> as well, calls it. -d &#39;&lt;json&gt;&#39; is the request and defaults to {}; it is checked against the reflected descriptor before the call is made, so a field you got wrong is named here rather than by the server.</p>
+<p>Quote anything with a space in it: no shell has been near the line.</p>
+<p>A metadata value may name a variable rather than carry one. -H &#39;authorization: Bearer $TOKEN&#39; resolves $TOKEN in the child, so the value reaches neither <a href="commands.html#src"><code>:src</code></a>, nor <a href="commands.html#save"><code>:save</code></a>, nor ~/.local/state/gluon/history. A value whose <em>shape</em> says it is a credential is refused instead of sent, because by then the line as typed is already in the history file and masking the display would not take it back.</p>
+<p>Every call dials and hangs up. gRPC assumes a channel that outlives many calls and this process outlives one, so latency measured here is the cost of connecting plus the call and is not a measurement of gRPC. Nothing survives between calls: no channel, no resolved address, no state a server kept.</p>
+<p>The response is never cached. The cache is keyed on program text alone, so the same call would otherwise answer with what it first saw.</p>
+<p>There is no :proto. Reading a .proto off disk needs a compiler that google.golang.org/protobuf does not contain — internal/plugins/rpc&#39;s package comment records what was examined and what it would take.</p>
+</div>
+      <p class="see">See also <a href="#http"><code>:http</code></a> · <a href="#pb"><code>:pb</code></a></p>
+      <p class="see">Worked through in <a href="../guide/plugins.html">Plugins</a></p>
+    </article>
+  
+  </div>
+</section>
+
+
+    <nav class="pn" aria-label="Pages beside this one">
+  <a class="pg" href="../reference/index.html"><span class="pg-k">← previous</span><b>Reference</b></a>
+  <a class="pg next" href="../reference/plugins.html"><span class="pg-k">next →</span><b>Plugins</b></a>
+</nav>
+  </main>
+</div>
+
+<footer class="foot"><div class="wrap fgrid">
+    <div><div class="fh">The site</div><ul>
+        <li><a href="../index.html">gluon</a> — what it is, in one page</li>
+        <li><a href="../guide/index.html">Guides</a> — every feature, with the lines to type</li>
+        <li><a href="../reference/index.html">Reference</a> — generated from the code that defines it</li>
+      </ul></div>
+    <div><div class="fh">This page</div><ul>
+        <li>v0.1.0 · <code>github.com/sandboxws/gluon</code></li>
+        <li>Generated from <code>site/</code> by <code>just docs</code></li>
+        <li>No analytics, no cookies; the palette choice is one localStorage key</li>
+        <li><a href="https://github.com/sandboxws/gluon">Source</a></li>
+      </ul></div>
+</div></footer>
+<script src="../assets/gluon.js?v=0b5d44bf"></script>
+</body>
+</html>

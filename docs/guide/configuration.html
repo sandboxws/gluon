@@ -1,0 +1,172 @@
+<!doctype html>
+<!-- generated from site/ by `just docs`: edit the source, not this file -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Configuration — gluon</title>
+<meta name="description" content="Every setting from the prompt, config.toml, the startup screen, and the environment variables gluon reads.">
+<meta name="theme-color" content="#0A0A0A">
+<script>(function(d,m){try{m=/[?&]palette=(gruv|go)\b/.exec(location.search);m=m?m[1]:localStorage.getItem("gluon:theme")}catch(e){}if(m==="gruv")d.documentElement.setAttribute("data-theme","gruv")})(document)</script>
+<link rel="canonical" href="https://sandboxws.github.io/gluon/guide/configuration.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Configuration — gluon">
+<meta property="og:description" content="Every setting from the prompt, config.toml, the startup screen, and the environment variables gluon reads.">
+<meta property="og:url" content="https://sandboxws.github.io/gluon/guide/configuration.html">
+<meta property="og:image" content="https://sandboxws.github.io/gluon/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="gluon's startup screen in a Go project, beside the words: A Go REPL that stands in your project">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sandboxws.github.io/gluon/img/og.png">
+<meta name="twitter:title" content="Configuration — gluon">
+<meta name="twitter:description" content="Every setting from the prompt, config.toml, the startup screen, and the environment variables gluon reads.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A0A0A'/%3E%3Cpath d='M9 9l7 7-7 7' stroke='%2300ADD8' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M18 23h6' stroke='%2300ADD8' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/gluon.css?v=980f3e8a">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="field" aria-hidden="true"></div>
+<div class="nav" id="nav">
+  <div class="nav-in">
+    <a class="nav-t" href="../index.html">gluon</a>
+    <span class="nav-sp"></span>
+    <a class="nav-m" href="../guide/index.html">Guides</a>
+    <a class="nav-m" href="../reference/index.html">Reference</a>
+    <span class="nav-m opt">v0.1.0</span>
+  </div>
+</div>
+
+<header class="hero wrap page">
+  <p class="eyebrow">Guide 11</p>
+  <h1 id="bigTitle">Configuration</h1>
+  <p class="sub">Every setting from the prompt, config.toml, the startup screen, and the environment variables gluon reads.</p>
+</header>
+
+<div class="wrap cols">
+  <nav class="side" aria-label="Sections"><div class="side-in">
+    <p class="grp-h">This page</p>
+    <a href="#settings"><span class="rn">1</span><span class="rt">:settings</span></a>
+<a href="#file"><span class="rn">2</span><span class="rt">config.toml</span></a>
+<a href="#startup"><span class="rn">3</span><span class="rt">The startup screen</span></a>
+<a href="#env"><span class="rn">4</span><span class="rt">The environment</span></a>
+    <p class="grp-h">Guides</p>
+    <a href="../guide/index.html"><span class="rt">Guides</span></a>
+    <a href="../guide/start.html"><span class="rt">The first five minutes</span></a>
+    <a href="../guide/inspecting.html"><span class="rt">Inspecting</span></a>
+    <a href="../guide/measuring.html"><span class="rt">Measuring</span></a>
+    <a href="../guide/rendering.html"><span class="rt">Rendering</span></a>
+    <a href="../guide/session.html"><span class="rt">The session</span></a>
+    <a href="../guide/scratchpads.html"><span class="rt">Scratchpads</span></a>
+    <a href="../guide/editing.html"><span class="rt">Editing</span></a>
+    <a href="../guide/project.html"><span class="rt">In a project</span></a>
+    <a href="../guide/database.html"><span class="rt">The database</span></a>
+    <a href="../guide/plugins.html"><span class="rt">Plugins</span></a>
+    <a href="../guide/configuration.html" aria-current="page" class="here"><span class="rt">Configuration</span></a>
+    <a href="../guide/themes.html"><span class="rt">Themes</span></a>
+    <a href="../guide/scripting.html"><span class="rt">Scripting</span></a>
+    <a href="../guide/mcp.html"><span class="rt">MCP</span></a>
+    <a href="../guide/design.html"><span class="rt">How it works</span></a>
+    
+  </div></nav>
+  <main id="main">
+    
+<section class="card" id="settings">
+  <div class="card-head"><span class="idx">1</span><div class="hd"><h2>Every setting, from the prompt</h2><div class="chips"><span class="chip">17 settings</span></div></div></div>
+  <div class="card-body">
+    <p class="lead"><a href="../reference/commands.html#settings"><code>:settings</code></a> with nothing lists every setting gluon has — what it does, what it is now, what it would be otherwise, what it accepts, and whether the value came from your file or a default. With a key it explains one; with a key and a value it changes it; with <code>-</code> it puts it back.</p>
+    <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:settings</span><span class="vw" title="At the prompt this opens a view you can scroll and filter. What it shows is below, and it is what a pipe or gluon -e prints.">opens a view</span></div><div class="tl out">settings</div><div class="tl out bx"><span class="p">╭───────────────────┬──────────────────────────────────────────────────────┬───────┬────────────────────────────────────────────────────────┬─────────────────────────────────────────────────────┬─────────╮</span></div><div class="tl out bx"><span class="p">│</span> setting           <span class="p">│</span> what it does                                         <span class="p">│</span> value <span class="p">│</span> default                                                <span class="p">│</span> allowed                                             <span class="p">│</span> from    <span class="p">│</span></div><div class="tl out bx"><span class="p">├───────────────────┼──────────────────────────────────────────────────────┼───────┼────────────────────────────────────────────────────────┼─────────────────────────────────────────────────────┼─────────┤</span></div><div class="tl out bx"><span class="p">│</span> imports           <span class="p">│</span> imports a line may name without a goimports pass     <span class="p">│</span> none  <span class="p">│</span> none                                                   <span class="p">│</span> import paths                                        <span class="p">│</span> default <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> editor            <span class="p">│</span> what :edit opens, over $VISUAL and $EDITOR           <span class="p">│</span>       <span class="p">│</span> $VISUAL, then $EDITOR, then a terminal editor on $PATH <span class="p">│</span> a command with its flags, or builtin                <span class="p">│</span> default <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> timeout           <span class="p">│</span> how long one evaluation may take                     <span class="p">│</span>       <span class="p">│</span> 30s                                                    <span class="p">│</span> a Go duration, positive                             <span class="p">│</span> default <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> banner            <span class="p">│</span> how much the startup screen says                     <span class="p">│</span>       <span class="p">│</span> full                                                   <span class="p">│</span> full, compact, off                                  <span class="p">│</span> default <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> hosts             <span class="p">│</span> per-module imports the host&#39;s own index cannot offer <span class="p">│</span> none  <span class="p">│</span> none                                                   <span class="p">│</span> a table per module path                             <span class="p">│</span> default <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> database          <span class="p">│</span> how to reach a project&#39;s database, not its password  <span class="p">│</span> none  <span class="p">│</span> none                                                   <span class="p">│</span> [[database]] blocks                                 <span class="p">│</span> default <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> input.mode        <span class="p">│</span> how the prompt reads keys                            <span class="p">│</span>       <span class="p">│</span> emacs                                                  <span class="p">│</span> emacs, vim                                          <span class="p">│</span> default <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> value.form        <span class="p">│</span> the shape a value is drawn in                        <span class="p">│</span>       <span class="p">│</span> table                                                  <span class="p">│</span> table, line, tree, columns, literal                 <span class="p">│</span> default <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> value.items       <span class="p">│</span> how many elements of a collection are described      <span class="p">│</span>       <span class="p">│</span> 200                                                    <span class="p">│</span> a whole number, 1 to 100000                         <span class="p">│</span> default <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> value.depth       <span class="p">│</span> how many levels of a value are described             <span class="p">│</span>       <span class="p">│</span> 6                                                      <span class="p">│</span> a whole number, 1 to 100000                         <span class="p">│</span> default <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> value.form.list   <span class="p">│</span> the form a list takes, over value.form               <span class="p">│</span>       <span class="p">│</span> whatever value.form says                               <span class="p">│</span> table, line, tree, columns, literal                 <span class="p">│</span> default <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> value.form.map    <span class="p">│</span> the form a map takes, over value.form                <span class="p">│</span>       <span class="p">│</span> whatever value.form says                               <span class="p">│</span> table, line, tree, columns, literal                 <span class="p">│</span> default <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> value.form.struct <span class="p">│</span> the form a struct takes, over value.form             <span class="p">│</span>       <span class="p">│</span> whatever value.form says                               <span class="p">│</span> table, line, tree, columns, literal                 <span class="p">│</span> default <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> scratch.pad       <span class="p">│</span> the scratchpad an interactive session lands in       <span class="p">│</span>       <span class="p">│</span> default                                                <span class="p">│</span> a scratchpad name, or - for none                    <span class="p">│</span> default <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> plugins.disable   <span class="p">│</span> library plugins that must not activate               <span class="p">│</span> none  <span class="p">│</span> nothing disabled                                       <span class="p">│</span> plugin names — :plugins lists them                  <span class="p">│</span> default <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> theme.name        <span class="p">│</span> the colour palette                                   <span class="p">│</span>       <span class="p">│</span> go                                                     <span class="p">│</span> an installed theme — :theme lists them              <span class="p">│</span> default <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> theme.&lt;role&gt;      <span class="p">│</span> one colour, on top of whichever theme is on          <span class="p">│</span>       <span class="p">│</span> whatever the chosen theme says                         <span class="p">│</span> a hex triple (#5fafd7), an ANSI number (6), or none <span class="p">│</span> default <span class="p">│</span></div><div class="tl out bx"><span class="p">╰───────────────────┴──────────────────────────────────────────────────────┴───────┴────────────────────────────────────────────────────────┴─────────────────────────────────────────────────────┴─────────╯</span></div><div class="tl out">:settings &lt;key&gt; &lt;value&gt; changes one, :settings &lt;key&gt; - puts it back · ~/.config/gluon/config.toml</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:settings</span> timeout</div><div class="tl out">  timeout</div><div class="tl out"></div><div class="tl out">  how long one evaluation may take</div><div class="tl out"></div><div class="tl out">  now        —    default</div><div class="tl out">  default    30s</div><div class="tl out">  accepts    a Go duration, positive</div><div class="tl out">  effect     this session</div><div class="tl out"></div><div class="tl out">  The whole session replays on every line, so this bounds the replay and not</div><div class="tl out">  just the newest expression.</div><div class="tl out"></div><div class="tl out">  :settings timeout 2m   writes  timeout = &#34;2m&#34;</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:settings</span> timeout 2m</div><div class="tl out">timeout is 2m · timeout = &#34;2m&#34; in ~/.config/gluon/config.toml</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:settings</span> banner compact</div><div class="tl out">banner is compact · banner = &#34;compact&#34; in ~/.config/gluon/config.toml</div><div class="tl out">  the next run reads it; this session is already running</div><div class="tl"><span class="pr">$</span> cat ~/.config/gluon/config.toml</div><div class="tl out">timeout = &#34;2m&#34;</div><div class="tl out">banner = &#34;compact&#34;</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:settings</span> timeout -</div><div class="tl out">timeout is back to 30s · dropped timeout = &#34;2m&#34; from ~/.config/gluon/config.toml</div></div></div>
+    <figure class="shot"><figcaption class="cmd-bar"><span class="ck">Screenshot</span><span class="cv">:settings at a prompt, filtered with /value</span></figcaption><a href="../img/shots/settings.go.webp?v=071300d6"><img class="v-go" src="../img/shots/settings.go.webp?v=071300d6" width="893" height="662" alt=":settings&#39; view filtered to value, each setting with its current value and what it does" loading="lazy" decoding="async"></a><a href="../img/shots/settings.gruv.webp?v=8957dffc"><img class="v-gruv" src="../img/shots/settings.gruv.webp?v=8957dffc" width="893" height="662" alt=":settings&#39; view filtered to value, each setting with its current value and what it does" loading="lazy" decoding="async"></a></figure>
+    <p>At the prompt the list opens in a view you can filter with <kbd>/</kbd>, and <kbd>enter</kbd> opens a setting: what it is for, what it is now and where that came from, then the values it takes or a line to type one into. Choosing submits the same <code>:settings key value</code> you could have typed, checked by the same validator. Through a pipe the whole table prints.</p>
+    <p>A change writes exactly one line of <code>config.toml</code> and leaves every other byte — your comments included — as it was, and it is checked twice before it is written: that one line moved, and that the file still loads and reads back as what you asked. A setting that takes effect now says so; one that the next run reads, like <a href="../reference/settings.html#banner"><code>banner</code></a>, says that. <a href="../reference/settings.html#imports"><code>imports</code></a>, <a href="../reference/settings.html#database"><code>database</code></a>, <a href="../reference/settings.html#hosts"><code>hosts</code></a> and <a href="../reference/settings.html#plugins.disable"><code>plugins.disable</code></a> are listed and not settable here: they are arrays, and rewriting one wholesale would take the comments inside it, so they show what they hold and say where to edit them.</p>
+  </div>
+</section>
+
+<section class="card" id="file">
+  <div class="card-head"><span class="idx">2</span><div class="hd"><h2>config.toml</h2></div></div>
+  <div class="card-body">
+    <p class="lead"><code>~/.config/gluon/config.toml</code> — or under <code>$XDG_CONFIG_HOME</code> — and every line of it optional.</p>
+    <div class="cmd">
+      <div class="cmd-bar"><span class="ck">TOML</span><span class="cv">~/.config/gluon/config.toml</span></div>
+<pre><span class="c"># Names a line may use without gluon running goimports to find them.</span>
+<span class="c"># An import nothing mentions is never written, so this costs nothing.</span>
+imports = [<span class="s">"strings"</span>, <span class="s">"slices"</span>, <span class="s">"maps"</span>]
+
+editor  = <span class="s">"nvim"</span>     <span class="c"># or "builtin", gluon's own</span>
+timeout = <span class="s">"45s"</span>      <span class="c"># how long one evaluation may take</span>
+banner  = <span class="s">"compact"</span>  <span class="c"># full, compact or off</span>
+
+[input]
+mode = <span class="s">"vim"</span>
+
+[value]
+items = <span class="nu">500</span>     <span class="c"># elements of one collection, described</span>
+
+[value.form]
+default = <span class="s">"table"</span>
+list    = <span class="s">"columns"</span>   <span class="c"># a list of structs, a column per field</span>
+
+[theme]
+name   = <span class="s">"gruvppuccin-mocha"</span>
+string = <span class="s">"#A9B665"</span>      <span class="c"># one role, over whatever the theme says</span>
+
+<span class="c"># Extra imports whenever the session is attached to this module.</span>
+[hosts.<span class="s">"example.com/shop"</span>]
+imports = [<span class="s">"example.com/shop/internal/pricing"</span>]</pre>
+    </div>
+    <p><a href="../reference/settings.html#imports"><code>imports</code></a> is the one worth setting: preloads are a name-to-path map, not lines written into every program, so an unused one is not an unused import — it is not an import — and a used one skips the goimports pass, about a hundred milliseconds off the line that names it. An unknown key is an error rather than a shrug, because a typo in a config file is otherwise invisible — a misspelled theme role included. <a href="../reference/settings.html">The settings reference</a> has every key, its default and what it accepts.</p>
+  </div>
+</section>
+
+<section class="card" id="startup">
+  <div class="card-head"><span class="idx">3</span><div class="hd"><h2>The startup screen</h2></div></div>
+  <div class="card-body">
+    <p class="lead"><code>gluon</code> opens on the wordmark, the versions, and a row for each thing the session starts with: the scratchpad and what it restored, the module it is attached to, the database it was configured to reach, the plugins the project's build list turned on, and the theme.</p>
+    <p>A row appears only where there is something to say, so a bare directory on defaults shows one and a project shows as many as it has facts. The plugins are the ones this project's build list turned on, not the standard library's, which every session has. The theme is named only when it is not the default. Nothing on the screen costs a build; opening a scratchpad does, so its row says <code>opening…</code> and becomes the answer where it stands.</p>
+    <p><a href="../reference/settings.html#banner"><code>banner</code></a> is <code>full</code>, <code>compact</code> — the version and the hints — or <code>off</code>. Below sixty columns the wordmark drops on its own and the rows stay. A piped script, <code>gluon -e</code> and <code>gluon mcp</code> print none of it.</p>
+  </div>
+</section>
+
+<section class="card" id="env">
+  <div class="card-head"><span class="idx">4</span><div class="hd"><h2>The environment</h2></div></div>
+  <div class="card-body">
+    <div class="tw"><table>
+      <thead><tr><th>Variable</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">NO_COLOR</td><td>no colour anywhere, as a pipe gets</td></tr>
+        <tr><td class="mono">GLUON_MAX_ITEMS · GLUON_MAX_DEPTH</td><td>how much of a value is described, as <a href="../reference/settings.html#value.items"><code>value.items</code></a> and <a href="../reference/settings.html#value.depth"><code>value.depth</code></a> — set here, they win over the file</td></tr>
+        <tr><td class="mono">GLUON_NO_TYPECHECK</td><td>skip the in-process type checker and let the compiler answer everything — the escape hatch if the checker ever disagrees with the compiler</td></tr>
+        <tr><td class="mono">GLUON_NO_UNSAFE</td><td>stop describing unexported fields</td></tr>
+        <tr><td class="mono">XDG_CONFIG_HOME · XDG_DATA_HOME · XDG_STATE_HOME</td><td>where config, scratchpads and history live</td></tr>
+      </tbody>
+    </table></div>
+    <p><code>gluon doctor</code> says when <code>GLUON_MAX_ITEMS</code> or <code>GLUON_MAX_DEPTH</code> is set, beside the toolchain, the config it read and the module it would attach to.</p>
+  </div>
+</section>
+
+    <nav class="pn" aria-label="Pages beside this one">
+  <a class="pg" href="../guide/plugins.html"><span class="pg-k">← previous</span><b>Plugins</b></a>
+  <a class="pg next" href="../guide/themes.html"><span class="pg-k">next →</span><b>Themes</b></a>
+</nav>
+  </main>
+</div>
+
+<footer class="foot"><div class="wrap fgrid">
+    <div><div class="fh">The site</div><ul>
+        <li><a href="../index.html">gluon</a> — what it is, in one page</li>
+        <li><a href="../guide/index.html">Guides</a> — every feature, with the lines to type</li>
+        <li><a href="../reference/index.html">Reference</a> — generated from the code that defines it</li>
+      </ul></div>
+    <div><div class="fh">This page</div><ul>
+        <li>v0.1.0 · <code>github.com/sandboxws/gluon</code></li>
+        <li>Generated from <code>site/</code> by <code>just docs</code></li>
+        <li>No analytics, no cookies; the palette choice is one localStorage key</li>
+        <li><a href="https://github.com/sandboxws/gluon">Source</a></li>
+      </ul></div>
+</div></footer>
+<script src="../assets/gluon.js?v=0b5d44bf"></script>
+</body>
+</html>

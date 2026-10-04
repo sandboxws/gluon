@@ -1,0 +1,31 @@
+$ gluon -e 'strings.ToUpper("hi")'
+(string) "HI"  len=2
+$ gluon -e 'x := 21' -e 'x * 2'
+(int) 42
+$ echo 'strings.Repeat("ab", 3)' | gluon
+(string) "ababab"  len=6
+$ gluon -e '[]int{1, 2, 3}' -json
+{
+  "ok": true,
+  "values": [
+    {
+      "type": "[]int",
+      "kind": "list",
+      "text": "([]int) [1 2 3]  len=3 cap=3",
+      "len": 3,
+      "cap": 3
+    }
+  ],
+  "exitCode": 0
+}
+$ gluon -e ':layout struct{ a bool; b int64; c bool }' -json
+{
+  "ok": true,
+  "command": ":layout",
+  "text": "struct{a bool; b int64; c bool}  24 bytes, align 8\n  0  a  bool  1\n      (7 bytes padding)\n  8  b  int64  8\n  16  c  bool  1\n      (7 bytes padding)\n  reordering as b, a, c would be 16 bytes — 8 saved"
+}
+$ gluon -e 'strings.Repeat("ab")'; echo "exit $?"
+not enough arguments in call to strings.Repeat
+    strings.Repeat("ab")
+                       ^
+exit 1

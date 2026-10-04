@@ -1,0 +1,5 @@
+%host shop
+%attach
+e := events.Sample()
+e.Customer
+:when e.At

@@ -1,0 +1,36 @@
+# Catppuccin Mocha, converted from the theme Catppuccin ships for `bat` by
+# `gluon theme import`.
+#
+# Not the same thing as the Gruvppuccin palettes already here, which take
+# Catppuccin's structure and gruvbox's accents. This is Catppuccin's own: mauve,
+# peach and the rest of the named set, over its own greys.
+#
+# Re-run:  gluon theme import <file> --print
+#          github.com/catppuccin/bat, themes/Catppuccin Mocha.tmTheme
+#
+# Kept from gluon's own go, because nothing in an editor theme means
+# them: `error`, `note`, `dim`, `search`, `border`.
+about      = "Catppuccin Mocha: mauve keywords, green strings, yellow types"
+appearance = "dark"
+source     = "Catppuccin Mocha, a TextMate theme"
+
+[theme]
+# Source.
+keyword     = "#cba6f7"
+string      = "#a6e3a1"
+type        = "#f9e2af"
+comment     = "#9399b2"
+number      = "#fab387"
+builtin     = "#f38ba8"
+punctuation = "#9399b2"
+ident       = "#cdd6f4"
+
+# Values, the REPL, and the CLI.
+error       = "#FF7373"
+prompt      = "#f9e2af"
+mode        = "#89b4fa"  # Mocha's blue, against a yellow prompt
+annotation  = "#9399b2"
+note        = "#E3B341"
+dim         = "#7C7C84"
+search      = "#F5B843"
+border      = "#55555C"

@@ -1,0 +1,8 @@
+<<< paste
+type ByLen []string
+func (s ByLen) Len() int           { return len(s) }
+func (s ByLen) Less(i, j int) bool { return len(s[i]) < len(s[j]) }
+func (s ByLen) Swap(i, j int)      { s[i], s[j] = s[j], s[i] }
+>>>
+:m ByLen
+:m strings.Builder{}

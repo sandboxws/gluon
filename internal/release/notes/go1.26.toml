@@ -1,0 +1,57 @@
+# Go 1.26 — new takes a value, and a constraint may name what it constrains.
+
+version = "1.26"
+
+[[note]]
+name = "new-expression"
+title = "new() takes an expression"
+needs = "1.26"
+below = "error"
+text = """
+The built-in new may be given an expression rather than a type. It allocates a
+variable of that expression's type, initialises it to the value, and returns a
+pointer to it — so new(42) is a *int pointing at a 42 that nothing else can
+reach.
+
+The case it is for is the pointer-as-optional idiom that encoding/json and the
+protobuf runtimes use for a field that must distinguish unset from zero. Before
+this the value had to be given a name first, purely so its address could be
+taken, and a helper per type existed in most codebases to hide that.
+"""
+snippet = """
+p := new(42)
+s := new("hello")
+*p += 1
+[]any{*p, *s}
+"""
+
+[[note]]
+name = "self-referential-constraints"
+title = "a constraint may refer to the type it constrains"
+needs = "1.26"
+below = "toolchain only"
+text = """
+A generic type's constraint may name the type being declared, so
+`type Adder[A Adder[A]] interface{ Add(A) A }` is now legal. It is the shape you
+want whenever an interface's methods take or return the implementing type —
+the "curiously recurring" pattern — and the restriction that forbade it was a
+limitation of the original implementation rather than a decision.
+
+No go directive gates this one. It is the toolchain alone: the code below
+compiles under `go 1.18` on a new enough toolchain and under no toolchain older
+than Go 1.26, which is why it is filed here and why it has nothing to fail at
+below its version.
+"""
+snippet = """
+type Adder[A Adder[A]] interface{ Add(A) A }
+type Cents int
+func (c Cents) Add(d Cents) Cents { return c + d }
+func Sum[A Adder[A]](xs []A) A {
+	var t A
+	for _, x := range xs {
+		t = t.Add(x)
+	}
+	return t
+}
+Sum([]Cents{100, 250, 99})
+"""

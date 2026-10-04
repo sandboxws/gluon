@@ -1,0 +1,17 @@
+{% define "side" %}<a href="#pages"><span class="rn">R</span><span class="rt">The reference pages</span></a>{% end %}
+{% define "main" %}
+<section class="card" id="pages">
+  <div class="card-head"><span class="idx">R</span><div class="hd"><h2>Generated from the code that defines it</h2></div></div>
+  <div class="card-body">
+    <p class="lead">Every page here is rendered from the value in gluon's source that defines the thing it describes — the same value <code>:help</code>, <code>:plugins</code>, <code>:settings</code> and <code>:theme</code> print from. A fact the code holds is not typed a second time, so the reference cannot say something the binary does not do.</p>
+    <div class="pgs">
+      <a class="pg" href="commands.html"><span class="pg-k">{% .Reg.Counts.Builtins %} built in · {% .Reg.Counts.PluginCommands %} from plugins</span><b>Commands</b><span>Every meta command: what it takes, its flags, lines to type, and where it goes next.</span></a>
+      <a class="pg" href="plugins.html"><span class="pg-k">{% .Reg.Counts.Plugins %} plugins</span><b>Plugins</b><span>What each library's plugin adds, and what turns it on.</span></a>
+      <a class="pg" href="settings.html"><span class="pg-k">{% .Reg.Counts.Settings %} settings</span><b>Settings</b><span>Every key of config.toml, its default, and what it accepts.</span></a>
+      <a class="pg" href="cli.html"><span class="pg-k">the shell</span><b>The gluon command</b><span>Subcommands and flags, for the times you are not at the prompt.</span></a>
+      <a class="pg" href="mcp.html"><span class="pg-k">{% .Reg.Counts.StaticTools %} static · {% .Reg.Counts.EvalTools %} with --eval</span><b>MCP tools</b><span>What <code>gluon mcp</code> serves a coding agent, exactly as the agent receives it.</span></a>
+      <a class="pg" href="themes.html"><span class="pg-k">{% .Reg.Counts.Themes %} themes</span><b>Themes</b><span>Every built-in palette, drawn in itself.</span></a>
+    </div>
+  </div>
+</section>
+{% end %}

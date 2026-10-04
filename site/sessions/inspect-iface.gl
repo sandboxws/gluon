@@ -1,0 +1,4 @@
+:iface io.Writer
+%clip 12
+:embeds bufio.ReadWriter
+:gen atomic.Pointer

@@ -1,0 +1,36 @@
+name: Bug report
+description: Something gluon does is wrong
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened
+      description: What you typed, what gluon answered, and what you expected instead. A transcript beats a description.
+      placeholder: |
+        gluon> x := []byte("héllo")
+        gluon> x[1]
+        ...
+    validations:
+      required: true
+  - type: textarea
+    id: doctor
+    attributes:
+      label: gluon doctor
+      description: Paste the output of `gluon doctor` — it reports the toolchain, config, plugins and attachment state this report needs.
+      render: text
+    validations:
+      required: true
+  - type: input
+    id: version
+    attributes:
+      label: gluon -version
+    validations:
+      required: true
+  - type: input
+    id: platform
+    attributes:
+      label: OS and architecture
+      placeholder: darwin/arm64, linux/amd64, ...
+    validations:
+      required: true

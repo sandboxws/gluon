@@ -1,0 +1,3 @@
+gluon> go func() { fmt.Println("from a goroutine") }()
+from a goroutine
+[gluon waited 137µs for 1 goroutine(s) — a real main would have exited here]

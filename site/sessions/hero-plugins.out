@@ -1,0 +1,13 @@
+gluon> e := events.Sample()
+gluon> e.Customer
+(uuid.UUID) 5f0c2c1e-8a7b-4e0f-9c6d-3b2a1f0e9d8c  v4 random, RFC 4122
+gluon> :when e.At
+(struct { RFC3339 string; Local string; Zone string; Unix int64 })
+╭─────────┬────────────────────────╮
+│ field   │ value                  │
+├─────────┼────────────────────────┤
+│ RFC3339 │ "2026-09-01T09:30:00Z" │
+│ Local   │ "2026-09-01 09:30:00"  │
+│ Zone    │ "UTC+00:00"            │
+│ Unix    │ 1788255000             │
+╰─────────┴────────────────────────╯

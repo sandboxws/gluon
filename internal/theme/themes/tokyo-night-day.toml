@@ -1,0 +1,38 @@
+# Tokyo Night Day, converted from the VS Code theme by `gluon theme import`.
+#
+# Upstream calls it Tokyo Night Light and declares `"type": "dark"` over an
+# #e6e7ed background. It is not a dark theme, and that mistake is why the
+# conversion trusts the background over the label: nothing reads the label, but
+# the background is the ground the colours were actually chosen against, which is
+# what `appearance` means.
+#
+# Re-run:  gluon theme import <file> --print
+#          github.com/enkia/tokyo-night-vscode-theme, themes/tokyo-night-light-color-theme.json
+#
+# Kept from gluon's own go-light, because nothing in an editor theme means
+# them: `note`, `search`.
+about      = "Tokyo Night Day: violet keywords, green strings, ink types"
+appearance = "light"
+source     = "Tokyo Night Light, a VS Code theme"
+
+[theme]
+# Source.
+keyword     = "#65359d"
+string      = "#385f0d"
+type        = "#343b58"
+comment     = "#888b94"
+number      = "#965027"
+builtin     = "#006c86"
+punctuation = "#006C86"
+ident       = "#343b59"
+
+# Values, the REPL, and the CLI.
+error       = "#942f2f"
+prompt      = "#343b58"
+mode        = "#65359d"  # the palette's purple: its prompt is the near-black
+                         # foreground
+annotation  = "#888b94"
+note        = "#92400E"
+dim         = "#9da0ab"
+search      = "#9A3412"
+border      = "#c1c2c7"

@@ -1,0 +1,6 @@
+:time on
+type Point struct{ X, Y int }
+1 << 20
+strings.Repeat("ab")
+Point{1, 2}
+:time off

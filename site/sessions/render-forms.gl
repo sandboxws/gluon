@@ -1,0 +1,13 @@
+# One value in each form the terminal draws.
+type Point struct{ X, Y int }
+pts := []Point{{1, 2}, {3, 4}, {5, 6}}
+pts
+:settings value.form columns
+pts
+:settings value.form tree
+map[string][]int{"odd": {1, 3}, "even": {2, 4}}
+:settings value.form literal
+pts
+:settings value.form line
+pts
+:settings value.form -

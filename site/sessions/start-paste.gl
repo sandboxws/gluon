@@ -1,0 +1,7 @@
+# Four lines pasted at once: echoed as typed, built once.
+<<< paste
+type Point struct{ X, Y int }
+func (p Point) Dist2() int { return p.X*p.X + p.Y*p.Y }
+p := Point{3, 4}
+p.Dist2()
+>>>

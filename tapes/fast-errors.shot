@@ -1,0 +1,12 @@
+# Where a line's time goes: the checker answers an error, the toolchain a value.
+Shot fast-errors
+Alt :time on, then a call built and run by the real toolchain in about a third of a second, and the same call missing an argument, answered by the in-process type checker in about a millisecond
+Caption A type error comes back in a millisecond: gluon type-checks in process before it builds. A line that runs pays for the real compiler — and gets the compiler's semantics.
+Headline A type error in a millisecond
+Promo 16:9 1:1
+Varies
+Grid 88x14
+Line :time on
+Line strings.Repeat("ab", 3)
+Line strings.Repeat("ab")
+Screenshot

@@ -1,0 +1,5 @@
+type User struct{ Name string; Age int; Tags []string }
+got := User{"ada", 36, []string{"admin"}}
+want := User{"ada", 37, []string{"admin", "ops"}}
+:diff got, want
+:err fmt.Errorf("load config: %w", fmt.Errorf("open: %w", fs.ErrNotExist))

@@ -1,0 +1,5 @@
+:impl *bytes.Buffer, io.Reader
+:impl bytes.Buffer, io.Writer
+:sat os.Stdout, io.Writer
+:cast any(1), string
+:cast io.Reader(nil), *strings.Builder

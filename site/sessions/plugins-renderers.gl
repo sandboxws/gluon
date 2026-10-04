@@ -1,0 +1,6 @@
+%host shop
+%attach
+90 * time.Minute
+events.Sample().Customer
+sql.NullString{}
+sql.NullString{String: "NULL", Valid: true}

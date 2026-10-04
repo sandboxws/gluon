@@ -1,0 +1,17 @@
+# A long value, in a view that scrolls and filters.
+Shot inspect
+Alt :inspect opening a view over a slice of 480 users, a row each, scrollable, with the count in its footer
+Also inspect-filter the same view filtered to the users whose row mentions 042
+Caption :inspect opens a big value in a view you can scroll and filter — 480 rows, no terminal flood.
+Headline Big values, in a view
+Grid 80x20
+Line type User struct{ ID int; Name, Email string }
+Line users := make([]User, 480)
+Line for i := range users { users[i] = User{i, fmt.Sprintf("user%03d", i), fmt.Sprintf("user%03d@example.com", i)} }
+Type ":inspect users"
+Enter
+Wait Prompt
+Screenshot
+Keys "/042"
+Wait Prompt
+Screenshot inspect-filter

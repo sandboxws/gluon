@@ -1,0 +1,43 @@
+# Gruvppuccin Mocha, converted from the IntelliJ colour scheme of the same name
+# by `gluon theme import`. Gruvbox's warm accents over Catppuccin's structure.
+#
+# This file is the family's reference: the other four say only what they differ
+# in. Fifteen of the sixteen roles are the scheme's own, which is four more
+# than a TextMate theme can answer, because an IntelliJ scheme colours a whole
+# editor rather than a language — the caret became `prompt`, and the two
+# line-number colours became `dim` and `border`. Only `search` is gluon's, since
+# nothing in an editor means "the reverse-i-search prompt"; `mode` is the
+# scheme's violet, picked here rather than converted, because what that role
+# has to do is contrast with the caret.
+#
+# The background is the one thing the conversion drops, and it is not an
+# oversight: your terminal owns that. It is also why Macchiato is not here.
+# Mocha and Macchiato differ in their background and in nothing else, so they
+# convert to the same sixteen values, and two names for one palette is one name
+# too many.
+about      = "Gruvppuccin Mocha: violet keywords, green strings, amber types"
+appearance = "dark"
+source     = "Gruvppuccin Mocha, an IntelliJ colour scheme"
+
+[theme]
+# Source.
+keyword     = "#C28FD6"  # violet
+string      = "#A9B665"  # green
+type        = "#D8A657"  # amber
+comment     = "#6E655A"
+number      = "#E78A4E"  # orange, which gruvbox uses where gluon expects grey
+builtin     = "#7DAEA3"  # teal, and only where the name is actually called
+punctuation = "#7C7269"  # the scheme's own grey for commas and parentheses,
+                         # not the accent it gives an operator
+ident       = "#D4BE98"
+
+# Values, the REPL, and the CLI.
+error       = "#EA6962"
+prompt      = "#7DAEA3"  # the caret
+mode        = "#C28FD6"  # the family's violet, against the teal prompt
+annotation  = "#6E655A"
+note        = "#D8A657"
+dim         = "#A69A8A"  # the line number on the caret's row: furniture you
+                         # read, so it is brighter than a comment
+search      = "#F5B843"  # gluon's own — see above
+border      = "#5A524C"  # the ordinary line number: a rule you look past

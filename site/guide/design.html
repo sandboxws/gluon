@@ -1,0 +1,69 @@
+{% define "side" %}<a href="#compiler"><span class="rn">1</span><span class="rt">The real compiler</span></a>
+<a href="#latency"><span class="rn">2</span><span class="rt">Where a line's time goes</span></a>
+<a href="#replay"><span class="rn">3</span><span class="rt">Replay, and its cost</span></a>
+<a href="#compare"><span class="rn">4</span><span class="rt">How it compares</span></a>
+<a href="#never"><span class="rn">5</span><span class="rt">What it never does</span></a>{% end %}
+{% define "main" %}
+<section class="card" id="compiler">
+  <div class="card-head"><span class="idx">1</span><div class="hd"><h2>Why it is not an interpreter</h2></div></div>
+  <div class="card-body">
+    <p class="lead">gluon compiles with your real Go toolchain. Every line re-renders the whole session into a genuine Go program and builds it, so the semantics are the compiler's — not an interpreter's approximation of them.</p>
+    <p>The alternative was embedding an interpreter, and the mature ones lag the language: yaegi's standard library tables target Go 1.21 and 1.22, and gomacro does not import generic standard library functions at all, which breaks <code>slices.Sort</code> and <code>maps.Keys</code> — most of modern Go. If you are using a REPL to learn the language, semantics that quietly differ from the compiler teach you wrong Go.</p>
+    <p>The cost is latency, and most lines do not pay it. Before anything is built, the session is type-checked in gluon's own process, from export data, in about a millisecond — so a type error, a declaration, a constant expression, and every question marked <em>no build</em> on the <a href="inspecting.html">inspecting</a> page never reach the toolchain. The checker is never an authority: when it cannot answer, the compiler is asked, and <code>GLUON_NO_TYPECHECK=1</code> turns it off entirely.</p>
+  </div>
+</section>
+
+<section class="card" id="latency">
+  <div class="card-head"><span class="idx">2</span><div class="hd"><h2>Where a line's time goes</h2></div></div>
+  <div class="card-body">
+    <p class="lead">{% cmd ":time" %} shows it for every line: a declaration and a constant answered by the checker, a type error answered by it, and a value that had to run.</p>
+    {% session "design-latency" %}
+    {% shot "fast-errors" "a line built and run, then one the checker answers" %}
+    <div class="tw"><table>
+      <thead><tr><th>Phase</th><th>Cost, measured on darwin/arm64</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">type check, in process, warm</td><td><strong>about 1ms</strong></td></tr>
+        <tr><td class="mono">go build, one-file module, warm cache</td><td>about 190ms</td></tr>
+        <tr><td class="mono">exec a freshly linked binary</td><td>about 105ms on macOS, most of it Gatekeeper</td></tr>
+        <tr><td class="mono">goimports</td><td>about 135ms, and only when gluon cannot resolve a name itself</td></tr>
+        <tr><td class="mono">completion, a warm keystroke</td><td>12–22µs</td></tr>
+      </tbody>
+    </table></div>
+    <p>The first row is why a type error comes back in a millisecond and a value in a third of a second. The first check of a session is slower — it loads export data — and the first line to name a package pays for goimports once. The exec row is macOS validating a binary it has never seen; <a href="start.html#install">Install</a> has how to remove it, and <code>gluon doctor</code> measures it. An attached project costs nothing a line: gluon always builds its own one-file module, and the toolchain loads the import graph, not every package the project has.</p>
+  </div>
+</section>
+
+<section class="card" id="replay">
+  <div class="card-head"><span class="idx">3</span><div class="hd"><h2>Replay, and what it costs</h2></div></div>
+  <div class="card-body">
+    <p class="lead">A Go program cannot be paused and resumed between lines, so gluon does not try: each line is a whole program, built from every entry so far, and run from the start. Output from the entries before the newest is muted at the file-descriptor level, so you see only the newest line's.</p>
+    <p>That is what makes the semantics the compiler's, and it has one honest cost: <strong>side effects repeat</strong>. A request made on line three is made again on every line after it; a file is written again; <code>time.Now()</code> moves. Muting rather than diffing is what keeps a program that ranges over a map readable — a diff breaks the moment the order changes — but the re-execution is real. {% cmd ":pin" %} takes an entry out of the replay, {% cmd ":undo" %} takes it out of the session, and <a href="session.html#replay">The session</a> shows both.</p>
+    <p>Two things follow from each line being a program that exits: there is no process to attach a debugger to or serve a live profile from, which is why {% cmd ":profile" %} captures one from a run that happened and <code>:save -debug</code> hands you a real module; and a goroutine is waited for only briefly, and said.</p>
+  </div>
+</section>
+
+<section class="card" id="compare">
+  <div class="card-head"><span class="idx">4</span><div class="hd"><h2>How it compares</h2></div></div>
+  <div class="card-body">
+    <p><strong>gore</strong> is the closest relative — also a real-toolchain REPL, mature and MIT-licensed, with gopls-backed completion. The differences are the reasons gluon exists. gore pays a full <code>go run</code> round trip for every line, including the ones that only needed a type error; gluon type-checks in process and answers errors, <code>:t</code>, <code>:m</code>, <code>:layout</code> and constants in about a millisecond. gore prints replayed output again on every evaluation; gluon mutes it, which is what keeps non-deterministic programs readable. And gluon carries the parts of pry Go never had — <code>it</code>, <code>:doc -src</code>, a value printer that tells the truth about identity — plus attachment that reaches <code>internal/</code> packages, the database layer and the plugins. Lines that actually run cost about 300ms in both: that is the price of the real compiler, and neither can cheat it.</p>
+    <p><strong>yaegi</strong> and <strong>gomacro</strong> are a different premise — interpreters: fast, with the interpreter's semantics rather than the compiler's. <strong>gophernotes</strong> is a Jupyter kernel over gomacro, the same trade behind a different surface; gluon is a terminal tool, not a kernel. None of the three has an agent surface. <a href="mcp.html">gluon mcp</a> serves the millisecond inspectors to a coding agent, so it measures method sets, layouts and benchmarks instead of guessing.</p>
+  </div>
+</section>
+
+<section class="card" id="never">
+  <div class="card-head"><span class="idx">5</span><div class="hd"><h2>What it never does</h2></div></div>
+  <div class="card-body">
+    <div class="call check">
+      <span class="lbl">Promises the code keeps</span>
+      <ul>
+        <li><strong>Never writes into your project.</strong> It builds in its own temp module, so it can never leave a stray binary in your repository, and a line runs in the session's directory, not yours.</li>
+        <li><strong>Never edits your go.mod.</strong> A module added with <code>:get</code> belongs to the session.</li>
+        <li><strong>Never reaches the network on its own account</strong> except <code>:get</code>, which fetches a module, and <code>:share</code>, which uploads and asks every time. A line can make its own requests, as any Go program can.</li>
+        <li><strong>Never stores a password</strong>, and never puts a connection string in a program it generates.</li>
+        <li><strong>Never guesses between two answers</strong> — two databases, two of your project's packages with one name — when the wrong guess would look like a right one. It lists them and asks.</li>
+      </ul>
+    </div>
+    <p>The reasoning behind each of these, and the invariants the code is held to, are in the project's <code>ROADMAP.md</code>.</p>
+  </div>
+</section>
+{% end %}

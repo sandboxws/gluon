@@ -1,0 +1,42 @@
+gluon> type Point struct{ X, Y int }
+gluon> pts := []Point{{1, 2}, {3, 4}, {5, 6}}
+gluon> pts
+([]main.Point) len=3 cap=3
+╭───┬───────────╮
+│ # │ value     │
+├───┼───────────┤
+│ 0 │ {X:1 Y:2} │
+│ 1 │ {X:3 Y:4} │
+│ 2 │ {X:5 Y:6} │
+╰───┴───────────╯
+gluon> :settings value.form columns
+value.form is columns · default = "columns" in ~/.config/gluon/config.toml
+gluon> pts
+([]main.Point) len=3 cap=3
+╭───┬───┬───╮
+│ # │ X │ Y │
+├───┼───┼───┤
+│ 0 │ 1 │ 2 │
+│ 1 │ 3 │ 4 │
+│ 2 │ 5 │ 6 │
+╰───┴───┴───╯
+gluon> :settings value.form tree
+value.form is tree · default = "tree" in ~/.config/gluon/config.toml
+gluon> map[string][]int{"odd": {1, 3}, "even": {2, 4}}
+(map[string][]int)  len=2
+├──"even"  []int  len=2 cap=2
+│  ├──0  2
+│  └──1  4
+└──"odd"  []int  len=2 cap=2
+   ├──0  1
+   └──1  3
+gluon> :settings value.form literal
+value.form is literal · default = "literal" in ~/.config/gluon/config.toml
+gluon> pts
+[]Point{Point{X: 1, Y: 2}, Point{X: 3, Y: 4}, Point{X: 5, Y: 6}}  len=3 cap=3
+gluon> :settings value.form line
+value.form is line · default = "line" in ~/.config/gluon/config.toml
+gluon> pts
+([]main.Point) [{X:1 Y:2} {X:3 Y:4} {X:5 Y:6}]  len=3 cap=3
+gluon> :settings value.form -
+value.form is back to table · dropped default = "line" from ~/.config/gluon/config.toml

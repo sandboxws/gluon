@@ -1,0 +1,183 @@
+<!doctype html>
+<!-- generated from site/ by `just docs`: edit the source, not this file -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Editing — gluon</title>
+<meta name="description" content="Completion from the type checker, readline and vim keys, the session in your editor, a buffer for more than a line, and gluon&#39;s own editor.">
+<meta name="theme-color" content="#0A0A0A">
+<script>(function(d,m){try{m=/[?&]palette=(gruv|go)\b/.exec(location.search);m=m?m[1]:localStorage.getItem("gluon:theme")}catch(e){}if(m==="gruv")d.documentElement.setAttribute("data-theme","gruv")})(document)</script>
+<link rel="canonical" href="https://sandboxws.github.io/gluon/guide/editing.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Editing — gluon">
+<meta property="og:description" content="Completion from the type checker, readline and vim keys, the session in your editor, a buffer for more than a line, and gluon&#39;s own editor.">
+<meta property="og:url" content="https://sandboxws.github.io/gluon/guide/editing.html">
+<meta property="og:image" content="https://sandboxws.github.io/gluon/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="gluon's startup screen in a Go project, beside the words: A Go REPL that stands in your project">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sandboxws.github.io/gluon/img/og.png">
+<meta name="twitter:title" content="Editing — gluon">
+<meta name="twitter:description" content="Completion from the type checker, readline and vim keys, the session in your editor, a buffer for more than a line, and gluon&#39;s own editor.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A0A0A'/%3E%3Cpath d='M9 9l7 7-7 7' stroke='%2300ADD8' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M18 23h6' stroke='%2300ADD8' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/gluon.css?v=980f3e8a">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="field" aria-hidden="true"></div>
+<div class="nav" id="nav">
+  <div class="nav-in">
+    <a class="nav-t" href="../index.html">gluon</a>
+    <span class="nav-sp"></span>
+    <a class="nav-m" href="../guide/index.html">Guides</a>
+    <a class="nav-m" href="../reference/index.html">Reference</a>
+    <span class="nav-m opt">v0.1.0</span>
+  </div>
+</div>
+
+<header class="hero wrap page">
+  <p class="eyebrow">Guide 07</p>
+  <h1 id="bigTitle">Editing</h1>
+  <p class="sub">Completion from the type checker, readline and vim keys, the session in your editor, a buffer for more than a line, and gluon&#39;s own editor.</p>
+</header>
+
+<div class="wrap cols">
+  <nav class="side" aria-label="Sections"><div class="side-in">
+    <p class="grp-h">This page</p>
+    <a href="#completion"><span class="rn">1</span><span class="rt">Completion</span></a>
+<a href="#keys"><span class="rn">2</span><span class="rt">Keys, and vim</span></a>
+<a href="#edit"><span class="rn">3</span><span class="rt">Editing the session</span></a>
+<a href="#buf"><span class="rn">4</span><span class="rt">A buffer</span></a>
+<a href="#builtin"><span class="rn">5</span><span class="rt">gluon's own editor</span></a>
+    <p class="grp-h">Guides</p>
+    <a href="../guide/index.html"><span class="rt">Guides</span></a>
+    <a href="../guide/start.html"><span class="rt">The first five minutes</span></a>
+    <a href="../guide/inspecting.html"><span class="rt">Inspecting</span></a>
+    <a href="../guide/measuring.html"><span class="rt">Measuring</span></a>
+    <a href="../guide/rendering.html"><span class="rt">Rendering</span></a>
+    <a href="../guide/session.html"><span class="rt">The session</span></a>
+    <a href="../guide/scratchpads.html"><span class="rt">Scratchpads</span></a>
+    <a href="../guide/editing.html" aria-current="page" class="here"><span class="rt">Editing</span></a>
+    <a href="../guide/project.html"><span class="rt">In a project</span></a>
+    <a href="../guide/database.html"><span class="rt">The database</span></a>
+    <a href="../guide/plugins.html"><span class="rt">Plugins</span></a>
+    <a href="../guide/configuration.html"><span class="rt">Configuration</span></a>
+    <a href="../guide/themes.html"><span class="rt">Themes</span></a>
+    <a href="../guide/scripting.html"><span class="rt">Scripting</span></a>
+    <a href="../guide/mcp.html"><span class="rt">MCP</span></a>
+    <a href="../guide/design.html"><span class="rt">How it works</span></a>
+    
+  </div></nav>
+  <main id="main">
+    
+<section class="card" id="completion">
+  <div class="card-head"><span class="idx">1</span><div class="hd"><h2>Completion from the type checker</h2><div class="chips"><span class="chip">12–22µs a keystroke</span></div></div></div>
+  <div class="card-body">
+    <p class="lead"><kbd>tab</kbd> completes what the session actually knows, not a word list. The candidates come from <code>go/types</code> — what <a href="../reference/commands.html#t"><code>:t</code></a> and <a href="../reference/commands.html#ls"><code>:ls</code></a> answer from — so a struct you declared two lines ago completes its own fields.</p>
+    <figure class="shot"><figcaption class="cmd-bar"><span class="ck">Screenshot</span><span class="cv">a literal begun, and the first field not set, as ghost text</span></figcaption><a href="../img/shots/completion.go.webp?v=18486f1a"><img class="v-go" src="../img/shots/completion.go.webp?v=18486f1a" width="723" height="89" alt="a struct type declared, then a composite literal of it begun, with the first field not yet set offered as ghost text after the cursor" loading="lazy" decoding="async"></a><a href="../img/shots/completion.gruv.webp?v=28510523"><img class="v-gruv" src="../img/shots/completion.gruv.webp?v=28510523" width="723" height="89" alt="a struct type declared, then a composite literal of it begun, with the first field not yet set offered as ghost text after the cursor" loading="lazy" decoding="async"></a></figure>
+    <p>It completes names in scope, fields and methods, package members (<code>strings.To</code>), the packages you can name, and meta commands. <kbd>tab</kbd> accepts the ghost text, and <kbd>ctrl-n</kbd>/<kbd>ctrl-p</kbd> cycle when there is more than one.</p>
+    <p>Inside a composite literal it offers the fields not set yet, with the colon, because that is the next thing you type — and never a method, since <code>Point{Dist: 1}</code> does not compile. Inside a call it shows the callee's signature beside the line with the parameter you are typing in brackets, and offers the names whose type that parameter will take: the rule is <code>types.AssignableTo</code>, the compiler's own, so when nothing in scope fits, nothing is offered. The signature is a hint, never a suggestion — <kbd>tab</kbd> cannot accept it.</p>
+    <figure class="shot"><figcaption class="cmd-bar"><span class="ck">Screenshot</span><span class="cv">inside a call: the signature, the parameter being typed in brackets</span></figcaption><a href="../img/shots/completion-hint.go.webp?v=3a3360f8"><img class="v-go" src="../img/shots/completion-hint.go.webp?v=3a3360f8" width="723" height="89" alt="a call to strings.Repeat typed as far as its second argument, with the signature shown beside the line and the parameter being typed in brackets" loading="lazy" decoding="async"></a><a href="../img/shots/completion-hint.gruv.webp?v=54b21894"><img class="v-gruv" src="../img/shots/completion-hint.gruv.webp?v=54b21894" width="723" height="89" alt="a call to strings.Repeat typed as far as its second argument, with the signature shown beside the line and the parameter being typed in brackets" loading="lazy" decoding="async"></a></figure>
+    <p>A meta command completes by what it declares it takes: its flags where a flag may go, and their values — <code>:http g</code> to <code>get</code> in the case you typed, <code>:theme g</code> to the themes that begin so, <code>:scratch -rm </code> to the scratchpads there are. The rest of its usage sits beside the line as you type, the way a signature does, and inside a flag's value it is that flag's help. <a href="start.html#help">Help</a> has the rest.</p>
+    <figure class="shot"><figcaption class="cmd-bar"><span class="ck">Screenshot</span><span class="cv">a dash where :http takes its flags</span></figcaption><a href="../img/shots/help-flags.go.webp?v=ea5b3fc1"><img class="v-go" src="../img/shots/help-flags.go.webp?v=ea5b3fc1" width="893" height="68" alt=":http with a method and url typed and then a dash, the flags it takes offered beside the line" loading="lazy" decoding="async"></a><a href="../img/shots/help-flags.gruv.webp?v=283366f4"><img class="v-gruv" src="../img/shots/help-flags.gruv.webp?v=283366f4" width="893" height="68" alt=":http with a method and url typed and then a dash, the flags it takes offered beside the line" loading="lazy" decoding="async"></a></figure>
+  </div>
+</section>
+
+<section class="card" id="keys">
+  <div class="card-head"><span class="idx">2</span><div class="hd"><h2>Keys, and vim</h2></div></div>
+  <div class="card-body">
+    <p class="lead">The prompt reads keys the way readline does — <kbd>ctrl-a</kbd>, <kbd>ctrl-e</kbd>, <kbd>alt-f</kbd>, <kbd>alt-b</kbd> — until <a href="../reference/settings.html#input.mode"><code>input.mode</code></a> says <code>vim</code>.</p>
+    <div class="tw"><table>
+      <thead><tr><th>Key</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">tab · ctrl-n · ctrl-p</td><td>accept a completion · cycle through them</td></tr>
+        <tr><td class="mono">ctrl-r</td><td>search every line typed on this machine</td></tr>
+        <tr><td class="mono">↑ ↓</td><td>walk the history, a multi-line construct as one entry</td></tr>
+        <tr><td class="mono">ctrl-c</td><td>abandon the line, keep the session</td></tr>
+        <tr><td class="mono">ctrl-l · <code>:clear</code></td><td>clear the screen, keep the session</td></tr>
+        <tr><td class="mono">ctrl-d · <code>:q</code></td><td>quit</td></tr>
+      </tbody>
+    </table></div>
+    <p>With vim on, the prompt says which mode has the keyboard — <code>gluon[i]&gt;</code> while you type, <code>gluon[n]&gt;</code> after <kbd>esc</kbd> — and the cursor says it again in the two shapes vim draws: a block on a character in normal mode, an underline under one in insert. Both take the cell they are in, so nothing on the line moves when the mode changes, and every line starts in insert, so a mode left over from the last line can never swallow the start of the next.</p>
+    <div class="cmd">
+      <div class="cmd-bar"><span class="ck">vim</span><span class="cv">normal mode, at the prompt</span></div>
+<pre>i a I A          insert before, after, at the start, at the end
+h l 0 ^ $        characters and line ends
+w W b B e E      words; the capitals are whitespace-delimited
+f t F T ; ,      to a character, and repeat
+x X s S r D C    single-key edits
+d c y + motion   operators, and dd cc yy for the whole line
+p P              put, from one unnamed register
+u ctrl-r         undo and redo of what you typed
+2d3w             counts, and they multiply
+k j              history, as ↑ and ↓ do</pre>
+    </div>
+    <figure class="shot"><figcaption class="cmd-bar"><span class="ck">Screenshot</span><span class="cv">normal mode: the prompt says so, and the cursor is a block</span></figcaption><a href="../img/shots/keys.go.webp?v=89b73c7a"><img class="v-go" src="../img/shots/keys.go.webp?v=89b73c7a" width="654" height="89" alt="the prompt in vim&#39;s normal mode, marked gluon[n]&gt;, with a block cursor on the line being edited" loading="lazy" decoding="async"></a><a href="../img/shots/keys.gruv.webp?v=95a830fc"><img class="v-gruv" src="../img/shots/keys.gruv.webp?v=95a830fc" width="654" height="89" alt="the prompt in vim&#39;s normal mode, marked gluon[n]&gt;, with a block cursor on the line being edited" loading="lazy" decoding="async"></a></figure>
+    <p><kbd>k</kbd> and <kbd>j</kbd> walk history, because a one-line prompt has no line above and <code>set -o vi</code> binds them the same way. <kbd>ctrl-r</kbd> is redo in normal mode and history search in insert. <kbd>o</kbd> and <kbd>O</kbd> do not exist — the line is one line by construction — and an unbound key is a silent no-op rather than a character typed. Use <kbd>ctrl-l</kbd> or <a href="../reference/commands.html#clear"><code>:clear</code></a> rather than your terminal's own clear, which fights the renderer's cursor arithmetic.</p>
+  </div>
+</section>
+
+<section class="card" id="edit">
+  <div class="card-head"><span class="idx">3</span><div class="hd"><h2>Editing the session</h2></div></div>
+  <div class="card-body">
+    <p class="lead"><a href="../reference/commands.html#edit"><code>:edit</code></a> is pry's <code>edit</code>: it opens the entries — what you typed, not the program they render into — in your editor, and replaces the session with the file when it closes.</p>
+    <div class="repl"><div class="cmd-bar"><span class="ck">gluon</span><span class="cv">the marked lines are what was written in the editor</span></div><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> x <span class="p">:=</span> <span class="nu">2</span></div><div class="tl"><span class="pr">gluon&gt;</span> y <span class="p">:=</span> x <span class="p">*</span> <span class="nu">10</span></div><div class="tl"><span class="pr">gluon&gt;</span> y</div><div class="tl out"><span class="ty">(int)</span> 20</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:edit</span><span class="vw" title="At the prompt this opens your editor. The marked lines are what was written in it; what follows them is what gluon printed when it closed.">opens the editor</span></div><div class="tl ed">x <span class="p">:=</span> <span class="nu">3</span></div><div class="tl ed">y <span class="p">:=</span> x <span class="p">*</span> <span class="nu">10</span></div><div class="tl ed">y</div><div class="tl out"><span class="ty">(int)</span> 30</div><div class="tl out">reloaded (3 entries)</div><div class="tl"><span class="pr">gluon&gt;</span> y</div><div class="tl out"><span class="ty">(int)</span> 30</div></div></div>
+    <p>If the edited session does not replay, the one you had is put back. The editor is <a href="../reference/settings.html#editor"><code>editor</code></a> if you set it, then <code>$VISUAL</code>, then <code>$EDITOR</code>, then a terminal editor on your <code>PATH</code>.</p>
+  </div>
+</section>
+
+<section class="card" id="buf">
+  <div class="card-head"><span class="idx">4</span><div class="hd"><h2>A buffer for more than a line</h2></div></div>
+  <div class="card-body">
+    <p class="lead">The prompt is one line. For twelve of them there is <a href="../reference/commands.html#buf"><code>:buf</code></a>, which hands the terminal to the same editor and runs the whole buffer as <strong>one evaluation</strong> when you close it.</p>
+    <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:buf</span><span class="vw" title="At the prompt this opens your editor. The marked lines are what was written in it; what follows them is what gluon printed when it closed.">opens the editor</span></div><div class="tl ed"><span class="kw">func</span> greet<span class="p">(</span>name <span class="ty">string</span><span class="p">)</span> <span class="ty">string</span> <span class="p">{</span></div><div class="tl ed">	<span class="kw">return</span> <span class="s">&#34;hello, &#34;</span> <span class="p">+</span> name</div><div class="tl ed"><span class="p">}</span></div><div class="tl ed">greet<span class="p">(</span><span class="s">&#34;gluon&#34;</span><span class="p">)</span></div><div class="tl out"><span class="ty">(string)</span> &#34;hello, gluon&#34;  len=12</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:buf</span> -show</div><div class="tl out"><span class="kw">func</span> greet<span class="p">(</span>name <span class="ty">string</span><span class="p">)</span> <span class="ty">string</span> <span class="p">{</span></div><div class="tl out">	<span class="kw">return</span> <span class="s">&#34;hello, &#34;</span> <span class="p">+</span> name</div><div class="tl out"><span class="p">}</span></div><div class="tl out">greet<span class="p">(</span><span class="s">&#34;gluon&#34;</span><span class="p">)</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:buf</span> -check</div><div class="tl out"><span class="er">buffer:1:6: greet redeclared in this block</span></div><div class="tl out"><span class="er">    func greet(name string) string {</span></div><div class="tl out"><span class="er">         ^</span></div><div class="tl out"><span class="er">session: 	other declaration of greet</span></div><div class="tl out"><span class="er">    func greet(name string) string {</span></div><div class="tl out"><span class="er">         ^</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:buf</span> -clear</div><div class="tl out">buffer cleared — 4 lines dropped</div></div></div>
+    <p>It is not <code>:edit</code>: the buffer is somewhere else entirely, starts empty, and running it <em>appends</em> to the session — which is why a <code>-check</code> after the run reports <code>greet</code> as declared twice: it is in the session now, and in the buffer too. What you write stays in the buffer between opens, so the loop is write, run, fix, run again; nothing of it reaches the disk when the session ends.</p>
+    <p>What the editor opens is a real <code>main.go</code> in a real module, with the session rendered around two regions marked for you to write in — one for declarations, one for statements — so your own gopls completes, hovers and checks against the <code>x</code> the session actually has. Write between the markers, not at the bottom of <code>main</code>: that is context, and an edit there is not taken — the answer says so rather than leaving you to wonder. <a href="../reference/commands.html#buf-check"><code>:buf -check</code></a> is the in-process type check, about two milliseconds and no build; it is an opinion rather than a gate, and <a href="../reference/commands.html#buf-run"><code>:buf -run</code></a> never asks it. <a href="../reference/commands.html#buf-show"><code>:buf -show</code></a> prints what gluon took, and <a href="../reference/commands.html#buf-clear"><code>:buf -clear</code></a> empties it.</p>
+  </div>
+</section>
+
+<section class="card" id="builtin">
+  <div class="card-head"><span class="idx">5</span><div class="hd"><h2>gluon's own editor</h2></div></div>
+  <div class="card-body">
+    <p class="lead">Handing the terminal to another program means gluon cannot draw while it has it, so the loop is write, quit, read, open again. <a href="../reference/settings.html#editor"><code>editor</code></a><code> = "builtin"</code> is the other way: a full-screen editor of gluon's own that runs what you wrote and shows the answer underneath it.</p>
+    <div class="tw"><table>
+      <thead><tr><th>Key</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">ctrl-e</td><td>run it, and show the answer in a pane below, the editor still up</td></tr>
+        <tr><td class="mono">ctrl-k</td><td>the in-process type check, with a mark beside every line it names</td></tr>
+        <tr><td class="mono">ctrl-o · tab</td><td>show or hide the output · move into it to scroll</td></tr>
+        <tr><td class="mono">ZZ · ZQ</td><td>close having run · close having not</td></tr>
+      </tbody>
+    </table></div>
+    <p>The keys are vim's, and they are the prompt's own for everything on one line; a document adds <code>j k gg G</code>, <code>o</code> and <code>O</code>, linewise <code>dd yy cc</code>, and <code>v</code>/<code>V</code> with the operators. Running in place is offered where running <em>replaces</em> the session — <code>:edit</code> and <code>:scratch -edit</code> — so pressing <kbd>ctrl-e</kbd> twice leaves what pressing it once left. <code>:buf</code> appends, so there <code>ZZ</code> runs it once, on the way out. It is not a replacement for your editor, and <code>external</code> stays the default; it is for the machine that has none — a container, a fresh box, somebody else's server.</p>
+  </div>
+</section>
+
+    <nav class="pn" aria-label="Pages beside this one">
+  <a class="pg" href="../guide/scratchpads.html"><span class="pg-k">← previous</span><b>Scratchpads</b></a>
+  <a class="pg next" href="../guide/project.html"><span class="pg-k">next →</span><b>In a project</b></a>
+</nav>
+  </main>
+</div>
+
+<footer class="foot"><div class="wrap fgrid">
+    <div><div class="fh">The site</div><ul>
+        <li><a href="../index.html">gluon</a> — what it is, in one page</li>
+        <li><a href="../guide/index.html">Guides</a> — every feature, with the lines to type</li>
+        <li><a href="../reference/index.html">Reference</a> — generated from the code that defines it</li>
+      </ul></div>
+    <div><div class="fh">This page</div><ul>
+        <li>v0.1.0 · <code>github.com/sandboxws/gluon</code></li>
+        <li>Generated from <code>site/</code> by <code>just docs</code></li>
+        <li>No analytics, no cookies; the palette choice is one localStorage key</li>
+        <li><a href="https://github.com/sandboxws/gluon">Source</a></li>
+      </ul></div>
+</div></footer>
+<script src="../assets/gluon.js?v=0b5d44bf"></script>
+</body>
+</html>

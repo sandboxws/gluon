@@ -1,0 +1,71 @@
+$ gluon theme
+!clip 12
+themes
+    catppuccin-latte          Catppuccin Latte: mauve keywords, green strings, amber types
+    light · built in
+    catppuccin-mocha          Catppuccin Mocha: mauve keywords, green strings, yellow types
+    dark · built in
+    dracula                   Dracula: pink keywords, yellow strings, cyan types
+    dark · built in
+    github-dark               GitHub Dark: red keywords, pale-blue strings, orange types
+    dark · built in
+    github-light              GitHub Light: red keywords, navy strings, brown types
+    light · built in
+  ✓ go                        gluon's own palette: violet keywords, green strings, cyan types
+    dark · built in
+    go-light                  gluon's own palette, for a light terminal
+    light · built in
+    gruvbox-dark              Gruvbox Dark: red keywords, green strings, yellow types
+    dark · built in
+    gruvbox-light             Gruvbox Light: red keywords, olive strings, amber types
+    light · built in
+    gruvppuccin-mocha         Gruvppuccin Mocha: violet keywords, green strings, amber types
+    dark · built in
+    gruvppuccin-nebula        Gruvppuccin Nebula: mocha's accents, violet-grey furniture
+    dark · built in
+    gruvppuccin-nocturne      Gruvppuccin Nocturne: indigo keywords, teal strings, sky numbers
+    dark · built in
+    gruvppuccin-nocturne-gruv Gruvppuccin Nocturne Gruv: mocha's accents, dimmer greys
+    dark · built in
+    gruvppuccin-void          Gruvppuccin Void: mocha's accents, deep violet greys
+    dark · built in
+    monokai                   Monokai: magenta keywords, yellow strings, green types
+    dark · built in
+    nord                      Nord: blue keywords, green strings, teal types
+    dark · built in
+    one-dark                  One Dark: purple keywords, green strings, yellow types
+    dark · built in
+    one-light                 One Light: purple keywords, green strings, amber types
+    light · built in
+    solarized-dark            Solarized Dark: olive keywords, cyan strings, orange types
+    dark · built in
+    solarized-light           Solarized Light: the same eight accents, read on paper
+    light · built in
+    terminal                  your terminal's own sixteen colours
+    either · built in
+    tokyo-night               Tokyo Night: violet keywords, green strings, pale-blue types
+    dark · built in
+    tokyo-night-day           Tokyo Night Day: violet keywords, green strings, ink types
+    light · built in
+
+select one in ~/.config/gluon/config.toml:
+  [theme]
+  name = "terminal"
+$ gluon theme show gruvppuccin-mocha
+gruvppuccin-mocha
+  annotation   #6E655A   ████ the quick brown fox
+  border       #5A524C   ████ the quick brown fox
+  builtin      #7DAEA3   ████ the quick brown fox
+  comment      #6E655A   ████ the quick brown fox
+  dim          #A69A8A   ████ the quick brown fox
+  error        #EA6962   ████ the quick brown fox
+  ident        #D4BE98   ████ the quick brown fox
+  keyword      #C28FD6   ████ the quick brown fox
+  mode         #C28FD6   ████ the quick brown fox
+  note         #D8A657   ████ the quick brown fox
+  number       #E78A4E   ████ the quick brown fox
+  prompt       #7DAEA3   ████ the quick brown fox
+  punctuation  #7C7269   ████ the quick brown fox
+  search       #F5B843   ████ the quick brown fox
+  string       #A9B665   ████ the quick brown fox
+  type         #D8A657   ████ the quick brown fox

@@ -1,0 +1,2262 @@
+<!doctype html>
+<!-- generated from site/ by `just docs`: edit the source, not this file -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>MCP tools — gluon</title>
+<meta name="description" content="What gluon mcp serves a coding agent — each tool&#39;s description and schema exactly as the agent receives them.">
+<meta name="theme-color" content="#0A0A0A">
+<script>(function(d,m){try{m=/[?&]palette=(gruv|go)\b/.exec(location.search);m=m?m[1]:localStorage.getItem("gluon:theme")}catch(e){}if(m==="gruv")d.documentElement.setAttribute("data-theme","gruv")})(document)</script>
+<link rel="canonical" href="https://sandboxws.github.io/gluon/reference/mcp.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="MCP tools — gluon">
+<meta property="og:description" content="What gluon mcp serves a coding agent — each tool&#39;s description and schema exactly as the agent receives them.">
+<meta property="og:url" content="https://sandboxws.github.io/gluon/reference/mcp.html">
+<meta property="og:image" content="https://sandboxws.github.io/gluon/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="gluon's startup screen in a Go project, beside the words: A Go REPL that stands in your project">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sandboxws.github.io/gluon/img/og.png">
+<meta name="twitter:title" content="MCP tools — gluon">
+<meta name="twitter:description" content="What gluon mcp serves a coding agent — each tool&#39;s description and schema exactly as the agent receives them.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A0A0A'/%3E%3Cpath d='M9 9l7 7-7 7' stroke='%2300ADD8' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M18 23h6' stroke='%2300ADD8' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/gluon.css?v=980f3e8a">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="field" aria-hidden="true"></div>
+<div class="nav" id="nav">
+  <div class="nav-in">
+    <a class="nav-t" href="../index.html">gluon</a>
+    <span class="nav-sp"></span>
+    <a class="nav-m" href="../guide/index.html">Guides</a>
+    <a class="nav-m" href="../reference/index.html">Reference</a>
+    <span class="nav-m opt">v0.1.0</span>
+  </div>
+</div>
+
+<header class="hero wrap page">
+  <p class="eyebrow">Reference</p>
+  <h1 id="bigTitle">MCP tools</h1>
+  <p class="sub">What gluon mcp serves a coding agent — each tool&#39;s description and schema exactly as the agent receives them.</p>
+</header>
+
+<div class="wrap cols">
+  <nav class="side" aria-label="Sections"><div class="side-in">
+    <p class="grp-h">This page</p>
+    <a href="#static"><span class="rn">15</span><span class="rt">Static tools</span></a>
+<a href="#eval"><span class="rn">18</span><span class="rt">With --eval</span></a>
+<a href="#plugin"><span class="rn">20</span><span class="rt">From plugins</span></a>
+<a href="#instructions"><span class="rn">i</span><span class="rt">Instructions</span></a>
+    <p class="grp-h">Reference</p>
+    <a href="../reference/index.html"><span class="rt">Reference</span></a>
+    <a href="../reference/commands.html"><span class="rt">Commands</span></a>
+    <a href="../reference/plugins.html"><span class="rt">Plugins</span></a>
+    <a href="../reference/settings.html"><span class="rt">Settings</span></a>
+    <a href="../reference/cli.html"><span class="rt">The gluon command</span></a>
+    <a href="../reference/mcp.html" aria-current="page" class="here"><span class="rt">MCP tools</span></a>
+    <a href="../reference/themes.html"><span class="rt">Themes</span></a>
+    
+  </div></nav>
+  <main id="main">
+    
+
+<section class="card" id="static">
+  <div class="card-head"><span class="idx">15</span><div class="hd"><h2>Static tools</h2></div></div>
+  <div class="card-body">
+    <p class="lead">Served by a bare gluon mcp. Each answers from go/types or the transcript and never builds or runs anything.</p>
+    <article class="ref" id="go_type">
+      <h3><a class="pl" href="#go_type">go_type</a><span class="ref-s">is <a href="commands.html#t"><code>:t</code></a></span></h3>
+      <pre class="long">the type of an expression      (Ruby&#39;s .class)
+
+Answers from go/types in gluon&#39;s own process, so it never builds and comes
+back in about a millisecond.
+
+-d is the exception: it reports the dynamic type — what is actually inside
+an interface value — which nothing but a run can know. It costs a build and
+an execution, and it runs your expression, so a call with a side effect has
+it. Only at the prompt: the MCP tool stays static and ignores the flag.
+
+expr reads: [-v | -d] &lt;exp&gt;
+
+Flags, written into expr as at the prompt:
+  -v  add the underlying type and its kind
+  -d  run it once for the dynamic type inside an interface (only at the gluon prompt; this tool ignores it)
+
+Examples (expr):
+  &#34;strconv.Atoi(\&#34;12\&#34;)&#34; — two values: (int, error)
+  &#34;-v time.Second&#34; — the named type, what it is underneath, and its kind
+
+The -d form runs the expression and is available only at the gluon prompt. This tool is static: a leading -d is ignored and the static answer is returned.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: [-v|-d] \u003cexp\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_methods">
+      <h3><a class="pl" href="#go_methods">go_methods</a><span class="ref-s">is <a href="commands.html#m"><code>:m</code></a></span></h3>
+      <pre class="long">its method set and interfaces  (Ruby&#39;s .methods)
+
+Lists the value and pointer method sets together, marking the pointer-only
+ones — the rule that puts them in *T&#39;s set and not T&#39;s is the thing that
+trips people up. Satisfaction is checked against error, a few stdlib
+interfaces, and any interface you declared this session.
+
+expr reads: &lt;exp&gt;
+
+Examples (expr):
+  &#34;strings.Builder{}&#34; — its methods, the pointer-only ones marked — for a Builder, all of them</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003cexp\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_implements">
+      <h3><a class="pl" href="#go_implements">go_implements</a><span class="ref-s">is <a href="commands.html#impl"><code>:impl</code></a></span></h3>
+      <pre class="long">does a type implement an interface, and what is missing
+
+Answers against the interface you name, not a fixed list — anything the
+session can see: declared here, imported, or in the attached module.
+
+A no names the first method in the way and the signature the interface
+wants, and says when *T would have satisfied it even though T does not —
+which is what the compiler&#39;s own error leaves you to guess.
+
+expr reads: &lt;t&gt;, &lt;i&gt;
+
+Examples (expr):
+  &#34;*bytes.Buffer, io.Reader&#34;
+  &#34;bytes.Buffer, io.Writer&#34; — no: Write is on *bytes.Buffer, and the answer says so</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003ct\u003e, \u003ci\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_satisfies">
+      <h3><a class="pl" href="#go_satisfies">go_satisfies</a><span class="ref-s">is <a href="commands.html#sat"><code>:sat</code></a></span></h3>
+      <pre class="long">the same question, asked of a value
+
+The verdict is about the expression&#39;s static type. When that type is itself
+an interface the answer says so: what is actually inside an interface value
+is not known without running it.
+
+expr reads: &lt;exp&gt;, &lt;i&gt;
+
+Examples (expr):
+  &#34;os.Stdout, io.Writer&#34;</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003cexp\u003e, \u003ci\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_cast">
+      <h3><a class="pl" href="#go_cast">go_cast</a><span class="ref-s">is <a href="commands.html#cast"><code>:cast</code></a></span></h3>
+      <pre class="long">whether e.(t) is legal, and why not
+
+Separates the assertion the compiler rejects outright — no value of e&#39;s type
+can ever be a t — from the one that compiles and may still fail at run
+time. The first is the useful one: Go reports it as a method you never
+mentioned, and this names it.
+
+expr reads: &lt;e&gt;, &lt;t&gt;
+
+Examples (expr):
+  &#34;any(1), string&#34; — legal, and would fail when it runs
+  &#34;io.Reader(nil), *strings.Builder&#34; — rejected outright: *strings.Builder has no Read</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003ce\u003e, \u003ct\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_interface">
+      <h3><a class="pl" href="#go_interface">go_interface</a><span class="ref-s">is <a href="commands.html#iface"><code>:iface</code></a></span></h3>
+      <pre class="long">an interface&#39;s methods, and who implements it
+
+The implementor search covers what the session can name: its own types, the
+packages its program imports, and the attached module&#39;s packages already
+loaded. It never scans the module cache, and it says how many types it
+looked at — so &#34;nothing implements it&#34; cannot be mistaken for &#34;nothing
+was searched&#34;.
+
+expr reads: &lt;name&gt;
+
+Examples (expr):
+  &#34;io.Writer&#34; — its methods, and the types the session can see that implement it</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003cname\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_embeds">
+      <h3><a class="pl" href="#go_embeds">go_embeds</a><span class="ref-s">is <a href="commands.html#embeds"><code>:embeds</code></a></span></h3>
+      <pre class="long">embedded fields, and the methods they promote
+
+A method two embedded types both provide at the same depth is reported as
+ambiguous rather than resolved: that selector does not compile, and naming
+a winner would teach something false.
+
+expr reads: &lt;type&gt;
+
+Examples (expr):
+  &#34;bufio.ReadWriter&#34; — *Reader and *Writer, and the methods each promotes</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003ctype\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_generics">
+      <h3><a class="pl" href="#go_generics">go_generics</a><span class="ref-s">is <a href="commands.html#gen"><code>:gen</code></a></span></h3>
+      <pre class="long">a generic&#39;s type parameters and their constraints
+
+Answers from go/types and never builds. It reads the declaration, so a
+generic nobody has instantiated yet can be asked what it would accept.
+
+expr reads: &lt;type&gt;
+
+Examples (expr):
+  &#34;atomic.Pointer&#34; — its type parameter, and the constraint on it</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003ctype\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_mock">
+      <h3><a class="pl" href="#go_mock">go_mock</a><span class="ref-s">is <a href="commands.html#mock"><code>:mock</code></a></span></h3>
+      <pre class="long">a mock implementation of an interface
+
+Emits the source and declares nothing: the mock enters the session only if
+you paste it, so it cannot collide with a name you already have. One
+settable func field per method, and methods that dispatch to them —
+including the ones an embedded interface promotes, because the method set
+is the one :m computes.
+
+A method whose field is unset panics naming itself. Returning zero values
+instead is how a mock makes a test pass for the wrong reason: the assertion
+holds because nothing was called, and nothing says so.
+
+Nothing is built and nothing is run — this is go/types, like :iface.
+
+expr reads: &lt;type&gt;
+
+Examples (expr):
+  &#34;io.ReadCloser&#34; — a struct with a func field per method, to paste in</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003ctype\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_spy">
+      <h3><a class="pl" href="#go_spy">go_spy</a><span class="ref-s">is <a href="commands.html#spy"><code>:spy</code></a></span></h3>
+      <pre class="long">the same, recording what each method was called with
+
+A mock plus, for each method, the arguments of every call in order and a
+Count() that reads back how many there were. The count is len(Calls)
+rather than a second field, so the two cannot disagree.
+
+expr reads: &lt;type&gt;
+
+Examples (expr):
+  &#34;io.Writer&#34; — the mock, plus every call&#39;s arguments and a Count()</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003ctype\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_scope">
+      <h3><a class="pl" href="#go_scope">go_scope</a><span class="ref-s">is <a href="commands.html#ls"><code>:ls</code></a></span></h3>
+      <pre class="long">what is in scope, with types   (pry&#39;s ls)</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_doc">
+      <h3><a class="pl" href="#go_doc">go_doc</a><span class="ref-s">is <a href="commands.html#doc"><code>:doc</code></a></span></h3>
+      <pre class="long">documentation, or the source   (ri / pry&#39;s show-source)
+
+-examples shows the package&#39;s runnable examples, each labelled with the
+identifier it is an example of. `go doc` does not report them, so they are
+read from the sources already on disk — a package whose sources were never
+downloaded says so rather than reporting that it has none.
+
+-url prints the pkg.go.dev address at the version the build list has. It
+prints and nothing else: no fetch, no browser. When the version cannot be
+determined — the standard library, a replaced module, a session with no
+requirements — the address is version-independent and says so.
+
+-pkg says the argument names a package, so a name that is also a symbol
+resolves to the package or is reported as unresolved, rather than quietly
+answering about the other one.
+
+One flag at a time: they are four questions about a name, not four
+adjustments to one answer. Output past a screenful is paged, and is still
+printed in full through a pipe.
+
+expr reads: [-src | -examples | -url | -pkg] &lt;name&gt;
+
+Flags, written into expr as at the prompt:
+  -src  the implementation rather than the documentation
+  -examples  the package&#39;s runnable examples, read off disk
+  -url  the pkg.go.dev address at the version in use
+  -pkg  read the name as a package, never as a symbol
+
+Examples (expr):
+  &#34;strings.Cut&#34;
+  &#34;-src strings.Cut&#34; — the source — pry&#39;s show-source
+  &#34;-examples strings&#34;
+  &#34;-url github.com/google/uuid.New&#34; — an address at the version the build list has; nothing is fetched
+  &#34;-pkg errors&#34; — the package, where a symbol could have answered instead</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: [flags] \u003cs\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_layout">
+      <h3><a class="pl" href="#go_layout">go_layout</a><span class="ref-s">is <a href="commands.html#layout"><code>:layout</code></a></span></h3>
+      <pre class="long">field offsets, padding, and what reordering would save
+
+Answers from go/types and never builds: sizes, offsets and alignment are
+the compiler&#39;s own for the platform gluon runs on. The suggested order is
+the one that wastes least padding, and the saving is stated in bytes.
+
+expr reads: &lt;type&gt;
+
+Examples (expr):
+  &#34;struct{ a bool; b int64; c bool }&#34; — 24 bytes, and the order that would take 16</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003ctype\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="session_source">
+      <h3><a class="pl" href="#session_source">session_source</a><span class="ref-s">is <a href="commands.html#src"><code>:src</code></a></span></h3>
+      <pre class="long">show the real Go program your session became</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="session_history">
+      <h3><a class="pl" href="#session_history">session_history</a><span class="ref-s">is <a href="commands.html#hist"><code>:hist</code></a></span></h3>
+      <pre class="long">number the session&#39;s entries</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article>
+  </div>
+</section>
+
+<section class="card" id="eval">
+  <div class="card-head"><span class="idx">18</span><div class="hd"><h2>With --eval</h2></div></div>
+  <div class="card-body">
+    <p class="lead">Served only when the client config says gluon mcp --eval: these build and run code, and granting that belongs to the person who edits the config (invariant 28).</p>
+    <article class="ref" id="session_reset">
+      <h3><a class="pl" href="#session_reset">session_reset</a><span class="ref-s">is <a href="commands.html#reset"><code>:reset</code></a></span></h3>
+      <pre class="long">clear the session, and with -deps its modules too
+
+Bare :reset clears the entries and leaves the requirements alone, so a
+session cleared to try the same library a different way does not have to
+fetch it again.
+
+-deps clears both, removing every module :get added — which deactivates
+the plugins that depended on them. A requirement the attached host owns is
+left alone: it belongs to the host&#39;s go.mod, which gluon never edits.
+
+This tool runs code by replaying the session; side effects repeat.
+
+This tool is the bare `:reset`. Its argument form is available only at the gluon prompt.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_since">
+      <h3><a class="pl" href="#go_since">go_since</a><span class="ref-s">is <a href="commands.html#since"><code>:since</code></a></span></h3>
+      <pre class="long">what each Go release added, from the toolchain you have
+
+With no argument, every release the installed toolchain describes, newest
+first. With a version, that release: its language changes, its GODEBUG
+entries, and its standard library additions a package at a time.
+
+The additions are read from $GOROOT/api/go1.N.txt and the behaviour changes
+from $GOROOT/doc/godebug.md — the release record the distribution already
+ships. Nothing is fetched. Every api line since Go 1.19 carries the number
+of the proposal that accepted it, so the go.dev/issue link beside a
+declaration is a fact on disk rather than a guess.
+
+-lang is the language changes alone, as prose with a runnable snippet. No
+api file describes a change to the language, so these are written by hand,
+and a release nobody has written up says so rather than reporting that its
+syntax did not move.
+
+-pkg &lt;path&gt; is every addition to one import path across every release —
+which release added maps.Keys, and what else arrived with it.
+
+-run &lt;name&gt; evaluates a language note&#39;s snippet into this session. It is
+what the run choice on a note hands back, and it adds to the session and
+the scratchpad like any line you typed, so :branch first if that matters.
+A note needing a go directive above the one this session builds at is
+refused with which of the two numbers is short, rather than left to the
+compiler to report against a temp path you never wrote.
+
+expr reads: [-lang | -pkg &lt;path&gt; | -run &lt;name&gt;] [version]
+
+Flags, written into expr as at the prompt:
+  -lang  the language changes alone, as prose with a snippet
+  -pkg &lt;path&gt;  every addition to one import path, across releases
+  -run &lt;name&gt;  evaluate a language note&#39;s snippet in this session
+
+Examples (expr):
+  &#34;1.23 -lang&#34;
+  &#34;-pkg maps&#34; — which release added maps.Keys, and what came with it
+  &#34;1.23 -run range-over-func&#34;
+
+This tool runs code by replaying the session; side effects repeat.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: [version]&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_slice_headers">
+      <h3><a class="pl" href="#go_slice_headers">go_slice_headers</a><span class="ref-s">is <a href="commands.html#slice"><code>:slice</code></a></span></h3>
+      <pre class="long">slice headers, and whether they share a backing array
+
+Shows the runtime triple — pointer, len, cap — and says when two slices are
+looking at the same memory. That sharing is invisible in the printed values
+and obvious in the pointers, which is the whole point.
+
+expr reads: &lt;exp&gt;[, &lt;exp&gt;...]
+
+Examples (expr):
+  &#34;x, x[1:3]&#34; — both headers, and whether they share a backing array
+
+This tool runs code by replaying the session; side effects repeat.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: a, b&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_diff">
+      <h3><a class="pl" href="#go_diff">go_diff</a><span class="ref-s">is <a href="commands.html#diff"><code>:diff</code></a></span></h3>
+      <pre class="long">what differs between two values, and where
+
+Reports only the differences, each with the path to it — .Name, [3],
+or . for the value itself. Two structs of a dozen fields that differ in
+one produce one row, which is the reason to have this rather than print
+both and read them.
+
+A difference in shape is reported as one: different types stop the
+comparison there rather than calling every field different, and a
+length or a missing key is stated as itself.
+
+Both values come from one evaluation, so a value derived from anything
+non-deterministic is compared against the same run it was taken from.
+The value printer caps a large collection, and when it did the report
+says the comparison covers only the part it could see.
+
+expr reads: &lt;a&gt;, &lt;b&gt;
+
+Examples (expr):
+  &#34;got, want&#34; — only what differs, each with the path to it
+
+This tool runs code by replaying the session; side effects repeat.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: a, b&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_err_chain">
+      <h3><a class="pl" href="#go_err_chain">go_err_chain</a><span class="ref-s">is <a href="commands.html#err"><code>:err</code></a></span></h3>
+      <pre class="long">the wrapped error chain, with the type at each level
+
+Runs the expression once and walks the chain from the error it returned:
+errors.Unwrap a level at a time, and every branch of a joined error, each
+with its dynamic type — every level is something errors.Is can match.
+
+expr reads: &lt;exp&gt;
+
+Examples (expr):
+  &#34;fmt.Errorf(\&#34;load: %w\&#34;, fs.ErrNotExist)&#34; — each level of the chain, with its type
+
+This tool runs code by replaying the session; side effects repeat.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003cexp\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_bench">
+      <h3><a class="pl" href="#go_bench">go_bench</a><span class="ref-s">is <a href="commands.html#bench"><code>:bench</code></a></span></h3>
+      <pre class="long">ns/op, B/op and allocs/op, through testing.B
+
+B/op and allocs/op are always reported; there is no -mem flag because
+there is nothing for it to turn on. The three flags say how the
+benchmark is run, never what is measured. -count exists so a
+measurement can be judged for consistency; -cpu is the only way to see
+a contention effect from the REPL.
+
+Flags are read only while they lead: everything from the first word
+that is not one of them is the expression, verbatim.
+
+Two expressions separated by a top-level comma are benchmarked side by
+side with the ratio between them — the comparison you would otherwise
+run twice and hold in your head. Both are measured in one evaluation,
+so neither is timed against a different replay of the session, and a
+comma inside brackets, parentheses, braces or a literal is not the
+separator.
+
+expr reads: [-count &lt;n&gt;] [-cpu &lt;list&gt;] [-profile] &lt;exp&gt;[, &lt;other&gt;]
+
+Flags, written into expr as at the prompt:
+  -count &lt;n&gt;  run it n times; report min, median and max
+  -cpu &lt;list&gt;  once per GOMAXPROCS value, each labelled: 1,2,4
+  -profile  keep the run&#39;s CPU profile, and say where it went
+
+Examples (expr):
+  &#34;strings.Repeat(\&#34;ab\&#34;, 64)&#34;
+  &#34;-count 5 fmt.Sprint(42), strconv.Itoa(42)&#34; — side by side, with the ratio between them
+  &#34;-cpu 1,4 -profile strings.Repeat(\&#34;ab\&#34;, 1024)&#34;
+
+This tool runs code by replaying the session; side effects repeat.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: [flags] a[,b]&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_profile">
+      <h3><a class="pl" href="#go_profile">go_profile</a><span class="ref-s">is <a href="commands.html#profile"><code>:profile</code></a></span></h3>
+      <pre class="long">where the time went, from a real run
+
+Evaluates the expression once with the CPU profiler running, lists the
+functions that accounted for the most time, and names the file the
+profile went to and the `go tool pprof` command that opens it.
+
+The sample count is printed every time, and it is the first thing to
+read. Go samples at 100 Hz, so an expression that finishes in a
+millisecond contributes no samples at all and the ranking under it means
+nothing. Below a hundred samples the report says so.
+
+There is no :profile &lt;port&gt;. The child process exits when the evaluation
+ends, so there is nothing left to serve a live profile from — this
+captures one from a run that really happened instead.
+
+expr reads: &lt;exp&gt;
+
+Examples (expr):
+  &#34;sha256.Sum256(make([]byte, 64&lt;&lt;20))&#34; — the functions that took the time, and the pprof command for the rest
+
+This tool runs code by replaying the session; side effects repeat.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003cexp\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_memprof">
+      <h3><a class="pl" href="#go_memprof">go_memprof</a><span class="ref-s">is <a href="commands.html#memprof"><code>:memprof</code></a></span></h3>
+      <pre class="long">where the allocations went, from a real run
+
+The same capture as :profile against the heap profiler: the sites that
+accounted for the most allocation, and the file that holds the rest.
+
+A heap profile carries four measures that answer different questions.
+This reports allocated bytes, which is the one that pairs with the B/op
+:bench prints, and the report says so rather than showing an unlabelled
+number. The other three are in the file, under -sample_index.
+
+expr reads: &lt;exp&gt;
+
+Examples (expr):
+  &#34;strings.Repeat(\&#34;x\&#34;, 1&lt;&lt;20)&#34; — the sites that allocated the most bytes
+
+This tool runs code by replaying the session; side effects repeat.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003cexp\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_trace">
+      <h3><a class="pl" href="#go_trace">go_trace</a><span class="ref-s">is <a href="commands.html#trace"><code>:trace</code></a></span></h3>
+      <pre class="long">the call stack the expression is evaluated on
+
+Captures the stack where the expression is evaluated and names each frame
+by the session entry it came from, not the temp file the program was
+generated into.
+
+It holds the expression&#39;s callers, not its callees: a function it is about
+to call has not been entered yet, and by the time that call returns its
+frame is gone. gluon compiles each line into a program that exits, so
+there is no process to pause and no in-REPL breakpoint to set. For what
+happens underneath a call, :save -debug is the way out.
+
+expr reads: &lt;exp&gt;
+
+Examples (expr):
+  &#34;fib(10)&#34; — the stack it runs on, each frame named by the entry it came from
+
+This tool runs code by replaying the session; side effects repeat.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003cexp\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_escape">
+      <h3><a class="pl" href="#go_escape">go_escape</a><span class="ref-s">is <a href="commands.html#esc"><code>:esc</code></a></span></h3>
+      <pre class="long">whether the value reaches the heap
+
+Builds and never runs, so it costs a build but not the run. The answer
+depends on context and says so: &amp;T{} kept in a local that dies at the end
+of its block does not escape, and the same expression returned from a
+function does. For the flatter question — does this allocate — :bench&#39;s
+allocs/op is the better tool: it is measured, and context-free.
+
+expr reads: &lt;exp&gt;
+
+Examples (expr):
+  &#34;make([]byte, 32)&#34; — whether the backing array reaches the heap, in the compiler&#39;s words
+
+This tool runs code by replaying the session; side effects repeat.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003cexp\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_inline">
+      <h3><a class="pl" href="#go_inline">go_inline</a><span class="ref-s">is <a href="commands.html#inline"><code>:inline</code></a></span></h3>
+      <pre class="long">what the compiler decided about inlining
+
+With an expression, reports every call on that line the compiler did or
+did not flatten. With the name of a function this session declared, reports
+whether it can be inlined at all, what it costs, and — when it cannot — the
+compiler&#39;s own reason, which is usually a cost against a budget.
+
+It builds and never runs, exactly as :esc does: inlining is decided at
+compile time, so there is nothing an execution could add. The two commands
+are the same build asked for a different half of its output.
+
+The wording is the compiler&#39;s, not a paraphrase of it. A decision about a
+function declared on an earlier line is answered by naming that function,
+not by asking about a line that happens to call it.
+
+expr reads: &lt;exp|func&gt;
+
+Examples (expr):
+  &#34;add(1, 2)&#34; — every call on the line, and whether it was flattened
+  &#34;big&#34; — whether a function you declared can be inlined, and its cost
+
+This tool runs code by replaying the session; side effects repeat.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003cexp|func\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_asm">
+      <h3><a class="pl" href="#go_asm">go_asm</a><span class="ref-s">is <a href="commands.html#asm"><code>:asm</code></a></span></h3>
+      <pre class="long">the assembly emitted for one declared function
+
+Shows the listing for one function or method this session declared, and
+nothing else. A method is named T.M or (*T).M; either spelling finds it,
+because which one is right is the receiver&#39;s business rather than yours.
+
+Every position in the listing names the entry and line it came from, so no
+path under the temp directory appears. Long listings open in a pane; the
+same bytes are always in the linear output too.
+
+Only the session&#39;s own functions. The listing flag applies to the package
+named on the command line, deliberately — widening it to the standard
+library would recompile it under different flags and throw away the warm
+build cache every line in this REPL depends on. So :asm strings.Index is
+refused rather than answered slowly.
+
+A function inlined at every call site is dropped by the linker and has no
+listing of its own. That is reported as what it is.
+
+expr reads: &lt;func&gt;
+
+Examples (expr):
+  &#34;add&#34;
+  &#34;(*Stack).Push&#34;
+
+This tool runs code by replaying the session; side effects repeat.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003cfunc\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_vet">
+      <h3><a class="pl" href="#go_vet">go_vet</a><span class="ref-s">is <a href="commands.html#vet"><code>:vet</code></a></span></h3>
+      <pre class="long">what go vet says about the session
+
+Runs the toolchain&#39;s own analysers over the session — with the expression
+appended when you give one — and reports each finding against the entry and
+line it belongs to. Nothing is built and nothing is run: vet type-checks the
+package itself, which is why it costs about half a second rather than a
+build.
+
+Findings in the code gluon generates around your lines are never shown. One
+there would be gluon&#39;s bug, and there is nothing you could do about it.
+
+It vets the session, not the host. `go vet .` names the main package, and an
+attached host&#39;s packages are compiled into it rather than analysed — their
+findings belong to that project&#39;s own `go vet ./...`.
+
+There is no :lint. staticcheck and its neighbours are dependencies gluon
+does not have; vet is the analyser the toolchain already ships.
+
+expr reads: [exp]
+
+Examples (expr):
+  &#34;fmt.Printf(\&#34;%d\&#34;, \&#34;x\&#34;)&#34; — the session with this line appended
+
+This tool runs code by replaying the session; side effects repeat.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: [exp]&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_race">
+      <h3><a class="pl" href="#go_race">go_race</a><span class="ref-s">is <a href="commands.html#race"><code>:race</code></a></span></h3>
+      <pre class="long">run it once under the race detector
+
+Builds the session with -race, evaluates the expression once, and names
+every frame of any data race by the entry it came from. The expression&#39;s own
+value is printed either way: a race is something that happened during the
+run, not instead of it.
+
+Finding nothing is not proof of anything, and the output says so every time.
+The detector observes one interleaving of one run; a race that needs a
+different schedule is still there.
+
+The first :race on a machine compiles the race-instrumented standard
+library, which takes several seconds. Later ones reuse it and cost about
+what an ordinary line does. The instrumented binary is built beside the
+ordinary one and goes with the session directory.
+
+On a platform the detector does not support, the toolchain&#39;s own message is
+shown and nothing is retried without the flag — a value from a run nothing
+was watching, under a command called :race, would be worse than no answer.
+
+expr reads: &lt;exp&gt;
+
+Examples (expr):
+  &#34;incrementTwice()&#34; — any race in that run, each frame named by its entry
+
+This tool runs code by replaying the session; side effects repeat.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003cexp\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="session_undo">
+      <h3><a class="pl" href="#session_undo">session_undo</a><span class="ref-s">is <a href="commands.html#undo"><code>:undo</code></a></span></h3>
+      <pre class="long">drop the last entry
+
+Removes the newest entry and runs the session without it. It undoes the
+entry, not its effects: a line that wrote a file or sent a request did so,
+and the replay simply stops doing it again.
+
+This tool runs code by replaying the session; side effects repeat.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_test">
+      <h3><a class="pl" href="#go_test">go_test</a><span class="ref-s">is <a href="commands.html#test"><code>:test</code></a></span></h3>
+      <pre class="long">the session&#39;s own judgement, written down as a Go test
+
+You tried an expression, you looked at the answer, and you decided the
+answer was right. That is got, want and a judgement, which is the whole
+content of a Go test — and gluon already holds the expression, its type
+and its value, so the only thing left is the typing.
+
+The expectation is the value observed now, and the doc comment says so:
+the test records what happened, and does not claim it was correct. That
+judgement stays yours, which is why this prints rather than writes.
+:save -test keeps what has been generated.
+
+A value with no literal form — a pointer, a channel, a func — is refused
+with the part of the value that caused it, rather than emitted as a test
+that does not compile. A value whose type is not comparable with == gets
+reflect.DeepEqual and a comment saying why.
+
+expr reads: [-table] &lt;exp&gt;
+
+Flags, written into expr as at the prompt:
+  -table  the same assertion, shaped so a second case can join
+
+Examples (expr):
+  &#34;strings.ToUpper(\&#34;hi\&#34;)&#34; — a Go test asserting the value it has now
+  &#34;-table strings.Fields(\&#34; a b \&#34;)&#34;
+
+This tool runs code by replaying the session; side effects repeat.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: [-table] \u003cexp\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="session_refresh">
+      <h3><a class="pl" href="#session_refresh">session_refresh</a><span class="ref-s">is <a href="commands.html#refresh"><code>:refresh</code></a></span></h3>
+      <pre class="long">run the pinned entries once more
+
+:pin says an entry has already happened, so replay stops running it.
+That is right until the code underneath it changes, at which point the
+session is holding a result computed against source that is gone.
+
+:refresh runs the program once with every pin lifted, and puts the pins
+back afterwards whether it succeeded or not. It is never served from the
+cached results: the program text is identical to last time — that is what
+a replay is — and the answer is what may have changed.
+
+Pinned entries were pinned for a reason. Running them again does whatever
+they did the first time.
+
+This tool runs code by replaying the session; side effects repeat.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_eval">
+      <h3><a class="pl" href="#go_eval">go_eval</a></h3>
+      <pre class="long">Evaluate Go code in the persistent session, compiled by the real Go toolchain — the semantics are the compiler&#39;s. Multi-line constructs are fine. The whole session replays on every call, so side effects (HTTP calls, file writes, prints) repeat on later calls; the replayed output is suppressed, yours is not. Bindings persist: x := 1 now, x usable in every later call.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;code&#34;: {
+      &#34;description&#34;: &#34;Go code: expressions, statements, declarations. The trailing expression&#39;s value is printed with its type.&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;code&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article>
+  </div>
+</section>
+
+<section class="card" id="plugin">
+  <div class="card-head"><span class="idx">20</span><div class="hd"><h2>From plugins</h2></div></div>
+  <div class="card-body">
+    <p class="lead">Present with --eval while the plugin&#39;s library is in the session&#39;s build list.</p>
+    <article class="ref" id="go_json">
+      <h3><a class="pl" href="#go_json">go_json</a><span class="ref-s">is <a href="commands.html#json"><code>:json</code></a></span></h3>
+      <pre class="long">the value as indented JSON, the way it goes over a wire
+
+Answers what a struct&#39;s tags actually produce, which the value printer
+cannot show: it reports the Go field names, and json reports the tags.
+
+From the json plugin.
+
+expr reads: &lt;exp&gt;
+
+Examples (expr):
+  &#34;user&#34; — what its json tags produce, indented
+
+This tool runs code by replaying the session; side effects repeat.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003cexp\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_xml">
+      <h3><a class="pl" href="#go_xml">go_xml</a><span class="ref-s">is <a href="commands.html#xml"><code>:xml</code></a></span></h3>
+      <pre class="long">the value as indented XML, with the tags applied
+
+The question :json answers, for the encoding whose tags do more: an xml tag
+names the element, moves a field into an attribute with `,attr`, and nests
+with `a&gt;b&gt;c`. None of that is visible in the printed value.
+
+encoding/xml refuses a map — it has no element name for the keys — and the
+error is returned as the answer rather than dropped, because finding out is
+often why the command was run.
+
+From the xml plugin.
+
+expr reads: &lt;exp&gt;
+
+Examples (expr):
+  &#34;order&#34; — elements, attributes and nesting, as the tags say
+
+This tool runs code by replaying the session; side effects repeat.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003cexp\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_csv">
+      <h3><a class="pl" href="#go_csv">go_csv</a><span class="ref-s">is <a href="commands.html#csv"><code>:csv</code></a></span></h3>
+      <pre class="long">a sequence of records as CSV, header included
+
+Takes a slice of structs — one row each, with the header read from the
+field names or from their `csv:&#34;...&#34;` tags — or a slice of slices, where
+each element is already a row.
+
+Anything else is refused by name rather than rendered as a guess: a CSV is
+a table, and a scalar or a map is not one. The refusal names the shapes it
+does take.
+
+Quoting is encoding/csv&#39;s own, so a value containing a comma or a newline
+comes out as the file would hold it.
+
+From the csv plugin.
+
+expr reads: &lt;exp&gt;
+
+Examples (expr):
+  &#34;rows&#34; — one record per element, the header from the fields or their tags
+
+This tool runs code by replaying the session; side effects repeat.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003cexp\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_when">
+      <h3><a class="pl" href="#go_when">go_when</a><span class="ref-s">is <a href="commands.html#when"><code>:when</code></a></span></h3>
+      <pre class="long">a time.Time in the forms you actually want to read
+
+The printed form of a time.Time is {wall:… ext:… loc:…}, because the value
+printer reports structure and time.Time keeps its meaning in String().
+:when asks the child instead, where the value is still real.
+
+From the time plugin.
+
+expr reads: &lt;exp&gt;
+
+Examples (expr):
+  &#34;time.Now()&#34; — RFC 3339, your local time, the zone and Unix seconds
+
+This tool runs code by replaying the session; side effects repeat.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003cexp\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_slog">
+      <h3><a class="pl" href="#go_slog">go_slog</a><span class="ref-s">is <a href="commands.html#slog"><code>:slog</code></a></span></h3>
+      <pre class="long">how the value appears in a structured log line
+
+Runs the value through a real slog.TextHandler. What a type looks like in
+logs is a question about its LogValuer and its String method, not about its
+fields, so the printed form cannot answer it.
+
+From the slog plugin.
+
+expr reads: &lt;exp&gt;
+
+Examples (expr):
+  &#34;req&#34; — the key=value form a TextHandler writes for it
+
+This tool runs code by replaying the session; side effects repeat.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003cexp\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_dec">
+      <h3><a class="pl" href="#go_dec">go_dec</a><span class="ref-s">is <a href="commands.html#dec"><code>:dec</code></a></span></h3>
+      <pre class="long">a decimal&#39;s exact value, and what float64 would have done to it
+
+Prints the exact decimal alongside the float64 round-trip, because the
+reason to reach for this package at all is that the two differ.
+
+From the decimal plugin.
+
+expr reads: &lt;exp&gt;
+
+Examples (expr):
+  &#34;decimal.NewFromFloat(0.1)&#34; — the exact decimal, and the float64 it would have been
+
+This tool runs code by replaying the session; side effects repeat.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003cexp\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_sql">
+      <h3><a class="pl" href="#go_sql">go_sql</a><span class="ref-s">is <a href="commands.html#sql"><code>:sql</code></a></span></h3>
+      <pre class="long">the SQL a gorm chain produces, and its arguments
+
+Nothing is sent to the database. gorm builds the statement in DryRun mode,
+which has to be set at the start of the chain — so :sql parses what you
+typed and injects .Session(&amp;gorm.Session{DryRun: true}) at its base.
+
+The arguments are printed separately rather than interpolated, because a
+query with its parameters already substituted is not the query that runs.
+
+From the gorm plugin.
+
+expr reads: &lt;chain&gt;
+
+Examples (expr):
+  &#34;db.Where(\&#34;age &gt; ?\&#34;, 30).Find(&amp;users)&#34; — the SQL and its arguments; nothing reaches the database
+
+This tool runs code by replaying the session; side effects repeat.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003cchain\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_expand">
+      <h3><a class="pl" href="#go_expand">go_expand</a><span class="ref-s">is <a href="commands.html#expand"><code>:expand</code></a></span></h3>
+      <pre class="long">the query after sqlx rewrites it, and the arguments in their new order
+
+Takes the query and the arguments you would have passed:
+
+    :expand &#34;SELECT * FROM users WHERE id IN (?)&#34;, []int{1, 2, 3}
+    :expand &#34;SELECT * FROM users WHERE name = :name&#34;, map[string]any{&#34;name&#34;: &#34;Ada&#34;}
+
+Nothing is sent to the database — sqlx.Named and sqlx.In are pure functions
+over the text, so this opens no connection and needs no driver.
+
+Named runs first, and only when the query really carries a named parameter:
+on a positional query it returns an empty argument list without an error,
+which would silently drop what you passed. A doubled colon is a Postgres
+cast rather than a parameter, and is skipped the way sqlx skips it.
+
+The placeholders come back as ?, which is what Named produces before
+db.Rebind translates them for the driver you are on.
+
+The arguments are printed separately rather than interpolated, because a
+query with its parameters already substituted is not the query that runs.
+
+From the sqlx plugin.
+
+expr reads: &lt;query&gt;[, &lt;args&gt;...]
+
+Examples (expr):
+  &#34;\&#34;SELECT * FROM users WHERE id IN (?)\&#34;, []int{1, 2, 3}&#34; — the query after sqlx rewrote it, and the arguments in their new order
+
+This tool runs code by replaying the session; side effects repeat.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003cquery\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_schema">
+      <h3><a class="pl" href="#go_schema">go_schema</a><span class="ref-s">is <a href="commands.html#schema"><code>:schema</code></a></span></h3>
+      <pre class="long">the tables, columns and edges ent generated, without a connection
+
+Takes the generated table set, which ent writes as migrate.Tables:
+
+    :schema migrate.Tables
+
+Everything shown is a runtime descriptor the generated package already
+holds — nothing is opened, and no migration is planned or applied.
+
+Edges appear as the foreign keys they became, because that is what the
+generated schema records: an edge to another type is a column and a
+reference, and a many-to-many edge is a join table of its own.
+
+There is deliberately no :sql for ent. Its query builders expose no
+supported way to produce a statement without running it — :guide ent has
+the detail, and the alternative would be a preview that queried.
+
+From the ent plugin.
+
+expr reads: &lt;tables&gt;
+
+Examples (expr):
+  &#34;migrate.Tables&#34; — tables, columns and edges, with no connection
+
+This tool runs code by replaying the session; side effects repeat.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003ctables\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_migrations">
+      <h3><a class="pl" href="#go_migrations">go_migrations</a><span class="ref-s">is <a href="commands.html#migrations"><code>:migrations</code></a></span></h3>
+      <pre class="long">which migrations have been applied, from the tracking table
+
+Reads goose_db_version, newest first: the version, whether it is applied,
+and when it was stamped.
+
+It goes through the project&#39;s configured database — the same connection
+and the same driver :query uses, with the connection string reaching the
+child through its environment and never through the generated source.
+-d &lt;name&gt; picks one when a project configures several.
+
+Nothing is applied. This is a SELECT, checked by the same read-only
+allowlist :query uses, and goose&#39;s own status API is deliberately not
+called: it can create the tracking table on a database that has none.
+
+From the goose plugin.
+
+expr reads: [-d &lt;name&gt;] [name]
+
+Flags, written into expr as at the prompt:
+  -d &lt;name&gt;  which database, as :query -d picks one
+
+Examples (expr):
+  &#34;-d analytics&#34;
+
+This tool runs code by replaying the session; side effects repeat.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: [name]&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_routes">
+      <h3><a class="pl" href="#go_routes">go_routes</a><span class="ref-s">is <a href="commands.html#routes"><code>:routes</code></a></span></h3>
+      <pre class="long">every route registered on the router
+
+chi.Walk descends into mounted sub-routers, so this is the whole tree
+rather than the routes registered directly on the mux you named.
+The walk hands over the http.Handler itself and never its name, so the
+handler column is unavailable rather than blank.
+
+From the chi plugin.
+
+expr reads: &lt;router&gt;
+
+Examples (expr):
+  &#34;r&#34; — every route registered on it: method, path and handler
+
+This tool runs code by replaying the session; side effects repeat.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003crouter\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_tree">
+      <h3><a class="pl" href="#go_tree">go_tree</a><span class="ref-s">is <a href="commands.html#tree"><code>:tree</code></a></span></h3>
+      <pre class="long">a cobra command and everything under it
+
+Walks the subcommand tree depth-first, with each command&#39;s short
+description. Hidden commands are marked rather than omitted — a tree that
+quietly left them out would be the wrong answer to &#34;what can this run&#34;.
+
+From the cobra plugin.
+
+expr reads: &lt;command&gt;
+
+Examples (expr):
+  &#34;rootCmd&#34; — every subcommand beneath it, with its flags
+
+This tool runs code by replaying the session; side effects repeat.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003ccommand\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_services">
+      <h3><a class="pl" href="#go_services">go_services</a><span class="ref-s">is <a href="commands.html#services"><code>:services</code></a></span></h3>
+      <pre class="long">what a container has registered, and where each provider came from
+
+ListProvidedServices names everything the injector can provide, in the
+current scope and every ancestor, whether or not it has ever been built.
+The scope column is do&#39;s answer to where a provider came from: it records
+the scope a service was registered into rather than the function.
+
+Nothing is invoked. A do provider only runs when something asks for the
+service, and listing is not asking.
+
+From the do plugin.
+
+expr reads: &lt;i&gt;
+
+Examples (expr):
+  &#34;i&#34; — every service the container can provide
+
+This tool runs code by replaying the session; side effects repeat.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003ci\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_graph">
+      <h3><a class="pl" href="#go_graph">go_graph</a><span class="ref-s">is <a href="commands.html#graph"><code>:graph</code></a></span></h3>
+      <pre class="long">how a container&#39;s providers depend on one another
+
+ExplainNamedService reports a service&#39;s dependencies, and do knows an edge
+once it has built the service that has it — a provider takes the injector
+and resolves what it needs by calling it, so there is nothing static to
+read beforehand. A service nothing has invoked yet shows —.
+
+That marker is the point of the command. Reporting no dependencies for a
+service do has never built would be a confident answer to a question do
+has not been asked.
+
+From the do plugin.
+
+expr reads: &lt;i&gt;
+
+Examples (expr):
+  &#34;i&#34; — who depends on whom
+
+This tool runs code by replaying the session; side effects repeat.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003ci\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_config">
+      <h3><a class="pl" href="#go_config">go_config</a><span class="ref-s">is <a href="commands.html#config"><code>:config</code></a></span></h3>
+      <pre class="long">the settings this config library resolved
+
+AllKeys is every key viper knows about — from the config file, from Set,
+from a bound flag, from an environment variable and from a default — and
+Get answers with whichever of those won. That precedence is the thing a
+config file cannot tell you, and the reason this is not :conf.
+
+Values are redacted by shape on the way to the screen, by gluon and not
+by the generated program: the same test :env and :conf use.
+
+From the viper plugin.
+
+expr reads: &lt;v&gt;
+
+Examples (expr):
+  &#34;v&#34; — every key and its value, secrets masked
+
+This tool runs code by replaying the session; side effects repeat.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003cv\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_yaml">
+      <h3><a class="pl" href="#go_yaml">go_yaml</a><span class="ref-s">is <a href="commands.html#yaml"><code>:yaml</code></a></span></h3>
+      <pre class="long">the value as YAML, with its yaml tags applied
+
+Marshals through go.yaml.in/yaml/v3, the maintained line.
+
+The yaml tags decide the key names, what omitempty drops and what inline
+flattens, and none of that is visible in the printed value. The encoder
+that applies them is the one already in your build list, running in the
+child against the real value.
+
+From the yaml plugin.
+
+expr reads: &lt;exp&gt;
+
+Examples (expr):
+  &#34;cfg&#34; — the document its yaml tags produce
+
+This tool runs code by replaying the session; side effects repeat.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003cexp\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_toml">
+      <h3><a class="pl" href="#go_toml">go_toml</a><span class="ref-s">is <a href="commands.html#toml"><code>:toml</code></a></span></h3>
+      <pre class="long">the value as a TOML document, with its toml tags applied
+
+TOML orders a document by its own rules — every scalar of a table comes
+before the first sub-table — so where a key lands is a property of the
+encoder rather than of the struct, and that is the part reading the value
+cannot tell you.
+
+Only a struct or a map encodes at the top level. Anything else returns the
+library&#39;s own refusal as the answer.
+
+From the toml plugin.
+
+expr reads: &lt;exp&gt;
+
+Examples (expr):
+  &#34;cfg&#34; — the document its toml tags produce
+
+This tool runs code by replaying the session; side effects repeat.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003cexp\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_msgpack">
+      <h3><a class="pl" href="#go_msgpack">go_msgpack</a><span class="ref-s">is <a href="commands.html#msgpack"><code>:msgpack</code></a></span></h3>
+      <pre class="long">the msgpack bytes a value encodes to, as a hex dump
+
+The size is the first line because it is usually the question — msgpack is
+chosen over JSON for what it costs on a wire, and a struct tag that changes
+a key from &#34;identifier&#34; to &#34;id&#34; changes it.
+
+The dump&#39;s right-hand column shows the keys as text, so the tags are
+readable next to the type bytes that encode them.
+
+From the msgpack plugin.
+
+expr reads: &lt;exp&gt;
+
+Examples (expr):
+  &#34;payload&#34; — the bytes it encodes to, as a hex dump, and how many
+
+This tool runs code by replaying the session; side effects repeat.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003cexp\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_pb">
+      <h3><a class="pl" href="#go_pb">go_pb</a><span class="ref-s">is <a href="commands.html#pb"><code>:pb</code></a></span></h3>
+      <pre class="long">the wire size of a proto message, and its text form
+
+A generated message prints as its Go struct — state, sizeCache and
+unknownFields included — which is the one view that says nothing about the
+message. :pb marshals it instead: the byte count is what the wire costs,
+and the text form is the descriptor&#39;s own view of the same value.
+
+It takes a proto.Message, which for generated code means the pointer.
+Loading a .proto file is a different thing and not this command.
+
+From the protobuf plugin.
+
+expr reads: &lt;exp&gt;
+
+Examples (expr):
+  &#34;msg&#34; — its size on the wire, and its text form
+
+This tool runs code by replaying the session; side effects repeat.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003cexp\u003e&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article><article class="ref" id="go_grpc">
+      <h3><a class="pl" href="#go_grpc">go_grpc</a><span class="ref-s">is <a href="commands.html#grpc"><code>:grpc</code></a></span></h3>
+      <pre class="long">what a gRPC server exposes, and one unary call against it
+
+With an address alone, lists the services and methods the server exposes,
+discovered through server reflection. A method that needs a stream is listed
+and marked, because gluon compiles each line into a program that exits and a
+stream has nowhere to live — reading one message and hanging up would return
+a number that looks like an answer and is not.
+
+With a `pkg.Service/Method` as well, calls it. -d &#39;&lt;json&gt;&#39; is the request and
+defaults to {}; it is checked against the reflected descriptor before the call
+is made, so a field you got wrong is named here rather than by the server.
+
+Quote anything with a space in it: no shell has been near the line.
+
+A metadata value may name a variable rather than carry one.
+-H &#39;authorization: Bearer $TOKEN&#39; resolves $TOKEN in the child, so the value
+reaches neither :src, nor :save, nor ~/.local/state/gluon/history. A value
+whose *shape* says it is a credential is refused instead of sent, because by
+then the line as typed is already in the history file and masking the display
+would not take it back.
+
+Every call dials and hangs up. gRPC assumes a channel that outlives many
+calls and this process outlives one, so latency measured here is the cost of
+connecting plus the call and is not a measurement of gRPC. Nothing survives
+between calls: no channel, no resolved address, no state a server kept.
+
+The response is never cached. The cache is keyed on program text alone, so
+the same call would otherwise answer with what it first saw.
+
+There is no :proto. Reading a .proto off disk needs a compiler that
+google.golang.org/protobuf does not contain — internal/plugins/rpc&#39;s package
+comment records what was examined and what it would take.
+
+From the grpc plugin.
+
+expr reads: &lt;addr&gt; [method] [-H &lt;header&gt;]... [-d &lt;json&gt;] [-t &lt;duration&gt;] [-tls]
+
+Flags, written into expr as at the prompt:
+  -H &lt;header&gt;  call metadata, written &#39;name: value&#39;; repeat it for more
+  -d &lt;json&gt;  the request, checked against the descriptor ({} by default)
+  -t &lt;duration&gt;  how long to wait: 5s, 500ms, 1m (30s by default)
+  -tls  dial with TLS instead of plaintext
+
+Examples (expr):
+  &#34;localhost:50051&#34; — what the server exposes, discovered through reflection
+  &#34;localhost:50051 shop.v1.Orders/Get -d &#39;{\&#34;id\&#34;: 42}&#39; -t 5s&#34;
+  &#34;api.internal:443 shop.v1.Orders/Get -tls -H &#39;authorization: Bearer $TOKEN&#39;&#34; — the token is named, so its value reaches no history file
+
+This tool runs code by replaying the session; side effects repeat.</pre>
+      <details><summary>input schema</summary><pre>{
+  &#34;properties&#34;: {
+    &#34;expr&#34;: {
+      &#34;description&#34;: &#34;the argument line, exactly as the REPL command takes it: \u003caddr\u003e [m]&#34;,
+      &#34;type&#34;: &#34;string&#34;
+    },
+    &#34;limit&#34;: {
+      &#34;description&#34;: &#34;how many lines to return, counted from offset. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 1,
+      &#34;type&#34;: &#34;integer&#34;
+    },
+    &#34;offset&#34;: {
+      &#34;description&#34;: &#34;lines of the answer to skip before the first one returned. Omit for the whole answer.&#34;,
+      &#34;minimum&#34;: 0,
+      &#34;type&#34;: &#34;integer&#34;
+    }
+  },
+  &#34;required&#34;: [
+    &#34;expr&#34;
+  ],
+  &#34;type&#34;: &#34;object&#34;
+}</pre></details>
+    </article>
+  </div>
+</section>
+
+<section class="card" id="instructions">
+  <div class="card-head"><span class="idx">i</span><div class="hd"><h2>What an agent is told on connecting</h2></div></div>
+  <div class="card-body">
+    <h3>gluon mcp</h3><pre class="long">gluon answers questions about Go code from go/types, using the same toolchain that builds it — measured, not guessed. Static tools (go_type, go_methods, go_scope, go_layout, go_doc, session_source, session_history, the interface questions go_implements, go_satisfies, go_cast, go_interface, go_embeds, go_generics, and the test doubles go_mock and go_spy) answer in about a millisecond and never run anything.
+
+Every tool takes optional offset and limit, counted in lines of the answer: ask for what your window holds and the reply says which lines it gave and how many there are. Omit both for the whole answer.
+
+This session is standalone: stdlib and whatever go_eval declares.
+
+Evaluation is disabled — this server only inspects. Start it with --eval to enable go_eval and go_bench.
+</pre>
+    <h3>gluon mcp --eval</h3><pre class="long">gluon answers questions about Go code from go/types, using the same toolchain that builds it — measured, not guessed. Static tools (go_type, go_methods, go_scope, go_layout, go_doc, session_source, session_history, the interface questions go_implements, go_satisfies, go_cast, go_interface, go_embeds, go_generics, and the test doubles go_mock and go_spy) answer in about a millisecond and never run anything.
+
+Every tool takes optional offset and limit, counted in lines of the answer: ask for what your window holds and the reply says which lines it gave and how many there are. Omit both for the whole answer.
+
+This session is standalone: stdlib and whatever go_eval declares.
+
+Evaluation is enabled. go_eval compiles against the real toolchain (~300ms a call); go_bench measures through testing.B and takes seconds, as go_profile, go_memprof and go_trace do. go_diff compares two values from one run, go_test writes the session&#39;s judgement down as a Go test, and session_refresh runs the pinned entries once more. go_err_chain, go_escape, go_slice_headers and session_undo evaluate too. The compiler&#39;s own verdicts come from go_inline (what was flattened, and why not), go_asm (one declared function&#39;s listing) and go_vet (the toolchain&#39;s analysers); go_race runs the expression once under the race detector, whose first call on a machine compiles the instrumented standard library and takes seconds. go_since is the odd one here: it reads what each Go release added out of $GOROOT and costs nothing, and is in this tier only because its -run flag evaluates a language note into the session. The session replays wholesale on every evaluating call, so side effects repeat; session_reset starts over.
+</pre>
+  </div>
+</section>
+
+    <nav class="pn" aria-label="Pages beside this one">
+  <a class="pg" href="../reference/cli.html"><span class="pg-k">← previous</span><b>The gluon command</b></a>
+  <a class="pg next" href="../reference/themes.html"><span class="pg-k">next →</span><b>Themes</b></a>
+</nav>
+  </main>
+</div>
+
+<footer class="foot"><div class="wrap fgrid">
+    <div><div class="fh">The site</div><ul>
+        <li><a href="../index.html">gluon</a> — what it is, in one page</li>
+        <li><a href="../guide/index.html">Guides</a> — every feature, with the lines to type</li>
+        <li><a href="../reference/index.html">Reference</a> — generated from the code that defines it</li>
+      </ul></div>
+    <div><div class="fh">This page</div><ul>
+        <li>v0.1.0 · <code>github.com/sandboxws/gluon</code></li>
+        <li>Generated from <code>site/</code> by <code>just docs</code></li>
+        <li>No analytics, no cookies; the palette choice is one localStorage key</li>
+        <li><a href="https://github.com/sandboxws/gluon">Source</a></li>
+      </ul></div>
+</div></footer>
+<script src="../assets/gluon.js?v=0b5d44bf"></script>
+</body>
+</html>

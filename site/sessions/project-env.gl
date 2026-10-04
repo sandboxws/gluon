@@ -1,0 +1,5 @@
+%host shop
+%env SHOP_ENV=development
+%env SHOP_PAYMENTS_WEBHOOK_AUTH=Bearer 7f3c9a1e5b2d4f6a8c0e1d3b
+:env SHOP
+:conf config.yaml

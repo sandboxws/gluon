@@ -1,0 +1,14 @@
+$ gluon -host . -e ':layout pricing.LineItem'
+attached to example.com/shop (go 1.26.0) at ~/src/shop
+pricing.LineItem  56 bytes, align 8
+  0  Gift  bool  1
+      (7 bytes padding)
+  8  Qty  int64  8
+  16  Taxable  bool  1
+      (7 bytes padding)
+  24  SKU  string  16
+  40  Price  decimal.Decimal  16
+  reordering as SKU, Price, Qty, Gift, Taxable would be 48 bytes — 8 saved
+$ gluon -host . -e 'pricing.Total(pricing.Sample()).String()'
+attached to example.com/shop (go 1.26.0) at ~/src/shop
+(string) "56.14"  len=5

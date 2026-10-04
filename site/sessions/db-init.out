@@ -1,0 +1,92 @@
+$ gluon init -no-prompt
+example.com/shop
+
+found one database:
+
+  sqlite  ~/src/shop/data/shop.db
+    config.yaml  database.path
+    data/shop.db
+
+  drivers in the build list
+    modernc.org/sqlite  (sqlite)
+
+
+would append to ~/.config/gluon/config.toml
+
+  [[database]]
+  module = "example.com/shop"
+  name = "primary"
+  driver = "sqlite"
+  file = "~/src/shop/data/shop.db"
+
+nothing was written — run `gluon init` to be asked where this should go, or `gluon init -write -global` to append it.
+$ gluon init -no-prompt -write -local
+example.com/shop
+
+found one database:
+
+  sqlite  ~/src/shop/data/shop.db
+    config.yaml  database.path
+    data/shop.db
+
+  drivers in the build list
+    modernc.org/sqlite  (sqlite)
+
+
+wrote ~/src/shop/gluon.toml
+
+  [[database]]
+  name = "primary"
+  driver = "sqlite"
+  file = "data/shop.db"
+
+  gluon -host .    then :db
+$ cat gluon.toml
+[[database]]
+name = "primary"
+driver = "sqlite"
+file = "data/shop.db"
+$ gluon -host . -e ':db'
+attached to example.com/shop (go 1.26.0) at ~/src/shop
+databases  1 configured
+╭─────────┬────────┬─────────────────────────┬───────────┬───────╮
+│ name    │ driver │ target                  │ mode      │       │
+├─────────┼────────┼─────────────────────────┼───────────┼───────┤
+│ primary │ sqlite │ ~/src/shop/data/shop.db │ read-only │ ready │
+╰─────────┴────────┴─────────────────────────┴───────────┴───────╯
+  from ~/src/shop/gluon.toml
+$ gluon -host . -e ':query -json SELECT id, email, plan FROM users WHERE id < 3' -json
+!clip 18
+attached to example.com/shop (go 1.26.0) at ~/src/shop
+{
+  "ok": true,
+  "command": ":query",
+  "target": "~/src/shop/data/shop.db",
+  "columns": [
+    {
+      "name": "id",
+      "type": "INTEGER"
+    },
+    {
+      "name": "email",
+      "type": "TEXT"
+    },
+    {
+      "name": "plan",
+      "type": "TEXT"
+    }
+  ],
+  "rows": [
+    [
+      "1",
+      "ada@example.com",
+      "free"
+    ],
+    [
+      "2",
+      "grace@example.com",
+      "free"
+    ]
+  ],
+  "truncated": false
+}

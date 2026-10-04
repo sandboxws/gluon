@@ -1,0 +1,49 @@
+{% define "side" %}<a href="#why"><span class="rn">1</span><span class="rt">Why an agent wants it</span></a>
+<a href="#setup"><span class="rn">2</span><span class="rt">Setting it up</span></a>
+<a href="#tiers"><span class="rn">3</span><span class="rt">Two tiers</span></a>
+<a href="#paging"><span class="rn">4</span><span class="rt">Long answers</span></a>{% end %}
+{% define "main" %}
+<section class="card" id="why">
+  <div class="card-head"><span class="idx">1</span><div class="hd"><h2>Why a coding agent wants it</h2></div></div>
+  <div class="card-body">
+    <p class="lead"><code>gluon mcp</code> serves the session's inspectors to a coding agent over the Model Context Protocol, on standard input and output. The questions agents otherwise answer by guessing — what is in this method set, does this type satisfy that interface, how is this struct laid out, what does this benchmark say — become tools answered by the toolchain that builds your code.</p>
+    <p>Most of the static tools answer from the type checker, in about a millisecond each, so an agent can ask dozens of them in the time one build takes. Each tool's description carries the command's synopsis, flags and examples, written the way the tool takes them — {% cmd ":help" %}'s page, for the reader that never skims.</p>
+  </div>
+</section>
+
+<section class="card" id="setup">
+  <div class="card-head"><span class="idx">2</span><div class="hd"><h2>Setting it up</h2></div></div>
+  <div class="card-body">
+    <p class="lead">Any MCP client that runs a server over stdio can run gluon. The server is the <code>gluon</code> binary with the <code>mcp</code> argument.</p>
+    <div class="cmd">
+      <div class="cmd-bar"><span class="ck">JSON</span><span class="cv">.mcp.json, in a project</span></div>
+<pre>{<span class="s">"mcpServers"</span>: {<span class="s">"gluon"</span>: {<span class="s">"command"</span>: <span class="s">"gluon"</span>, <span class="s">"args"</span>: [<span class="s">"mcp"</span>]}}}</pre>
+    </div>
+    <div class="cmd">
+      <div class="cmd-bar"><span class="ck">Shell</span><span class="cv">Claude Code, from the project's directory</span></div>
+<pre>claude mcp add gluon -- gluon mcp</pre>
+    </div>
+    <p>When the working directory is inside a Go module, the session attaches to it — <code>internal/</code> packages included — because installing the server in a project's config is the asking. <code>-host</code> picks a different module, and <code>-host off</code> serves a standalone session. Like <code>gluon -e</code>, the server opens no scratchpad, so an agent's calls can neither inherit nor change the session you have open.</p>
+  </div>
+</section>
+
+<section class="card" id="tiers">
+  <div class="card-head"><span class="idx">3</span><div class="hd"><h2>Two tiers, and who chooses</h2><div class="chips"><span class="chip o">{% .Reg.Counts.StaticTools %} static</span><span class="chip a">{% .Reg.Counts.EvalTools %} with --eval</span></div></div></div>
+  <div class="card-body">
+    <p class="lead">By default the server offers only the tools that run nothing: the type and method-set questions, the interface questions, layout, scope, documentation, mocks and spies. The tools that run code — evaluation, benchmarks, the profilers, the race detector, the plugin commands — exist only behind <code>--eval</code>.</p>
+    <div class="cmd">
+      <div class="cmd-bar"><span class="ck">JSON</span><span class="cv">with evaluation enabled</span></div>
+<pre>{<span class="s">"mcpServers"</span>: {<span class="s">"gluon"</span>: {<span class="s">"command"</span>: <span class="s">"gluon"</span>, <span class="s">"args"</span>: [<span class="s">"mcp"</span>, <span class="s">"--eval"</span>]}}}</pre>
+    </div>
+    <p>Granting execution belongs to the person who edits the client's config, not to the agent — which is why it is a flag in that config and not a tool the agent can call. With <code>--eval</code>, evaluation replays the whole session on each call, exactly as the prompt does, so side effects repeat; the tool descriptions say so. A flag that runs code at the prompt, like {% cmd ":t" "-d" %}, is ignored by the static tool it belongs to. <a href="{% rel "reference/mcp.html" %}">The MCP reference</a> lists every tool with its description and schema, exactly as a client receives them.</p>
+  </div>
+</section>
+
+<section class="card" id="paging">
+  <div class="card-head"><span class="idx">4</span><div class="hd"><h2>Long answers</h2></div></div>
+  <div class="card-body">
+    <p class="lead">Every tool takes an optional <code>offset</code> and <code>limit</code>, counted in lines of the answer, so a client with a small window asks for the part it can hold and is told which lines it got and how many there are.</p>
+    <p>Leave both out and the answer is the whole one, byte for byte what the prompt prints through a pipe. An answer is plain text — the same bytes <code>gluon -e</code> would print — with no colour and no view, so a client never has to strip anything.</p>
+  </div>
+</section>
+{% end %}

@@ -1,0 +1,19 @@
+gluon> :impl *bytes.Buffer, io.Reader
+*bytes.Buffer  implements  io.Reader
+gluon> :impl bytes.Buffer, io.Writer
+bytes.Buffer  does not implement  io.Writer
+╭──────────────┬────────────────────────────────────╮
+│ pointer only │ Write(p []byte) (n int, err error) │
+╰──────────────┴────────────────────────────────────╯
+  *bytes.Buffer implements io.Writer — the method is declared on the pointer receiver
+gluon> :sat os.Stdout, io.Writer
+os.Stdout (*os.File)  implements  io.Writer
+gluon> :cast any(1), string
+any(1).(string)  compiles
+  whether it succeeds depends on the dynamic type at run time
+gluon> :cast io.Reader(nil), *strings.Builder
+io.Reader(nil).(*strings.Builder)  cannot compile
+  no io.Reader can hold a value of type *strings.Builder
+╭─────────┬───────────────────────────────────╮
+│ missing │ Read(p []byte) (n int, err error) │
+╰─────────┴───────────────────────────────────╯

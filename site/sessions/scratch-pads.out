@@ -1,0 +1,45 @@
+gluon> :scratch parser-bug
+scratchpad parser-bug — created, the session is empty
+gluon> x := strings.Fields(" a b ")
+gluon> len(x)
+(int) 2
+gluon> :scratch
+!view
+!clip 12
+scratchpads
+╭──────────────┬───────────┬──────┬────────────────╮
+│ scratchpad   │ entries   │ host │ last worked on │
+├──────────────┼───────────┼──────┼────────────────┤
+│ * parser-bug │ 2 entries │ —    │ just now       │
+╰──────────────┴───────────┴──────┴────────────────╯
+in parser-bug — every line lands in it · ~/.local/share/gluon/scratch
+$ gluon scratch
+parser-bug	2 entries
+$ gluon scratch show parser-bug
+x := strings.Fields(" a b ")
+len(x)
+gluon> :scratch -mv parser-fix
+scratchpad parser-bug → parser-fix
+gluon> :save
+saved → ~/.local/share/gluon/scratch/parser-fix/main.go
+gluon> :save -debug parser-fix
+saved → ~/.local/share/gluon/scratch/2026-09-23-parser-fix/main.go
+debug → cd ~/.local/share/gluon/scratch/2026-09-23-parser-fix && dlv debug
+        or open the directory — .vscode/launch.json is written beside the module
+gluon> :share
+!view
+package main
+
+import (
+	"strings"
+)
+
+func main() {
+	x := strings.Fields(" a b ")
+	_ = x
+	__gluonPrint(len(x))
+}
+
+enter uploads this to the Go Playground — nothing has been sent yet
+gluon> :scratch -off
+detached from scratchpad parser-fix — the session continues and nothing more is written down

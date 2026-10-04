@@ -1,0 +1,6 @@
+s := "héllo"
+x := []int{1, 2, 3}
+type Point struct{ X, Y int }
+func dist(p Point) int { return p.X*p.X + p.Y*p.Y }
+len(x)
+:ls

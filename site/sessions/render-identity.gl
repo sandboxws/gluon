@@ -1,0 +1,9 @@
+type Node struct{ Val int; Next *Node }
+a := &Node{Val: 1}
+b := &Node{Val: 2, Next: a}
+a.Next = b
+a
+type P struct{ X int }
+p := &P{1}
+[]*P{p, p}
+fmt.Errorf("layer2: %w", fmt.Errorf("layer1: %w", os.ErrNotExist))

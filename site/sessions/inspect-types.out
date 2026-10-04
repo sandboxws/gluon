@@ -1,0 +1,18 @@
+gluon> x := []int{3, 1, 2}
+gluon> :t x
+[]int
+gluon> :t "héllo"[1]
+byte
+gluon> :t strconv.Atoi("12")
+(int, error)  2 values
+gluon> type Celsius float64
+gluon> :t -v Celsius(20)
+Celsius  constant 20
+  underlying  float64
+  kind  floating point
+gluon> var r io.Reader = bytes.NewBufferString("hi")
+gluon> :t r
+io.Reader
+  an interface — print the value to see its dynamic type
+gluon> :t -d r
+static io.Reader, dynamic *bytes.Buffer  pointer

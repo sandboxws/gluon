@@ -1,0 +1,40 @@
+gluon> :vet fmt.Printf("%d\n", "x")
+  fmt.Printf format %d has arg "x" of wrong type string
+    fmt.Printf("%d\n", "x")
+                ^
+gluon> func spawn() int {
+  ...> 	var wg sync.WaitGroup
+  ...> 	n := 0
+  ...> 	wg.Add(2)
+  ...> 	for i := 0; i < 2; i++ {
+  ...> 		go func() { n++; wg.Done() }()
+  ...> 	}
+  ...> 	wg.Wait()
+  ...> 	return n
+  ...> }
+gluon> :race spawn()
+!error   the instrumented standard library was compiled for this run; later :race lines reuse it
+!error (int) 2
+!error   ==================
+!error   WARNING: DATA RACE
+!error   Read at 0x00c00009c058 by goroutine 7:
+!error     main.spawn.func1()
+!error         entry 0 line 6: go func() { n++; wg.Done() }() +0x30
+!error   
+!error   Previous write at 0x00c00009c058 by goroutine 8:
+!error     main.spawn.func1()
+!error         entry 0 line 6: go func() { n++; wg.Done() }() +0x40
+!error   
+!error   Goroutine 7 (running) created at:
+!error     main.spawn()
+!error         entry 0 line 6: go func() { n++; wg.Done() }() +0x78
+!error     main.main()
+!error         entry 1 line 1: spawn() +0x28
+!error   
+!error   Goroutine 8 (finished) created at:
+!error     main.spawn()
+!error         entry 0 line 6: go func() { n++; wg.Done() }() +0x78
+!error     main.main()
+!error         entry 1 line 1: spawn() +0x28
+!error   ==================
+!error   Found 1 data race(s)

@@ -1,0 +1,22 @@
+<<<
+func hot(n int) int {
+	total := 0
+	for i := 0; i < n; i++ {
+		for j := 0; j < n; j++ {
+			total += i ^ j
+		}
+	}
+	return total
+}
+>>>
+:profile hot(30000)
+<<<
+func grow(n int) []string {
+	var out []string
+	for i := 0; i < n; i++ {
+		out = append(out, fmt.Sprint(i))
+	}
+	return out
+}
+>>>
+:memprof len(grow(50000))

@@ -1,0 +1,13 @@
+# Two slices sharing one backing array, and what an append does to it.
+Shot slice
+Alt a slice and a reslice of it, :slice drawing both over the one backing array they share, then an append through the reslice that overwrites an element of the original
+Caption :slice draws the backing array two slices share — so the append that quietly overwrites x[3] is something you can see coming.
+Headline See the backing array
+Promo 16:9
+Grid 80x26
+Line x := []int{1, 2, 3, 4, 5}
+Line y := x[1:3]
+Line :slice x, y
+Line y = append(y, 99)
+Line x
+Screenshot

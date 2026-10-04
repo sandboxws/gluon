@@ -1,0 +1,80 @@
+gluon> v, _ := config.Load()
+gluon> :config v
+database.path = data/shop.db
+features = [gift-wrap loyalty]
+grpc.addr = 127.0.0.1:50051
+http.addr = 127.0.0.1:8765
+log_level = warn
+payments.provider = acme-pay
+payments.webhook_auth = Bearer ***
+  1 value redacted by shape — not a guarantee, and never by the key's name
+gluon> cfg := config.Defaults()
+gluon> :yaml cfg
+http:
+    addr: 127.0.0.1:8765
+grpc:
+    addr: 127.0.0.1:50051
+database:
+    path: data/shop.db
+features:
+    - gift-wrap
+log_level: info
+gluon> :get github.com/BurntSushi/toml@v1.6.0
+added github.com/BurntSushi/toml v1.6.0
+gluon> :toml cfg
+!lang toml
+features = ["gift-wrap"]
+log_level = "info"
+
+[http]
+  addr = "127.0.0.1:8765"
+
+[grpc]
+  addr = "127.0.0.1:50051"
+
+[database]
+  path = "data/shop.db"
+gluon> :dec pricing.Total(pricing.Sample())
+56.14   exponent -2
+float64  56.14
+gluon> :dec decimal.NewFromFloat(0.1).Add(decimal.NewFromFloat(0.2))
+0.3   exponent -1
+float64  0.3
+gluon> i := app.Injector()
+gluon> :services i
+do — 4 registered
+
+SERVICE                                  SCOPE
+*example.com/shop/internal/rpc.Orders    [root]
+*example.com/shop/internal/store.Store   [root]
+*github.com/spf13/viper.Viper            [root]
+github.com/go-chi/chi/v5.Router          [root]
+gluon> router := do.MustInvoke[chi.Router](i)
+gluon> :graph i
+do — dependency graph
+
+SERVICE                                  DEPENDS ON
+*example.com/shop/internal/rpc.Orders    —
+*example.com/shop/internal/store.Store   *github.com/spf13/viper.Viper
+*github.com/spf13/viper.Viper            —
+github.com/go-chi/chi/v5.Router          *example.com/shop/internal/store.Store
+
+only the terminal form is available: samber/do emits no DOT description.
+A — is not "no dependencies": do records an edge when it builds a service.
+gluon> :tree cli.Root()
+shopctl                  run and look after the shop
+  debug                    dump the container  (hidden)
+  migrate                  change the database's schema
+    down                     roll the newest one back
+    status                   what is applied, and when
+    up                       apply every pending migration
+  serve                    serve HTTP and gRPC
+  users                    customers
+    add                      add a customer
+    list                     every customer
+gluon> :msgpack events.Sample()
+61 bytes
+00000000  84 a2 69 64 d3 00 00 00  00 00 00 00 2a a8 63 75  |..id........*.cu|
+00000010  73 74 6f 6d 65 72 c4 10  5f 0c 2c 1e 8a 7b 4e 0f  |stomer.._.,..{N.|
+00000020  9c 6d 3b 2a 1f 0e 9d 8c  a5 74 6f 74 61 6c a5 35  |.m;*.....total.5|
+00000030  33 2e 30 34 a2 61 74 d6  ff 6a 96 9b 18           |3.04.at..j...|

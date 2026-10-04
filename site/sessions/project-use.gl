@@ -1,0 +1,5 @@
+# Attaching to a module: its packages import, internal/ included.
+%host shop
+:use .
+pricing.Total(pricing.Sample()).String()
+:layout pricing.LineItem

@@ -1,0 +1,23 @@
+gluon> :time on
+timing on
+gluon> type Point struct{ X, Y int }
+  [gofmt 300µs · typecheck 102.9ms · total 103.2ms]
+gluon> 1 << 20
+(int) 1048576
+  [gofmt 100µs · typecheck 1.1ms · total 1.2ms]
+gluon> strings.Repeat("ab")
+!error error: not enough arguments in call to strings.Repeat
+!error     strings.Repeat("ab")
+!error                        ^
+!error   [goimports 11.8ms · typecheck 69.2ms · total 81ms]
+gluon> Point{1, 2}
+(main.Point)
+╭───────┬───────╮
+│ field │ value │
+├───────┼───────┤
+│ X     │ 1     │
+│ Y     │ 2     │
+╰───────┴───────╯
+  [gofmt 0s · typecheck 2ms · build 100.5ms · goimports 14.8ms · build 205.1ms · run 114.1ms · total 436.6ms]
+gluon> :time off
+timing off

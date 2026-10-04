@@ -1,0 +1,149 @@
+<!doctype html>
+<!-- generated from site/ by `just docs`: edit the source, not this file -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Themes — gluon</title>
+<meta name="description" content="Twenty-three palettes chosen while looking at your own code, the ground each was drawn for, your own, and one converted from an editor theme.">
+<meta name="theme-color" content="#0A0A0A">
+<script>(function(d,m){try{m=/[?&]palette=(gruv|go)\b/.exec(location.search);m=m?m[1]:localStorage.getItem("gluon:theme")}catch(e){}if(m==="gruv")d.documentElement.setAttribute("data-theme","gruv")})(document)</script>
+<link rel="canonical" href="https://sandboxws.github.io/gluon/guide/themes.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Themes — gluon">
+<meta property="og:description" content="Twenty-three palettes chosen while looking at your own code, the ground each was drawn for, your own, and one converted from an editor theme.">
+<meta property="og:url" content="https://sandboxws.github.io/gluon/guide/themes.html">
+<meta property="og:image" content="https://sandboxws.github.io/gluon/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="gluon's startup screen in a Go project, beside the words: A Go REPL that stands in your project">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sandboxws.github.io/gluon/img/og.png">
+<meta name="twitter:title" content="Themes — gluon">
+<meta name="twitter:description" content="Twenty-three palettes chosen while looking at your own code, the ground each was drawn for, your own, and one converted from an editor theme.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A0A0A'/%3E%3Cpath d='M9 9l7 7-7 7' stroke='%2300ADD8' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M18 23h6' stroke='%2300ADD8' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/gluon.css?v=980f3e8a">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="field" aria-hidden="true"></div>
+<div class="nav" id="nav">
+  <div class="nav-in">
+    <a class="nav-t" href="../index.html">gluon</a>
+    <span class="nav-sp"></span>
+    <a class="nav-m" href="../guide/index.html">Guides</a>
+    <a class="nav-m" href="../reference/index.html">Reference</a>
+    <span class="nav-m opt">v0.1.0</span>
+  </div>
+</div>
+
+<header class="hero wrap page">
+  <p class="eyebrow">Guide 12</p>
+  <h1 id="bigTitle">Themes</h1>
+  <p class="sub">Twenty-three palettes chosen while looking at your own code, the ground each was drawn for, your own, and one converted from an editor theme.</p>
+</header>
+
+<div class="wrap cols">
+  <nav class="side" aria-label="Sections"><div class="side-in">
+    <p class="grp-h">This page</p>
+    <a href="#choose"><span class="rn">1</span><span class="rt">Choosing one</span></a>
+<a href="#ground"><span class="rn">2</span><span class="rt">Dark, light, either</span></a>
+<a href="#own"><span class="rn">3</span><span class="rt">Your own</span></a>
+<a href="#import"><span class="rn">4</span><span class="rt">From an editor theme</span></a>
+    <p class="grp-h">Guides</p>
+    <a href="../guide/index.html"><span class="rt">Guides</span></a>
+    <a href="../guide/start.html"><span class="rt">The first five minutes</span></a>
+    <a href="../guide/inspecting.html"><span class="rt">Inspecting</span></a>
+    <a href="../guide/measuring.html"><span class="rt">Measuring</span></a>
+    <a href="../guide/rendering.html"><span class="rt">Rendering</span></a>
+    <a href="../guide/session.html"><span class="rt">The session</span></a>
+    <a href="../guide/scratchpads.html"><span class="rt">Scratchpads</span></a>
+    <a href="../guide/editing.html"><span class="rt">Editing</span></a>
+    <a href="../guide/project.html"><span class="rt">In a project</span></a>
+    <a href="../guide/database.html"><span class="rt">The database</span></a>
+    <a href="../guide/plugins.html"><span class="rt">Plugins</span></a>
+    <a href="../guide/configuration.html"><span class="rt">Configuration</span></a>
+    <a href="../guide/themes.html" aria-current="page" class="here"><span class="rt">Themes</span></a>
+    <a href="../guide/scripting.html"><span class="rt">Scripting</span></a>
+    <a href="../guide/mcp.html"><span class="rt">MCP</span></a>
+    <a href="../guide/design.html"><span class="rt">How it works</span></a>
+    
+  </div></nav>
+  <main id="main">
+    
+<section class="card" id="choose">
+  <div class="card-head"><span class="idx">1</span><div class="hd"><h2>Choosing one, while looking at your own code</h2><div class="chips"><span class="chip">23 themes</span></div></div></div>
+  <div class="card-body">
+    <p class="lead">Go source is highlighted everywhere gluon shows it — the line you are typing, the line echoed into scrollback, <code>:src</code>, <code>:doc -src</code>, <code>:test</code>, <code>:mock</code> — and SQL, JSON and TOML where a command answers in them. <a href="../reference/commands.html#theme"><code>:theme</code></a> chooses the palette.</p>
+    <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:theme</span><span class="vw" title="At the prompt this opens a view you can scroll and filter. What it shows is below, and it is what a pipe or gluon -e prints.">opens a view</span></div><div class="tl out">themes</div><div class="tl out">    catppuccin-latte           light  Catppuccin Latte: mauve keywords, green strings, amber types</div><div class="tl out">    catppuccin-mocha           dark   Catppuccin Mocha: mauve keywords, green strings, yellow types</div><div class="tl out">    dracula                    dark   Dracula: pink keywords, yellow strings, cyan types</div><div class="tl out">    github-dark                dark   GitHub Dark: red keywords, pale-blue strings, orange types</div><div class="tl out">    github-light               light  GitHub Light: red keywords, navy strings, brown types</div><div class="tl out">  ✓ go                         dark   gluon&#39;s own palette: violet keywords, green strings, cyan types</div><div class="tl out">    go-light                   light  gluon&#39;s own palette, for a light terminal</div><div class="tl out">    gruvbox-dark               dark   Gruvbox Dark: red keywords, green strings, yellow types</div><div class="tl out">    gruvbox-light              light  Gruvbox Light: red keywords, olive strings, amber types</div><div class="tl out">    gruvppuccin-mocha          dark   Gruvppuccin Mocha: violet keywords, green strings, amber types</div><div class="tl out">    gruvppuccin-nebula         dark   Gruvppuccin Nebula: mocha&#39;s accents, violet-grey furniture</div><div class="tl out">    gruvppuccin-nocturne       dark   Gruvppuccin Nocturne: indigo keywords, teal strings, sky numbers</div><div class="tl out">    gruvppuccin-nocturne-gruv  dark   Gruvppuccin Nocturne Gruv: mocha&#39;s accents, dimmer greys</div><div class="tl out an">… 12 more lines</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:theme</span> gruvppuccin-mocha</div><div class="tl out">theme is gruvppuccin-mocha · name = &#34;gruvppuccin-mocha&#34; in ~/.config/gluon/config.toml</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:theme</span> go</div><div class="tl out">theme is go · name = &#34;go&#34; in ~/.config/gluon/config.toml</div></div></div>
+    <figure class="shot"><figcaption class="cmd-bar"><span class="ck">Screenshot</span><span class="cv">the chooser, on the theme in use</span></figcaption><a href="../img/shots/theme.go.webp?v=97105256"><img class="v-go" src="../img/shots/theme.go.webp?v=97105256" width="893" height="720" alt=":theme&#39;s chooser: every theme gluon ships, with the one in use under the cursor and previewed on a sample of code" loading="lazy" decoding="async"></a><a href="../img/shots/theme.gruv.webp?v=a13487a3"><img class="v-gruv" src="../img/shots/theme.gruv.webp?v=a13487a3" width="893" height="720" alt=":theme&#39;s chooser: every theme gluon ships, with the one in use under the cursor and previewed on a sample of code" loading="lazy" decoding="async"></a></figure>
+    <p>At the prompt, bare <code>:theme</code> is a picker, and moving the selection does not draw a swatch beside the list — it installs the theme, so the prompt, the highlighting, the tables and the picker itself are all the palette being considered. <kbd>enter</kbd> keeps it, writing <code>[theme] name</code> into <code>config.toml</code> so the next session starts in it; <kbd>esc</kbd> puts back the one you opened with. <code>:theme &lt;name&gt;</code> does the same without the picker.</p>
+    <p><code>go</code> is the default — violet keywords, green strings, cyan types — and <code>go-light</code> is the same palette for a white terminal. <code>terminal</code> is your own sixteen ANSI colours, which is what gluon looked like before it had a palette. Five are the dark half of Gruvppuccin; the other fifteen are converted from the editor themes of the same names. Each is drawn in itself in <a href="../reference/themes.html">the themes reference</a>. The code on this site is drawn in <code>go</code>, and in <code>gruvppuccin-mocha</code> when the switch at the top of the page says Gruvppuccin.</p>
+  </div>
+</section>
+
+<section class="card" id="ground">
+  <div class="card-head"><span class="idx">2</span><div class="hd"><h2>Dark, light, or either</h2></div></div>
+  <div class="card-body">
+    <p class="lead">gluon paints foregrounds and never a background, because your terminal owns that — so it cannot tell whether yours is white, and a palette drawn for paper is pale smears on black. A theme therefore says which ground it was drawn for, and every list prints it.</p>
+    <div class="repl"><div class="cmd-bar"><span class="ck">Shell</span><span class="cv">the same, from the shell</span></div><div class="term-body ex"><div class="tl"><span class="pr">$</span> gluon theme</div><div class="tl out">themes</div><div class="tl out">    catppuccin-latte          Catppuccin Latte: mauve keywords, green strings, amber types</div><div class="tl out">    light · built in</div><div class="tl out">    catppuccin-mocha          Catppuccin Mocha: mauve keywords, green strings, yellow types</div><div class="tl out">    dark · built in</div><div class="tl out">    dracula                   Dracula: pink keywords, yellow strings, cyan types</div><div class="tl out">    dark · built in</div><div class="tl out">    github-dark               GitHub Dark: red keywords, pale-blue strings, orange types</div><div class="tl out">    dark · built in</div><div class="tl out">    github-light              GitHub Light: red keywords, navy strings, brown types</div><div class="tl out">    light · built in</div><div class="tl out">  ✓ go                        gluon&#39;s own palette: violet keywords, green strings, cyan types</div><div class="tl out an">… 39 more lines</div><div class="tl"><span class="pr">$</span> gluon theme show gruvppuccin-mocha</div><div class="tl out">gruvppuccin-mocha</div><div class="tl out">  annotation   #6E655A   ████ the quick brown fox</div><div class="tl out">  border       #5A524C   ████ the quick brown fox</div><div class="tl out">  builtin      #7DAEA3   ████ the quick brown fox</div><div class="tl out">  comment      #6E655A   ████ the quick brown fox</div><div class="tl out">  dim          #A69A8A   ████ the quick brown fox</div><div class="tl out">  error        #EA6962   ████ the quick brown fox</div><div class="tl out">  ident        #D4BE98   ████ the quick brown fox</div><div class="tl out">  keyword      #C28FD6   ████ the quick brown fox</div><div class="tl out">  mode         #C28FD6   ████ the quick brown fox</div><div class="tl out">  note         #D8A657   ████ the quick brown fox</div><div class="tl out">  number       #E78A4E   ████ the quick brown fox</div><div class="tl out">  prompt       #7DAEA3   ████ the quick brown fox</div><div class="tl out">  punctuation  #7C7269   ████ the quick brown fox</div><div class="tl out">  search       #F5B843   ████ the quick brown fox</div><div class="tl out">  string       #A9B665   ████ the quick brown fox</div><div class="tl out">  type         #D8A657   ████ the quick brown fox</div></div></div>
+    <p><code>either</code> is <code>terminal</code>'s answer and only its answer: its colours are your terminal's own sixteen, so they follow you onto either ground. A hex colour degrades on its own — to the nearest of 256 on a 256-colour terminal, the nearest of sixteen below that, and to nothing in a pipe. <code>NO_COLOR</code> turns all of it off.</p>
+  </div>
+</section>
+
+<section class="card" id="own">
+  <div class="card-head"><span class="idx">3</span><div class="hd"><h2>Your own</h2></div></div>
+  <div class="card-body">
+    <p class="lead">A theme is a TOML file in <code>~/.config/gluon/themes</code>, one colour per role; a role left out keeps the default.</p>
+    <div class="cmd">
+      <div class="cmd-bar"><span class="ck">TOML</span><span class="cv">~/.config/gluon/themes/mine.toml</span></div>
+<pre>about      = <span class="s">"one line, printed by gluon theme"</span>
+appearance = <span class="s">"dark"</span>   <span class="c"># optional here, required of a theme gluon ships</span>
+
+[theme]
+keyword = <span class="s">"#C6ACD9"</span>
+comment = <span class="s">"none"</span>      <span class="c"># leave the terminal's own foreground alone</span></pre>
+    </div>
+    <p>A theme you almost like costs one line rather than a copy: a role set under <code>[theme]</code> in <code>config.toml</code> overrides whatever the chosen theme says. An unknown role is an error, because the alternative is a colour that silently stays the default. The roles are the sixteen <code>gluon theme show</code> prints.</p>
+  </div>
+</section>
+
+<section class="card" id="import">
+  <div class="card-head"><span class="idx">4</span><div class="hd"><h2>From an editor theme you already like</h2></div></div>
+  <div class="card-body">
+    <p class="lead"><code>gluon theme import</code> converts a TextMate <code>.tmTheme</code>, a VS Code theme or an IntelliJ colour scheme into a gluon theme; the format is read from the bytes, not the extension.</p>
+    <div class="cmd">
+      <div class="cmd-bar"><span class="ck">Shell</span><span class="cv">convert, then choose it</span></div>
+<pre>gluon theme import ~/Downloads/Monokai.tmTheme</pre>
+    </div>
+    <p>The mapping is lossy in one direction and cannot be otherwise: about a third of gluon's palette describes a terminal program rather than a highlighter, and no scope in any editor theme means "the reverse-i-search prompt" — so those roles keep gluon's own values, and the command prints which, role by role.</p>
+    <p>What it will not do is hand you a colour that is not one. <code>ident</code> is the editor's own foreground, not its <code>variable</code> accent, which painted a whole screen pink. A rule whose meaning is its background — <code>invalid</code>, ink on a red field — has said nothing once the field is dropped. A language's own rule does not answer a question about every language. And a colour that cannot be seen on the theme's own ground did not convert. The ground itself is read from the theme's background rather than its label, because a label can be wrong: Tokyo Night Light ships <code>"type": "dark"</code> over a near-white page.</p>
+  </div>
+</section>
+
+    <nav class="pn" aria-label="Pages beside this one">
+  <a class="pg" href="../guide/configuration.html"><span class="pg-k">← previous</span><b>Configuration</b></a>
+  <a class="pg next" href="../guide/scripting.html"><span class="pg-k">next →</span><b>Scripting</b></a>
+</nav>
+  </main>
+</div>
+
+<footer class="foot"><div class="wrap fgrid">
+    <div><div class="fh">The site</div><ul>
+        <li><a href="../index.html">gluon</a> — what it is, in one page</li>
+        <li><a href="../guide/index.html">Guides</a> — every feature, with the lines to type</li>
+        <li><a href="../reference/index.html">Reference</a> — generated from the code that defines it</li>
+      </ul></div>
+    <div><div class="fh">This page</div><ul>
+        <li>v0.1.0 · <code>github.com/sandboxws/gluon</code></li>
+        <li>Generated from <code>site/</code> by <code>just docs</code></li>
+        <li>No analytics, no cookies; the palette choice is one localStorage key</li>
+        <li><a href="https://github.com/sandboxws/gluon">Source</a></li>
+      </ul></div>
+</div></footer>
+<script src="../assets/gluon.js?v=0b5d44bf"></script>
+</body>
+</html>

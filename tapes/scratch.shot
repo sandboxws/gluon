@@ -1,0 +1,19 @@
+# A session that survives a restart.
+Shot scratch
+Alt gluon started again in a named scratchpad: the startup screen says two entries were restored, and the value from the last session is still there
+Also scratch-list :scratch's view listing the scratchpads, with their entries and when each was last worked on
+Caption Every session lands in a scratchpad. Quit, come back tomorrow, and it replays — your variables are still there.
+Headline Quit. Come back. It is all still there.
+Promo 16:9
+Args -scratch parser-bug
+Banner full
+Grid 80x20
+Line x := strings.Fields(" a b ")
+Line len(x)
+Relaunch
+Line x
+Screenshot
+Type ":scratch"
+Enter
+Wait Prompt
+Screenshot scratch-list

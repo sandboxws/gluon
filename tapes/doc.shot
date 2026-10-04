@@ -1,0 +1,14 @@
+# Documentation, and source, for anything importable.
+Shot doc
+Alt :doc strings.Cut printing the function's signature and its documentation, offline, from the toolchain's own source
+Also doc-src :doc -src strings.Cut printing the function's source, with the file and line it lives at
+Caption :doc reads documentation — and with -src the source — for anything you can import, offline, from the code your build actually uses.
+Headline Docs and source, at the prompt
+Promo 16:9
+Grid 80x18
+Line :doc strings.Cut
+Screenshot
+Ctrl l
+Wait Prompt
+Line :doc -src strings.Cut
+Screenshot doc-src

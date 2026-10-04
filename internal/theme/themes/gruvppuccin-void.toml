@@ -1,0 +1,24 @@
+# Gruvppuccin Void. Mocha's accents over deep violet greys, the lightest
+# comment in the family — see gruvppuccin-mocha.toml for the conversion.
+about      = "Gruvppuccin Void: mocha's accents, deep violet greys"
+appearance = "dark"
+source     = "Gruvppuccin Void, an IntelliJ colour scheme"
+
+[theme]
+keyword     = "#C28FD6"
+string      = "#A9B665"
+type        = "#D8A657"
+comment     = "#827E89"
+number      = "#E78A4E"
+builtin     = "#7DAEA3"
+punctuation = "#86818D"
+ident       = "#CED8CF"
+
+error       = "#EA6962"
+prompt      = "#7DAEA3"
+mode        = "#C28FD6"  # the family's violet
+annotation  = "#827E89"
+note        = "#D8A657"
+dim         = "#928D97"
+search      = "#F5B843"
+border      = "#595267"

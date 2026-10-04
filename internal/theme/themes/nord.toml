@@ -1,0 +1,37 @@
+# Nord, converted from the VS Code theme by `gluon theme import`.
+#
+# Sixteen colours, four of them frost and the rest a cold grey ramp, and the
+# whole point of it is restraint — so this is the one conversion where almost
+# nothing had to be rejected. `error` is gluon's: Nord's `invalid` is the
+# foreground colour, which in a REPL means an error line that looks like output.
+#
+# Re-run:  gluon theme import <file> --print
+#          github.com/nordtheme/visual-studio-code, themes/nord-color-theme.json
+#
+# Kept from gluon's own go, because nothing in an editor theme means
+# them: `error`, `note`, `search`.
+about      = "Nord: blue keywords, green strings, teal types"
+appearance = "dark"
+source     = "Nord, a VS Code theme"
+
+[theme]
+# Source.
+keyword     = "#81A1C1"
+string      = "#A3BE8C"
+type        = "#8FBCBB"
+comment     = "#616E88"
+number      = "#B48EAD"
+builtin     = "#88C0D0"
+punctuation = "#ECEFF4"
+ident       = "#d8dee9"
+
+# Values, the REPL, and the CLI.
+error       = "#FF7373"
+prompt      = "#8FBCBB"
+mode        = "#B48EAD"  # Aurora purple: the frost prompt's own family is too
+                         # close to it
+annotation  = "#616E88"
+note        = "#E3B341"
+dim         = "#4c566a"
+search      = "#F5B843"
+border      = "#3b4252"

@@ -1,0 +1,18 @@
+%host shop
+%env SHOP_CONFIG=$HOST/config.yaml
+%env SHOP_LOG_LEVEL=warn
+%attach
+v, _ := config.Load()
+:config v
+cfg := config.Defaults()
+:yaml cfg
+:get github.com/BurntSushi/toml@v1.6.0
+:toml cfg
+:dec pricing.Total(pricing.Sample())
+:dec decimal.NewFromFloat(0.1).Add(decimal.NewFromFloat(0.2))
+i := app.Injector()
+:services i
+router := do.MustInvoke[chi.Router](i)
+:graph i
+:tree cli.Root()
+:msgpack events.Sample()

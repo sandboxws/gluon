@@ -1,0 +1,9 @@
+gluon> :replay repeat
+!view
+1 history line matching "repeat", oldest first:
+  1  s := strings.Repeat("ab", 3)
+enter brings them in; nothing has run yet
+gluon> :replay -run repeat
+brought in 1 line from history
+gluon> s
+(string) "ababab"  len=6

@@ -1,0 +1,13 @@
+# The database the project configures, and a query through its driver.
+Shot db
+Alt :db listing the one database the project configures — its driver, its file, read-only and ready — then :query selecting five users through that driver, as a table with the row count
+Caption :query runs SQL through your project's own driver, read-only unless you say -w. :db shows where the database came from.
+Headline Query your database through your driver
+Promo 4:5
+Host shop
+Setup gluon init -no-prompt -write -local
+Args -host .
+Grid 96x24
+Line :db
+Line :query SELECT id, email, plan FROM users ORDER BY id LIMIT 5
+Screenshot

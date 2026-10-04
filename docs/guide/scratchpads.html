@@ -1,0 +1,142 @@
+<!doctype html>
+<!-- generated from site/ by `just docs`: edit the source, not this file -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scratchpads — gluon</title>
+<meta name="description" content="A session kept on disk under a name, graduated into a module you can open in an editor or a debugger, or shared as a playground link.">
+<meta name="theme-color" content="#0A0A0A">
+<script>(function(d,m){try{m=/[?&]palette=(gruv|go)\b/.exec(location.search);m=m?m[1]:localStorage.getItem("gluon:theme")}catch(e){}if(m==="gruv")d.documentElement.setAttribute("data-theme","gruv")})(document)</script>
+<link rel="canonical" href="https://sandboxws.github.io/gluon/guide/scratchpads.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Scratchpads — gluon">
+<meta property="og:description" content="A session kept on disk under a name, graduated into a module you can open in an editor or a debugger, or shared as a playground link.">
+<meta property="og:url" content="https://sandboxws.github.io/gluon/guide/scratchpads.html">
+<meta property="og:image" content="https://sandboxws.github.io/gluon/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="gluon's startup screen in a Go project, beside the words: A Go REPL that stands in your project">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sandboxws.github.io/gluon/img/og.png">
+<meta name="twitter:title" content="Scratchpads — gluon">
+<meta name="twitter:description" content="A session kept on disk under a name, graduated into a module you can open in an editor or a debugger, or shared as a playground link.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A0A0A'/%3E%3Cpath d='M9 9l7 7-7 7' stroke='%2300ADD8' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M18 23h6' stroke='%2300ADD8' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/gluon.css?v=980f3e8a">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="field" aria-hidden="true"></div>
+<div class="nav" id="nav">
+  <div class="nav-in">
+    <a class="nav-t" href="../index.html">gluon</a>
+    <span class="nav-sp"></span>
+    <a class="nav-m" href="../guide/index.html">Guides</a>
+    <a class="nav-m" href="../reference/index.html">Reference</a>
+    <span class="nav-m opt">v0.1.0</span>
+  </div>
+</div>
+
+<header class="hero wrap page">
+  <p class="eyebrow">Guide 06</p>
+  <h1 id="bigTitle">Scratchpads</h1>
+  <p class="sub">A session kept on disk under a name, graduated into a module you can open in an editor or a debugger, or shared as a playground link.</p>
+</header>
+
+<div class="wrap cols">
+  <nav class="side" aria-label="Sections"><div class="side-in">
+    <p class="grp-h">This page</p>
+    <a href="#pads"><span class="rn">1</span><span class="rt">A session on disk</span></a>
+<a href="#save"><span class="rn">2</span><span class="rt">Out of the REPL</span></a>
+<a href="#share"><span class="rn">3</span><span class="rt">Showing someone</span></a>
+<a href="#cli"><span class="rn">4</span><span class="rt">From the shell</span></a>
+    <p class="grp-h">Guides</p>
+    <a href="../guide/index.html"><span class="rt">Guides</span></a>
+    <a href="../guide/start.html"><span class="rt">The first five minutes</span></a>
+    <a href="../guide/inspecting.html"><span class="rt">Inspecting</span></a>
+    <a href="../guide/measuring.html"><span class="rt">Measuring</span></a>
+    <a href="../guide/rendering.html"><span class="rt">Rendering</span></a>
+    <a href="../guide/session.html"><span class="rt">The session</span></a>
+    <a href="../guide/scratchpads.html" aria-current="page" class="here"><span class="rt">Scratchpads</span></a>
+    <a href="../guide/editing.html"><span class="rt">Editing</span></a>
+    <a href="../guide/project.html"><span class="rt">In a project</span></a>
+    <a href="../guide/database.html"><span class="rt">The database</span></a>
+    <a href="../guide/plugins.html"><span class="rt">Plugins</span></a>
+    <a href="../guide/configuration.html"><span class="rt">Configuration</span></a>
+    <a href="../guide/themes.html"><span class="rt">Themes</span></a>
+    <a href="../guide/scripting.html"><span class="rt">Scripting</span></a>
+    <a href="../guide/mcp.html"><span class="rt">MCP</span></a>
+    <a href="../guide/design.html"><span class="rt">How it works</span></a>
+    
+  </div></nav>
+  <main id="main">
+    
+<section class="card" id="pads">
+  <div class="card-head"><span class="idx">1</span><div class="hd"><h2>A session on disk</h2></div></div>
+  <div class="card-body">
+    <p class="lead">A scratchpad is a named session on disk. gluon lands in one called <code>default</code>, and every line you type into it is written down — the entries as you typed them, what is pinned, the host you were attached to and the modules the session added. Tomorrow's <code>gluon</code> opens it, replays it, and you are where you were.</p>
+    <div class="repl"><div class="cmd-bar"><span class="ck">gluon</span><span class="cv">keeping one, naming it, graduating it, showing it</span></div><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:scratch</span> parser-bug</div><div class="tl out">scratchpad parser-bug — created, the session is empty</div><div class="tl"><span class="pr">gluon&gt;</span> x <span class="p">:=</span> strings<span class="p">.</span>Fields<span class="p">(</span><span class="s">&#34; a b &#34;</span><span class="p">)</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="f">len</span><span class="p">(</span>x<span class="p">)</span></div><div class="tl out"><span class="ty">(int)</span> 2</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:scratch</span><span class="vw" title="At the prompt this opens a view you can scroll and filter. What it shows is below, and it is what a pipe or gluon -e prints.">opens a view</span></div><div class="tl out">scratchpads</div><div class="tl out bx"><span class="p">╭──────────────┬───────────┬──────┬────────────────╮</span></div><div class="tl out bx"><span class="p">│</span> scratchpad   <span class="p">│</span> entries   <span class="p">│</span> host <span class="p">│</span> last worked on <span class="p">│</span></div><div class="tl out bx"><span class="p">├──────────────┼───────────┼──────┼────────────────┤</span></div><div class="tl out bx"><span class="p">│</span> * parser-bug <span class="p">│</span> 2 entries <span class="p">│</span> —    <span class="p">│</span> just now       <span class="p">│</span></div><div class="tl out bx"><span class="p">╰──────────────┴───────────┴──────┴────────────────╯</span></div><div class="tl out">in parser-bug — every line lands in it · ~/.local/share/gluon/scratch</div><div class="tl"><span class="pr">$</span> gluon scratch</div><div class="tl out">parser-bug	2 entries</div><div class="tl"><span class="pr">$</span> gluon scratch show parser-bug</div><div class="tl out">x := strings.Fields(&#34; a b &#34;)</div><div class="tl out">len(x)</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:scratch</span> -mv parser-fix</div><div class="tl out">scratchpad parser-bug → parser-fix</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:save</span></div><div class="tl out">saved → ~/.local/share/gluon/scratch/parser-fix/main.go</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:save</span> -debug parser-fix</div><div class="tl out">saved → ~/.local/share/gluon/scratch/2026-09-23-parser-fix/main.go</div><div class="tl out">debug → cd ~/.local/share/gluon/scratch/2026-09-23-parser-fix &amp;&amp; dlv debug</div><div class="tl out">        or open the directory — .vscode/launch.json is written beside the module</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:share</span><span class="vw" title="At the prompt this opens a view you can scroll and filter. What it shows is below, and it is what a pipe or gluon -e prints.">opens a view</span></div><div class="tl out">package main</div><div class="tl out"></div><div class="tl out">import (</div><div class="tl out">	&#34;strings&#34;</div><div class="tl out">)</div><div class="tl out"></div><div class="tl out">func main() {</div><div class="tl out">	x := strings.Fields(&#34; a b &#34;)</div><div class="tl out">	_ = x</div><div class="tl out">	__gluonPrint(len(x))</div><div class="tl out">}</div><div class="tl out"></div><div class="tl out">enter uploads this to the Go Playground — nothing has been sent yet</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:scratch</span> -off</div><div class="tl out">detached from scratchpad parser-fix — the session continues and nothing more is written down</div></div></div>
+    <figure class="shot"><figcaption class="cmd-bar"><span class="ck">Screenshot</span><span class="cv">gluon -scratch parser-bug, started again</span></figcaption><a href="../img/shots/scratch.go.webp?v=94bf905d"><img class="v-go" src="../img/shots/scratch.go.webp?v=94bf905d" width="723" height="561" alt="gluon started again in a named scratchpad: the startup screen says two entries were restored, and the value from the last session is still there" loading="lazy" decoding="async"></a><a href="../img/shots/scratch.gruv.webp?v=2a160d0a"><img class="v-gruv" src="../img/shots/scratch.gruv.webp?v=2a160d0a" width="723" height="561" alt="gluon started again in a named scratchpad: the startup screen says two entries were restored, and the value from the last session is still there" loading="lazy" decoding="async"></a></figure>
+    <figure class="shot"><figcaption class="cmd-bar"><span class="ck">Screenshot</span><span class="cv">:scratch at a prompt, where the pads are a view</span></figcaption><a href="../img/shots/scratch-list.go.webp?v=1cddca37"><img class="v-go" src="../img/shots/scratch-list.go.webp?v=1cddca37" width="723" height="605" alt=":scratch&#39;s view listing the scratchpads, with their entries and when each was last worked on" loading="lazy" decoding="async"></a><a href="../img/shots/scratch-list.gruv.webp?v=1fd0d05c"><img class="v-gruv" src="../img/shots/scratch-list.gruv.webp?v=1fd0d05c" width="723" height="605" alt=":scratch&#39;s view listing the scratchpads, with their entries and when each was last worked on" loading="lazy" decoding="async"></a></figure>
+    <p><a href="../reference/commands.html#scratch"><code>:scratch</code></a> on its own lists them — how many entries each holds, the host it records, when it was last worked on — and opens one from the view. <code>:scratch &lt;name&gt;</code> opens that one, creating it when it is new. <a href="../reference/commands.html#scratch-mv"><code>:scratch -mv</code></a> renames the one you are in, <a href="../reference/commands.html#scratch-rm"><code>:scratch -rm</code></a> shows one and asks before removing it, <a href="../reference/commands.html#scratch-edit"><code>:scratch -edit</code></a> opens its file, pins and all, and <a href="../reference/commands.html#scratch-off"><code>:scratch -off</code></a> stops writing the rest of this session down.</p>
+    <p>Opening replays: the entries run as one program — one build for the whole session, not one per entry — so an entry that had an effect has it again unless it was pinned. Nothing is fetched: a recorded module comes from the local module cache, and one the cache no longer holds is named with the <code>:get</code> that would bring it back. A scratchpad that will not open is never written to; the file is left byte for byte as it was, and a <code>:reset</code> that shrinks one keeps what it replaced beside it in <code>session.prev</code>.</p>
+    <p>Only an interactive session opens one. <code>gluon -e</code>, a piped script and <code>gluon mcp</code> open none, so a tool call can neither inherit nor change the scratchpad you have open. <code>gluon -scratch &lt;name&gt;</code> starts in a named one, <code>gluon -no-scratch</code> in none, and <a href="../reference/settings.html#scratch.pad"><code>scratch.pad</code></a> is the lasting form of either.</p>
+  </div>
+</section>
+
+<section class="card" id="save">
+  <div class="card-head"><span class="idx">2</span><div class="hd"><h2>Out of the REPL, into a module</h2></div></div>
+  <div class="card-body">
+    <p class="lead"><a href="../reference/commands.html#save"><code>:save</code></a> writes the session out as a runnable module with its own <code>go.mod</code>, so gopls works in it — completion, hover, jump to definition.</p>
+    <p>Inside a scratchpad a bare <code>:save</code> refreshes the scratchpad's own program, so the module an editor or a debugger opens is the work in progress rather than a dated copy of it. <code>:save &lt;topic&gt;</code> writes a new dated scratch. <a href="../reference/commands.html#save-debug"><code>:save -debug</code></a> adds a debugger launch configuration beside the module and names the command that starts one from a terminal — gluon compiles each line into a program that exits, so there is nothing to pause, and the way to step through a call is a real debugger on a real module. <a href="../reference/commands.html#save-test"><code>:save -test</code></a> puts what <code>:test</code> generated beside the program as a test file. gluon never writes into your project: all of it goes under <code>~/.local/share/gluon/scratch</code>.</p>
+  </div>
+</section>
+
+<section class="card" id="share">
+  <div class="card-head"><span class="idx">3</span><div class="hd"><h2>Showing someone</h2></div></div>
+  <div class="card-body">
+    <p class="lead"><a href="../reference/commands.html#share"><code>:share</code></a> uploads the program <a href="../reference/commands.html#src"><code>:src</code></a> shows to the Go Playground and prints the address it can be read at — the path that is otherwise save, open, copy, paste into a browser.</p>
+    <div class="call danger">
+      <span class="lbl">Public, and for good</span>
+      <p>The upload is public and cannot be withdrawn, so <code>:share</code> shows you the program itself and asks, every time. There is no flag and no setting that skips the question: a confirmation that can be pre-authorised is one that has stopped being asked. A program carrying anything shaped like a credential is refused outright, naming the line. Only the program goes — not the history, not the environment, and not the source of the module you are attached to.</p>
+    </div>
+    <p>Confirming needs a terminal. Through a pipe — and in the session above, which was recorded without one — <code>:share</code> prints what would have gone and uploads nothing.</p>
+  </div>
+</section>
+
+<section class="card" id="cli">
+  <div class="card-head"><span class="idx">4</span><div class="hd"><h2>From the shell</h2></div></div>
+  <div class="card-body">
+    <p class="lead"><code>gluon scratch</code> is the scratchpads from outside the REPL — what there is, what one holds, removing one. <code>gluon new</code>, <code>run</code> and <code>watch</code> are the other shape of scratch work: a small program in a file, when a prompt is not the right place.</p>
+    <div class="repl"><div class="cmd-bar"><span class="ck">Shell</span><span class="cv">a scratch program, from the shell</span></div><div class="term-body ex"><div class="tl"><span class="pr">$</span> gluon new heap-sort -no-edit</div><div class="tl out">~/.local/share/gluon/scratch/2026-09-23-heap-sort/main.go</div><div class="tl"><span class="pr">$</span> gluon run -list</div><div class="tl out">~/.local/share/gluon/scratch/2026-09-23-heap-sort</div><div class="tl"><span class="pr">$</span> gluon run</div><div class="tl out">~/.local/share/gluon/scratch/2026-09-23-heap-sort</div><div class="tl out">hello</div><div class="tl out bx"><span class="p">─</span> 282ms</div></div></div>
+    <p><code>gluon scratch show &lt;name&gt;</code> prints what a scratchpad holds and evaluates none of it — there is no evaluator in that process at all, which is what makes that true rather than intended. Opening is not among its verbs, because opening a scratchpad <em>is</em> starting a REPL in it.</p>
+    <p><code>gluon new</code> writes one directory per scratch with its own <code>go.mod</code> and opens it in your editor; <code>-flat</code> writes a single <code>//go:build ignore</code> file instead, which gopls greys out, so it is not the default. <code>gluon run</code> runs the scratch you touched last, or the one you name, and <code>gluon watch</code> runs it again on every save. <a href="../reference/cli.html">The gluon command</a> lists every flag.</p>
+  </div>
+</section>
+
+    <nav class="pn" aria-label="Pages beside this one">
+  <a class="pg" href="../guide/session.html"><span class="pg-k">← previous</span><b>The session</b></a>
+  <a class="pg next" href="../guide/editing.html"><span class="pg-k">next →</span><b>Editing</b></a>
+</nav>
+  </main>
+</div>
+
+<footer class="foot"><div class="wrap fgrid">
+    <div><div class="fh">The site</div><ul>
+        <li><a href="../index.html">gluon</a> — what it is, in one page</li>
+        <li><a href="../guide/index.html">Guides</a> — every feature, with the lines to type</li>
+        <li><a href="../reference/index.html">Reference</a> — generated from the code that defines it</li>
+      </ul></div>
+    <div><div class="fh">This page</div><ul>
+        <li>v0.1.0 · <code>github.com/sandboxws/gluon</code></li>
+        <li>Generated from <code>site/</code> by <code>just docs</code></li>
+        <li>No analytics, no cookies; the palette choice is one localStorage key</li>
+        <li><a href="https://github.com/sandboxws/gluon">Source</a></li>
+      </ul></div>
+</div></footer>
+<script src="../assets/gluon.js?v=0b5d44bf"></script>
+</body>
+</html>

@@ -1,0 +1,33 @@
+gluon> :theme
+!view
+!clip 14
+themes
+    catppuccin-latte           light  Catppuccin Latte: mauve keywords, green strings, amber types
+    catppuccin-mocha           dark   Catppuccin Mocha: mauve keywords, green strings, yellow types
+    dracula                    dark   Dracula: pink keywords, yellow strings, cyan types
+    github-dark                dark   GitHub Dark: red keywords, pale-blue strings, orange types
+    github-light               light  GitHub Light: red keywords, navy strings, brown types
+  ✓ go                         dark   gluon's own palette: violet keywords, green strings, cyan types
+    go-light                   light  gluon's own palette, for a light terminal
+    gruvbox-dark               dark   Gruvbox Dark: red keywords, green strings, yellow types
+    gruvbox-light              light  Gruvbox Light: red keywords, olive strings, amber types
+    gruvppuccin-mocha          dark   Gruvppuccin Mocha: violet keywords, green strings, amber types
+    gruvppuccin-nebula         dark   Gruvppuccin Nebula: mocha's accents, violet-grey furniture
+    gruvppuccin-nocturne       dark   Gruvppuccin Nocturne: indigo keywords, teal strings, sky numbers
+    gruvppuccin-nocturne-gruv  dark   Gruvppuccin Nocturne Gruv: mocha's accents, dimmer greys
+    gruvppuccin-void           dark   Gruvppuccin Void: mocha's accents, deep violet greys
+    monokai                    dark   Monokai: magenta keywords, yellow strings, green types
+    nord                       dark   Nord: blue keywords, green strings, teal types
+    one-dark                   dark   One Dark: purple keywords, green strings, yellow types
+    one-light                  light  One Light: purple keywords, green strings, amber types
+    solarized-dark             dark   Solarized Dark: olive keywords, cyan strings, orange types
+    solarized-light            light  Solarized Light: the same eight accents, read on paper
+    terminal                   either your terminal's own sixteen colours
+    tokyo-night                dark   Tokyo Night: violet keywords, green strings, pale-blue types
+    tokyo-night-day            light  Tokyo Night Day: violet keywords, green strings, ink types
+
+:theme <name> switches, and keeps it
+gluon> :theme gruvppuccin-mocha
+theme is gruvppuccin-mocha · name = "gruvppuccin-mocha" in ~/.config/gluon/config.toml
+gluon> :theme go
+theme is go · name = "go" in ~/.config/gluon/config.toml

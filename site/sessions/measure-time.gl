@@ -1,0 +1,4 @@
+:time on
+strings.Repeat("ab", 3)
+strings.Repeat("ab")
+:time off

@@ -1,0 +1,148 @@
+<!doctype html>
+<!-- generated from site/ by `just docs`: edit the source, not this file -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Rendering — gluon</title>
+<meta name="description" content="How a value is drawn: five shapes, cycles and sharing said out loud, how much of a value you see, and a view that scrolls for the large ones.">
+<meta name="theme-color" content="#0A0A0A">
+<script>(function(d,m){try{m=/[?&]palette=(gruv|go)\b/.exec(location.search);m=m?m[1]:localStorage.getItem("gluon:theme")}catch(e){}if(m==="gruv")d.documentElement.setAttribute("data-theme","gruv")})(document)</script>
+<link rel="canonical" href="https://sandboxws.github.io/gluon/guide/rendering.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Rendering — gluon">
+<meta property="og:description" content="How a value is drawn: five shapes, cycles and sharing said out loud, how much of a value you see, and a view that scrolls for the large ones.">
+<meta property="og:url" content="https://sandboxws.github.io/gluon/guide/rendering.html">
+<meta property="og:image" content="https://sandboxws.github.io/gluon/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="gluon's startup screen in a Go project, beside the words: A Go REPL that stands in your project">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sandboxws.github.io/gluon/img/og.png">
+<meta name="twitter:title" content="Rendering — gluon">
+<meta name="twitter:description" content="How a value is drawn: five shapes, cycles and sharing said out loud, how much of a value you see, and a view that scrolls for the large ones.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A0A0A'/%3E%3Cpath d='M9 9l7 7-7 7' stroke='%2300ADD8' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M18 23h6' stroke='%2300ADD8' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/gluon.css?v=980f3e8a">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="field" aria-hidden="true"></div>
+<div class="nav" id="nav">
+  <div class="nav-in">
+    <a class="nav-t" href="../index.html">gluon</a>
+    <span class="nav-sp"></span>
+    <a class="nav-m" href="../guide/index.html">Guides</a>
+    <a class="nav-m" href="../reference/index.html">Reference</a>
+    <span class="nav-m opt">v0.1.0</span>
+  </div>
+</div>
+
+<header class="hero wrap page">
+  <p class="eyebrow">Guide 04</p>
+  <h1 id="bigTitle">Rendering</h1>
+  <p class="sub">How a value is drawn: five shapes, cycles and sharing said out loud, how much of a value you see, and a view that scrolls for the large ones.</p>
+</header>
+
+<div class="wrap cols">
+  <nav class="side" aria-label="Sections"><div class="side-in">
+    <p class="grp-h">This page</p>
+    <a href="#forms"><span class="rn">1</span><span class="rt">Five shapes for a value</span></a>
+<a href="#identity"><span class="rn">2</span><span class="rt">Cycles, sharing, errors</span></a>
+<a href="#limits"><span class="rn">3</span><span class="rt">How much you see</span></a>
+<a href="#inspect"><span class="rn">4</span><span class="rt">A view that scrolls</span></a>
+<a href="#pipes"><span class="rn">5</span><span class="rt">What a pipe gets</span></a>
+    <p class="grp-h">Guides</p>
+    <a href="../guide/index.html"><span class="rt">Guides</span></a>
+    <a href="../guide/start.html"><span class="rt">The first five minutes</span></a>
+    <a href="../guide/inspecting.html"><span class="rt">Inspecting</span></a>
+    <a href="../guide/measuring.html"><span class="rt">Measuring</span></a>
+    <a href="../guide/rendering.html" aria-current="page" class="here"><span class="rt">Rendering</span></a>
+    <a href="../guide/session.html"><span class="rt">The session</span></a>
+    <a href="../guide/scratchpads.html"><span class="rt">Scratchpads</span></a>
+    <a href="../guide/editing.html"><span class="rt">Editing</span></a>
+    <a href="../guide/project.html"><span class="rt">In a project</span></a>
+    <a href="../guide/database.html"><span class="rt">The database</span></a>
+    <a href="../guide/plugins.html"><span class="rt">Plugins</span></a>
+    <a href="../guide/configuration.html"><span class="rt">Configuration</span></a>
+    <a href="../guide/themes.html"><span class="rt">Themes</span></a>
+    <a href="../guide/scripting.html"><span class="rt">Scripting</span></a>
+    <a href="../guide/mcp.html"><span class="rt">MCP</span></a>
+    <a href="../guide/design.html"><span class="rt">How it works</span></a>
+    
+  </div></nav>
+  <main id="main">
+    
+<section class="card" id="forms">
+  <div class="card-head"><span class="idx">1</span><div class="hd"><h2>Five shapes for a value</h2></div></div>
+  <div class="card-body">
+    <p class="lead">A value with structure is drawn as a bordered table by default, and a scalar stays on its line. A table is one crushed column for a list of structs, though, and past its first level a cell truncates — so there are five shapes, and <a href="../reference/settings.html#value.form"><code>value.form</code></a> chooses.</p>
+    <div class="repl"><div class="cmd-bar"><span class="ck">gluon</span><span class="cv">one value, five ways</span></div><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">type</span> Point <span class="kw">struct</span><span class="p">{</span> X<span class="p">,</span> Y <span class="ty">int</span> <span class="p">}</span></div><div class="tl"><span class="pr">gluon&gt;</span> pts <span class="p">:=</span> <span class="p">[</span><span class="p">]</span>Point<span class="p">{</span><span class="p">{</span><span class="nu">1</span><span class="p">,</span> <span class="nu">2</span><span class="p">}</span><span class="p">,</span> <span class="p">{</span><span class="nu">3</span><span class="p">,</span> <span class="nu">4</span><span class="p">}</span><span class="p">,</span> <span class="p">{</span><span class="nu">5</span><span class="p">,</span> <span class="nu">6</span><span class="p">}</span><span class="p">}</span></div><div class="tl"><span class="pr">gluon&gt;</span> pts</div><div class="tl out"><span class="ty">([]main.Point)</span> len=3 cap=3</div><div class="tl out bx"><span class="p">╭───┬───────────╮</span></div><div class="tl out bx"><span class="p">│</span> # <span class="p">│</span> value     <span class="p">│</span></div><div class="tl out bx"><span class="p">├───┼───────────┤</span></div><div class="tl out bx"><span class="p">│</span> 0 <span class="p">│</span> {X:1 Y:2} <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> 1 <span class="p">│</span> {X:3 Y:4} <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> 2 <span class="p">│</span> {X:5 Y:6} <span class="p">│</span></div><div class="tl out bx"><span class="p">╰───┴───────────╯</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:settings</span> value.form columns</div><div class="tl out">value.form is columns · default = &#34;columns&#34; in ~/.config/gluon/config.toml</div><div class="tl"><span class="pr">gluon&gt;</span> pts</div><div class="tl out"><span class="ty">([]main.Point)</span> len=3 cap=3</div><div class="tl out bx"><span class="p">╭───┬───┬───╮</span></div><div class="tl out bx"><span class="p">│</span> # <span class="p">│</span> X <span class="p">│</span> Y <span class="p">│</span></div><div class="tl out bx"><span class="p">├───┼───┼───┤</span></div><div class="tl out bx"><span class="p">│</span> 0 <span class="p">│</span> 1 <span class="p">│</span> 2 <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> 1 <span class="p">│</span> 3 <span class="p">│</span> 4 <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> 2 <span class="p">│</span> 5 <span class="p">│</span> 6 <span class="p">│</span></div><div class="tl out bx"><span class="p">╰───┴───┴───╯</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:settings</span> value.form tree</div><div class="tl out">value.form is tree · default = &#34;tree&#34; in ~/.config/gluon/config.toml</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">map</span><span class="p">[</span><span class="ty">string</span><span class="p">]</span><span class="p">[</span><span class="p">]</span><span class="ty">int</span><span class="p">{</span><span class="s">&#34;odd&#34;</span><span class="p">:</span> <span class="p">{</span><span class="nu">1</span><span class="p">,</span> <span class="nu">3</span><span class="p">}</span><span class="p">,</span> <span class="s">&#34;even&#34;</span><span class="p">:</span> <span class="p">{</span><span class="nu">2</span><span class="p">,</span> <span class="nu">4</span><span class="p">}</span><span class="p">}</span></div><div class="tl out"><span class="ty">(map[string][]int)</span>  len=2</div><div class="tl out bx"><span class="p">├──</span>&#34;even&#34;  []int  len=2 cap=2</div><div class="tl out bx"><span class="p">│</span>  <span class="p">├──</span>0  2</div><div class="tl out bx"><span class="p">│</span>  <span class="p">└──</span>1  4</div><div class="tl out bx"><span class="p">└──</span>&#34;odd&#34;  []int  len=2 cap=2</div><div class="tl out bx">   <span class="p">├──</span>0  1</div><div class="tl out bx">   <span class="p">└──</span>1  3</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:settings</span> value.form literal</div><div class="tl out">value.form is literal · default = &#34;literal&#34; in ~/.config/gluon/config.toml</div><div class="tl"><span class="pr">gluon&gt;</span> pts</div><div class="tl out">[]Point{Point{X: 1, Y: 2}, Point{X: 3, Y: 4}, Point{X: 5, Y: 6}}  len=3 cap=3</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:settings</span> value.form line</div><div class="tl out">value.form is line · default = &#34;line&#34; in ~/.config/gluon/config.toml</div><div class="tl"><span class="pr">gluon&gt;</span> pts</div><div class="tl out"><span class="ty">([]main.Point)</span> [{X:1 Y:2} {X:3 Y:4} {X:5 Y:6}]  len=3 cap=3</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:settings</span> value.form -</div><div class="tl out">value.form is back to table · dropped default = &#34;line&#34; from ~/.config/gluon/config.toml</div></div></div>
+    <p><code>columns</code> gives a list of structs a column per field. <code>tree</code> recurses where a table cell truncates, and is the only shape that shows nesting all the way down. <code>line</code> keeps a value on one line however deep it goes. <code>literal</code> answers a different question: it is the value as Go source you could paste back — into a test, say — and a value with no literal form, such as a channel or a func, falls back to a line and names the part that has none.</p>
+    <p>A kind can take its own shape over the one everything else takes: <a href="../reference/settings.html#value.form.list"><code>value.form.list</code></a>, <a href="../reference/settings.html#value.form.map"><code>value.form.map</code></a> and <a href="../reference/settings.html#value.form.struct"><code>value.form.struct</code></a>. <code>:settings value.form -</code> puts the default back. A change takes effect on the next line, and it is written into <code>config.toml</code>, so the next session draws the same way — <a href="configuration.html">Configuration</a> has the rest of <a href="../reference/commands.html#settings"><code>:settings</code></a>.</p>
+  </div>
+</section>
+
+<section class="card" id="identity">
+  <div class="card-head"><span class="idx">2</span><div class="hd"><h2>Cycles, sharing, and what a value hides</h2></div></div>
+  <div class="card-body">
+    <p class="lead">Values that point at each other are described as what they are. A cycle is labelled where it closes, and an object that appears twice is labelled rather than printed twice as though it were two.</p>
+    <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">type</span> Node <span class="kw">struct</span><span class="p">{</span> Val <span class="ty">int</span><span class="p">;</span> Next <span class="p">*</span>Node <span class="p">}</span></div><div class="tl"><span class="pr">gluon&gt;</span> a <span class="p">:=</span> <span class="p">&amp;</span>Node<span class="p">{</span>Val<span class="p">:</span> <span class="nu">1</span><span class="p">}</span></div><div class="tl"><span class="pr">gluon&gt;</span> b <span class="p">:=</span> <span class="p">&amp;</span>Node<span class="p">{</span>Val<span class="p">:</span> <span class="nu">2</span><span class="p">,</span> Next<span class="p">:</span> a<span class="p">}</span></div><div class="tl"><span class="pr">gluon&gt;</span> a<span class="p">.</span>Next <span class="p">=</span> b</div><div class="tl"><span class="pr">gluon&gt;</span> a</div><div class="tl out"><span class="ty">(*main.Node)</span> #1&amp;</div><div class="tl out bx"><span class="p">╭───────┬──────────────────────────╮</span></div><div class="tl out bx"><span class="p">│</span> field <span class="p">│</span> value                    <span class="p">│</span></div><div class="tl out bx"><span class="p">├───────┼──────────────────────────┤</span></div><div class="tl out bx"><span class="p">│</span> Val   <span class="p">│</span> 1                        <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> Next  <span class="p">│</span> &amp;{Val:2 Next:&lt;cycle #1&gt;} <span class="p">│</span></div><div class="tl out bx"><span class="p">╰───────┴──────────────────────────╯</span></div><div class="tl out">  cyclic — it is reachable from inside itself</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">type</span> P <span class="kw">struct</span><span class="p">{</span> X <span class="ty">int</span> <span class="p">}</span></div><div class="tl"><span class="pr">gluon&gt;</span> p <span class="p">:=</span> <span class="p">&amp;</span>P<span class="p">{</span><span class="nu">1</span><span class="p">}</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="p">[</span><span class="p">]</span><span class="p">*</span>P<span class="p">{</span>p<span class="p">,</span> p<span class="p">}</span></div><div class="tl out"><span class="ty">([]*main.P)</span> len=2 cap=2</div><div class="tl out bx"><span class="p">╭───┬─────────────╮</span></div><div class="tl out bx"><span class="p">│</span> # <span class="p">│</span> value       <span class="p">│</span></div><div class="tl out bx"><span class="p">├───┼─────────────┤</span></div><div class="tl out bx"><span class="p">│</span> 0 <span class="p">│</span> #2&amp;{X:1}    <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> 1 <span class="p">│</span> &lt;shared #2&gt; <span class="p">│</span></div><div class="tl out bx"><span class="p">╰───┴─────────────╯</span></div><div class="tl out">  the same object appears more than once — not a copy</div><div class="tl"><span class="pr">gluon&gt;</span> fmt<span class="p">.</span>Errorf<span class="p">(</span><span class="s">&#34;layer2: %w&#34;</span><span class="p">,</span> fmt<span class="p">.</span>Errorf<span class="p">(</span><span class="s">&#34;layer1: %w&#34;</span><span class="p">,</span> os<span class="p">.</span>ErrNotExist<span class="p">)</span><span class="p">)</span></div><div class="tl out"><span class="ty">(*fmt.wrapError)</span> &amp;</div><div class="tl out bx"><span class="p">╭───────┬─────────────────────────────────────────────────────────────────────╮</span></div><div class="tl out bx"><span class="p">│</span> field <span class="p">│</span> value                                                               <span class="p">│</span></div><div class="tl out bx"><span class="p">├───────┼─────────────────────────────────────────────────────────────────────┤</span></div><div class="tl out bx"><span class="p">│</span> msg   <span class="p">│</span> &#34;layer2: layer1: file does not exist&#34;                               <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> err   <span class="p">│</span> &amp;{msg:&#34;layer1: file does not exist&#34; err:&amp;{s:&#34;file does not exist&#34;}} <span class="p">│</span></div><div class="tl out bx"><span class="p">╰───────┴─────────────────────────────────────────────────────────────────────╯</span></div></div></div>
+    <p>Sharing and cycles are different lessons, so they read differently: a cycle would not terminate if it were printed naively, while sharing does terminate but hides that changing the object through one name changes it through the other. A label appears only on an object something actually points at, so an ordinary value is unchanged.</p>
+    <p>Unexported fields that hold a struct, a slice or a map are described rather than left out, which is what makes a <code>%w</code> chain visible at all — <code>fmt</code>'s <code>%+v</code> reads the same fields, flattened. <code>GLUON_NO_UNSAFE=1</code> turns it off. The program gluon builds only <em>describes</em> a value, as JSON; everything you see is drawn by gluon's own process, which is why the generated code stays standard library and every line builds as fast as it can.</p>
+  </div>
+</section>
+
+<section class="card" id="limits">
+  <div class="card-head"><span class="idx">3</span><div class="hd"><h2>How much of a value you see</h2></div></div>
+  <div class="card-body">
+    <p class="lead">The program that describes a value stops somewhere: at 200 elements of any one collection, and at 6 nested levels. <a href="../reference/settings.html#value.items"><code>value.items</code></a> and <a href="../reference/settings.html#value.depth"><code>value.depth</code></a> move those, from the next line.</p>
+    <p>Both reach the program through its environment, never through its source, so the source is the same at every setting and an <code>:undo</code> across a change still finds its cached result. They are also <code>GLUON_MAX_ITEMS</code> and <code>GLUON_MAX_DEPTH</code>, which a shell can export for every session; <code>gluon doctor</code> says when either is set. A separate budget bounds the whole value — it is what keeps one <code>*http.Request</code> from becoming a dump of its transport — and neither setting moves it, so a collection of large elements can stop short of the number asked for, and says so when it does.</p>
+  </div>
+</section>
+
+<section class="card" id="inspect">
+  <div class="card-head"><span class="idx">4</span><div class="hd"><h2>A view that scrolls</h2></div></div>
+  <div class="card-body">
+    <p class="lead"><a href="../reference/commands.html#inspect"><code>:inspect</code></a> opens the one thing a printed table cannot be: a view that scrolls, over a large value. <kbd>j</kbd>/<kbd>k</kbd> move, <kbd>/</kbd> filters, <kbd>q</kbd> closes.</p>
+    <div class="repl"><div class="cmd-bar"><span class="ck">gluon</span><span class="cv">480 rows</span></div><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">type</span> User <span class="kw">struct</span><span class="p">{</span> ID <span class="ty">int</span><span class="p">;</span> Name<span class="p">,</span> Email <span class="ty">string</span> <span class="p">}</span></div><div class="tl"><span class="pr">gluon&gt;</span> users <span class="p">:=</span> <span class="f">make</span><span class="p">(</span><span class="p">[</span><span class="p">]</span>User<span class="p">,</span> <span class="nu">480</span><span class="p">)</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">for</span> i <span class="p">:=</span> <span class="kw">range</span> users <span class="p">{</span> users<span class="p">[</span>i<span class="p">]</span> <span class="p">=</span> User<span class="p">{</span>i<span class="p">,</span> fmt<span class="p">.</span>Sprintf<span class="p">(</span><span class="s">&#34;user%03d&#34;</span><span class="p">,</span> i<span class="p">)</span><span class="p">,</span> fmt<span class="p">.</span>Sprintf<span class="p">(</span><span class="s">&#34;user%03d@example.com&#34;</span><span class="p">,</span> i<span class="p">)</span><span class="p">}</span> <span class="p">}</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="f">len</span><span class="p">(</span>users<span class="p">)</span></div><div class="tl out"><span class="ty">(int)</span> 480</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:inspect</span> users<span class="vw" title="At the prompt this opens a view you can scroll and filter. What it shows is below, and it is what a pipe or gluon -e prints.">opens a view</span></div><div class="tl out"><span class="ty">([]main.User)</span> len=480 cap=480</div><div class="tl out bx"><span class="p">╭────┬────────────────────────────────────────────────────╮</span></div><div class="tl out bx"><span class="p">│</span> #  <span class="p">│</span> value                                              <span class="p">│</span></div><div class="tl out bx"><span class="p">├────┼────────────────────────────────────────────────────┤</span></div><div class="tl out bx"><span class="p">│</span> 0  <span class="p">│</span> {ID:0 Name:&#34;user000&#34; Email:&#34;user000@example.com&#34;}  <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> 1  <span class="p">│</span> {ID:1 Name:&#34;user001&#34; Email:&#34;user001@example.com&#34;}  <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> 2  <span class="p">│</span> {ID:2 Name:&#34;user002&#34; Email:&#34;user002@example.com&#34;}  <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> 3  <span class="p">│</span> {ID:3 Name:&#34;user003&#34; Email:&#34;user003@example.com&#34;}  <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> 4  <span class="p">│</span> {ID:4 Name:&#34;user004&#34; Email:&#34;user004@example.com&#34;}  <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> 5  <span class="p">│</span> {ID:5 Name:&#34;user005&#34; Email:&#34;user005@example.com&#34;}  <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> 6  <span class="p">│</span> {ID:6 Name:&#34;user006&#34; Email:&#34;user006@example.com&#34;}  <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> 7  <span class="p">│</span> {ID:7 Name:&#34;user007&#34; Email:&#34;user007@example.com&#34;}  <span class="p">│</span></div><div class="tl out an">… 44 more lines</div></div></div>
+    <figure class="shot"><figcaption class="cmd-bar"><span class="ck">Screenshot</span><span class="cv">the view, filtered with /042</span></figcaption><a href="../img/shots/inspect-filter.go.webp?v=86ad09e2"><img class="v-go" src="../img/shots/inspect-filter.go.webp?v=86ad09e2" width="723" height="575" alt="the same view filtered to the users whose row mentions 042" loading="lazy" decoding="async"></a><a href="../img/shots/inspect-filter.gruv.webp?v=cb8e5fad"><img class="v-gruv" src="../img/shots/inspect-filter.gruv.webp?v=cb8e5fad" width="723" height="575" alt="the same view filtered to the users whose row mentions 042" loading="lazy" decoding="async"></a></figure>
+    <p>The view takes the whole screen, which the rest of gluon never does, so it keeps one rule: it prints nothing while it is up, and leaves exactly one line behind when it closes — <code>[]main.User  200 rows  browsed</code> — so scrollback stays a complete transcript. What it browses is what the value printer described: 200 elements unless you ask for more, and <a href="../reference/commands.html#inspect-n"><code>:inspect -n</code></a> asks for this one view without moving <a href="../reference/settings.html#value.items"><code>value.items</code></a>. Through a pipe there is no view, and <code>:inspect</code> prints the ordinary rendering above instead, so nothing is lost.</p>
+    <p><a href="../reference/commands.html#src"><code>:src</code></a>, <a href="../reference/commands.html#doc"><code>:doc</code></a>, <a href="../reference/commands.html#settings"><code>:settings</code></a> and a long <a href="../reference/commands.html#help"><code>:help</code></a> page open the same kind of view once their output outgrows a screen, and print in full through a pipe.</p>
+  </div>
+</section>
+
+<section class="card" id="pipes">
+  <div class="card-head"><span class="idx">5</span><div class="hd"><h2>What a pipe gets</h2></div></div>
+  <div class="card-body">
+    <p class="lead">Everything on this page is what a terminal draws. A pipe, <code>gluon -e</code> and the <code>-json</code> envelopes get one plain line per value, whatever the settings say — those are surfaces scripts read, and no setting reaches them.</p>
+    <div class="repl"><div class="cmd-bar"><span class="ck">Shell</span><span class="cv">the same bytes whatever value.form says</span></div><div class="term-body ex"><div class="tl"><span class="pr">$</span> gluon -e &#39;[]int{3, 1, 2}&#39; | cat</div><div class="tl out">([]int) [3 1 2]  len=3 cap=3</div></div></div>
+    <p>Plugin renderers — a <code>uuid.UUID</code> as a UUID, a <code>sql.NullString</code> as <code>NULL</code> — are terminal-only for the same reason. <a href="scripting.html">Scripting</a> covers what the plain and JSON forms promise.</p>
+  </div>
+</section>
+
+    <nav class="pn" aria-label="Pages beside this one">
+  <a class="pg" href="../guide/measuring.html"><span class="pg-k">← previous</span><b>Measuring</b></a>
+  <a class="pg next" href="../guide/session.html"><span class="pg-k">next →</span><b>The session</b></a>
+</nav>
+  </main>
+</div>
+
+<footer class="foot"><div class="wrap fgrid">
+    <div><div class="fh">The site</div><ul>
+        <li><a href="../index.html">gluon</a> — what it is, in one page</li>
+        <li><a href="../guide/index.html">Guides</a> — every feature, with the lines to type</li>
+        <li><a href="../reference/index.html">Reference</a> — generated from the code that defines it</li>
+      </ul></div>
+    <div><div class="fh">This page</div><ul>
+        <li>v0.1.0 · <code>github.com/sandboxws/gluon</code></li>
+        <li>Generated from <code>site/</code> by <code>just docs</code></li>
+        <li>No analytics, no cookies; the palette choice is one localStorage key</li>
+        <li><a href="https://github.com/sandboxws/gluon">Source</a></li>
+      </ul></div>
+</div></footer>
+<script src="../assets/gluon.js?v=0b5d44bf"></script>
+</body>
+</html>

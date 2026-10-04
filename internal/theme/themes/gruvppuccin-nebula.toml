@@ -1,0 +1,26 @@
+# Gruvppuccin Nebula. Mocha's accents over cooler, violet-tinted greys — see
+# gruvppuccin-mocha.toml for how the conversion works and what it drops.
+about      = "Gruvppuccin Nebula: mocha's accents, violet-grey furniture"
+appearance = "dark"
+source     = "Gruvppuccin Nebula, an IntelliJ colour scheme"
+
+[theme]
+# Source. The five accents are the family's; the greys are this theme.
+keyword     = "#C28FD6"
+string      = "#A9B665"
+type        = "#D8A657"
+comment     = "#7C777C"
+number      = "#E78A4E"
+builtin     = "#7DAEA3"
+punctuation = "#837D83"
+ident       = "#D0D1C0"
+
+# Values, the REPL, and the CLI.
+error       = "#EA6962"
+prompt      = "#7DAEA3"
+mode        = "#C28FD6"  # the family's violet
+annotation  = "#7C777C"
+note        = "#D8A657"
+dim         = "#989194"
+search      = "#F5B843"
+border      = "#595260"

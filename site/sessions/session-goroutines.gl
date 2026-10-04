@@ -1,0 +1,1 @@
+go func() { fmt.Println("from a goroutine") }()

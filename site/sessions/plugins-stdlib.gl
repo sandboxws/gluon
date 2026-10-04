@@ -1,0 +1,17 @@
+%host shop
+%env SHOP_CONFIG=$HOST/config.yaml
+%attach
+st, _ := store.Default()
+users, _ := st.ByID(context.Background(), 1, 2, 3)
+:json users[0]
+:csv users
+:when users[0].Created
+:slog users[0]
+<<<
+type Item struct {
+	SKU   string `xml:"sku,attr"`
+	Name  string `xml:"name"`
+	Price string `xml:"price>amount"`
+}
+>>>
+:xml Item{SKU: "MUG-01", Name: "Mug", Price: "12.50"}

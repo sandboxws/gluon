@@ -1,0 +1,20 @@
+gluon> type P struct{ A bool; B int64; C bool; D string }
+gluon> :layout P
+P 40 bytes, align 8
+╭────────┬───────────────────┬────────┬──────╮
+│ offset │ field             │ type   │ size │
+├────────┼───────────────────┼────────┼──────┤
+│      0 │ A                 │ bool   │    1 │
+│        │ ← 7 bytes padding │        │      │
+│      8 │ B                 │ int64  │    8 │
+│     16 │ C                 │ bool   │    1 │
+│        │ ← 7 bytes padding │        │      │
+│     24 │ D                 │ string │   16 │
+╰────────┴───────────────────┴────────┴──────╯
+  reordering as D, B, A, C would be 32 bytes — 8 saved
+gluon> :impl bytes.Buffer, io.Writer
+bytes.Buffer  does not implement  io.Writer
+╭──────────────┬────────────────────────────────────╮
+│ pointer only │ Write(p []byte) (n int, err error) │
+╰──────────────┴────────────────────────────────────╯
+  *bytes.Buffer implements io.Writer — the method is declared on the pointer receiver

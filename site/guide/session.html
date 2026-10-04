@@ -1,0 +1,77 @@
+{% define "side" %}<a href="#src"><span class="rn">1</span><span class="rt">The program it became</span></a>
+<a href="#replay"><span class="rn">2</span><span class="rt">Every line replays</span></a>
+<a href="#entries"><span class="rn">3</span><span class="rt">Editing the entries</span></a>
+<a href="#snapshots"><span class="rn">4</span><span class="rt">Snapshots</span></a>
+<a href="#history"><span class="rn">5</span><span class="rt">Yesterday's lines</span></a>
+<a href="#files"><span class="rn">6</span><span class="rt">From a file, into a test</span></a>
+<a href="#goroutines"><span class="rn">7</span><span class="rt">Goroutines</span></a>{% end %}
+{% define "main" %}
+<section class="card" id="src">
+  <div class="card-head"><span class="idx">1</span><div class="hd"><h2>The program your session became</h2></div></div>
+  <div class="card-body">
+    <p class="lead">A session is a list of entries — the lines you typed — and every line renders all of them into one Go program, builds it and runs it. {% cmd ":src" %} shows that program, exactly as the compiler saw it.</p>
+    {% session "session-src" %}
+    <p>Everything gluon does to your lines is there to read: the import it added, the <code>_ = x</code> that keeps Go from calling <code>x</code> unused, <code>it</code> rewritten to the <code>_1</code> it meant, and the call that prints the last value. Nothing is hidden, so when a line does something you did not expect, the program it ran is one command away. A long program opens in a view at the prompt and prints whole through a pipe.</p>
+  </div>
+</section>
+
+<section class="card" id="replay">
+  <div class="card-head"><span class="idx">2</span><div class="hd"><h2>Every line replays — and what that costs</h2><div class="chips"><span class="chip a">the honest limitation</span></div></div></div>
+  <div class="card-body">
+    <p class="lead">Because every line re-runs the whole session, <strong>side effects repeat</strong>: a request fires again, a file is written again, <code>time.Now()</code> moves on and <code>rand</code> changes its mind. Output from the replayed lines is muted, so you only see the newest line's — but the re-execution is real.</p>
+    {% session "session-pin" "a line with an effect, and :pin" %}
+    <p>Each <code>len(b)</code> is one larger than the last, because each line ran <code>hit()</code> again. {% cmd ":pin" %} is the defence: it takes an entry out of the program — you are saying it has already happened — so replay stops running it. {% cmd ":pin" %} on its own lists what is pinned, and {% cmd ":hist" %} marks it.</p>
+    <p>A pin is refused when a later entry uses what the pinned one bound, and says which entry that is. gluon does not invent the missing value: the printer writes a display form, not a literal — a <code>uint8</code> reads <code>195 (0xc3)</code> — so rebuilding a value from what was printed would be a guess, and a guess here is a wrong answer that looks like a right one.</p>
+    <p>{% cmd ":refresh" %} runs the program once with every pin lifted and puts the pins back — for when the code under a pinned entry changed and the result it holds is stale. {% cmd ":unpin" %} puts an entry back for good: unpinning replays the session, and so does every line after it, which is why the count moved by two.</p>
+  </div>
+</section>
+
+<section class="card" id="entries">
+  <div class="card-head"><span class="idx">3</span><div class="hd"><h2>Editing the entries</h2></div></div>
+  <div class="card-body">
+    <p class="lead">{% cmd ":hist" %} numbers the entries, {% cmd ":drop" %} removes one by its number, {% cmd ":undo" %} removes the last, and {% cmd ":reset" %} removes them all.</p>
+    {% session "session-edit" %}
+    <p>A removal that would leave the session unable to build is put back, with the reason: <code>c</code> reads <code>b</code>, so <code>b</code> stays. <code>:drop</code> is also refused when a later line reads <code>it</code>, or an <code>_N</code> the removal would renumber, because that line would silently start meaning something else.</p>
+    <p>{% cmd ":reset" %} clears the entries and keeps the modules you added, so trying the same library a different way does not fetch it again; {% cmd ":reset" "-deps" %} clears both. <code>u</code> in vim mode, by the way, undoes typing, not entries: the two share a name and nothing else. <a href="editing.html">Editing</a> has the keys, and {% cmd ":edit" %}, which edits every entry at once.</p>
+  </div>
+</section>
+
+<section class="card" id="snapshots">
+  <div class="card-head"><span class="idx">4</span><div class="hd"><h2>Snapshots</h2></div></div>
+  <div class="card-body">
+    <p class="lead">{% cmd ":bookmark" %} records the session under a name and takes nothing away from it. {% cmd ":restore" %} puts one back and replays it. {% cmd ":branch" %} is a bookmark for when you had not decided to take one.</p>
+    {% session "session-bookmark" %}
+    <p><code>:branch</code> with no name makes one up and prints it, because having to invent a name is the thing it exists to remove — the state before an experiment is recoverable without having thought of it first. A snapshot holds the entries, their order and what is pinned.</p>
+    <p>A restore that fails to replay puts back the session you were leaving and says so: a restore that could destroy the state it was moving away from would be worse than none. Snapshots last for this session and never reach the disk. <a href="scratchpads.html">Scratchpads</a> are what make a session durable.</p>
+  </div>
+</section>
+
+<section class="card" id="history">
+  <div class="card-head"><span class="idx">5</span><div class="hd"><h2>Yesterday's lines</h2></div></div>
+  <div class="card-body">
+    <p class="lead"><kbd>ctrl-r</kbd> walks the history file a line at a time and {% cmd ":hist" %} numbers the session; neither gets you the expression you had right in yesterday's session. {% cmd ":replay" %} searches the whole file and brings the matches in.</p>
+    {% session "session-replay" %}
+    {% shot "keys-search" "ctrl-r, searching for bench" %}
+    <p>The matches are shown before any of them runs. A history line is a line somebody typed, some of them wrote something, and the session replays every entry on every later line — so what is about to happen is printed verbatim rather than counted. <kbd>enter</kbd> in the view brings them in, <kbd>q</kbd> leaves without running anything, and {% cmd ":replay" "-run" %} is the form to type when you already know what the pattern matches — and the form a pipe has. Meta commands are skipped: replaying a <code>:reset</code> would clear the session it was being replayed into.</p>
+  </div>
+</section>
+
+<section class="card" id="files">
+  <div class="card-head"><span class="idx">6</span><div class="hd"><h2>From a file, and into a test</h2></div></div>
+  <div class="card-body">
+    <p class="lead">{% cmd ":load" %} reads a file in, a construct at a time, as though each were typed. {% cmd ":test" %} goes the other way: it writes the expression you just checked, and the value you judged right, down as a Go test.</p>
+    {% session "session-load" %}
+    <p><code>:load</code> stops at the first construct that fails, and leaves out an unfinished one at the end rather than reporting against text that may still be being written. The file is read once; <code>:load</code> it again after changing it.</p>
+    <p>You tried an expression, looked at the answer and decided it was right. That is <code>got</code>, <code>want</code> and a judgement — the whole content of a Go test — and gluon already holds the expression, its type and its value, so <code>:test</code> writes it, carrying the locals the expression needs. The doc comment says the expectation is what was observed, not what is correct; that judgement stays yours, which is why it prints rather than writes. {% cmd ":test" "-table" %} shapes it so a second case can join, <code>:save -test</code> keeps what was generated, and a value with no literal form — a pointer, a channel, a func — is refused with the part that caused it rather than emitted as a test that does not compile.</p>
+  </div>
+</section>
+
+<section class="card" id="goroutines">
+  <div class="card-head"><span class="idx">7</span><div class="hd"><h2>Goroutines</h2></div></div>
+  <div class="card-body">
+    <p class="lead">A <code>go</code> statement on its own would print nothing: <code>main</code> returns before the goroutine is ever scheduled. So gluon waits briefly for the goroutines your lines started — and says that it did, because a real <code>main</code> would not have.</p>
+    {% session "session-goroutines" %}
+    <p>The wait is bounded at two seconds, and a goroutine still running at the deadline is reported rather than waited on for ever. It covers the goroutines the session's own code started: a library keeps goroutines of its own for as long as the value that owns them — <code>database/sql</code> one per open <code>*sql.DB</code> — and those are left alone, as a real <code>main</code> would leave them. When nothing was started, nothing is said.</p>
+  </div>
+</section>
+{% end %}

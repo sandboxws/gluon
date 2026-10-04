@@ -1,0 +1,66 @@
+{% define "side" %}<a href="#use"><span class="rn">1</span><span class="rt">Attaching to a module</span></a>
+<a href="#cwd"><span class="rn">2</span><span class="rt">Where a line runs</span></a>
+<a href="#reload"><span class="rn">3</span><span class="rt">After you edit it</span></a>
+<a href="#get"><span class="rn">4</span><span class="rt">Adding a module</span></a>
+<a href="#env"><span class="rn">5</span><span class="rt">Environment and config</span></a>
+<a href="#http"><span class="rn">6</span><span class="rt">Requests</span></a>{% end %}
+{% define "main" %}
+<section class="card" id="use">
+  <div class="card-head"><span class="idx">1</span><div class="hd"><h2>Attaching to the module you are standing in</h2></div></div>
+  <div class="card-body">
+    <p class="lead">A REPL that reaches only the standard library is a toy. {% cmd ":use" %} attaches the session to a Go module — or start with <code>gluon -host .</code> — and then its packages import, including the ones under <code>internal/</code>, which is usually the interesting half.</p>
+    {% session "project-use" "in ~/src/shop, a small service with an API, a database and a gRPC server" %}
+    <p>The project in these guides is a small shop service: an HTTP API on chi, a gRPC server, a SQLite database behind sqlx, viper settings, a cobra CLI. Its source is in gluon's repository under <code>testdata/shop</code>, so every session here can be typed again against the same code.</p>
+    <p>Go allows a package under <code>internal/</code> to be imported only by code under the path above it, so a module named <code>gluon.local/session</code> could never reach <code>example.com/shop/internal/pricing</code>. The rule is a prefix test on the importer's path, so gluon gives its temp module a path underneath the host's, and the test passes. It costs nothing a line: gluon still builds a one-file module, and the toolchain loads the import graph, not every package the project has.</p>
+    <p>Attaching changes what a bare name <em>means</em> — <code>pricing</code> is the project's — which is why it is asked for rather than automatic. {% cmd ":use" "-off" %} detaches. <code>gluon doctor</code> reports what attaching would see: the module, its <code>go</code> directive and every package a session could import.</p>
+  </div>
+</section>
+
+<section class="card" id="cwd">
+  <div class="card-head"><span class="idx">2</span><div class="hd"><h2>Where a line runs</h2></div></div>
+  <div class="card-body">
+    <p class="lead">Attaching makes the project's packages importable. It does not move the program: every line runs in the session's own directory, so a path your code opens relative to where you started gluon is not found there.</p>
+    {% session "project-cwd" %}
+    <p>That is deliberate. gluon never writes into your project, and a line that creates a file would otherwise create it in your working tree, on every replay. The way code finds its files in production is the way it finds them here — an environment variable, a flag's default, a path resolved from a known root. The shop reads <code>$SHOP_CONFIG</code>, and resolves the paths in its settings against that file.</p>
+  </div>
+</section>
+
+<section class="card" id="reload">
+  <div class="card-head"><span class="idx">3</span><div class="hd"><h2>After you edit it</h2></div></div>
+  <div class="card-body">
+    <p class="lead">The session keeps what it derived from the project — the type checker's export data, the import cache, cached results — until you say the project changed. {% cmd ":reload" %} says so, and {% cmd ":watch" %} says it for you.</p>
+    {% session "project-reload" "the tax rate edited in another window, between the two lines" %}
+    <p><code>:reload</code> drops every cached result and re-reads the project, and the next line is built against the source as it now is. <code>:watch on</code> polls the project's Go files and reloads when one changes; a change seen while a line is running waits until it finishes, and goes behind anything you typed ahead.</p>
+  </div>
+</section>
+
+<section class="card" id="get">
+  <div class="card-head"><span class="idx">4</span><div class="hd"><h2>Adding a module</h2><div class="chips"><span class="chip a">the only command that fetches</span></div></div></div>
+  <div class="card-body">
+    <p class="lead">For anything the project does not already require, {% cmd ":get" %} adds a module to the session. It is the one command that fetches a module, and bare, it lists what the session can build against.</p>
+    {% session "project-get" %}
+    <p>A module added with <code>:get</code> belongs to the session, never to the project: gluon does not edit your <code>go.mod</code>. Its packages are what their names mean from then on, ahead of any package of the same name elsewhere in your module cache. Adding one can activate a plugin — <code>toml</code> above, whose {% cmd ":toml" %} writes a value as the document its tags produce; <a href="plugins.html">Plugins</a> has all of them — and <code>:get toml</code> works too, because a plugin's short name is an alias for its module.</p>
+    <p>{% cmd ":get" "-rm" %} drops a requirement and fetches nothing. It is refused while an entry still imports the module, naming the entry, and refused for a module the project itself requires. Without a version, <code>:get</code> takes the latest; with one, that version.</p>
+  </div>
+</section>
+
+<section class="card" id="env">
+  <div class="card-head"><span class="idx">5</span><div class="hd"><h2>The environment, and the config files</h2></div></div>
+  <div class="card-body">
+    <p class="lead">{% cmd ":env" %} is the process environment, and {% cmd ":conf" %} a project config file — TOML, YAML or JSON — both with anything shaped like a secret masked.</p>
+    {% session "project-env" %}
+    <p>A value is hidden because of its <em>shape</em>, never because of its key's name: a bearer token, a password in a connection string, a vendor-prefixed key. <code>PASSWORD_HINT=ask the team</code> is not a password, and a redactor that hid it would be one people learn to work around — so the footer says how many values were hidden and that this is a judgement by shape, not a guarantee. A secret is never shown in part.</p>
+  </div>
+</section>
+
+<section class="card" id="http">
+  <div class="card-head"><span class="idx">6</span><div class="hd"><h2>Requests</h2></div></div>
+  <div class="card-body">
+    <p class="lead">{% cmd ":http" %} issues a request and renders what came back — the shorthand for the <code>http.Get</code> a line could always make.</p>
+    {% session "project-http" "the shop's API, served on 127.0.0.1:8765" %}
+    {% shot "http" %}
+    <p>The method takes any case, and completes. {% cmd ":http" "-H" %} adds a header and repeats for another, {% cmd ":http" "-d" %} is the body, and {% cmd ":http" "-t" %} how long to wait. Quote anything with a space in it: no shell has been near the line. A header may name a variable rather than carry one — <code>-H 'Authorization: Bearer $TOKEN'</code> resolves <code>$TOKEN</code> in the program that sends it, so the value reaches no history file, and a header whose value is shaped like a credential is refused, because by then it is already in the history.</p>
+    <p>A request made on a line is made again on every line after it, like any effect. <code>:http</code> is a command, not an entry, so it runs once, when you type it. <a href="plugins.html#rpc">gRPC</a> has the same shape in {% cmd ":grpc" %}.</p>
+  </div>
+</section>
+{% end %}

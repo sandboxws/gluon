@@ -1,0 +1,17 @@
+{% define "side" %}<a href="#themes"><span class="rn">{% len .Reg.Themes %}</span><span class="rt">Built in</span></a>{% end %}
+{% define "main" %}
+<section class="card" id="themes">
+  <div class="card-head"><span class="idx">{% len .Reg.Themes %}</span><div class="hd"><h2>Every built-in theme, drawn in itself</h2></div></div>
+  <div class="card-body">
+    <p class="lead"><code>:theme</code> opens a picker that repaints your own session as the selection moves; <code>gluon theme import</code> turns an editor's colour scheme into one of these. gluon colours text and never the background, so each sample sits on a ground of the kind the theme was drawn for.</p>
+  {% range .Reg.Themes %}
+    <article class="ref" id="{% .Name %}">
+      <h3><a class="pl" href="#{% .Name %}">{% .Name %}</a><span class="ref-s">{% .About %}</span></h3>
+      <div class="chips"><span class="chip">{% .Appearance %}</span>{% with .Source %}<span class="chip">{% . %}</span>{% end %}</div>
+      <div class="repl sample{% if eq .Appearance "light" %} light{% end %}" style="{% .Style %}"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">func</span> <span class="f">greet</span><span class="p">(</span>name <span class="ty">string</span><span class="p">)</span> <span class="ty">string</span> <span class="p">{</span> <span class="kw">return</span> <span class="s">"hi, "</span> <span class="p">+</span> name <span class="p">}</span> <span class="c">// declared once</span></div><div class="tl"><span class="pr">gluon&gt;</span> greet<span class="p">(</span><span class="s">"gluon"</span><span class="p">)</span></div><div class="tl"><span class="ty">(string)</span> <span class="s">"hi, gluon"</span>  <span class="an">len=9</span></div><div class="tl"><span class="er">error:</span> <span class="no">note</span> <span class="nu">42</span></div></div></div>
+      <div class="sw">{% range .Roles %}<span class="swatch" title="{% .Label %} {% .Help %}"><i style="background:{% .Help %}"></i>{% .Label %}</span>{% end %}</div>
+    </article>
+  {% end %}
+  </div>
+</section>
+{% end %}

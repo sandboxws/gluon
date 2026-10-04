@@ -1,0 +1,14 @@
+gluon> :use .
+attached to example.com/shop (go 1.26.0) at ~/src/shop
+  10 importable package(s): api, app, cli, config, events, migrate, pricing, rpc, shopv1, store
+gluon> pricing.Total(pricing.Sample()).String()
+(string) "56.14"  len=5
+gluon> :query SELECT plan, count(*) AS customers FROM users GROUP BY plan ORDER BY customers DESC
+╭──────┬───────────╮
+│ plan │ customers │
+├──────┼───────────┤
+│ free │ 274       │
+│ pro  │ 138       │
+│ team │ 68        │
+╰──────┴───────────╯
+  3 rows · ~/src/shop/data/shop.db

@@ -1,0 +1,36 @@
+# Monokai, converted from VS Code's own build of it by `gluon theme import`.
+#
+# The theme every editor has shipped since 2006, and until this change gluon
+# could not read it at all: the file opens with six lines of `//` naming the greys
+# it was built from, and format detection looked at the first byte and refused it
+# as not a theme. It is JSONC, comments and all, which is what VS Code reads.
+#
+# Re-run:  gluon theme import <file> --print
+#          github.com/microsoft/vscode, extensions/theme-monokai/themes/monokai-color-theme.json
+#
+# Kept from gluon's own go, because nothing in an editor theme means
+# them: `note`, `search`.
+about      = "Monokai: magenta keywords, yellow strings, green types"
+appearance = "dark"
+source     = "Monokai, a VS Code theme"
+
+[theme]
+# Source.
+keyword     = "#F92672"
+string      = "#E6DB74"
+type        = "#A6E22E"
+comment     = "#88846f"
+number      = "#AE81FF"
+builtin     = "#66D9EF"
+punctuation = "#f8f8f2"
+ident       = "#f8f8f2"
+
+# Values, the REPL, and the CLI.
+error       = "#F44747"
+prompt      = "#A6E22E"
+mode        = "#66D9EF"  # Monokai's cyan, against its green prompt
+annotation  = "#88846f"
+note        = "#E3B341"
+dim         = "#90908a"
+search      = "#F5B843"
+border      = "#414339"

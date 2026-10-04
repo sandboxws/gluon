@@ -1,0 +1,11 @@
+# Two expressions benchmarked side by side, from the prompt.
+Shot bench
+Alt :bench comparing strconv.Itoa and fmt.Sprint on the same int: nanoseconds, bytes and allocations per operation side by side, and how many times slower the second is
+Caption :bench runs a real testing.B benchmark from the prompt — two expressions side by side, with the ratio. No _test.go file, no package to set up.
+Headline Benchmark from the prompt
+Promo 16:9 1:1
+Varies
+Grid 72x14
+Line n := 42
+Line :bench strconv.Itoa(n), fmt.Sprint(n)
+Screenshot

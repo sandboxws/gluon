@@ -1,0 +1,106 @@
+gluon> :plugins
+!clip 30
+  ✓ chi      github.com/go-chi/chi              github.com/go-chi/chi is in the build list
+    :routes
+  ✓ cobra    github.com/spf13/cobra             github.com/spf13/cobra is in the build list
+    :tree
+  ✓ csv      stdlib                             standard library — always active
+    :csv
+  ✓ decimal  github.com/shopspring/decimal      github.com/shopspring/decimal is in the build list
+    :dec
+  · dig      go.uber.org/dig                    not active — :get go.uber.org/dig to use it
+    :services :graph
+  ✓ do       github.com/samber/do               github.com/samber/do is in the build list
+    :services :graph
+  · echo     github.com/labstack/echo           not active — :get github.com/labstack/echo to use it
+    :routes
+  ✓ ent      entgo.io/ent                       entgo.io/ent is in the build list
+    :schema · :guide ent
+  · fiber    github.com/gofiber/fiber           not active — :get github.com/gofiber/fiber to use it
+    :routes
+  · gin      github.com/gin-gonic/gin           not active — :get github.com/gin-gonic/gin to use it
+    :routes
+  ✓ goose    github.com/pressly/goose           github.com/pressly/goose is in the build list
+    :migrations
+  · gorm     gorm.io/gorm                       not active — :get gorm.io/gorm to use it
+    :sql
+  ✓ grpc     google.golang.org/grpc             google.golang.org/grpc is in the build list
+    :grpc
+  · hertz    github.com/cloudwego/hertz         not active — :get github.com/cloudwego/hertz to use it
+    :routes
+  ✓ http     stdlib                             standard library — always active
+  · iris     github.com/kataras/iris            not active — :get github.com/kataras/iris to use it
+    :routes
+  ✓ json     stdlib                             standard library — always active
+    :json
+  · koanf    github.com/knadh/koanf             not active — :get github.com/knadh/koanf to use it
+    :config
+  · migrate  github.com/golang-migrate/migrate  not active — :get github.com/golang-migrate/migrate to use it
+    :migrations
+  ✓ msgpack  github.com/vmihailenco/msgpack/v5  github.com/vmihailenco/msgpack/v5 is in the build list
+    :msgpack
+  · mux      github.com/gorilla/mux             not active — :get github.com/gorilla/mux to use it
+    :routes
+  · pgx      github.com/jackc/pgx               not active — :get github.com/jackc/pgx to use it
+  ✓ protobuf google.golang.org/protobuf         google.golang.org/protobuf is in the build list
+    :pb
+  ✓ slog     stdlib                             standard library — always active
+    :slog
+  ✓ sql      stdlib                             standard library — always active
+  ✓ sqlx     github.com/jmoiron/sqlx            github.com/jmoiron/sqlx is in the build list
+    :expand
+  ✓ time     stdlib                             standard library — always active
+    :when
+  · toml     github.com/BurntSushi/toml         not active — :get github.com/BurntSushi/toml to use it
+    :toml
+  ✓ uuid     github.com/google/uuid             github.com/google/uuid is in the build list
+  ✓ viper    github.com/spf13/viper             github.com/spf13/viper is in the build list
+    :config
+  ✓ xml      stdlib                             standard library — always active
+    :xml
+  ✓ yaml     go.yaml.in/yaml/v3                 go.yaml.in/yaml/v3 is in the build list
+    :yaml
+  ✓ yaml.v3  gopkg.in/yaml.v3                   gopkg.in/yaml.v3 is in the build list
+    :yaml
+  ! :yaml is yaml's; yaml.v3 also defines it
+
+  ✓ active · · not active. :help <command> explains any of these commands,
+  active or not, and says which plugin it came from.
+gluon> :guide ent
+!view
+!clip 16
+# ent
+
+## What this plugin answers
+
+    :schema migrate.Tables
+
+The tables ent generated, their columns with types and constraints, and the
+edges as the foreign keys they became. Nothing is opened and no migration is
+planned — every descriptor printed is one the generated package is already
+holding in memory.
+
+## What it does not answer, and why
+
+There is no `:sql` for ent.
+
+gorm gets one because gorm has DryRun: a session flag that makes the builder
+assemble the statement and stop. ent has no equivalent. In v0.14.6 the two
+methods on a generated query builder that produce SQL are both unexported —
+`querySpec()` and `sqlQuery()` — and the builder carries no
+`ToSQL`, no `String`, and no dry-run option.
+
+`client.Debug()` is the near miss. It prints the statement, so it looks
+like the answer, but `dialect.DebugDriver` logs the query on its way to
+the driver and then runs it. It shows you the SQL *because* it executed it.
+
+So a `:sql` for ent could only be a command that queried. It would take
+gorm's argument, print gorm's output, and quietly hit your database. That is a
+worse thing to ship than the gap.
+
+## What to do instead
+
+- `:schema migrate.Tables` — the structure, free.
+- `:query EXPLAIN ...` — the plan for a statement you already have,
+  read-only by default and through the project's configured connection.
+- `client.Debug()` in your own code, when you accept that the query runs.

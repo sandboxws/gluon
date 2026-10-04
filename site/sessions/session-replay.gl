@@ -1,0 +1,8 @@
+%history strings.Fields(" a  b c ")
+%history s := strings.Repeat("ab", 3)
+%history :t s
+%history len(s)
+%history strings.ToUpper("done")
+:replay repeat
+:replay -run repeat
+s

@@ -1,0 +1,146 @@
+<!doctype html>
+<!-- generated from site/ by `just docs`: edit the source, not this file -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The database — gluon</title>
+<meta name="description" content="What gluon found and where, written down as a reference and never a password, then queried through the project&#39;s own driver.">
+<meta name="theme-color" content="#0A0A0A">
+<script>(function(d,m){try{m=/[?&]palette=(gruv|go)\b/.exec(location.search);m=m?m[1]:localStorage.getItem("gluon:theme")}catch(e){}if(m==="gruv")d.documentElement.setAttribute("data-theme","gruv")})(document)</script>
+<link rel="canonical" href="https://sandboxws.github.io/gluon/guide/database.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="The database — gluon">
+<meta property="og:description" content="What gluon found and where, written down as a reference and never a password, then queried through the project&#39;s own driver.">
+<meta property="og:url" content="https://sandboxws.github.io/gluon/guide/database.html">
+<meta property="og:image" content="https://sandboxws.github.io/gluon/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="gluon's startup screen in a Go project, beside the words: A Go REPL that stands in your project">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sandboxws.github.io/gluon/img/og.png">
+<meta name="twitter:title" content="The database — gluon">
+<meta name="twitter:description" content="What gluon found and where, written down as a reference and never a password, then queried through the project&#39;s own driver.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A0A0A'/%3E%3Cpath d='M9 9l7 7-7 7' stroke='%2300ADD8' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M18 23h6' stroke='%2300ADD8' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/gluon.css?v=980f3e8a">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="field" aria-hidden="true"></div>
+<div class="nav" id="nav">
+  <div class="nav-in">
+    <a class="nav-t" href="../index.html">gluon</a>
+    <span class="nav-sp"></span>
+    <a class="nav-m" href="../guide/index.html">Guides</a>
+    <a class="nav-m" href="../reference/index.html">Reference</a>
+    <span class="nav-m opt">v0.1.0</span>
+  </div>
+</div>
+
+<header class="hero wrap page">
+  <p class="eyebrow">Guide 09</p>
+  <h1 id="bigTitle">The database</h1>
+  <p class="sub">What gluon found and where, written down as a reference and never a password, then queried through the project&#39;s own driver.</p>
+</header>
+
+<div class="wrap cols">
+  <nav class="side" aria-label="Sections"><div class="side-in">
+    <p class="grp-h">This page</p>
+    <a href="#found"><span class="rn">1</span><span class="rt">What gluon found</span></a>
+<a href="#init"><span class="rn">2</span><span class="rt">Writing it down</span></a>
+<a href="#query"><span class="rn">3</span><span class="rt">Querying it</span></a>
+<a href="#trust"><span class="rn">4</span><span class="rt">What it will not do</span></a>
+    <p class="grp-h">Guides</p>
+    <a href="../guide/index.html"><span class="rt">Guides</span></a>
+    <a href="../guide/start.html"><span class="rt">The first five minutes</span></a>
+    <a href="../guide/inspecting.html"><span class="rt">Inspecting</span></a>
+    <a href="../guide/measuring.html"><span class="rt">Measuring</span></a>
+    <a href="../guide/rendering.html"><span class="rt">Rendering</span></a>
+    <a href="../guide/session.html"><span class="rt">The session</span></a>
+    <a href="../guide/scratchpads.html"><span class="rt">Scratchpads</span></a>
+    <a href="../guide/editing.html"><span class="rt">Editing</span></a>
+    <a href="../guide/project.html"><span class="rt">In a project</span></a>
+    <a href="../guide/database.html" aria-current="page" class="here"><span class="rt">The database</span></a>
+    <a href="../guide/plugins.html"><span class="rt">Plugins</span></a>
+    <a href="../guide/configuration.html"><span class="rt">Configuration</span></a>
+    <a href="../guide/themes.html"><span class="rt">Themes</span></a>
+    <a href="../guide/scripting.html"><span class="rt">Scripting</span></a>
+    <a href="../guide/mcp.html"><span class="rt">MCP</span></a>
+    <a href="../guide/design.html"><span class="rt">How it works</span></a>
+    
+  </div></nav>
+  <main id="main">
+    
+<section class="card" id="found">
+  <div class="card-head"><span class="idx">1</span><div class="hd"><h2>What gluon found, and where</h2></div></div>
+  <div class="card-body">
+    <p class="lead">Attached to a project, the next question is usually about its data. <a href="../reference/commands.html#db"><code>:db</code></a> says what gluon can reach and where it learned it — and until you have written that down, <a href="../reference/commands.html#query"><code>:query</code></a> will not guess.</p>
+    <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:db</span></div><div class="tl out">sqlite  ~/src/shop/data/shop.db</div><div class="tl out">  from</div><div class="tl out">    config.yaml  database.path</div><div class="tl out">    data/shop.db</div><div class="tl out">  driver</div><div class="tl out">    modernc.org/sqlite  a sqlite driver, in the build list</div><div class="tl out">  not configured — gluon init records this. It stores the name of a variable, never its value.</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:query</span> <span class="kw">SELECT</span> <span class="f">count</span><span class="p">(</span><span class="p">*</span><span class="p">)</span> <span class="kw">FROM</span> users</div><div class="tl out"><span class="er">error: no database is configured</span></div></div></div>
+    <p>Nothing was configured here. The settings file names <code>data/shop.db</code>, and the file itself is a SQLite database because its first sixteen bytes say so — so the two merge into one answer with two sources rather than two answers to choose between. Two genuinely different databases would be listed and refused, because the wrong guess here is a query against the wrong data.</p>
+    <p><strong>A value is a database because of its shape, never because of its name.</strong> <code>DATABASE_URL=https://api.example.com</code> is a URL; a <code>fixtures.db</code> full of JSON is not SQLite. Detection reads <code>.env</code>, compose, config and Go files by shape, sends nothing anywhere, and opens nothing until a query runs. The driver is the one the project already requires — gluon never links one.</p>
+  </div>
+</section>
+
+<section class="card" id="init">
+  <div class="card-head"><span class="idx">2</span><div class="hd"><h2>Writing it down</h2></div></div>
+  <div class="card-body">
+    <p class="lead"><code>gluon init</code> records the database, and what it records is a reference: where the connection lives, never what it is.</p>
+    <div class="repl"><div class="cmd-bar"><span class="ck">Shell</span><span class="cv">from the project&#39;s directory</span></div><div class="term-body ex"><div class="tl"><span class="pr">$</span> gluon init -no-prompt</div><div class="tl out">example.com/shop</div><div class="tl out"></div><div class="tl out">found one database:</div><div class="tl out"></div><div class="tl out">  sqlite  ~/src/shop/data/shop.db</div><div class="tl out">    config.yaml  database.path</div><div class="tl out">    data/shop.db</div><div class="tl out"></div><div class="tl out">  drivers in the build list</div><div class="tl out">    modernc.org/sqlite  (sqlite)</div><div class="tl out"></div><div class="tl out"></div><div class="tl out">would append to ~/.config/gluon/config.toml</div><div class="tl out"></div><div class="tl out">  [[database]]</div><div class="tl out">  module = &#34;example.com/shop&#34;</div><div class="tl out">  name = &#34;primary&#34;</div><div class="tl out">  driver = &#34;sqlite&#34;</div><div class="tl out">  file = &#34;~/src/shop/data/shop.db&#34;</div><div class="tl out"></div><div class="tl out">nothing was written — run `gluon init` to be asked where this should go, or `gluon init -write -global` to append it.</div><div class="tl"><span class="pr">$</span> gluon init -no-prompt -write -local</div><div class="tl out">example.com/shop</div><div class="tl out"></div><div class="tl out">found one database:</div><div class="tl out"></div><div class="tl out">  sqlite  ~/src/shop/data/shop.db</div><div class="tl out">    config.yaml  database.path</div><div class="tl out">    data/shop.db</div><div class="tl out"></div><div class="tl out">  drivers in the build list</div><div class="tl out">    modernc.org/sqlite  (sqlite)</div><div class="tl out"></div><div class="tl out"></div><div class="tl out">wrote ~/src/shop/gluon.toml</div><div class="tl out"></div><div class="tl out">  [[database]]</div><div class="tl out">  name = &#34;primary&#34;</div><div class="tl out">  driver = &#34;sqlite&#34;</div><div class="tl out">  file = &#34;data/shop.db&#34;</div><div class="tl out"></div><div class="tl out">  gluon -host .    then :db</div><div class="tl"><span class="pr">$</span> cat gluon.toml</div><div class="tl out">[[database]]</div><div class="tl out">name = &#34;primary&#34;</div><div class="tl out">driver = &#34;sqlite&#34;</div><div class="tl out">file = &#34;data/shop.db&#34;</div><div class="tl"><span class="pr">$</span> gluon -host . -e &#39;:db&#39;</div><div class="tl out">attached to example.com/shop (go 1.26.0) at ~/src/shop</div><div class="tl out">databases  1 configured</div><div class="tl out bx"><span class="p">╭─────────┬────────┬─────────────────────────┬───────────┬───────╮</span></div><div class="tl out bx"><span class="p">│</span> name    <span class="p">│</span> driver <span class="p">│</span> target                  <span class="p">│</span> mode      <span class="p">│</span>       <span class="p">│</span></div><div class="tl out bx"><span class="p">├─────────┼────────┼─────────────────────────┼───────────┼───────┤</span></div><div class="tl out bx"><span class="p">│</span> primary <span class="p">│</span> sqlite <span class="p">│</span> ~/src/shop/data/shop.db <span class="p">│</span> read-only <span class="p">│</span> ready <span class="p">│</span></div><div class="tl out bx"><span class="p">╰─────────┴────────┴─────────────────────────┴───────────┴───────╯</span></div><div class="tl out">  from ~/src/shop/gluon.toml</div><div class="tl"><span class="pr">$</span> gluon -host . -e &#39;:query -json SELECT id, email, plan FROM users WHERE id &lt; 3&#39; -json</div><div class="tl out">attached to example.com/shop (go 1.26.0) at ~/src/shop</div><div class="tl out">{</div><div class="tl out">  &#34;ok&#34;: true,</div><div class="tl out">  &#34;command&#34;: &#34;:query&#34;,</div><div class="tl out">  &#34;target&#34;: &#34;~/src/shop/data/shop.db&#34;,</div><div class="tl out">  &#34;columns&#34;: [</div><div class="tl out">    {</div><div class="tl out">      &#34;name&#34;: &#34;id&#34;,</div><div class="tl out">      &#34;type&#34;: &#34;INTEGER&#34;</div><div class="tl out">    },</div><div class="tl out">    {</div><div class="tl out">      &#34;name&#34;: &#34;email&#34;,</div><div class="tl out">      &#34;type&#34;: &#34;TEXT&#34;</div><div class="tl out">    },</div><div class="tl out">    {</div><div class="tl out">      &#34;name&#34;: &#34;plan&#34;,</div><div class="tl out">      &#34;type&#34;: &#34;TEXT&#34;</div><div class="tl out">    }</div><div class="tl out an">… 15 more lines</div></div></div>
+    <p><strong>gluon does not store passwords.</strong> It stores the name of the variable, or the file and key, that a connection string lives in, and reads the value when a query runs — so the config is safe to read, to share and to commit, and the loader refuses a <code>dsn</code> that carries a password inline. A SQLite file inside the project is named relative to <code>gluon.toml</code>, so the file still points at it after the project moves.</p>
+    <p>Nothing is written without being asked. <code>-no-prompt</code> prints the block and stops; <code>gluon init</code> on its own asks where it should go; writing without the question takes <code>-write</code> and either <code>-local</code> — <code>./gluon.toml</code>, which travels with the project and may set only <code>[[database]]</code> and <code>imports</code> — or <code>-global</code>, your own config. The nearest <code>gluon.toml</code> wins over the global config, and the two are never merged, because a half-merged database configuration is untraceable.</p>
+  </div>
+</section>
+
+<section class="card" id="query">
+  <div class="card-head"><span class="idx">3</span><div class="hd"><h2>Querying it</h2></div></div>
+  <div class="card-body">
+    <p class="lead"><a href="../reference/commands.html#query"><code>:query</code></a> runs one statement against the configured database, through the project's own driver.</p>
+    <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:db</span></div><div class="tl out">databases  1 configured</div><div class="tl out bx"><span class="p">╭─────────┬────────┬─────────────────────────┬───────────┬───────╮</span></div><div class="tl out bx"><span class="p">│</span> name    <span class="p">│</span> driver <span class="p">│</span> target                  <span class="p">│</span> mode      <span class="p">│</span>       <span class="p">│</span></div><div class="tl out bx"><span class="p">├─────────┼────────┼─────────────────────────┼───────────┼───────┤</span></div><div class="tl out bx"><span class="p">│</span> primary <span class="p">│</span> sqlite <span class="p">│</span> ~/src/shop/data/shop.db <span class="p">│</span> read-only <span class="p">│</span> ready <span class="p">│</span></div><div class="tl out bx"><span class="p">╰─────────┴────────┴─────────────────────────┴───────────┴───────╯</span></div><div class="tl out">  from ~/src/shop/gluon.toml</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:query</span> <span class="kw">SELECT</span> id<span class="p">,</span> email<span class="p">,</span> plan <span class="kw">FROM</span> users <span class="kw">ORDER</span> <span class="kw">BY</span> id <span class="kw">LIMIT</span> <span class="nu">5</span></div><div class="tl out bx"><span class="p">╭────┬───────────────────────┬──────╮</span></div><div class="tl out bx"><span class="p">│</span> id <span class="p">│</span> email                 <span class="p">│</span> plan <span class="p">│</span></div><div class="tl out bx"><span class="p">├────┼───────────────────────┼──────┤</span></div><div class="tl out bx"><span class="p">│</span> 1  <span class="p">│</span> ada@example.com       <span class="p">│</span> free <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> 2  <span class="p">│</span> grace@example.com     <span class="p">│</span> free <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> 3  <span class="p">│</span> katherine@example.com <span class="p">│</span> pro  <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> 4  <span class="p">│</span> margaret@example.com  <span class="p">│</span> free <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> 5  <span class="p">│</span> hedy@example.com      <span class="p">│</span> free <span class="p">│</span></div><div class="tl out bx"><span class="p">╰────┴───────────────────────┴──────╯</span></div><div class="tl out">  5 rows · ~/src/shop/data/shop.db</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:query</span> <span class="kw">SELECT</span> plan<span class="p">,</span> <span class="f">count</span><span class="p">(</span><span class="p">*</span><span class="p">)</span> <span class="kw">AS</span> customers <span class="kw">FROM</span> users <span class="kw">GROUP</span> <span class="kw">BY</span> plan <span class="kw">ORDER</span> <span class="kw">BY</span> customers <span class="kw">DESC</span></div><div class="tl out bx"><span class="p">╭──────┬───────────╮</span></div><div class="tl out bx"><span class="p">│</span> plan <span class="p">│</span> customers <span class="p">│</span></div><div class="tl out bx"><span class="p">├──────┼───────────┤</span></div><div class="tl out bx"><span class="p">│</span> free <span class="p">│</span> 274       <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> pro  <span class="p">│</span> 138       <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> team <span class="p">│</span> 68        <span class="p">│</span></div><div class="tl out bx"><span class="p">╰──────┴───────────╯</span></div><div class="tl out">  3 rows · ~/src/shop/data/shop.db</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:query</span> <span class="kw">UPDATE</span> users <span class="kw">SET</span> plan <span class="p">=</span> <span class="s">&#39;team&#39;</span> <span class="kw">WHERE</span> id <span class="p">=</span> <span class="nu">1</span></div><div class="tl out"><span class="er">error: UPDATE is not a read-only statement — :query -w UPDATE users SET plan = &#39;team&#39; WHERE id = 1 runs it anyway.</span></div><div class="tl out"><span class="er">      The check is on the first word, not a parse: it is here to catch the paste you did not mean, not to prove a statement is safe</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:query</span> <span class="p">-</span>w <span class="kw">UPDATE</span> users <span class="kw">SET</span> plan <span class="p">=</span> <span class="s">&#39;team&#39;</span> <span class="kw">WHERE</span> id <span class="p">=</span> <span class="nu">1</span></div><div class="tl out">no rows</div><div class="tl out">  0 rows · ~/src/shop/data/shop.db</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:query</span> <span class="kw">SELECT</span> id<span class="p">,</span> email<span class="p">,</span> plan <span class="kw">FROM</span> users <span class="kw">WHERE</span> id <span class="p">=</span> <span class="nu">1</span></div><div class="tl out bx"><span class="p">╭────┬─────────────────┬──────╮</span></div><div class="tl out bx"><span class="p">│</span> id <span class="p">│</span> email           <span class="p">│</span> plan <span class="p">│</span></div><div class="tl out bx"><span class="p">├────┼─────────────────┼──────┤</span></div><div class="tl out bx"><span class="p">│</span> 1  <span class="p">│</span> ada@example.com <span class="p">│</span> team <span class="p">│</span></div><div class="tl out bx"><span class="p">╰────┴─────────────────┴──────╯</span></div><div class="tl out">  1 row · ~/src/shop/data/shop.db</div></div></div>
+    <figure class="shot"><figcaption class="cmd-bar"><span class="ck">Screenshot</span><span class="cv">a real Ghostty window</span></figcaption><a href="../img/shots/db.go.webp?v=b677f0e2"><img class="v-go" src="../img/shots/db.go.webp?v=b677f0e2" width="859" height="610" alt=":db listing the one database the project configures — its driver, its file, read-only and ready — then :query selecting five users through that driver, as a table with the row count" loading="lazy" decoding="async"></a><a href="../img/shots/db.gruv.webp?v=063dfc58"><img class="v-gruv" src="../img/shots/db.gruv.webp?v=063dfc58" width="859" height="610" alt=":db listing the one database the project configures — its driver, its file, read-only and ready — then :query selecting five users through that driver, as a table with the row count" loading="lazy" decoding="async"></a></figure>
+    <p>A read runs inside a read-only transaction, which is a guarantee the server enforces rather than one gluon claims; when a driver has no such thing the answer says so. Anything else needs <a href="../reference/commands.html#query-w"><code>:query -w</code></a>, and the check in front of it is on the first word — a keyword check, there to catch the paste you did not mean, not to prove a statement safe. A write runs as written, outside any transaction, and <code>:query</code> reports what a statement returned: an <code>UPDATE</code> returns no rows, so the <code>SELECT</code> after it is how you see what changed.</p>
+    <p>A cell that was SQL <code>NULL</code> and a cell holding the text <code>NULL</code> are different answers, so the text is quoted, and the distinction survives a pipe that has stripped the colour. <a href="../reference/commands.html#query-json"><code>:query -json</code></a> answers with the same rows in a shape a program reads — a <code>NULL</code> is JSON <code>null</code>, every other cell is text as the driver scanned it, <code>type</code> is what the database declared, and <code>truncated</code> says whether the fetch cap bound. <a href="../reference/commands.html#query-d"><code>:query -d</code></a> picks a database by name when a project configures several.</p>
+    <p><strong>A query is never answered from cache.</strong> gluon caches results by program text, which is right for <code>:undo</code> and wrong for a database: the same <code>SELECT count(*)</code> twice would report the count from when you first asked. <a href="../reference/commands.html#migrations"><code>:migrations</code></a> reads a migration library's tracking table through the same connection — <a href="plugins.html#data">Plugins</a> has it.</p>
+  </div>
+</section>
+
+<section class="card" id="trust">
+  <div class="card-head"><span class="idx">4</span><div class="hd"><h2>What it will not do</h2></div></div>
+  <div class="card-body">
+    <div class="call check">
+      <span class="lbl">The whole trust model</span>
+      <ul>
+        <li>No connection string on a command line: there is no <code>-dsn</code> and no <code>:db connect &lt;url&gt;</code>, because either would put a password in a history file.</li>
+        <li>No password in a config gluon writes, and none accepted inline in one it reads.</li>
+        <li>No connection string in the generated program: it reaches the child through its environment, and the password lives in an unexported field whose printed form is always the redacted one, so <code>%v</code>, a log line or <code>-json</code> cannot leak it.</li>
+        <li>No guess between two databases, and no driver linked into gluon.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+    <nav class="pn" aria-label="Pages beside this one">
+  <a class="pg" href="../guide/project.html"><span class="pg-k">← previous</span><b>In a project</b></a>
+  <a class="pg next" href="../guide/plugins.html"><span class="pg-k">next →</span><b>Plugins</b></a>
+</nav>
+  </main>
+</div>
+
+<footer class="foot"><div class="wrap fgrid">
+    <div><div class="fh">The site</div><ul>
+        <li><a href="../index.html">gluon</a> — what it is, in one page</li>
+        <li><a href="../guide/index.html">Guides</a> — every feature, with the lines to type</li>
+        <li><a href="../reference/index.html">Reference</a> — generated from the code that defines it</li>
+      </ul></div>
+    <div><div class="fh">This page</div><ul>
+        <li>v0.1.0 · <code>github.com/sandboxws/gluon</code></li>
+        <li>Generated from <code>site/</code> by <code>just docs</code></li>
+        <li>No analytics, no cookies; the palette choice is one localStorage key</li>
+        <li><a href="https://github.com/sandboxws/gluon">Source</a></li>
+      </ul></div>
+</div></footer>
+<script src="../assets/gluon.js?v=0b5d44bf"></script>
+</body>
+</html>

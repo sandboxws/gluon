@@ -1,0 +1,48 @@
+{% define "side" %}<a href="#pads"><span class="rn">1</span><span class="rt">A session on disk</span></a>
+<a href="#save"><span class="rn">2</span><span class="rt">Out of the REPL</span></a>
+<a href="#share"><span class="rn">3</span><span class="rt">Showing someone</span></a>
+<a href="#cli"><span class="rn">4</span><span class="rt">From the shell</span></a>{% end %}
+{% define "main" %}
+<section class="card" id="pads">
+  <div class="card-head"><span class="idx">1</span><div class="hd"><h2>A session on disk</h2></div></div>
+  <div class="card-body">
+    <p class="lead">A scratchpad is a named session on disk. gluon lands in one called <code>default</code>, and every line you type into it is written down — the entries as you typed them, what is pinned, the host you were attached to and the modules the session added. Tomorrow's <code>gluon</code> opens it, replays it, and you are where you were.</p>
+    {% session "scratch-pads" "keeping one, naming it, graduating it, showing it" %}
+    {% shot "scratch" "gluon -scratch parser-bug, started again" %}
+    {% shot "scratch-list" ":scratch at a prompt, where the pads are a view" %}
+    <p>{% cmd ":scratch" %} on its own lists them — how many entries each holds, the host it records, when it was last worked on — and opens one from the view. <code>:scratch &lt;name&gt;</code> opens that one, creating it when it is new. {% cmd ":scratch" "-mv" %} renames the one you are in, {% cmd ":scratch" "-rm" %} shows one and asks before removing it, {% cmd ":scratch" "-edit" %} opens its file, pins and all, and {% cmd ":scratch" "-off" %} stops writing the rest of this session down.</p>
+    <p>Opening replays: the entries run as one program — one build for the whole session, not one per entry — so an entry that had an effect has it again unless it was pinned. Nothing is fetched: a recorded module comes from the local module cache, and one the cache no longer holds is named with the <code>:get</code> that would bring it back. A scratchpad that will not open is never written to; the file is left byte for byte as it was, and a <code>:reset</code> that shrinks one keeps what it replaced beside it in <code>session.prev</code>.</p>
+    <p>Only an interactive session opens one. <code>gluon -e</code>, a piped script and <code>gluon mcp</code> open none, so a tool call can neither inherit nor change the scratchpad you have open. <code>gluon -scratch &lt;name&gt;</code> starts in a named one, <code>gluon -no-scratch</code> in none, and {% setting "scratch.pad" %} is the lasting form of either.</p>
+  </div>
+</section>
+
+<section class="card" id="save">
+  <div class="card-head"><span class="idx">2</span><div class="hd"><h2>Out of the REPL, into a module</h2></div></div>
+  <div class="card-body">
+    <p class="lead">{% cmd ":save" %} writes the session out as a runnable module with its own <code>go.mod</code>, so gopls works in it — completion, hover, jump to definition.</p>
+    <p>Inside a scratchpad a bare <code>:save</code> refreshes the scratchpad's own program, so the module an editor or a debugger opens is the work in progress rather than a dated copy of it. <code>:save &lt;topic&gt;</code> writes a new dated scratch. {% cmd ":save" "-debug" %} adds a debugger launch configuration beside the module and names the command that starts one from a terminal — gluon compiles each line into a program that exits, so there is nothing to pause, and the way to step through a call is a real debugger on a real module. {% cmd ":save" "-test" %} puts what <code>:test</code> generated beside the program as a test file. gluon never writes into your project: all of it goes under <code>~/.local/share/gluon/scratch</code>.</p>
+  </div>
+</section>
+
+<section class="card" id="share">
+  <div class="card-head"><span class="idx">3</span><div class="hd"><h2>Showing someone</h2></div></div>
+  <div class="card-body">
+    <p class="lead">{% cmd ":share" %} uploads the program {% cmd ":src" %} shows to the Go Playground and prints the address it can be read at — the path that is otherwise save, open, copy, paste into a browser.</p>
+    <div class="call danger">
+      <span class="lbl">Public, and for good</span>
+      <p>The upload is public and cannot be withdrawn, so <code>:share</code> shows you the program itself and asks, every time. There is no flag and no setting that skips the question: a confirmation that can be pre-authorised is one that has stopped being asked. A program carrying anything shaped like a credential is refused outright, naming the line. Only the program goes — not the history, not the environment, and not the source of the module you are attached to.</p>
+    </div>
+    <p>Confirming needs a terminal. Through a pipe — and in the session above, which was recorded without one — <code>:share</code> prints what would have gone and uploads nothing.</p>
+  </div>
+</section>
+
+<section class="card" id="cli">
+  <div class="card-head"><span class="idx">4</span><div class="hd"><h2>From the shell</h2></div></div>
+  <div class="card-body">
+    <p class="lead"><code>gluon scratch</code> is the scratchpads from outside the REPL — what there is, what one holds, removing one. <code>gluon new</code>, <code>run</code> and <code>watch</code> are the other shape of scratch work: a small program in a file, when a prompt is not the right place.</p>
+    {% session "scratch-cli" "a scratch program, from the shell" %}
+    <p><code>gluon scratch show &lt;name&gt;</code> prints what a scratchpad holds and evaluates none of it — there is no evaluator in that process at all, which is what makes that true rather than intended. Opening is not among its verbs, because opening a scratchpad <em>is</em> starting a REPL in it.</p>
+    <p><code>gluon new</code> writes one directory per scratch with its own <code>go.mod</code> and opens it in your editor; <code>-flat</code> writes a single <code>//go:build ignore</code> file instead, which gopls greys out, so it is not the default. <code>gluon run</code> runs the scratch you touched last, or the one you name, and <code>gluon watch</code> runs it again on every save. <a href="{% rel "reference/cli.html" %}">The gluon command</a> lists every flag.</p>
+  </div>
+</section>
+{% end %}

@@ -1,0 +1,41 @@
+# gluon's default palette.
+#
+# The documentation site's stylesheet carries the same colours as its --cs-*
+# variables, so code on a page and code at the prompt match; the four syntax
+# roles exist because a page showing Go needed distinctions a value table
+# never did.
+#
+# It is a dark theme, chosen against a #0A0A0A page and a #0C0C0D code well.
+# `[theme] name = "terminal"` is the way back to your own sixteen colours.
+about      = "gluon's own palette: violet keywords, green strings, cyan types"
+appearance = "dark"
+
+[theme]
+# Source.
+keyword     = "#C6ACD9"  # violet — the one hue with no ANSI equivalent
+string      = "#4ADE95"  # green
+type        = "#4FC9EE"  # cyan, the Go accent, as text on a dark ground
+comment     = "#6E6E76"
+number      = "#E4E4E7"
+builtin     = "#79B8FF"  # blue, and only where the name is actually called
+punctuation = "#A6A6AD"
+ident       = "#E4E4E7"  # the default weight of code
+
+# Values, the REPL, and the CLI.
+error       = "#FF7373"
+prompt      = "#4FC9EE"
+mode        = "#C6ACD9"  # the palette's violet, which is as far from the
+                         # prompt's cyan as this palette goes
+annotation  = "#6E6E76"
+note        = "#E3B341"
+dim         = "#7C7C84"  # brighter than a comment on purpose: this is furniture
+                         # you read — the continuation prompt, ghost text, a
+                         # modal footer — not content that should recede.
+search      = "#F5B843"  # amber says "you are in a mode". It never shares a
+                         # line with `note`, which is the near neighbour.
+border      = "#55555C"  # NOT the site's --line #1F1F22. That is a 1px rule on a
+                         # lit panel; this draws box characters against a
+                         # terminal background that is often black, where it
+                         # would be invisible — and would collapse to slot 0 on
+                         # a 16-colour terminal. This is the site's --ink-4, which is
+                         # what ANSI 8 already looked like.

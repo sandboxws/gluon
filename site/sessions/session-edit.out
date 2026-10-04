@@ -1,0 +1,24 @@
+gluon> a := 1
+gluon> b := 2
+gluon> c := a + b
+gluon> c
+(int) 3
+gluon> :hist
+  1  a := 1
+  2  b := 2
+  3  c := a + b
+  4  c   _1
+gluon> :drop 2
+!error error: undefined: b
+!error     c := a + b
+!error              ^ — entry kept
+gluon> :undo
+undone (3 entries left)
+gluon> :hist
+  1  a := 1
+  2  b := 2
+  3  c := a + b
+gluon> :reset
+session cleared
+gluon> :hist
+nothing in the session yet

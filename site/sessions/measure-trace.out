@@ -1,0 +1,15 @@
+gluon> func fib(n int) int {
+  ...> 	if n < 2 {
+  ...> 		return n
+  ...> 	}
+  ...> 	return fib(n-1) + fib(n-2)
+  ...> }
+gluon> :trace fib(10)
+(int) 55
+
+  fib(10)  the expression you traced
+
+  nothing of yours called it — gluon compiles each line into a program whose
+  main runs it directly, so an expression evaluated at the prompt has no
+  caller above it. For what a call does underneath, :save -debug writes the
+  module and names the command that steps through it.

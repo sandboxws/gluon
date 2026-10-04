@@ -1,0 +1,145 @@
+<!doctype html>
+<!-- generated from site/ by `just docs`: edit the source, not this file -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scripting — gluon</title>
+<meta name="description" content="gluon -e, pipes and -json: every inspector as a shell one-liner, against a project or not, and a struct held to its layout in CI.">
+<meta name="theme-color" content="#0A0A0A">
+<script>(function(d,m){try{m=/[?&]palette=(gruv|go)\b/.exec(location.search);m=m?m[1]:localStorage.getItem("gluon:theme")}catch(e){}if(m==="gruv")d.documentElement.setAttribute("data-theme","gruv")})(document)</script>
+<link rel="canonical" href="https://sandboxws.github.io/gluon/guide/scripting.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Scripting — gluon">
+<meta property="og:description" content="gluon -e, pipes and -json: every inspector as a shell one-liner, against a project or not, and a struct held to its layout in CI.">
+<meta property="og:url" content="https://sandboxws.github.io/gluon/guide/scripting.html">
+<meta property="og:image" content="https://sandboxws.github.io/gluon/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="gluon's startup screen in a Go project, beside the words: A Go REPL that stands in your project">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sandboxws.github.io/gluon/img/og.png">
+<meta name="twitter:title" content="Scripting — gluon">
+<meta name="twitter:description" content="gluon -e, pipes and -json: every inspector as a shell one-liner, against a project or not, and a struct held to its layout in CI.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A0A0A'/%3E%3Cpath d='M9 9l7 7-7 7' stroke='%2300ADD8' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M18 23h6' stroke='%2300ADD8' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/gluon.css?v=980f3e8a">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="field" aria-hidden="true"></div>
+<div class="nav" id="nav">
+  <div class="nav-in">
+    <a class="nav-t" href="../index.html">gluon</a>
+    <span class="nav-sp"></span>
+    <a class="nav-m" href="../guide/index.html">Guides</a>
+    <a class="nav-m" href="../reference/index.html">Reference</a>
+    <span class="nav-m opt">v0.1.0</span>
+  </div>
+</div>
+
+<header class="hero wrap page">
+  <p class="eyebrow">Guide 13</p>
+  <h1 id="bigTitle">Scripting</h1>
+  <p class="sub">gluon -e, pipes and -json: every inspector as a shell one-liner, against a project or not, and a struct held to its layout in CI.</p>
+</header>
+
+<div class="wrap cols">
+  <nav class="side" aria-label="Sections"><div class="side-in">
+    <p class="grp-h">This page</p>
+    <a href="#e"><span class="rn">1</span><span class="rt">One-shots</span></a>
+<a href="#json"><span class="rn">2</span><span class="rt">JSON for a program</span></a>
+<a href="#host"><span class="rn">3</span><span class="rt">Against a project</span></a>
+<a href="#ci"><span class="rn">4</span><span class="rt">In CI</span></a>
+    <p class="grp-h">Guides</p>
+    <a href="../guide/index.html"><span class="rt">Guides</span></a>
+    <a href="../guide/start.html"><span class="rt">The first five minutes</span></a>
+    <a href="../guide/inspecting.html"><span class="rt">Inspecting</span></a>
+    <a href="../guide/measuring.html"><span class="rt">Measuring</span></a>
+    <a href="../guide/rendering.html"><span class="rt">Rendering</span></a>
+    <a href="../guide/session.html"><span class="rt">The session</span></a>
+    <a href="../guide/scratchpads.html"><span class="rt">Scratchpads</span></a>
+    <a href="../guide/editing.html"><span class="rt">Editing</span></a>
+    <a href="../guide/project.html"><span class="rt">In a project</span></a>
+    <a href="../guide/database.html"><span class="rt">The database</span></a>
+    <a href="../guide/plugins.html"><span class="rt">Plugins</span></a>
+    <a href="../guide/configuration.html"><span class="rt">Configuration</span></a>
+    <a href="../guide/themes.html"><span class="rt">Themes</span></a>
+    <a href="../guide/scripting.html" aria-current="page" class="here"><span class="rt">Scripting</span></a>
+    <a href="../guide/mcp.html"><span class="rt">MCP</span></a>
+    <a href="../guide/design.html"><span class="rt">How it works</span></a>
+    
+  </div></nav>
+  <main id="main">
+    
+<section class="card" id="e">
+  <div class="card-head"><span class="idx">1</span><div class="hd"><h2>One-shots and pipes</h2></div></div>
+  <div class="card-body">
+    <p class="lead"><code>gluon -e</code> is the <code>ruby -e</code> shape: evaluate, print, exit. It takes Go and meta commands alike, so every inspector is a shell one-liner, and a pipe into <code>gluon</code> is the same engine with no banner.</p>
+    <div class="repl"><div class="cmd-bar"><span class="ck">Shell</span><span class="cv">from a shell</span></div><div class="term-body ex"><div class="tl"><span class="pr">$</span> gluon -e &#39;strings.ToUpper(&#34;hi&#34;)&#39;</div><div class="tl out">(string) &#34;HI&#34;  len=2</div><div class="tl"><span class="pr">$</span> gluon -e &#39;x := 21&#39; -e &#39;x * 2&#39;</div><div class="tl out">(int) 42</div><div class="tl"><span class="pr">$</span> echo &#39;strings.Repeat(&#34;ab&#34;, 3)&#39; | gluon</div><div class="tl out">(string) &#34;ababab&#34;  len=6</div><div class="tl"><span class="pr">$</span> gluon -e &#39;[]int{1, 2, 3}&#39; -json</div><div class="tl out">{</div><div class="tl out">  &#34;ok&#34;: true,</div><div class="tl out">  &#34;values&#34;: [</div><div class="tl out">    {</div><div class="tl out">      &#34;type&#34;: &#34;[]int&#34;,</div><div class="tl out">      &#34;kind&#34;: &#34;list&#34;,</div><div class="tl out">      &#34;text&#34;: &#34;([]int) [1 2 3]  len=3 cap=3&#34;,</div><div class="tl out">      &#34;len&#34;: 3,</div><div class="tl out">      &#34;cap&#34;: 3</div><div class="tl out">    }</div><div class="tl out">  ],</div><div class="tl out">  &#34;exitCode&#34;: 0</div><div class="tl out">}</div><div class="tl"><span class="pr">$</span> gluon -e &#39;:layout struct{ a bool; b int64; c bool }&#39; -json</div><div class="tl out">{</div><div class="tl out">  &#34;ok&#34;: true,</div><div class="tl out">  &#34;command&#34;: &#34;:layout&#34;,</div><div class="tl out">  &#34;text&#34;: &#34;struct{a bool; b int64; c bool}  24 bytes, align 8\n  0  a  bool  1\n      (7 bytes padding)\n  8  b  int64  8\n  16  c  bool  1\n      (7 bytes padding)\n  reordering as b, a, c would be 16 bytes — 8 saved&#34;</div><div class="tl out">}</div><div class="tl"><span class="pr">$</span> gluon -e &#39;strings.Repeat(&#34;ab&#34;)&#39;; echo &#34;exit $?&#34;</div><div class="tl out">not enough arguments in call to strings.Repeat</div><div class="tl out">    strings.Repeat(&#34;ab&#34;)</div><div class="tl out">                       ^</div><div class="tl out">exit 1</div></div></div>
+    <p>Repeated <code>-e</code> arguments land as one batch — one build — and every expression that prints, prints. A compile error goes to the terminal as it would at the prompt and the exit status says it failed, so a script can tell. None of it opens a scratchpad: a one-shot can neither inherit nor change the session you have open elsewhere.</p>
+    <p>What a script reads is the plain form, one line per value, and it is a compatibility surface: no setting reaches it — not <a href="../reference/settings.html#value.form"><code>value.form</code></a>, not a theme, not a plugin's renderer — so a script written against it keeps working. <a href="rendering.html#pipes">Rendering</a> has the difference.</p>
+  </div>
+</section>
+
+<section class="card" id="json">
+  <div class="card-head"><span class="idx">2</span><div class="hd"><h2>JSON, for a program to read</h2></div></div>
+  <div class="card-body">
+    <p class="lead"><code>-json</code> prints one object instead of the plain rendering. An evaluation answers with its values, each with its type, kind and text; a meta command answers with <code>ok</code>, the command, and its text.</p>
+    <p>Every envelope carries <code>ok</code>, and an error comes back as JSON on standard output too, so nothing has to read standard error to find out what happened. <code>ok</code> says the command did its job, not what it found: an <code>:impl</code> that answers no is still <code>ok</code>, so a check reads the text. <a href="../reference/commands.html#query-json"><code>:query -json</code></a> answers with rows a program can read, and <code>gluon doctor -json</code> and <code>gluon init -json</code> answer with reports. The envelopes are compatibility surfaces, held to their shape by gluon's own tests.</p>
+  </div>
+</section>
+
+<section class="card" id="host">
+  <div class="card-head"><span class="idx">3</span><div class="hd"><h2>Against a project</h2></div></div>
+  <div class="card-body">
+    <p class="lead"><code>-host .</code> attaches a one-shot to the module you are standing in, the way it attaches the REPL. The attach line goes to standard error, so standard output is only what the line printed.</p>
+    <div class="repl"><div class="cmd-bar"><span class="ck">Shell</span><span class="cv">in ~/src/shop</span></div><div class="term-body ex"><div class="tl"><span class="pr">$</span> gluon -host . -e &#39;:layout pricing.LineItem&#39;</div><div class="tl out">attached to example.com/shop (go 1.26.0) at ~/src/shop</div><div class="tl out">pricing.LineItem  56 bytes, align 8</div><div class="tl out">  0  Gift  bool  1</div><div class="tl out">      (7 bytes padding)</div><div class="tl out">  8  Qty  int64  8</div><div class="tl out">  16  Taxable  bool  1</div><div class="tl out">      (7 bytes padding)</div><div class="tl out">  24  SKU  string  16</div><div class="tl out">  40  Price  decimal.Decimal  16</div><div class="tl out">  reordering as SKU, Price, Qty, Gift, Taxable would be 48 bytes — 8 saved</div><div class="tl"><span class="pr">$</span> gluon -host . -e &#39;pricing.Total(pricing.Sample()).String()&#39;</div><div class="tl out">attached to example.com/shop (go 1.26.0) at ~/src/shop</div><div class="tl out">(string) &#34;56.14&#34;  len=5</div></div></div>
+  </div>
+</section>
+
+<section class="card" id="ci">
+  <div class="card-head"><span class="idx">4</span><div class="hd"><h2>In CI</h2></div></div>
+  <div class="card-body">
+    <p class="lead">Because the inspectors are one-liners with a stable output, a build can hold a property the compiler does not: that a hot struct stays packed, that a type keeps satisfying an interface, that a function stays inlinable.</p>
+    <div class="cmd">
+      <div class="cmd-bar"><span class="ck">justfile</span><span class="cv">a struct that must not grow</span></div>
+<pre><span class="c"># fails while reordering the fields would save bytes</span>
+check-layout:
+    gluon -host . -e <span class="s">':layout pricing.LineItem'</span> -json \
+      | jq -e <span class="s">'.text | test("reordering") | not'</span>
+
+<span class="c"># fails the day the service stops satisfying its generated interface</span>
+check-orders:
+    gluon -host . -e <span class="s">':impl *rpc.Orders, shopv1.OrdersServer'</span> -json \
+      | jq -e <span class="s">'.text | test("does not implement") | not'</span></pre>
+    </div>
+    <p>A one-shot pays for the toolchain like any line that runs — a few hundred milliseconds warm — and the inspectors answered by the type checker pay for none of it. <code>gluon doctor</code> in a CI job reports the toolchain and module it found, and exits non-zero only when something gluon depends on is broken.</p>
+  </div>
+</section>
+
+    <nav class="pn" aria-label="Pages beside this one">
+  <a class="pg" href="../guide/themes.html"><span class="pg-k">← previous</span><b>Themes</b></a>
+  <a class="pg next" href="../guide/mcp.html"><span class="pg-k">next →</span><b>MCP</b></a>
+</nav>
+  </main>
+</div>
+
+<footer class="foot"><div class="wrap fgrid">
+    <div><div class="fh">The site</div><ul>
+        <li><a href="../index.html">gluon</a> — what it is, in one page</li>
+        <li><a href="../guide/index.html">Guides</a> — every feature, with the lines to type</li>
+        <li><a href="../reference/index.html">Reference</a> — generated from the code that defines it</li>
+      </ul></div>
+    <div><div class="fh">This page</div><ul>
+        <li>v0.1.0 · <code>github.com/sandboxws/gluon</code></li>
+        <li>Generated from <code>site/</code> by <code>just docs</code></li>
+        <li>No analytics, no cookies; the palette choice is one localStorage key</li>
+        <li><a href="https://github.com/sandboxws/gluon">Source</a></li>
+      </ul></div>
+</div></footer>
+<script src="../assets/gluon.js?v=0b5d44bf"></script>
+</body>
+</html>

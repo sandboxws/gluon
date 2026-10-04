@@ -1,0 +1,11 @@
+:buf
+%editor
+<<<
+func greet(name string) string {
+	return "hello, " + name
+}
+greet("gluon")
+>>>
+:buf -show
+:buf -check
+:buf -clear

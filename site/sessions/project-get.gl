@@ -1,0 +1,7 @@
+%host shop
+%attach
+%clip 6
+:get
+:get github.com/BurntSushi/toml@v1.6.0
+:toml config.Defaults()
+:get -rm github.com/BurntSushi/toml

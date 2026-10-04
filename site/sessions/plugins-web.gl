@@ -1,0 +1,8 @@
+%host shop
+%attach
+%serve
+r := api.Routes(nil)
+:routes r
+:grpc 127.0.0.1:50051
+:grpc 127.0.0.1:50051 shop.v1.Orders/Get -d '{"id": 42}'
+:pb &shopv1.Order{Id: 42, Email: "ada@example.com", Total: "53.04"}

@@ -1,0 +1,54 @@
+{% define "side" %}<a href="#forms"><span class="rn">1</span><span class="rt">Five shapes for a value</span></a>
+<a href="#identity"><span class="rn">2</span><span class="rt">Cycles, sharing, errors</span></a>
+<a href="#limits"><span class="rn">3</span><span class="rt">How much you see</span></a>
+<a href="#inspect"><span class="rn">4</span><span class="rt">A view that scrolls</span></a>
+<a href="#pipes"><span class="rn">5</span><span class="rt">What a pipe gets</span></a>{% end %}
+{% define "main" %}
+<section class="card" id="forms">
+  <div class="card-head"><span class="idx">1</span><div class="hd"><h2>Five shapes for a value</h2></div></div>
+  <div class="card-body">
+    <p class="lead">A value with structure is drawn as a bordered table by default, and a scalar stays on its line. A table is one crushed column for a list of structs, though, and past its first level a cell truncates — so there are five shapes, and {% setting "value.form" %} chooses.</p>
+    {% session "render-forms" "one value, five ways" %}
+    <p><code>columns</code> gives a list of structs a column per field. <code>tree</code> recurses where a table cell truncates, and is the only shape that shows nesting all the way down. <code>line</code> keeps a value on one line however deep it goes. <code>literal</code> answers a different question: it is the value as Go source you could paste back — into a test, say — and a value with no literal form, such as a channel or a func, falls back to a line and names the part that has none.</p>
+    <p>A kind can take its own shape over the one everything else takes: {% setting "value.form.list" %}, {% setting "value.form.map" %} and {% setting "value.form.struct" %}. <code>:settings value.form -</code> puts the default back. A change takes effect on the next line, and it is written into <code>config.toml</code>, so the next session draws the same way — <a href="configuration.html">Configuration</a> has the rest of {% cmd ":settings" %}.</p>
+  </div>
+</section>
+
+<section class="card" id="identity">
+  <div class="card-head"><span class="idx">2</span><div class="hd"><h2>Cycles, sharing, and what a value hides</h2></div></div>
+  <div class="card-body">
+    <p class="lead">Values that point at each other are described as what they are. A cycle is labelled where it closes, and an object that appears twice is labelled rather than printed twice as though it were two.</p>
+    {% session "render-identity" %}
+    <p>Sharing and cycles are different lessons, so they read differently: a cycle would not terminate if it were printed naively, while sharing does terminate but hides that changing the object through one name changes it through the other. A label appears only on an object something actually points at, so an ordinary value is unchanged.</p>
+    <p>Unexported fields that hold a struct, a slice or a map are described rather than left out, which is what makes a <code>%w</code> chain visible at all — <code>fmt</code>'s <code>%+v</code> reads the same fields, flattened. <code>GLUON_NO_UNSAFE=1</code> turns it off. The program gluon builds only <em>describes</em> a value, as JSON; everything you see is drawn by gluon's own process, which is why the generated code stays standard library and every line builds as fast as it can.</p>
+  </div>
+</section>
+
+<section class="card" id="limits">
+  <div class="card-head"><span class="idx">3</span><div class="hd"><h2>How much of a value you see</h2></div></div>
+  <div class="card-body">
+    <p class="lead">The program that describes a value stops somewhere: at 200 elements of any one collection, and at 6 nested levels. {% setting "value.items" %} and {% setting "value.depth" %} move those, from the next line.</p>
+    <p>Both reach the program through its environment, never through its source, so the source is the same at every setting and an <code>:undo</code> across a change still finds its cached result. They are also <code>GLUON_MAX_ITEMS</code> and <code>GLUON_MAX_DEPTH</code>, which a shell can export for every session; <code>gluon doctor</code> says when either is set. A separate budget bounds the whole value — it is what keeps one <code>*http.Request</code> from becoming a dump of its transport — and neither setting moves it, so a collection of large elements can stop short of the number asked for, and says so when it does.</p>
+  </div>
+</section>
+
+<section class="card" id="inspect">
+  <div class="card-head"><span class="idx">4</span><div class="hd"><h2>A view that scrolls</h2></div></div>
+  <div class="card-body">
+    <p class="lead">{% cmd ":inspect" %} opens the one thing a printed table cannot be: a view that scrolls, over a large value. <kbd>j</kbd>/<kbd>k</kbd> move, <kbd>/</kbd> filters, <kbd>q</kbd> closes.</p>
+    {% session "render-inspect" "480 rows" %}
+    {% shot "inspect-filter" "the view, filtered with /042" %}
+    <p>The view takes the whole screen, which the rest of gluon never does, so it keeps one rule: it prints nothing while it is up, and leaves exactly one line behind when it closes — <code>[]main.User  200 rows  browsed</code> — so scrollback stays a complete transcript. What it browses is what the value printer described: 200 elements unless you ask for more, and {% cmd ":inspect" "-n" %} asks for this one view without moving {% setting "value.items" %}. Through a pipe there is no view, and <code>:inspect</code> prints the ordinary rendering above instead, so nothing is lost.</p>
+    <p>{% cmd ":src" %}, {% cmd ":doc" %}, {% cmd ":settings" %} and a long {% cmd ":help" %} page open the same kind of view once their output outgrows a screen, and print in full through a pipe.</p>
+  </div>
+</section>
+
+<section class="card" id="pipes">
+  <div class="card-head"><span class="idx">5</span><div class="hd"><h2>What a pipe gets</h2></div></div>
+  <div class="card-body">
+    <p class="lead">Everything on this page is what a terminal draws. A pipe, <code>gluon -e</code> and the <code>-json</code> envelopes get one plain line per value, whatever the settings say — those are surfaces scripts read, and no setting reaches them.</p>
+    {% session "render-pipe" "the same bytes whatever value.form says" %}
+    <p>Plugin renderers — a <code>uuid.UUID</code> as a UUID, a <code>sql.NullString</code> as <code>NULL</code> — are terminal-only for the same reason. <a href="scripting.html">Scripting</a> covers what the plain and JSON forms promise.</p>
+  </div>
+</section>
+{% end %}

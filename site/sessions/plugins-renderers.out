@@ -1,0 +1,8 @@
+gluon> 90 * time.Minute
+(time.Duration) 1h30m0s  = 5400s
+gluon> events.Sample().Customer
+(uuid.UUID) 5f0c2c1e-8a7b-4e0f-9c6d-3b2a1f0e9d8c  v4 random, RFC 4122
+gluon> sql.NullString{}
+(sql.NullString) NULL
+gluon> sql.NullString{String: "NULL", Valid: true}
+(sql.NullString) "NULL"

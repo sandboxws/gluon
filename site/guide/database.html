@@ -1,0 +1,52 @@
+{% define "side" %}<a href="#found"><span class="rn">1</span><span class="rt">What gluon found</span></a>
+<a href="#init"><span class="rn">2</span><span class="rt">Writing it down</span></a>
+<a href="#query"><span class="rn">3</span><span class="rt">Querying it</span></a>
+<a href="#trust"><span class="rn">4</span><span class="rt">What it will not do</span></a>{% end %}
+{% define "main" %}
+<section class="card" id="found">
+  <div class="card-head"><span class="idx">1</span><div class="hd"><h2>What gluon found, and where</h2></div></div>
+  <div class="card-body">
+    <p class="lead">Attached to a project, the next question is usually about its data. {% cmd ":db" %} says what gluon can reach and where it learned it — and until you have written that down, {% cmd ":query" %} will not guess.</p>
+    {% session "db-detect" %}
+    <p>Nothing was configured here. The settings file names <code>data/shop.db</code>, and the file itself is a SQLite database because its first sixteen bytes say so — so the two merge into one answer with two sources rather than two answers to choose between. Two genuinely different databases would be listed and refused, because the wrong guess here is a query against the wrong data.</p>
+    <p><strong>A value is a database because of its shape, never because of its name.</strong> <code>DATABASE_URL=https://api.example.com</code> is a URL; a <code>fixtures.db</code> full of JSON is not SQLite. Detection reads <code>.env</code>, compose, config and Go files by shape, sends nothing anywhere, and opens nothing until a query runs. The driver is the one the project already requires — gluon never links one.</p>
+  </div>
+</section>
+
+<section class="card" id="init">
+  <div class="card-head"><span class="idx">2</span><div class="hd"><h2>Writing it down</h2></div></div>
+  <div class="card-body">
+    <p class="lead"><code>gluon init</code> records the database, and what it records is a reference: where the connection lives, never what it is.</p>
+    {% session "db-init" "from the project's directory" %}
+    <p><strong>gluon does not store passwords.</strong> It stores the name of the variable, or the file and key, that a connection string lives in, and reads the value when a query runs — so the config is safe to read, to share and to commit, and the loader refuses a <code>dsn</code> that carries a password inline. A SQLite file inside the project is named relative to <code>gluon.toml</code>, so the file still points at it after the project moves.</p>
+    <p>Nothing is written without being asked. <code>-no-prompt</code> prints the block and stops; <code>gluon init</code> on its own asks where it should go; writing without the question takes <code>-write</code> and either <code>-local</code> — <code>./gluon.toml</code>, which travels with the project and may set only <code>[[database]]</code> and <code>imports</code> — or <code>-global</code>, your own config. The nearest <code>gluon.toml</code> wins over the global config, and the two are never merged, because a half-merged database configuration is untraceable.</p>
+  </div>
+</section>
+
+<section class="card" id="query">
+  <div class="card-head"><span class="idx">3</span><div class="hd"><h2>Querying it</h2></div></div>
+  <div class="card-body">
+    <p class="lead">{% cmd ":query" %} runs one statement against the configured database, through the project's own driver.</p>
+    {% session "db-query" %}
+    {% shot "db" %}
+    <p>A read runs inside a read-only transaction, which is a guarantee the server enforces rather than one gluon claims; when a driver has no such thing the answer says so. Anything else needs {% cmd ":query" "-w" %}, and the check in front of it is on the first word — a keyword check, there to catch the paste you did not mean, not to prove a statement safe. A write runs as written, outside any transaction, and <code>:query</code> reports what a statement returned: an <code>UPDATE</code> returns no rows, so the <code>SELECT</code> after it is how you see what changed.</p>
+    <p>A cell that was SQL <code>NULL</code> and a cell holding the text <code>NULL</code> are different answers, so the text is quoted, and the distinction survives a pipe that has stripped the colour. {% cmd ":query" "-json" %} answers with the same rows in a shape a program reads — a <code>NULL</code> is JSON <code>null</code>, every other cell is text as the driver scanned it, <code>type</code> is what the database declared, and <code>truncated</code> says whether the fetch cap bound. {% cmd ":query" "-d" %} picks a database by name when a project configures several.</p>
+    <p><strong>A query is never answered from cache.</strong> gluon caches results by program text, which is right for <code>:undo</code> and wrong for a database: the same <code>SELECT count(*)</code> twice would report the count from when you first asked. {% cmd ":migrations" %} reads a migration library's tracking table through the same connection — <a href="plugins.html#data">Plugins</a> has it.</p>
+  </div>
+</section>
+
+<section class="card" id="trust">
+  <div class="card-head"><span class="idx">4</span><div class="hd"><h2>What it will not do</h2></div></div>
+  <div class="card-body">
+    <div class="call check">
+      <span class="lbl">The whole trust model</span>
+      <ul>
+        <li>No connection string on a command line: there is no <code>-dsn</code> and no <code>:db connect &lt;url&gt;</code>, because either would put a password in a history file.</li>
+        <li>No password in a config gluon writes, and none accepted inline in one it reads.</li>
+        <li>No connection string in the generated program: it reaches the child through its environment, and the password lives in an unexported field whose printed form is always the redacted one, so <code>%v</code>, a log line or <code>-json</code> cannot leak it.</li>
+        <li>No guess between two databases, and no driver linked into gluon.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+{% end %}

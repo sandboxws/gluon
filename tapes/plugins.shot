@@ -1,0 +1,11 @@
+# The plugins a project's build list turned on, and one at work.
+Shot plugins
+Alt :routes listing every route the project's chi router declares, method and path
+Caption Plugins switch themselves on from your go.mod. With chi in the build list, :routes lists every route your router declares.
+Headline Your router's routes, listed
+Promo 16:9 1:1
+Host shop
+Args -host .
+Grid 72x16
+Line :routes api.Routes(nil)
+Screenshot

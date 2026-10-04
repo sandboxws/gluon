@@ -1,0 +1,13 @@
+{% define "side" %}<a href="#guides"><span class="rn">G</span><span class="rt">The guides</span></a>{% end %}
+{% define "main" %}
+<section class="card" id="guides">
+  <div class="card-head"><span class="idx">G</span><div class="hd"><h2>Every feature, with the lines to type</h2></div></div>
+  <div class="card-body">
+    <p class="lead">The guides walk through gluon a task at a time — what each piece does, why it is built the way it is, and a session you can type along with. The <a href="{% rel "reference/index.html" %}">reference</a> is the same ground as tables, generated from the code.</p>
+    <div class="pgs">
+    {% range .Section %}{% if not (here .) %}<a class="pg" href="{% rel .Path %}"><span class="pg-k">{% .Eyebrow %}</span><b>{% .Title %}</b><span>{% .Lead %}</span></a>
+    {% end %}{% end %}
+    </div>
+  </div>
+</section>
+{% end %}

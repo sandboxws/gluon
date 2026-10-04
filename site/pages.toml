@@ -1,0 +1,232 @@
+# The documentation site. site/ is what is written; docs/ is what GitHub Pages
+# serves, from main's /docs, and `just docs` renders the one into the other.
+# Pages are listed here and never globbed, so nothing in site/ reaches the
+# site unless it is named below.
+
+[site]
+base_url = "https://sandboxws.github.io/gluon/"
+repo = "https://github.com/sandboxws/gluon"
+release = "0.1.0"
+# Whether the install line and the source link are rendered. They name the
+# repository, so a private checkout of the site leaves them out entirely.
+public = true
+
+# The guides: written by hand, each command worked through on its page.
+
+[[page]]
+path = "guide/index.html"
+source = "guide/index.html"
+title = "Guides"
+eyebrow = "Using gluon"
+lead = "Every feature of gluon a task at a time, with a session to type along with."
+section = "Guides"
+layout = true
+
+[[page]]
+path = "guide/start.html"
+source = "guide/start.html"
+title = "The first five minutes"
+eyebrow = "Guide 01"
+lead = "Install gluon, type Go, and read what comes back: a value with the truth attached, it and _N, errors that name your line, and help for every command."
+section = "Guides"
+layout = true
+
+[[page]]
+path = "guide/inspecting.html"
+source = "guide/inspecting.html"
+title = "Inspecting"
+eyebrow = "Guide 02"
+lead = "What is this, and what can it do: types, method sets, interfaces, memory layout, documentation and what each Go release added — most of it answered by the type checker, without a build."
+section = "Guides"
+layout = true
+
+[[page]]
+path = "guide/measuring.html"
+source = "guide/measuring.html"
+title = "Measuring"
+eyebrow = "Guide 03"
+lead = "How fast it is, where the time and the allocations went, and what the compiler decided about it — through testing.B, pprof, the compiler's own reports, vet and the race detector."
+section = "Guides"
+layout = true
+
+[[page]]
+path = "guide/rendering.html"
+source = "guide/rendering.html"
+title = "Rendering"
+eyebrow = "Guide 04"
+lead = "How a value is drawn: five shapes, cycles and sharing said out loud, how much of a value you see, and a view that scrolls for the large ones."
+section = "Guides"
+layout = true
+
+[[page]]
+path = "guide/session.html"
+source = "guide/session.html"
+title = "The session"
+eyebrow = "Guide 05"
+lead = "The program your lines became, why every line replays and what that costs, and the commands that edit, snapshot, recall and test a session."
+section = "Guides"
+layout = true
+
+[[page]]
+path = "guide/scratchpads.html"
+source = "guide/scratchpads.html"
+title = "Scratchpads"
+eyebrow = "Guide 06"
+lead = "A session kept on disk under a name, graduated into a module you can open in an editor or a debugger, or shared as a playground link."
+section = "Guides"
+layout = true
+
+[[page]]
+path = "guide/editing.html"
+source = "guide/editing.html"
+title = "Editing"
+eyebrow = "Guide 07"
+lead = "Completion from the type checker, readline and vim keys, the session in your editor, a buffer for more than a line, and gluon's own editor."
+section = "Guides"
+layout = true
+
+[[page]]
+path = "guide/project.html"
+source = "guide/project.html"
+title = "In a project"
+eyebrow = "Guide 08"
+lead = "Attach to the module you are standing in: its internal packages, a reload after you edit it, modules you add, its environment and config, and requests to it."
+section = "Guides"
+layout = true
+
+[[page]]
+path = "guide/database.html"
+source = "guide/database.html"
+title = "The database"
+eyebrow = "Guide 09"
+lead = "What gluon found and where, written down as a reference and never a password, then queried through the project's own driver."
+section = "Guides"
+layout = true
+
+[[page]]
+path = "guide/plugins.html"
+source = "guide/plugins.html"
+title = "Plugins"
+eyebrow = "Guide 10"
+lead = "What each library plugin adds — renderers, and a command for the question worth asking — worked through against a real service, and how to write your own."
+section = "Guides"
+layout = true
+
+[[page]]
+path = "guide/configuration.html"
+source = "guide/configuration.html"
+title = "Configuration"
+eyebrow = "Guide 11"
+lead = "Every setting from the prompt, config.toml, the startup screen, and the environment variables gluon reads."
+section = "Guides"
+layout = true
+
+[[page]]
+path = "guide/themes.html"
+source = "guide/themes.html"
+title = "Themes"
+eyebrow = "Guide 12"
+lead = "Twenty-three palettes chosen while looking at your own code, the ground each was drawn for, your own, and one converted from an editor theme."
+section = "Guides"
+layout = true
+
+[[page]]
+path = "guide/scripting.html"
+source = "guide/scripting.html"
+title = "Scripting"
+eyebrow = "Guide 13"
+lead = "gluon -e, pipes and -json: every inspector as a shell one-liner, against a project or not, and a struct held to its layout in CI."
+section = "Guides"
+layout = true
+
+[[page]]
+path = "guide/mcp.html"
+source = "guide/mcp.html"
+title = "MCP"
+eyebrow = "Guide 14"
+lead = "gluon mcp: the inspectors as tools a coding agent calls, in two tiers, with execution granted by whoever edits the config."
+section = "Guides"
+layout = true
+
+[[page]]
+path = "guide/design.html"
+source = "guide/design.html"
+title = "How it works"
+eyebrow = "Guide 15"
+lead = "Why the real compiler, where a line's time goes, what replaying the session costs, how gluon compares, and what it never does."
+section = "Guides"
+layout = true
+
+# The reference: rendered from the registries, so it cannot say what :help
+# does not.
+
+[[page]]
+path = "reference/index.html"
+source = "reference/index.html"
+title = "Reference"
+eyebrow = "Generated from the code"
+lead = "Every command, plugin, setting, subcommand, MCP tool and theme, read out of the value in gluon's source that defines it."
+section = "Reference"
+layout = true
+
+[[page]]
+path = "reference/commands.html"
+source = "reference/commands.html"
+title = "Commands"
+eyebrow = "Reference"
+lead = "Every meta command: what it takes, its flags, lines to type, and the commands beside it — the page :help prints, for all of them at once."
+section = "Reference"
+layout = true
+
+[[page]]
+path = "reference/plugins.html"
+source = "reference/plugins.html"
+title = "Plugins"
+eyebrow = "Reference"
+lead = "What each built-in plugin adds for its library — commands, renderers, imports — and what turns it on."
+section = "Reference"
+layout = true
+
+[[page]]
+path = "reference/settings.html"
+source = "reference/settings.html"
+title = "Settings"
+eyebrow = "Reference"
+lead = "Every key config.toml takes: what it does, its default, and the values it accepts."
+section = "Reference"
+layout = true
+
+[[page]]
+path = "reference/cli.html"
+source = "reference/cli.html"
+title = "The gluon command"
+eyebrow = "Reference"
+lead = "Subcommands and flags, for everything you do from the shell rather than at the prompt."
+section = "Reference"
+layout = true
+
+[[page]]
+path = "reference/mcp.html"
+source = "reference/mcp.html"
+title = "MCP tools"
+eyebrow = "Reference"
+lead = "What gluon mcp serves a coding agent — each tool's description and schema exactly as the agent receives them."
+section = "Reference"
+layout = true
+
+[[page]]
+path = "reference/themes.html"
+source = "reference/themes.html"
+title = "Themes"
+eyebrow = "Reference"
+lead = "Every built-in palette, each sample drawn in the theme it names."
+section = "Reference"
+layout = true
+
+# The landing page is rendered last: it counts what the guides work through,
+# and a guide is counted as it is rendered.
+
+[[page]]
+path = "index.html"
+source = "index.html"
+title = "gluon — a REPL and scratch runner for Go"

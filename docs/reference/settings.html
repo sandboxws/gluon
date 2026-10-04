@@ -1,0 +1,328 @@
+<!doctype html>
+<!-- generated from site/ by `just docs`: edit the source, not this file -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Settings — gluon</title>
+<meta name="description" content="Every key config.toml takes: what it does, its default, and the values it accepts.">
+<meta name="theme-color" content="#0A0A0A">
+<script>(function(d,m){try{m=/[?&]palette=(gruv|go)\b/.exec(location.search);m=m?m[1]:localStorage.getItem("gluon:theme")}catch(e){}if(m==="gruv")d.documentElement.setAttribute("data-theme","gruv")})(document)</script>
+<link rel="canonical" href="https://sandboxws.github.io/gluon/reference/settings.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Settings — gluon">
+<meta property="og:description" content="Every key config.toml takes: what it does, its default, and the values it accepts.">
+<meta property="og:url" content="https://sandboxws.github.io/gluon/reference/settings.html">
+<meta property="og:image" content="https://sandboxws.github.io/gluon/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="gluon's startup screen in a Go project, beside the words: A Go REPL that stands in your project">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sandboxws.github.io/gluon/img/og.png">
+<meta name="twitter:title" content="Settings — gluon">
+<meta name="twitter:description" content="Every key config.toml takes: what it does, its default, and the values it accepts.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A0A0A'/%3E%3Cpath d='M9 9l7 7-7 7' stroke='%2300ADD8' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M18 23h6' stroke='%2300ADD8' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/gluon.css?v=980f3e8a">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="field" aria-hidden="true"></div>
+<div class="nav" id="nav">
+  <div class="nav-in">
+    <a class="nav-t" href="../index.html">gluon</a>
+    <span class="nav-sp"></span>
+    <a class="nav-m" href="../guide/index.html">Guides</a>
+    <a class="nav-m" href="../reference/index.html">Reference</a>
+    <span class="nav-m opt">v0.1.0</span>
+  </div>
+</div>
+
+<header class="hero wrap page">
+  <p class="eyebrow">Reference</p>
+  <h1 id="bigTitle">Settings</h1>
+  <p class="sub">Every key config.toml takes: what it does, its default, and the values it accepts.</p>
+</header>
+
+<div class="wrap cols">
+  <nav class="side" aria-label="Sections"><div class="side-in">
+    <p class="grp-h">This page</p>
+    <a href="#settings"><span class="rn">17</span><span class="rt">config.toml</span></a>
+    <p class="grp-h">Reference</p>
+    <a href="../reference/index.html"><span class="rt">Reference</span></a>
+    <a href="../reference/commands.html"><span class="rt">Commands</span></a>
+    <a href="../reference/plugins.html"><span class="rt">Plugins</span></a>
+    <a href="../reference/settings.html" aria-current="page" class="here"><span class="rt">Settings</span></a>
+    <a href="../reference/cli.html"><span class="rt">The gluon command</span></a>
+    <a href="../reference/mcp.html"><span class="rt">MCP tools</span></a>
+    <a href="../reference/themes.html"><span class="rt">Themes</span></a>
+    
+  </div></nav>
+  <main id="main">
+    
+<section class="card" id="settings">
+  <div class="card-head"><span class="idx">17</span><div class="hd"><h2>Every setting</h2><div class="chips"><span class="chip">~/.config/gluon/config.toml</span></div></div></div>
+  <div class="card-body">
+    <p class="lead"><code>:settings</code> lists these with what each is now; <code>:settings &lt;key&gt; &lt;value&gt;</code> writes one line of config.toml and leaves every other byte alone.</p>
+    <div class="flt-w" hidden><input class="flt" type="search" placeholder="/ to filter — a key or a word" aria-label="Filter the settings" data-filter=".ref"><span class="flt-n" aria-live="polite"></span></div>
+  
+    <article class="ref" id="imports" data-f="imports imports a line may name without a goimports pass">
+      <h3><a class="pl" href="#imports">imports</a><span class="ref-s">imports a line may name without a goimports pass</span></h3>
+      <div class="chips"><span class="chip">takes effect at once</span><span class="chip a">listed, not settable</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">default</td><td>none</td></tr>
+        <tr><td class="mono">accepts</td><td>import paths</td></tr>
+        
+        
+      </tbody></table></div>
+      <div class="prose"><p>A preloaded import is not written into every program: it is a name-to-path map consulted only when a line actually names the qualifier. So one that goes unused costs nothing, and one that is used skips ~135ms.</p>
+<p>an array — :settings writes one line, and rewriting a list wholesale takes the comments inside it. Edit config.toml, or use :get</p></div>
+    </article>
+  
+    <article class="ref" id="editor" data-f="editor what :edit opens, over $VISUAL and $EDITOR">
+      <h3><a class="pl" href="#editor">editor</a><span class="ref-s">what :edit opens, over $VISUAL and $EDITOR</span></h3>
+      <div class="chips"><span class="chip">takes effect at the next start</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">default</td><td>$VISUAL, then $EDITOR, then a terminal editor on $PATH</td></tr>
+        <tr><td class="mono">accepts</td><td>a command with its flags, or builtin</td></tr>
+        
+        <tr><td class="mono">e.g.</td><td><code>code --wait</code></td></tr>
+      </tbody></table></div>
+      <div class="prose"><p>Both of those are commonly unset, which is the only reason this exists.</p>
+<p>builtin is the one value that names no program: gluon&#39;s own full-screen editor, with vim keys, a check key and a key that runs what you wrote without closing it. It is read from here alone — an exported $EDITOR does not veto it, because whether to launch a program is not a question anyone answers with an environment variable.</p>
+</div>
+    </article>
+  
+    <article class="ref" id="timeout" data-f="timeout how long one evaluation may take">
+      <h3><a class="pl" href="#timeout">timeout</a><span class="ref-s">how long one evaluation may take</span></h3>
+      <div class="chips"><span class="chip">takes effect at once</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">default</td><td>30s</td></tr>
+        <tr><td class="mono">accepts</td><td>a Go duration, positive</td></tr>
+        
+        <tr><td class="mono">e.g.</td><td><code>2m</code></td></tr>
+      </tbody></table></div>
+      <div class="prose"><p>The whole session replays on every line, so this bounds the replay and not just the newest expression.</p>
+</div>
+    </article>
+  
+    <article class="ref" id="banner" data-f="banner how much the startup screen says">
+      <h3><a class="pl" href="#banner">banner</a><span class="ref-s">how much the startup screen says</span></h3>
+      <div class="chips"><span class="chip">takes effect at the next start</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">default</td><td>full</td></tr>
+        <tr><td class="mono">accepts</td><td>full, compact, off</td></tr>
+        <tr><td class="mono">full</td><td>the wordmark, and a row for each thing the session starts with</td></tr><tr><td class="mono">compact</td><td>one line — the version and the toolchain — and the hints</td></tr><tr><td class="mono">off</td><td>nothing at all: the prompt, and that is it</td></tr>
+        <tr><td class="mono">e.g.</td><td><code>compact</code></td></tr>
+      </tbody></table></div>
+      <div class="prose"><p>full is the wordmark, the version beside it, and a row for each thing the session starts with: the scratchpad it landed in, the module it attached to, the database it can see, the plugins this project&#39;s build list activated. A row appears only where there is something to say, so a bare directory on defaults shows one row and a project shows as many as it has facts.</p>
+<p>compact is the version and the toolchain on one line, and the hints line under it. off prints neither.</p>
+<p>Below sixty columns the wordmark is dropped on its own, because it is a picture and a picture that wraps is torn in half. The rows stay: they are the half that is about this session, and they are thirty columns wide.</p>
+<p>A scratchpad that could not be opened is reported whatever this says. A session that believes it is being saved and is not is the failure that whole feature exists to avoid, and it is not decoration to turn down.</p>
+<p>Only an interactive session has one. A piped script, gluon -e and the MCP server print none of this whatever this says.</p>
+</div>
+    </article>
+  
+    <article class="ref" id="hosts" data-f="hosts per-module imports the host&#39;s own index cannot offer">
+      <h3><a class="pl" href="#hosts">hosts</a><span class="ref-s">per-module imports the host&#39;s own index cannot offer</span></h3>
+      <div class="chips"><span class="chip">takes effect at once</span><span class="chip a">listed, not settable</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">default</td><td>none</td></tr>
+        <tr><td class="mono">accepts</td><td>a table per module path</td></tr>
+        
+        
+      </tbody></table></div>
+      <div class="prose"><p>a table per module path, each holding a list — neither is one line</p></div>
+    </article>
+  
+    <article class="ref" id="database" data-f="database how to reach a project&#39;s database, not its password">
+      <h3><a class="pl" href="#database">database</a><span class="ref-s">how to reach a project&#39;s database, not its password</span></h3>
+      <div class="chips"><span class="chip">takes effect at once</span><span class="chip a">listed, not settable</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">default</td><td>none</td></tr>
+        <tr><td class="mono">accepts</td><td>[[database]] blocks</td></tr>
+        
+        
+      </tbody></table></div>
+      <div class="prose"><p>an array of tables — `gluon init` writes one, and :db reports what it found</p></div>
+    </article>
+  
+    <article class="ref" id="input.mode" data-f="input.mode how the prompt reads keys">
+      <h3><a class="pl" href="#input.mode">input.mode</a><span class="ref-s">how the prompt reads keys</span></h3>
+      <div class="chips"><span class="chip">takes effect at once</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">default</td><td>emacs</td></tr>
+        <tr><td class="mono">accepts</td><td>emacs, vim</td></tr>
+        <tr><td class="mono">emacs</td><td>readline bindings — ctrl-a, ctrl-e, alt-f, alt-b</td></tr><tr><td class="mono">vim</td><td>modal editing — esc commands, i inserts</td></tr>
+        <tr><td class="mono">e.g.</td><td><code>vim</code></td></tr>
+      </tbody></table></div>
+      <div class="prose"><p>emacs is the readline subset gluon has always bound — ctrl-a, ctrl-e, alt-f, alt-b. vim adds a normal mode: esc commands, i inserts, and the motions, operators, counts and registers that go with them.</p>
+<p>In vim mode k and j walk history, because a one-line prompt has no line above; ctrl-r is redo in normal mode and reverse search in insert; and u undoes your typing, where <a href="commands.html#undo"><code>:undo</code></a> drops a session entry.</p>
+<p>The prompt says which mode it is in — gluon[i]&gt; while you type and gluon[n]&gt; while you command, in the colour theme.mode gives it.</p>
+<p>It changes which keystrokes produce which line and nothing else. A pipe, <code>gluon -e</code> and the MCP server have no keyboard and are unaffected.</p>
+</div>
+    </article>
+  
+    <article class="ref" id="value.form" data-f="value.form the shape a value is drawn in">
+      <h3><a class="pl" href="#value.form">value.form</a><span class="ref-s">the shape a value is drawn in</span></h3>
+      <div class="chips"><span class="chip">takes effect at once</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">default</td><td>table</td></tr>
+        <tr><td class="mono">accepts</td><td>table, line, tree, columns, literal</td></tr>
+        <tr><td class="mono">table</td><td>a bordered table per collection</td></tr><tr><td class="mono">line</td><td>one line per value, however deep it goes</td></tr><tr><td class="mono">tree</td><td>indented and borderless — the only form that shows nesting</td></tr><tr><td class="mono">columns</td><td>a column per field, for a list of structs of one shape</td></tr><tr><td class="mono">literal</td><td>Go source you could paste into a test</td></tr>
+        <tr><td class="mono">e.g.</td><td><code>tree</code></td></tr>
+      </tbody></table></div>
+      <div class="prose"><p>table is the bordered box gluon has always drawn. The others answer shapes it serves badly: columns gives a list of structs a column per field, tree recurses where a table cell truncates, line keeps a small value on its line, and literal is source you could paste into a test.</p>
+<p>It changes what a terminal draws and nothing else: a pipe, <code>gluon -e</code> and the -json envelopes are frozen surfaces and never see a form.</p>
+</div>
+    </article>
+  
+    <article class="ref" id="value.items" data-f="value.items how many elements of a collection are described">
+      <h3><a class="pl" href="#value.items">value.items</a><span class="ref-s">how many elements of a collection are described</span></h3>
+      <div class="chips"><span class="chip">takes effect at once</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">default</td><td>200</td></tr>
+        <tr><td class="mono">accepts</td><td>a whole number, 1 to 100000</td></tr>
+        
+        <tr><td class="mono">e.g.</td><td><code>500</code></td></tr>
+      </tbody></table></div>
+      <div class="prose"><p>The child describes this many elements of one collection and reports how many it left out; every renderer already draws the shortfall. Raise it to see a long slice or map whole, rather than slicing it by hand.</p>
+<p>A separate budget bounds the whole value — the thing that keeps one *http.Request from becoming a dump of its transport — and this does not move it. A large collection of large elements can still stop short of this number.</p>
+<p>It reaches the child in its environment, so a shell that already exports GLUON_MAX_ITEMS sets it for a session that never asked.</p>
+</div>
+    </article>
+  
+    <article class="ref" id="value.depth" data-f="value.depth how many levels of a value are described">
+      <h3><a class="pl" href="#value.depth">value.depth</a><span class="ref-s">how many levels of a value are described</span></h3>
+      <div class="chips"><span class="chip">takes effect at once</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">default</td><td>6</td></tr>
+        <tr><td class="mono">accepts</td><td>a whole number, 1 to 100000</td></tr>
+        
+        <tr><td class="mono">e.g.</td><td><code>10</code></td></tr>
+      </tbody></table></div>
+      <div class="prose"><p>How far into a nested value the child describes structure before falling back to a flat line. A pointer unwrap does not consume a level, so this counts composites and not indirections.</p>
+<p>A separate budget bounds the whole value and this does not move it, so a deep value may still flatten before this number. Cycles are detected independently, so raising it cannot turn a linked list into nonsense.</p>
+<p>It reaches the child in its environment, so a shell that already exports GLUON_MAX_DEPTH sets it for a session that never asked.</p>
+</div>
+    </article>
+  
+    <article class="ref" id="value.form.list" data-f="value.form.list the form a list takes, over value.form">
+      <h3><a class="pl" href="#value.form.list">value.form.list</a><span class="ref-s">the form a list takes, over value.form</span></h3>
+      <div class="chips"><span class="chip">takes effect at once</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">default</td><td>whatever value.form says</td></tr>
+        <tr><td class="mono">accepts</td><td>table, line, tree, columns, literal</td></tr>
+        <tr><td class="mono">table</td><td>a bordered table per collection</td></tr><tr><td class="mono">line</td><td>one line per value, however deep it goes</td></tr><tr><td class="mono">tree</td><td>indented and borderless — the only form that shows nesting</td></tr><tr><td class="mono">columns</td><td>a column per field, for a list of structs of one shape</td></tr><tr><td class="mono">literal</td><td>Go source you could paste into a test</td></tr>
+        <tr><td class="mono">e.g.</td><td><code>line</code></td></tr>
+      </tbody></table></div>
+      <div class="prose"><p>Applies at the top level only. What a value nested inside a table cell or a tree node gets is decided by the form drawing it, not by a second lookup.</p>
+</div>
+    </article>
+  
+    <article class="ref" id="value.form.map" data-f="value.form.map the form a map takes, over value.form">
+      <h3><a class="pl" href="#value.form.map">value.form.map</a><span class="ref-s">the form a map takes, over value.form</span></h3>
+      <div class="chips"><span class="chip">takes effect at once</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">default</td><td>whatever value.form says</td></tr>
+        <tr><td class="mono">accepts</td><td>table, line, tree, columns, literal</td></tr>
+        <tr><td class="mono">table</td><td>a bordered table per collection</td></tr><tr><td class="mono">line</td><td>one line per value, however deep it goes</td></tr><tr><td class="mono">tree</td><td>indented and borderless — the only form that shows nesting</td></tr><tr><td class="mono">columns</td><td>a column per field, for a list of structs of one shape</td></tr><tr><td class="mono">literal</td><td>Go source you could paste into a test</td></tr>
+        <tr><td class="mono">e.g.</td><td><code>line</code></td></tr>
+      </tbody></table></div>
+      <div class="prose"><p>Applies at the top level only. What a value nested inside a table cell or a tree node gets is decided by the form drawing it, not by a second lookup.</p>
+</div>
+    </article>
+  
+    <article class="ref" id="value.form.struct" data-f="value.form.struct the form a struct takes, over value.form">
+      <h3><a class="pl" href="#value.form.struct">value.form.struct</a><span class="ref-s">the form a struct takes, over value.form</span></h3>
+      <div class="chips"><span class="chip">takes effect at once</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">default</td><td>whatever value.form says</td></tr>
+        <tr><td class="mono">accepts</td><td>table, line, tree, columns, literal</td></tr>
+        <tr><td class="mono">table</td><td>a bordered table per collection</td></tr><tr><td class="mono">line</td><td>one line per value, however deep it goes</td></tr><tr><td class="mono">tree</td><td>indented and borderless — the only form that shows nesting</td></tr><tr><td class="mono">columns</td><td>a column per field, for a list of structs of one shape</td></tr><tr><td class="mono">literal</td><td>Go source you could paste into a test</td></tr>
+        <tr><td class="mono">e.g.</td><td><code>line</code></td></tr>
+      </tbody></table></div>
+      <div class="prose"><p>Applies at the top level only. What a value nested inside a table cell or a tree node gets is decided by the form drawing it, not by a second lookup.</p>
+</div>
+    </article>
+  
+    <article class="ref" id="scratch.pad" data-f="scratch.pad the scratchpad an interactive session lands in">
+      <h3><a class="pl" href="#scratch.pad">scratch.pad</a><span class="ref-s">the scratchpad an interactive session lands in</span></h3>
+      <div class="chips"><span class="chip">takes effect at the next start</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">default</td><td>default</td></tr>
+        <tr><td class="mono">accepts</td><td>a scratchpad name, or - for none</td></tr>
+        
+        <tr><td class="mono">e.g.</td><td><code>notes</code></td></tr>
+      </tbody></table></div>
+      <div class="prose"><p>A scratchpad is a named session on disk, so the lines you were in the middle of are still there tomorrow. <code>-</code> or <code>off</code> starts in none, which is the persistent form of <code>gluon -no-scratch</code>: a scratchpad puts what you typed on disk, and that is a decision worth being able to write down.</p>
+<p>Only an interactive session lands in one. <code>gluon -e</code>, a piped script and the MCP server open none whatever this says.</p>
+</div>
+    </article>
+  
+    <article class="ref" id="plugins.disable" data-f="plugins.disable library plugins that must not activate">
+      <h3><a class="pl" href="#plugins.disable">plugins.disable</a><span class="ref-s">library plugins that must not activate</span></h3>
+      <div class="chips"><span class="chip">takes effect at once</span><span class="chip a">listed, not settable</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">default</td><td>nothing disabled</td></tr>
+        <tr><td class="mono">accepts</td><td>plugin names — :plugins lists them</td></tr>
+        
+        
+      </tbody></table></div>
+      <div class="prose"><p>an array — :settings writes one line, and rewriting a list wholesale takes the comments inside it. Edit config.toml</p></div>
+    </article>
+  
+    <article class="ref" id="theme.name" data-f="theme.name the colour palette">
+      <h3><a class="pl" href="#theme.name">theme.name</a><span class="ref-s">the colour palette</span></h3>
+      <div class="chips"><span class="chip">takes effect at once</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">default</td><td>go</td></tr>
+        <tr><td class="mono">accepts</td><td>an installed theme — :theme lists them</td></tr>
+        <tr><td class="mono">catppuccin-latte</td><td>Catppuccin Latte: mauve keywords, green strings, amber types · light</td></tr><tr><td class="mono">catppuccin-mocha</td><td>Catppuccin Mocha: mauve keywords, green strings, yellow types · dark</td></tr><tr><td class="mono">dracula</td><td>Dracula: pink keywords, yellow strings, cyan types · dark</td></tr><tr><td class="mono">github-dark</td><td>GitHub Dark: red keywords, pale-blue strings, orange types · dark</td></tr><tr><td class="mono">github-light</td><td>GitHub Light: red keywords, navy strings, brown types · light</td></tr><tr><td class="mono">go</td><td>gluon&#39;s own palette: violet keywords, green strings, cyan types · dark</td></tr><tr><td class="mono">go-light</td><td>gluon&#39;s own palette, for a light terminal · light</td></tr><tr><td class="mono">gruvbox-dark</td><td>Gruvbox Dark: red keywords, green strings, yellow types · dark</td></tr><tr><td class="mono">gruvbox-light</td><td>Gruvbox Light: red keywords, olive strings, amber types · light</td></tr><tr><td class="mono">gruvppuccin-mocha</td><td>Gruvppuccin Mocha: violet keywords, green strings, amber types · dark</td></tr><tr><td class="mono">gruvppuccin-nebula</td><td>Gruvppuccin Nebula: mocha&#39;s accents, violet-grey furniture · dark</td></tr><tr><td class="mono">gruvppuccin-nocturne</td><td>Gruvppuccin Nocturne: indigo keywords, teal strings, sky numbers · dark</td></tr><tr><td class="mono">gruvppuccin-nocturne-gruv</td><td>Gruvppuccin Nocturne Gruv: mocha&#39;s accents, dimmer greys · dark</td></tr><tr><td class="mono">gruvppuccin-void</td><td>Gruvppuccin Void: mocha&#39;s accents, deep violet greys · dark</td></tr><tr><td class="mono">monokai</td><td>Monokai: magenta keywords, yellow strings, green types · dark</td></tr><tr><td class="mono">nord</td><td>Nord: blue keywords, green strings, teal types · dark</td></tr><tr><td class="mono">one-dark</td><td>One Dark: purple keywords, green strings, yellow types · dark</td></tr><tr><td class="mono">one-light</td><td>One Light: purple keywords, green strings, amber types · light</td></tr><tr><td class="mono">solarized-dark</td><td>Solarized Dark: olive keywords, cyan strings, orange types · dark</td></tr><tr><td class="mono">solarized-light</td><td>Solarized Light: the same eight accents, read on paper · light</td></tr><tr><td class="mono">terminal</td><td>your terminal&#39;s own sixteen colours · either</td></tr><tr><td class="mono">tokyo-night</td><td>Tokyo Night: violet keywords, green strings, pale-blue types · dark</td></tr><tr><td class="mono">tokyo-night-day</td><td>Tokyo Night Day: violet keywords, green strings, ink types · light</td></tr>
+        <tr><td class="mono">e.g.</td><td><code>terminal</code></td></tr>
+      </tbody></table></div>
+      <div class="prose"><p><a href="commands.html#theme"><code>:theme</code></a> is the other way to set this, and the one that shows you the palette before you choose it. Both write the same line.</p>
+</div>
+    </article>
+  
+    <article class="ref" id="theme.-role" data-f="theme.&lt;role&gt; one colour, on top of whichever theme is on">
+      <h3><a class="pl" href="#theme.-role">theme.&lt;role&gt;</a><span class="ref-s">one colour, on top of whichever theme is on</span></h3>
+      <div class="chips"><span class="chip">takes effect at once</span></div>
+      <div class="tw"><table class="kv"><tbody>
+        <tr><td class="mono">default</td><td>whatever the chosen theme says</td></tr>
+        <tr><td class="mono">accepts</td><td>a hex triple (#5fafd7), an ANSI number (6), or none</td></tr>
+        
+        <tr><td class="mono">e.g.</td><td><code>#5fafd7</code></td></tr>
+      </tbody></table></div>
+      <div class="prose"><p>A role is a thing gluon paints, not a place: keyword, string, error and the thirteen others <a href="commands.html#theme"><code>:theme</code></a>&#39;s picker shows in their own colour.</p>
+</div>
+    </article>
+  
+  </div>
+</section>
+
+    <nav class="pn" aria-label="Pages beside this one">
+  <a class="pg" href="../reference/plugins.html"><span class="pg-k">← previous</span><b>Plugins</b></a>
+  <a class="pg next" href="../reference/cli.html"><span class="pg-k">next →</span><b>The gluon command</b></a>
+</nav>
+  </main>
+</div>
+
+<footer class="foot"><div class="wrap fgrid">
+    <div><div class="fh">The site</div><ul>
+        <li><a href="../index.html">gluon</a> — what it is, in one page</li>
+        <li><a href="../guide/index.html">Guides</a> — every feature, with the lines to type</li>
+        <li><a href="../reference/index.html">Reference</a> — generated from the code that defines it</li>
+      </ul></div>
+    <div><div class="fh">This page</div><ul>
+        <li>v0.1.0 · <code>github.com/sandboxws/gluon</code></li>
+        <li>Generated from <code>site/</code> by <code>just docs</code></li>
+        <li>No analytics, no cookies; the palette choice is one localStorage key</li>
+        <li><a href="https://github.com/sandboxws/gluon">Source</a></li>
+      </ul></div>
+</div></footer>
+<script src="../assets/gluon.js?v=0b5d44bf"></script>
+</body>
+</html>

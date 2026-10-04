@@ -1,0 +1,102 @@
+{% define "side" %}<a href="#types"><span class="rn">1</span><span class="rt">What is this</span></a>
+<a href="#methods"><span class="rn">2</span><span class="rt">What can it do</span></a>
+<a href="#interfaces"><span class="rn">3</span><span class="rt">Interfaces, embedding, generics</span></a>
+<a href="#mocks"><span class="rn">4</span><span class="rt">Stand-ins</span></a>
+<a href="#memory"><span class="rn">5</span><span class="rt">Where it sits in memory</span></a>
+<a href="#compare"><span class="rn">6</span><span class="rt">Differences and error chains</span></a>
+<a href="#docs"><span class="rn">7</span><span class="rt">Documentation</span></a>
+<a href="#since"><span class="rn">8</span><span class="rt">What your release brought</span></a>{% end %}
+{% define "main" %}
+<section class="card" id="types">
+  <div class="card-head"><span class="idx">1</span><div class="hd"><h2>What is this</h2><div class="chips"><span class="chip o">no build</span></div></div></div>
+  <div class="card-body">
+    <p class="lead">The other half of a REPL: what is this, and what can it do. In a compiled language both answers are static, so most of what is on this page never builds or runs anything. It asks the type checker gluon already runs in its own process, and comes back in about a millisecond.</p>
+    {% session "inspect-types" "the type checker, asked directly" %}
+    {% shot "types" ":t and :m in a terminal — the pasted methods, and the interface they satisfy" %}
+    <p>{% cmd ":t" %} names the type of any expression — both values, when a call returns two. {% cmd ":t" "-v" %} adds what the type is underneath and its kind, and says when the value is a constant, because a constant is untyped until something gives it a type and that is often the surprise.</p>
+    <p>An interface is where static stops. What is inside <code>r</code> is not a fact about the program text, so <code>:t r</code> says it cannot know rather than guessing. {% cmd ":t" "-d" %} is the one question here that runs something: it evaluates the expression once and reports the dynamic type — and because it runs it, a call with a side effect has that effect.</p>
+    <h3>What is in scope</h3>
+    {% session "inspect-scope" %}
+    <p>{% cmd ":ls" %} is pry's <code>ls</code>: every variable, function and type the session has bound, with the types the checker already worked out, and the values <code>_1</code>, <code>_2</code> and on hold, with the expression each came from.</p>
+  </div>
+</section>
+
+<section class="card" id="methods">
+  <div class="card-head"><span class="idx">2</span><div class="hd"><h2>What can it do</h2><div class="chips"><span class="chip o">no build</span></div></div></div>
+  <div class="card-body">
+    <p class="lead">{% cmd ":m" %} lists a type's method set and the interfaces it satisfies. The pointer-only methods are marked, because the rule that puts them in <code>*T</code>'s set and not <code>T</code>'s is exactly the one that trips people up.</p>
+    {% session "inspect-methods" %}
+    <p>Every method of a <code>strings.Builder</code> is on the pointer, so a <code>Builder</code> value satisfies nothing and a <code>*Builder</code> is a <code>fmt.Stringer</code> and an <code>io.Writer</code>. Satisfaction is checked against <code>error</code>, a few standard library interfaces, and every interface you declared this session — so <code>:m Square</code> answers whether it satisfies the <code>Shape</code> you wrote a minute ago.</p>
+    <h3>Against one interface</h3>
+    {% session "inspect-satisfy" %}
+    <p>{% cmd ":impl" %} asks of a type, {% cmd ":sat" %} of a value, and both answer against the interface you name — declared here, imported, or in the module you are attached to. A no names the method in the way and the signature the interface wants, and says when <code>*T</code> would have satisfied it though <code>T</code> does not, which is what the compiler's own error leaves you to work out.</p>
+    <p>{% cmd ":cast" %} separates two assertions Go reports very differently. One compiles and may fail when it runs — whether <code>any(1)</code> holds a string is a question about a value. The other can never succeed, because no value of the interface's type could hold the target; the compiler rejects it, naming a method you never mentioned, and <code>:cast</code> names it for you.</p>
+  </div>
+</section>
+
+<section class="card" id="interfaces">
+  <div class="card-head"><span class="idx">3</span><div class="hd"><h2>Interfaces, embedding, generics</h2><div class="chips"><span class="chip o">no build</span></div></div></div>
+  <div class="card-body">
+    <p class="lead">Three questions about declarations: who implements this interface, what does this embedding promote, and what does this generic accept.</p>
+    {% session "inspect-iface" %}
+    <p>{% cmd ":iface" %} lists an interface's methods and the types that implement it, directly and by pointer. The search covers what the session can name — its own types, the packages its program imports, the attached module's packages already loaded — and never the whole module cache, so it is fast; when it finds nothing it says how many types it searched, so "nothing implements it" cannot be mistaken for "nothing was searched".</p>
+    <p>{% cmd ":embeds" %} lays out what embedding brought in and from where. A method two embedded types both provide at the same depth is reported as ambiguous rather than resolved, because that selector does not compile: a <code>bufio.ReadWriter</code> has no <code>Reset</code> you can call, though both halves have one. {% cmd ":gen" %} reads a generic's type parameters and their constraints from the declaration, so a generic nobody has instantiated can still be asked what it would take.</p>
+  </div>
+</section>
+
+<section class="card" id="mocks">
+  <div class="card-head"><span class="idx">4</span><div class="hd"><h2>Stand-ins</h2><div class="chips"><span class="chip o">no build</span></div></div></div>
+  <div class="card-body">
+    <p class="lead">{% cmd ":mock" %} writes a mock implementation of an interface — a struct with a function field per method — and {% cmd ":spy" %} one that also records every call.</p>
+    {% session "inspect-mock" %}
+    <p>Both print source and declare nothing. The mock enters the session only if you paste it, so it cannot collide with a name you already have, and it is ordinary Go you can move into a test file. The methods are the method set <code>:m</code> computes, promoted ones included.</p>
+    <p>A method whose field is unset panics and names itself. The alternative — returning zero values — is how a mock makes a test pass for the wrong reason: the assertion holds because nothing was called, and nothing says so. A spy's count is <code>len</code> of its calls rather than a second field, so the two cannot disagree.</p>
+  </div>
+</section>
+
+<section class="card" id="memory">
+  <div class="card-head"><span class="idx">5</span><div class="hd"><h2>Where it sits in memory</h2></div></div>
+  <div class="card-body">
+    <p class="lead">{% cmd ":slice" %} shows a slice's runtime header — pointer, length, capacity — and says when two slices are looking at the same memory.</p>
+    {% session "inspect-memory" %}
+    {% shot "layout" "a type of the project's own, at the prompt of a session attached to it" %}
+    {% shot "slice" "the two slices over one backing array, and the append that writes through it" %}
+    <p>That sharing is invisible in the printed values and obvious in the pointers, which is the whole point: <code>y</code> starts one element into <code>x</code>, so appending to <code>y</code> wrote over <code>x[3]</code>. Strings work too, with offsets in bytes. <code>:slice</code> runs the session to read the headers, since pointers exist only at run time; they differ from one run to the next.</p>
+    <p>{% cmd ":layout" %} is the same kind of question answered entirely by the type checker, so it never builds: each field's offset, the padding between them, and the order that would waste least. The sizes and alignments are the compiler's for the platform gluon runs on — this page was recorded on a 64-bit machine.</p>
+  </div>
+</section>
+
+<section class="card" id="compare">
+  <div class="card-head"><span class="idx">6</span><div class="hd"><h2>Differences and error chains</h2></div></div>
+  <div class="card-body">
+    <p class="lead">{% cmd ":diff" %} reports only what differs between two values, each difference with the path to it. {% cmd ":err" %} lays a wrapped error chain out flat, one level per line.</p>
+    {% session "inspect-diff" %}
+    <p>Two structs of a dozen fields that differ in one produce one row, which is the reason to have <code>:diff</code> rather than print both and read them. A difference in shape is reported as one — different types stop the comparison there instead of calling every field different, and a length or a missing key is stated as itself. Both values come from one evaluation, so anything non-deterministic is compared against the same run it came from.</p>
+    <p><code>%w</code> is Go's error idiom, and every level of a chain is something <code>errors.Is</code> and <code>errors.As</code> can match, so <code>:err</code> shows each level's dynamic type beside its message. A joined error shows every branch.</p>
+  </div>
+</section>
+
+<section class="card" id="docs">
+  <div class="card-head"><span class="idx">7</span><div class="hd"><h2>Documentation</h2></div></div>
+  <div class="card-body">
+    <p class="lead">{% cmd ":doc" %} is <code>go doc</code> at the prompt, and {% cmd ":doc" "-src" %} prints the implementation — pry's <code>show-source</code>. Three more flags cover what <code>go doc</code> has no answer for.</p>
+    {% session "inspect-doc" %}
+    {% shot "doc-src" ":doc -src, highlighted as the prompt highlights Go" %}
+    <p>{% cmd ":doc" "-examples" %} reads a package's runnable examples off disk, each labelled with the identifier it demonstrates. <code>go doc</code> does not report them, and for much of the standard library they are the documentation. A package whose sources were never downloaded says so, rather than reporting that it has none.</p>
+    <p>{% cmd ":doc" "-url" %} prints the pkg.go.dev address at the version your build list has, so the page you open is the code the session runs — and when it cannot tell, as here with no module requiring <code>uuid</code>, it says the address is the latest rather than yours. It prints and does nothing else: no fetch, no browser. {% cmd ":doc" "-pkg" %} reads the name as a package, for a name that is also a symbol. Output longer than a screen is paged at the prompt and printed whole through a pipe.</p>
+  </div>
+</section>
+
+<section class="card" id="since">
+  <div class="card-head"><span class="idx">8</span><div class="hd"><h2>What the release you are on brought</h2><div class="chips"><span class="chip">offline</span></div></div></div>
+  <div class="card-body">
+    <p class="lead">Every Go distribution ships its own release record: <code>$GOROOT/api/go1.N.txt</code> lists release N's standard library additions, each with the proposal that accepted it, and <code>$GOROOT/doc/godebug.md</code> the behaviour changes and the setting that reverts each. {% cmd ":since" %} reads those, so it describes the toolchain you have and needs no network.</p>
+    {% session "inspect-since" %}
+    {% shot "since" ":since at a prompt, where it opens a view" %}
+    {% shot "since-127" ":since 1.27, one release's changes" %}
+    <p>The arrow marks the <code>go</code> directive this session builds at — the attached module's, when there is one, which is not always the toolchain's. The language column tells three states apart that a dash would run together: a count for a release somebody wrote notes for, <code>none</code> for one checked and found unchanged, and <code>N gated</code> for one nobody has written up, where <code>N</code> is how much syntax the type checker in <code>$GOROOT/src/go/types</code> admits only from that version.</p>
+    <p><code>:since 1.27</code> opens one release: its language changes, its GODEBUG entries and its additions a package at a time. {% cmd ":since" "-lang" %} is the language notes alone, each with a snippet the build tests compile at the version it claims and reject one below. {% cmd ":since" "-pkg" %} asks the other way round — every addition to one import path, across releases, which is how you find out when <code>maps.Keys</code> arrived.</p>
+    <p>{% cmd ":since" "-run" %} evaluates a note's snippet into the session. Loop variables are worth running under <code>:use</code> on an older module, because that change is not a compile error below its directive: the same three lines print <code>[2 2 2]</code> at <code>go 1.21</code>. A note that needs a newer <code>go</code> line than the session builds at is refused with which of the two numbers is short.</p>
+  </div>
+</section>
+{% end %}

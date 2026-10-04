@@ -1,0 +1,45 @@
+gluon> :help :layout
+  :layout <type>
+
+  field offsets, padding, and what reordering would save
+
+  type              a struct type, or a value of one
+
+  examples
+    :layout struct{ a bool; b int64; c bool }
+        24 bytes, and the order that would take 16
+
+  Answers from go/types and never builds: sizes, offsets and alignment are
+  the compiler's own for the platform gluon runs on. The suggested order is
+  the one that wastes least padding, and the saving is stated in bytes.
+
+  see also          :embeds :slice
+  tool              go_layout, served without --eval
+gluon> :t --help
+!view
+  :t [-v | -d] <exp>
+
+  the type of an expression      (Ruby's .class)
+
+  -v                add the underlying type and its kind
+  -d                run it once for the dynamic type inside an interface
+
+  examples
+    :t strconv.Atoi("12")
+        two values: (int, error)
+    :t -v time.Second
+        the named type, what it is underneath, and its kind
+    :t -d r
+        what is inside the interface r — this one costs a build
+
+  Answers from go/types in gluon's own process, so it never builds and comes
+  back in about a millisecond.
+
+  -d is the exception: it reports the dynamic type — what is actually inside
+  an interface value — which nothing but a run can know. It costs a build and
+  an execution, and it runs your expression, so a call with a side effect has
+  it. Only at the prompt: the MCP tool stays static and ignores the flag.
+
+  see also          :m :ls :doc
+  also              :type
+  tool              go_type, served without --eval; -d only at the prompt

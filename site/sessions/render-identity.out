@@ -1,0 +1,32 @@
+gluon> type Node struct{ Val int; Next *Node }
+gluon> a := &Node{Val: 1}
+gluon> b := &Node{Val: 2, Next: a}
+gluon> a.Next = b
+gluon> a
+(*main.Node) #1&
+╭───────┬──────────────────────────╮
+│ field │ value                    │
+├───────┼──────────────────────────┤
+│ Val   │ 1                        │
+│ Next  │ &{Val:2 Next:<cycle #1>} │
+╰───────┴──────────────────────────╯
+  cyclic — it is reachable from inside itself
+gluon> type P struct{ X int }
+gluon> p := &P{1}
+gluon> []*P{p, p}
+([]*main.P) len=2 cap=2
+╭───┬─────────────╮
+│ # │ value       │
+├───┼─────────────┤
+│ 0 │ #2&{X:1}    │
+│ 1 │ <shared #2> │
+╰───┴─────────────╯
+  the same object appears more than once — not a copy
+gluon> fmt.Errorf("layer2: %w", fmt.Errorf("layer1: %w", os.ErrNotExist))
+(*fmt.wrapError) &
+╭───────┬─────────────────────────────────────────────────────────────────────╮
+│ field │ value                                                               │
+├───────┼─────────────────────────────────────────────────────────────────────┤
+│ msg   │ "layer2: layer1: file does not exist"                               │
+│ err   │ &{msg:"layer1: file does not exist" err:&{s:"file does not exist"}} │
+╰───────┴─────────────────────────────────────────────────────────────────────╯

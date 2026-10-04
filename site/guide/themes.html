@@ -1,0 +1,55 @@
+{% define "side" %}<a href="#choose"><span class="rn">1</span><span class="rt">Choosing one</span></a>
+<a href="#ground"><span class="rn">2</span><span class="rt">Dark, light, either</span></a>
+<a href="#own"><span class="rn">3</span><span class="rt">Your own</span></a>
+<a href="#import"><span class="rn">4</span><span class="rt">From an editor theme</span></a>{% end %}
+{% define "main" %}
+<section class="card" id="choose">
+  <div class="card-head"><span class="idx">1</span><div class="hd"><h2>Choosing one, while looking at your own code</h2><div class="chips"><span class="chip">{% .Reg.Counts.Themes %} themes</span></div></div></div>
+  <div class="card-body">
+    <p class="lead">Go source is highlighted everywhere gluon shows it — the line you are typing, the line echoed into scrollback, <code>:src</code>, <code>:doc -src</code>, <code>:test</code>, <code>:mock</code> — and SQL, JSON and TOML where a command answers in them. {% cmd ":theme" %} chooses the palette.</p>
+    {% session "themes" %}
+    {% shot "theme" "the chooser, on the theme in use" %}
+    <p>At the prompt, bare <code>:theme</code> is a picker, and moving the selection does not draw a swatch beside the list — it installs the theme, so the prompt, the highlighting, the tables and the picker itself are all the palette being considered. <kbd>enter</kbd> keeps it, writing <code>[theme] name</code> into <code>config.toml</code> so the next session starts in it; <kbd>esc</kbd> puts back the one you opened with. <code>:theme &lt;name&gt;</code> does the same without the picker.</p>
+    <p><code>go</code> is the default — violet keywords, green strings, cyan types — and <code>go-light</code> is the same palette for a white terminal. <code>terminal</code> is your own sixteen ANSI colours, which is what gluon looked like before it had a palette. Five are the dark half of Gruvppuccin; the other fifteen are converted from the editor themes of the same names. Each is drawn in itself in <a href="{% rel "reference/themes.html" %}">the themes reference</a>. The code on this site is drawn in <code>go</code>, and in <code>gruvppuccin-mocha</code> when the switch at the top of the page says Gruvppuccin.</p>
+  </div>
+</section>
+
+<section class="card" id="ground">
+  <div class="card-head"><span class="idx">2</span><div class="hd"><h2>Dark, light, or either</h2></div></div>
+  <div class="card-body">
+    <p class="lead">gluon paints foregrounds and never a background, because your terminal owns that — so it cannot tell whether yours is white, and a palette drawn for paper is pale smears on black. A theme therefore says which ground it was drawn for, and every list prints it.</p>
+    {% session "themes-cli" "the same, from the shell" %}
+    <p><code>either</code> is <code>terminal</code>'s answer and only its answer: its colours are your terminal's own sixteen, so they follow you onto either ground. A hex colour degrades on its own — to the nearest of 256 on a 256-colour terminal, the nearest of sixteen below that, and to nothing in a pipe. <code>NO_COLOR</code> turns all of it off.</p>
+  </div>
+</section>
+
+<section class="card" id="own">
+  <div class="card-head"><span class="idx">3</span><div class="hd"><h2>Your own</h2></div></div>
+  <div class="card-body">
+    <p class="lead">A theme is a TOML file in <code>~/.config/gluon/themes</code>, one colour per role; a role left out keeps the default.</p>
+    <div class="cmd">
+      <div class="cmd-bar"><span class="ck">TOML</span><span class="cv">~/.config/gluon/themes/mine.toml</span></div>
+<pre>about      = <span class="s">"one line, printed by gluon theme"</span>
+appearance = <span class="s">"dark"</span>   <span class="c"># optional here, required of a theme gluon ships</span>
+
+[theme]
+keyword = <span class="s">"#C6ACD9"</span>
+comment = <span class="s">"none"</span>      <span class="c"># leave the terminal's own foreground alone</span></pre>
+    </div>
+    <p>A theme you almost like costs one line rather than a copy: a role set under <code>[theme]</code> in <code>config.toml</code> overrides whatever the chosen theme says. An unknown role is an error, because the alternative is a colour that silently stays the default. The roles are the sixteen <code>gluon theme show</code> prints.</p>
+  </div>
+</section>
+
+<section class="card" id="import">
+  <div class="card-head"><span class="idx">4</span><div class="hd"><h2>From an editor theme you already like</h2></div></div>
+  <div class="card-body">
+    <p class="lead"><code>gluon theme import</code> converts a TextMate <code>.tmTheme</code>, a VS Code theme or an IntelliJ colour scheme into a gluon theme; the format is read from the bytes, not the extension.</p>
+    <div class="cmd">
+      <div class="cmd-bar"><span class="ck">Shell</span><span class="cv">convert, then choose it</span></div>
+<pre>gluon theme import ~/Downloads/Monokai.tmTheme</pre>
+    </div>
+    <p>The mapping is lossy in one direction and cannot be otherwise: about a third of gluon's palette describes a terminal program rather than a highlighter, and no scope in any editor theme means "the reverse-i-search prompt" — so those roles keep gluon's own values, and the command prints which, role by role.</p>
+    <p>What it will not do is hand you a colour that is not one. <code>ident</code> is the editor's own foreground, not its <code>variable</code> accent, which painted a whole screen pink. A rule whose meaning is its background — <code>invalid</code>, ink on a red field — has said nothing once the field is dropped. A language's own rule does not answer a question about every language. And a colour that cannot be seen on the theme's own ground did not convert. The ground itself is read from the theme's background rather than its label, because a label can be wrong: Tokyo Night Light ships <code>"type": "dark"</code> over a near-white page.</p>
+  </div>
+</section>
+{% end %}

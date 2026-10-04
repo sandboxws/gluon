@@ -1,0 +1,21 @@
+gluon> x := 10
+gluon> :bookmark before
+before: 1 entry, for this session
+gluon> x = x * 2
+gluon> x
+(int) 20
+gluon> :branch
+b2: 3 entries, for this session
+the session is unchanged; :restore b2 comes back here
+gluon> x = 99
+gluon> x
+(int) 99
+gluon> :restore before
+restored before (1 entry)
+gluon> x
+(int) 10
+gluon> :bookmark
+snapshots, for this session only:
+  before  1 entry
+  b2  3 entries
+  :restore <name> goes back to one; :scratch keeps a session past this process

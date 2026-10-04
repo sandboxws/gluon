@@ -1,0 +1,7 @@
+%clip 22
+:settings
+:settings timeout
+:settings timeout 2m
+:settings banner compact
+$ cat ~/.config/gluon/config.toml
+:settings timeout -

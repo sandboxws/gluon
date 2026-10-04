@@ -1,0 +1,37 @@
+# GitHub Light, converted from GitHub's own VS Code theme by `gluon theme
+# import`. See github-dark.toml for where the file comes from.
+#
+# The best-behaved conversion of the fifteen, and for a reason worth writing
+# down: GitHub states an `editor.foreground` and does not accent `variable`, so
+# the roles that gave every other theme trouble were simply answered.
+#
+# Re-run:  gluon theme import <file> --print
+#          marketplace VSIX GitHub.github-vscode-theme 6.3.5, themes/light-default.json
+#
+# Kept from gluon's own go-light, because nothing in an editor theme means
+# them: `note`, `search`.
+about      = "GitHub Light: red keywords, navy strings, brown types"
+appearance = "light"
+source     = "GitHub Light Default, a VS Code theme"
+
+[theme]
+# Source.
+keyword     = "#cf222e"
+string      = "#0a3069"
+type        = "#953800"
+comment     = "#6e7781"
+number      = "#0550ae"
+builtin     = "#0550ae"
+punctuation = "#1f2328"
+ident       = "#1f2328"
+
+# Values, the REPL, and the CLI.
+error       = "#82071e"
+prompt      = "#953800"
+mode        = "#0550ae"  # the blue already in this palette, against a brown
+                         # prompt
+annotation  = "#6e7781"
+note        = "#92400E"
+dim         = "#8c959f"
+search      = "#9A3412"
+border      = "#d0d7de"

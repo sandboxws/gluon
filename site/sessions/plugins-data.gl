@@ -1,0 +1,12 @@
+%host shop
+%sh gluon init -no-prompt -write -local
+%attach
+:migrations
+:expand store.UsersByID, []int64{1, 2, 3}
+:expand store.UsersOnPlan, map[string]any{"plan": "pro"}
+:schema migrate.Tables
+:get gorm.io/gorm@v1.31.2
+:get gorm.io/driver/postgres@v1.6.3
+db, _ := gorm.Open(postgres.Open("host=db.internal dbname=shop"), &gorm.Config{DisableAutomaticPing: true})
+var users []store.User
+:sql db.Where("plan = ?", "pro").Order("id").Limit(10).Find(&users)

@@ -1,0 +1,2 @@
+pkg maps, func Keys[$0 interface{ ~map[$1]$2 }, $1 comparable, $2 any]($0) []$1 #57436
+pkg slices, func Sort[$0 interface{ ~[]$1 }, $1 cmp.Ordered]($0) #57433

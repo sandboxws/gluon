@@ -1,0 +1,6 @@
+# Standing in the project with nothing configured: what gluon found, and why
+# :query will not use it yet.
+%host shop
+%attach
+:db
+:query SELECT count(*) FROM users

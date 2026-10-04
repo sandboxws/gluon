@@ -1,0 +1,5 @@
+# it and _N: the value the previous line printed, and any earlier one.
+2 + 2
+"hi"
+it + "!"
+_1 * 10

@@ -1,0 +1,479 @@
+<!doctype html>
+<!-- generated from site/ by `just docs`: edit the source, not this file -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The gluon command — gluon</title>
+<meta name="description" content="Subcommands and flags, for everything you do from the shell rather than at the prompt.">
+<meta name="theme-color" content="#0A0A0A">
+<script>(function(d,m){try{m=/[?&]palette=(gruv|go)\b/.exec(location.search);m=m?m[1]:localStorage.getItem("gluon:theme")}catch(e){}if(m==="gruv")d.documentElement.setAttribute("data-theme","gruv")})(document)</script>
+<link rel="canonical" href="https://sandboxws.github.io/gluon/reference/cli.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="The gluon command — gluon">
+<meta property="og:description" content="Subcommands and flags, for everything you do from the shell rather than at the prompt.">
+<meta property="og:url" content="https://sandboxws.github.io/gluon/reference/cli.html">
+<meta property="og:image" content="https://sandboxws.github.io/gluon/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="gluon's startup screen in a Go project, beside the words: A Go REPL that stands in your project">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sandboxws.github.io/gluon/img/og.png">
+<meta name="twitter:title" content="The gluon command — gluon">
+<meta name="twitter:description" content="Subcommands and flags, for everything you do from the shell rather than at the prompt.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A0A0A'/%3E%3Cpath d='M9 9l7 7-7 7' stroke='%2300ADD8' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M18 23h6' stroke='%2300ADD8' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/gluon.css?v=980f3e8a">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="field" aria-hidden="true"></div>
+<div class="nav" id="nav">
+  <div class="nav-in">
+    <a class="nav-t" href="../index.html">gluon</a>
+    <span class="nav-sp"></span>
+    <a class="nav-m" href="../guide/index.html">Guides</a>
+    <a class="nav-m" href="../reference/index.html">Reference</a>
+    <span class="nav-m opt">v0.1.0</span>
+  </div>
+</div>
+
+<header class="hero wrap page">
+  <p class="eyebrow">Reference</p>
+  <h1 id="bigTitle">The gluon command</h1>
+  <p class="sub">Subcommands and flags, for everything you do from the shell rather than at the prompt.</p>
+</header>
+
+<div class="wrap cols">
+  <nav class="side" aria-label="Sections"><div class="side-in">
+    <p class="grp-h">This page</p>
+    <a href="#gluon"><span class="rt">gluon</span></a>
+<a href="#completion"><span class="rt">gluon completion</span></a>
+<a href="#completion-bash"><span class="rt">gluon completion bash</span></a>
+<a href="#completion-fish"><span class="rt">gluon completion fish</span></a>
+<a href="#completion-powershell"><span class="rt">gluon completion powershell</span></a>
+<a href="#completion-zsh"><span class="rt">gluon completion zsh</span></a>
+<a href="#doctor"><span class="rt">gluon doctor</span></a>
+<a href="#init"><span class="rt">gluon init</span></a>
+<a href="#mcp"><span class="rt">gluon mcp</span></a>
+<a href="#new"><span class="rt">gluon new</span></a>
+<a href="#run"><span class="rt">gluon run</span></a>
+<a href="#scratch"><span class="rt">gluon scratch</span></a>
+<a href="#scratch-rm"><span class="rt">gluon scratch rm</span></a>
+<a href="#scratch-show"><span class="rt">gluon scratch show</span></a>
+<a href="#theme"><span class="rt">gluon theme</span></a>
+<a href="#theme-import"><span class="rt">gluon theme import</span></a>
+<a href="#theme-show"><span class="rt">gluon theme show</span></a>
+<a href="#watch"><span class="rt">gluon watch</span></a>
+
+    <p class="grp-h">Reference</p>
+    <a href="../reference/index.html"><span class="rt">Reference</span></a>
+    <a href="../reference/commands.html"><span class="rt">Commands</span></a>
+    <a href="../reference/plugins.html"><span class="rt">Plugins</span></a>
+    <a href="../reference/settings.html"><span class="rt">Settings</span></a>
+    <a href="../reference/cli.html" aria-current="page" class="here"><span class="rt">The gluon command</span></a>
+    <a href="../reference/mcp.html"><span class="rt">MCP tools</span></a>
+    <a href="../reference/themes.html"><span class="rt">Themes</span></a>
+    
+  </div></nav>
+  <main id="main">
+    
+<section class="card" id="cli-note">
+  <div class="card-head"><span class="idx">$</span><div class="hd"><h2>The gluon command</h2></div></div>
+  <div class="card-body"><p class="lead">Every subcommand and flag, from the cobra tree <code>gluon --help</code> prints. A long flag is written here with one dash, the way it has always been documented; two work too.</p></div>
+</section>
+
+<section class="card" id="gluon">
+  <div class="card-head"><span class="idx">$</span><div class="hd"><h2>gluon</h2><div class="chips"><span class="chip">A REPL and scratch runner for Go</span></div></div></div>
+  <div class="card-body">
+    <pre class="sig">gluon [flags]</pre>
+    <div class="prose"><pre class="long">gluon is a REPL and scratch runner for Go, for when you want to check what
+s[i] prints without writing a main package first.
+
+It compiles with your real Go toolchain, so the semantics are the compiler&#39;s:
+every line re-renders the session into a genuine Go program and builds it.</pre></div>
+    <div class="tw"><table class="kv"><tbody><tr id="gluon-eval"><td class="mono">-e, -eval &lt;stringArray&gt;</td><td>evaluate a line of Go and print the result (repeatable)</td></tr><tr id="gluon-host"><td class="mono">-host &lt;string&gt;</td><td>attach the session to the Go module at this directory (use . for the working directory)</td></tr><tr id="gluon-json"><td class="mono">-json</td><td>with -e, print one JSON object instead of the plain rendering</td></tr><tr id="gluon-no-scratch"><td class="mono">-no-scratch</td><td>do not open a scratchpad, so nothing about this session is written down</td></tr><tr id="gluon-scratch"><td class="mono">-scratch &lt;string&gt;</td><td>open this scratchpad instead of the configured one (interactive sessions only)</td></tr></tbody></table></div>
+    <div class="cmd"><div class="cmd-bar"><span class="ck">Shell</span><span class="cv">examples</span></div><pre># start the REPL
+gluon
+# evaluate and print, the ruby -e shape
+gluon -e &#39;strings.ToUpper(&#34;hi&#34;)&#39;
+# the same engine, no banner
+echo &#39;x := 1&#39; | gluon
+# attach to the module you are standing in
+gluon -host .</pre></div>
+  </div>
+</section>
+
+<section class="card" id="completion">
+  <div class="card-head"><span class="idx">$</span><div class="hd"><h2>gluon completion</h2><div class="chips"><span class="chip">Generate the autocompletion script for the specified shell</span></div></div></div>
+  <div class="card-body">
+    <pre class="sig">gluon completion</pre>
+    <div class="prose"><pre class="long">Generate the autocompletion script for gluon for the specified shell.
+See each sub-command&#39;s help for details on how to use the generated script.</pre></div>
+    
+    
+  </div>
+</section>
+
+<section class="card" id="completion-bash">
+  <div class="card-head"><span class="idx">$</span><div class="hd"><h2>gluon completion bash</h2><div class="chips"><span class="chip">Generate the autocompletion script for bash</span></div></div></div>
+  <div class="card-body">
+    <pre class="sig">gluon completion bash</pre>
+    <div class="prose"><pre class="long">Generate the autocompletion script for the bash shell.
+
+This script depends on the &#39;bash-completion&#39; package.
+If it is not installed already, you can install it via your OS&#39;s package manager.
+
+To load completions in your current shell session:
+
+	source &lt;(gluon completion bash)
+
+To load completions for every new session, execute once:
+
+#### Linux:
+
+	gluon completion bash &gt; /etc/bash_completion.d/gluon
+
+#### macOS:
+
+	gluon completion bash &gt; $(brew --prefix)/etc/bash_completion.d/gluon
+
+You will need to start a new shell for this setup to take effect.</pre></div>
+    <div class="tw"><table class="kv"><tbody><tr id="completion-bash-no-descriptions"><td class="mono">-no-descriptions</td><td>disable completion descriptions</td></tr></tbody></table></div>
+    
+  </div>
+</section>
+
+<section class="card" id="completion-fish">
+  <div class="card-head"><span class="idx">$</span><div class="hd"><h2>gluon completion fish</h2><div class="chips"><span class="chip">Generate the autocompletion script for fish</span></div></div></div>
+  <div class="card-body">
+    <pre class="sig">gluon completion fish [flags]</pre>
+    <div class="prose"><pre class="long">Generate the autocompletion script for the fish shell.
+
+To load completions in your current shell session:
+
+	gluon completion fish | source
+
+To load completions for every new session, execute once:
+
+	gluon completion fish &gt; ~/.config/fish/completions/gluon.fish
+
+You will need to start a new shell for this setup to take effect.</pre></div>
+    <div class="tw"><table class="kv"><tbody><tr id="completion-fish-no-descriptions"><td class="mono">-no-descriptions</td><td>disable completion descriptions</td></tr></tbody></table></div>
+    
+  </div>
+</section>
+
+<section class="card" id="completion-powershell">
+  <div class="card-head"><span class="idx">$</span><div class="hd"><h2>gluon completion powershell</h2><div class="chips"><span class="chip">Generate the autocompletion script for powershell</span></div></div></div>
+  <div class="card-body">
+    <pre class="sig">gluon completion powershell [flags]</pre>
+    <div class="prose"><pre class="long">Generate the autocompletion script for powershell.
+
+To load completions in your current shell session:
+
+	gluon completion powershell | Out-String | Invoke-Expression
+
+To load completions for every new session, add the output of the above command
+to your powershell profile.</pre></div>
+    <div class="tw"><table class="kv"><tbody><tr id="completion-powershell-no-descriptions"><td class="mono">-no-descriptions</td><td>disable completion descriptions</td></tr></tbody></table></div>
+    
+  </div>
+</section>
+
+<section class="card" id="completion-zsh">
+  <div class="card-head"><span class="idx">$</span><div class="hd"><h2>gluon completion zsh</h2><div class="chips"><span class="chip">Generate the autocompletion script for zsh</span></div></div></div>
+  <div class="card-body">
+    <pre class="sig">gluon completion zsh [flags]</pre>
+    <div class="prose"><pre class="long">Generate the autocompletion script for the zsh shell.
+
+If shell completion is not already enabled in your environment you will need
+to enable it.  You can execute the following once:
+
+	echo &#34;autoload -U compinit; compinit&#34; &gt;&gt; ~/.zshrc
+
+To load completions in your current shell session:
+
+	source &lt;(gluon completion zsh)
+
+To load completions for every new session, execute once:
+
+#### Linux:
+
+	gluon completion zsh &gt; &#34;${fpath[1]}/_gluon&#34;
+
+#### macOS:
+
+	gluon completion zsh &gt; $(brew --prefix)/share/zsh/site-functions/_gluon
+
+You will need to start a new shell for this setup to take effect.</pre></div>
+    <div class="tw"><table class="kv"><tbody><tr id="completion-zsh-no-descriptions"><td class="mono">-no-descriptions</td><td>disable completion descriptions</td></tr></tbody></table></div>
+    
+  </div>
+</section>
+
+<section class="card" id="doctor">
+  <div class="card-head"><span class="idx">$</span><div class="hd"><h2>gluon doctor</h2><div class="chips"><span class="chip">Report what gluon detects here</span></div></div></div>
+  <div class="card-body">
+    <pre class="sig">gluon doctor [dir] [flags]</pre>
+    <div class="prose"><pre class="long">Report what gluon can see from this directory: the Go toolchain it will use,
+the config it read, the module it would attach to, and every package that
+module leaves importable from a session.
+
+On darwin it also times a freshly linked binary, because Gatekeeper
+assessment is ~105ms of every line that has to run and `spctl --status`
+cannot tell you whether this terminal is exempt.</pre></div>
+    <div class="tw"><table class="kv"><tbody><tr id="doctor-json"><td class="mono">-json</td><td>print one JSON object instead of a report</td></tr></tbody></table></div>
+    <div class="cmd"><div class="cmd-bar"><span class="ck">Shell</span><span class="cv">examples</span></div><pre># what gluon sees here
+gluon doctor
+# what it would see from another project
+gluon doctor ~/src/shop
+# is this terminal exempt from Gatekeeper assessment?
+gluon doctor -json | jq .gatekeeper</pre></div>
+  </div>
+</section>
+
+<section class="card" id="init">
+  <div class="card-head"><span class="idx">$</span><div class="hd"><h2>gluon init</h2><div class="chips"><span class="chip">Record where this project&#39;s database is</span></div></div></div>
+  <div class="card-body">
+    <pre class="sig">gluon init [dir] [flags]</pre>
+    <div class="prose"><pre class="long">Detect the database a project uses, and write down where it is so :db and
+:query can find it again.
+
+gluon never stores a password. What it records is the name of the environment
+variable, or the file and key, that a connection string lives in — so the
+config it writes is safe to read, to share, and to commit.
+
+Nothing is written without being asked: -no-prompt prints the block it would
+have written and stops there.</pre></div>
+    <div class="tw"><table class="kv"><tbody><tr id="init-force"><td class="mono">-force</td><td>append even when an entry of this name exists</td></tr><tr id="init-global"><td class="mono">-global</td><td>write to ~/.config/gluon/config.toml</td></tr><tr id="init-json"><td class="mono">-json</td><td>print one JSON object instead of a report</td></tr><tr id="init-local"><td class="mono">-local</td><td>write to ./gluon.toml, which travels with the project</td></tr><tr id="init-no-prompt"><td class="mono">-no-prompt</td><td>print what would be written and stop</td></tr><tr id="init-write"><td class="mono">-write</td><td>write without asking (needs -local or -global)</td></tr></tbody></table></div>
+    <div class="cmd"><div class="cmd-bar"><span class="ck">Shell</span><span class="cv">examples</span></div><pre># look, ask, and write
+gluon init
+# what would it write?
+gluon init -no-prompt
+# write it without asking, to the global config
+gluon init -no-prompt -write -global
+# what did it detect?
+gluon init -json | jq .detected</pre></div>
+  </div>
+</section>
+
+<section class="card" id="mcp">
+  <div class="card-head"><span class="idx">$</span><div class="hd"><h2>gluon mcp</h2><div class="chips"><span class="chip">serve the session&#39;s inspectors to a coding agent (MCP over stdio)</span></div></div></div>
+  <div class="card-body">
+    <pre class="sig">gluon mcp [flags]</pre>
+    <div class="prose"><pre class="long">gluon mcp speaks the Model Context Protocol over stdio. The inspecting
+commands become tools: go_type, go_methods, go_scope, go_layout, go_doc, and
+the interface questions — go_implements, go_satisfies, go_cast, go_interface,
+go_embeds, go_generics — answered from go/types in about a millisecond, by the
+same toolchain that builds your code.
+
+When the working directory is inside a Go module, the session attaches to
+it — internal/ packages included — because installing the server in a
+project&#39;s MCP config is the asking. -host picks a different module; -host
+off serves a standalone session.
+
+Tools that run code (go_eval, go_bench, plugin tools, session_reset) are
+exposed only with --eval. Evaluation replays the whole session each call,
+so side effects repeat — the tool descriptions say so, to the one reader
+who never skims.</pre></div>
+    <div class="tw"><table class="kv"><tbody><tr id="mcp-eval"><td class="mono">-eval</td><td>also expose the tools that run code: go_eval, go_bench, the profilers, go_diff, go_test, plugin tools, session_reset</td></tr><tr id="mcp-host"><td class="mono">-host &lt;string&gt;</td><td>module to attach to (default: the module containing the working directory; off: none)</td></tr></tbody></table></div>
+    <div class="cmd"><div class="cmd-bar"><span class="ck">Shell</span><span class="cv">examples</span></div><pre># .mcp.json
+{&#34;mcpServers&#34;: {&#34;gluon&#34;: {&#34;command&#34;: &#34;gluon&#34;, &#34;args&#34;: [&#34;mcp&#34;]}}}
+# with evaluation enabled
+{&#34;mcpServers&#34;: {&#34;gluon&#34;: {&#34;command&#34;: &#34;gluon&#34;, &#34;args&#34;: [&#34;mcp&#34;, &#34;--eval&#34;]}}}</pre></div>
+  </div>
+</section>
+
+<section class="card" id="new">
+  <div class="card-head"><span class="idx">$</span><div class="hd"><h2>gluon new</h2><div class="chips"><span class="chip">Scaffold a scratch program and open it</span></div></div></div>
+  <div class="card-body">
+    <pre class="sig">gluon new [topic] [flags]</pre>
+    <div class="prose"><pre class="long">Write a self-contained scratch module and open it in your editor.
+
+One directory per scratch, each with its own go.mod, so gopls stays fully
+alive in the file — completion, hover, jump-to-definition. A single
+//go:build ignore file works too, but gopls greys it out entirely, so that
+form is -flat and not the default.</pre></div>
+    <div class="tw"><table class="kv"><tbody><tr id="new-debug"><td class="mono">-debug</td><td>write a debugger launch configuration beside the module (not with -flat)</td></tr><tr id="new-flat"><td class="mono">-flat</td><td>write one //go:build ignore file instead of a module directory (no gopls)</td></tr><tr id="new-host"><td class="mono">-host &lt;string&gt;</td><td>nest the scratch under the module at this directory, so it can import its packages</td></tr><tr id="new-no-edit"><td class="mono">-no-edit</td><td>create it but do not open an editor</td></tr><tr id="new-no-prompt"><td class="mono">-no-prompt &lt;gluon new&gt;</td><td>do not ask for a topic; use the default as gluon new always has</td></tr><tr id="new-run"><td class="mono">-run</td><td>run it after the editor exits</td></tr></tbody></table></div>
+    <div class="cmd"><div class="cmd-bar"><span class="ck">Shell</span><span class="cv">examples</span></div><pre># an untitled scratch
+gluon new
+# named, so the directory says what it is
+gluon new heap-sort
+# one that can import the surrounding project
+gluon new probe -host .
+# a single //go:build ignore file (no gopls)
+gluon new x -flat
+# one a debugger can open, configuration included
+gluon new parser-bug -debug</pre></div>
+  </div>
+</section>
+
+<section class="card" id="run">
+  <div class="card-head"><span class="idx">$</span><div class="hd"><h2>gluon run</h2><div class="chips"><span class="chip">Run a scratch</span></div></div></div>
+  <div class="card-body">
+    <pre class="sig">gluon run [path] [-- args...] [flags]</pre>
+    <div class="prose"><pre class="long">Run a scratch program — the most recent one by default, or the directory
+or flat file named. Arguments after -- go to the program, not to gluon.</pre></div>
+    <div class="tw"><table class="kv"><tbody><tr id="run-list"><td class="mono">-list</td><td>list the scratches, newest first</td></tr></tbody></table></div>
+    <div class="cmd"><div class="cmd-bar"><span class="ck">Shell</span><span class="cv">examples</span></div><pre># the most recent scratch
+gluon run
+# a named one, directory or flat file
+gluon run ~/scratch/2026-08-28-heap-sort
+# what there is to run
+gluon run -list</pre></div>
+  </div>
+</section>
+
+<section class="card" id="scratch">
+  <div class="card-head"><span class="idx">$</span><div class="hd"><h2>gluon scratch</h2><div class="chips"><span class="chip">List the scratchpads, or show and remove one</span></div></div></div>
+  <div class="card-body">
+    <pre class="sig">gluon scratch</pre>
+    <div class="prose"><pre class="long">A scratchpad is a named session on disk: the lines you typed, what is
+pinned, and the module and host it takes to replay them. The REPL lands in
+one and writes every line into it.
+
+`gluon scratch show` prints what one holds without evaluating any of it,
+which is the way to read a scratchpad you are not sure you want to run.</pre></div>
+    
+    <div class="cmd"><div class="cmd-bar"><span class="ck">Shell</span><span class="cv">examples</span></div><pre># what there is
+gluon scratch
+# read one without running it
+gluon scratch show parser-bug
+# start a REPL in one
+gluon -scratch parser-bug</pre></div>
+  </div>
+</section>
+
+<section class="card" id="scratch-rm">
+  <div class="card-head"><span class="idx">$</span><div class="hd"><h2>gluon scratch rm</h2><div class="chips"><span class="chip">Remove a scratchpad</span></div></div></div>
+  <div class="card-body">
+    <pre class="sig">gluon scratch rm &lt;name&gt; [flags]</pre>
+    <div class="prose"><pre class="long">Shows what the scratchpad holds and asks before removing it. Without a
+terminal to ask on, -force is required.</pre></div>
+    <div class="tw"><table class="kv"><tbody><tr id="scratch-rm-force"><td class="mono">-force</td><td>remove it without asking</td></tr></tbody></table></div>
+    
+  </div>
+</section>
+
+<section class="card" id="scratch-show">
+  <div class="card-head"><span class="idx">$</span><div class="hd"><h2>gluon scratch show</h2><div class="chips"><span class="chip">Print what a scratchpad holds, without running it</span></div></div></div>
+  <div class="card-body">
+    <pre class="sig">gluon scratch show &lt;name&gt;</pre>
+    <div class="prose"><pre class="long">Prints the entries a scratchpad holds, in the order they were typed, and
+evaluates none of them. Reopening a scratchpad replays it — an entry that
+wrote a file writes it again unless it is pinned — so this is the
+read-before-you-run path.</pre></div>
+    
+    
+  </div>
+</section>
+
+<section class="card" id="theme">
+  <div class="card-head"><span class="idx">$</span><div class="hd"><h2>gluon theme</h2><div class="chips"><span class="chip">list gluon&#39;s colour themes, and import one from an editor</span></div></div></div>
+  <div class="card-body">
+    <pre class="sig">gluon theme</pre>
+    <div class="prose"><pre class="long">Themes live in ~/.config/gluon/themes as TOML, one colour per role.
+gluon ships twenty-three: `go`, the default, and `go-light`, the same
+palette for a white terminal; `terminal`, which is your own sixteen
+ANSI colours — what gluon looked like before it had a palette of its
+own; the five dark Gruvppuccin palettes; and fifteen converted from the
+editor themes of the same names, six of them light.
+
+gluon paints no background, because your terminal owns that — so a
+theme says which ground it was drawn for and the list prints it.
+
+Select one in ~/.config/gluon/config.toml:
+
+    [theme]
+    name = &#34;terminal&#34;
+
+Individual roles still override whatever the theme said, so a theme you
+almost like costs one line rather than a copy.</pre></div>
+    
+    <div class="cmd"><div class="cmd-bar"><span class="ck">Shell</span><span class="cv">examples</span></div><pre># what is installed, and what is on
+gluon theme
+# the colours a theme actually resolves to
+gluon theme show terminal
+# turn an editor theme into one of gluon&#39;s
+gluon theme import ~/Downloads/Monokai.tmTheme</pre></div>
+  </div>
+</section>
+
+<section class="card" id="theme-import">
+  <div class="card-head"><span class="idx">$</span><div class="hd"><h2>gluon theme import</h2><div class="chips"><span class="chip">convert a TextMate .tmTheme or VS Code theme into a gluon theme</span></div></div></div>
+  <div class="card-body">
+    <pre class="sig">gluon theme import &lt;file&gt; [flags]</pre>
+    <div class="prose"><pre class="long">TextMate and VS Code describe the same thing — scopes and the colours
+they take — so both are read the same way and mapped onto gluon&#39;s roles.
+An IntelliJ scheme names attributes instead, and colours a whole editor
+rather than a language, so it decides three roles the other two cannot:
+its caret becomes the prompt and its line numbers become the furniture.
+
+The mapping is lossy in one direction and cannot be otherwise: about a
+third of gluon&#39;s palette describes a terminal program rather than a
+syntax highlighter, and no scope in any editor theme means &#34;the
+reverse-i-search prompt&#34;. Those keep gluon&#39;s own values, and the report
+says which — so every guess is on screen, in a file you can edit.</pre></div>
+    <div class="tw"><table class="kv"><tbody><tr id="theme-import-force"><td class="mono">-force</td><td>overwrite a theme of the same name</td></tr><tr id="theme-import-name"><td class="mono">-name &lt;string&gt;</td><td>the theme&#39;s name (default: the file&#39;s, slugified)</td></tr><tr id="theme-import-print"><td class="mono">-print</td><td>write to stdout instead of the themes directory</td></tr></tbody></table></div>
+    
+  </div>
+</section>
+
+<section class="card" id="theme-show">
+  <div class="card-head"><span class="idx">$</span><div class="hd"><h2>gluon theme show</h2><div class="chips"><span class="chip">the colours a theme resolves to, one role per line</span></div></div></div>
+  <div class="card-body">
+    <pre class="sig">gluon theme show [name]</pre>
+    <div class="prose"><pre class="long">Every role, its value, and a swatch drawn in it — which is also the way
+to see what a hex colour becomes on a terminal that has fewer than
+sixteen million of them.
+
+With no name, the theme your config selects, including any per-role
+overrides it sets.</pre></div>
+    
+    
+  </div>
+</section>
+
+<section class="card" id="watch">
+  <div class="card-head"><span class="idx">$</span><div class="hd"><h2>gluon watch</h2><div class="chips"><span class="chip">Run a scratch again on every save</span></div></div></div>
+  <div class="card-body">
+    <pre class="sig">gluon watch [path] [-- args...] [flags]</pre>
+    <div class="prose"><pre class="long">Re-run a scratch program — the most recent one by default, or the directory
+or flat file named. Arguments after -- go to the program, not to gluon.</pre></div>
+    <div class="tw"><table class="kv"><tbody><tr id="watch-list"><td class="mono">-list</td><td>list the scratches, newest first</td></tr></tbody></table></div>
+    <div class="cmd"><div class="cmd-bar"><span class="ck">Shell</span><span class="cv">examples</span></div><pre># the most recent scratch
+gluon watch
+# a named one, directory or flat file
+gluon watch ~/scratch/2026-08-28-heap-sort
+# what there is to run
+gluon watch -list</pre></div>
+  </div>
+</section>
+
+
+    <nav class="pn" aria-label="Pages beside this one">
+  <a class="pg" href="../reference/settings.html"><span class="pg-k">← previous</span><b>Settings</b></a>
+  <a class="pg next" href="../reference/mcp.html"><span class="pg-k">next →</span><b>MCP tools</b></a>
+</nav>
+  </main>
+</div>
+
+<footer class="foot"><div class="wrap fgrid">
+    <div><div class="fh">The site</div><ul>
+        <li><a href="../index.html">gluon</a> — what it is, in one page</li>
+        <li><a href="../guide/index.html">Guides</a> — every feature, with the lines to type</li>
+        <li><a href="../reference/index.html">Reference</a> — generated from the code that defines it</li>
+      </ul></div>
+    <div><div class="fh">This page</div><ul>
+        <li>v0.1.0 · <code>github.com/sandboxws/gluon</code></li>
+        <li>Generated from <code>site/</code> by <code>just docs</code></li>
+        <li>No analytics, no cookies; the palette choice is one localStorage key</li>
+        <li><a href="https://github.com/sandboxws/gluon">Source</a></li>
+      </ul></div>
+</div></footer>
+<script src="../assets/gluon.js?v=0b5d44bf"></script>
+</body>
+</html>

@@ -1,0 +1,11 @@
+# The compiler's own verdicts: escape analysis, and inlining.
+Shot compiler
+Alt :esc reporting that a slice made inside an expression does not escape, then a small function declared and :inline reporting that the compiler inlines its call, each pointing at the expression it means
+Caption :esc and :inline ask the compiler itself — does this escape to the heap, is this call inlined — and point at the expression they mean.
+Headline Ask the compiler what it did
+Promo 16:9
+Grid 96x16
+Line :esc make([]byte, 32)
+Line func add(a, b int) int { return a + b }
+Line :inline add(1, 2)
+Screenshot

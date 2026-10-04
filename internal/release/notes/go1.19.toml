@@ -1,0 +1,10 @@
+# Go 1.19 changed nothing about the language.
+#
+# A file with no notes is not an oversight: it is somebody having looked. It is
+# what makes Release.Curated true and the language column read "none" rather
+# than "—", which is the difference between a checked answer and no answer.
+#
+# Verified: $GOROOT/src/go/types gates nothing at go1.19, and the release notes
+# say the language section is empty.
+
+version = "1.19"

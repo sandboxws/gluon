@@ -1,0 +1,26 @@
+# Nocturne, the family's one departure: a cool palette rather than a warm one,
+# where every other Gruvppuccin theme keeps gruvbox's accents and changes only
+# the greys. See gruvppuccin-mocha.toml for how the conversion works.
+about      = "Gruvppuccin Nocturne: indigo keywords, teal strings, sky numbers"
+appearance = "dark"
+source     = "Nocturne, an IntelliJ colour scheme"
+
+[theme]
+keyword     = "#A78BFA"  # indigo
+string      = "#5EEAD4"  # teal
+type        = "#F5B454"  # amber, the one accent the family shares
+comment     = "#4B5462"
+number      = "#38BDF8"  # sky
+builtin     = "#7C6CF6"
+punctuation = "#5C6470"
+ident       = "#E6E8EC"
+
+error       = "#FB7185"  # rose
+prompt      = "#7C6CF6"
+mode        = "#F5B454"  # this one's amber: its prompt is the indigo the
+                         # family's violet would sit beside
+annotation  = "#4B5462"
+note        = "#F5B454"
+dim         = "#8A93A0"
+search      = "#F5B843"
+border      = "#3A414D"

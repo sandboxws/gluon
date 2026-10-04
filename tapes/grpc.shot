@@ -1,0 +1,12 @@
+# A gRPC server's services through reflection, and a unary call.
+Shot grpc
+Alt :grpc against the project's running server: its four services and seven methods found through reflection, each with its kind and its request and response types
+Caption :grpc lists a server's services through reflection — and calls a unary method with a JSON body. No stubs, no client to write.
+Headline gRPC, without writing a client
+Promo 16:9
+Host shop
+Serve
+Args -host .
+Grid 92x22
+Line :grpc 127.0.0.1:50051
+Screenshot

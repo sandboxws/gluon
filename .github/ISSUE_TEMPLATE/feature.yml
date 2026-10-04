@@ -1,0 +1,24 @@
+name: Feature request
+description: Something gluon should do
+labels: [enhancement]
+body:
+  - type: checkboxes
+    id: rejected
+    attributes:
+      label: The permanently-rejected list
+      description: ROADMAP.md has a "Permanently rejected" section recording designs that will not merge, each with its reason — usually a measurement.
+      options:
+        - label: I checked, and this is not on it (or I have new evidence, included below)
+          required: true
+  - type: textarea
+    id: problem
+    attributes:
+      label: The problem
+      description: What you were trying to do when you wanted this. The concrete session matters more than the proposed design.
+    validations:
+      required: true
+  - type: textarea
+    id: proposal
+    attributes:
+      label: Proposed shape (optional)
+      description: If you have a design in mind — a command, a flag, an output shape.

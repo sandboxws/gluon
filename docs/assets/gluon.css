@@ -1,0 +1,441 @@
+  :root{
+    --bg:#0A0A0A;
+    --panel:#0F0F10; --panel-2:#121214; --well:#0C0C0D;
+    --line:#1F1F22; --line-2:#28282C;
+    --ink:#EDEDED;
+    --ink-2:#A6A6AD;
+    --ink-3:#7C7C84;
+    --ink-4:#55555C;
+    --accent:#00ADD8;
+    --ok:#3FDE8C; --bad:#FF7373; --warn:#F5A623;
+    --accent-ink:var(--accent);
+    /* Each semantic hue has a second shade: the brighter one it needs to stay
+       legible as text on a dark panel. They were literals until a second
+       palette needed them to move. */
+    --ok-2:#4ADE95; --bad-2:#FF8C8C; --warn-2:#F5B843; --accent-2:#4FC9EE; --violet:#C6ACD9;
+    --run-ink:#8FDCF2;
+    --r-out:10px; --r-mid:8px; --r-in:6px;
+    --mono:"Geist Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+
+    /* Code, in gluon's own theme roles. A transcript on this page shows what
+       gluon's terminal shows, and a screenshot beside it was captured in the
+       theme this palette pairs with, so the colours are
+       internal/theme/themes/go.toml, role for role.
+       TestSitePaletteIsGluonsThemes holds it. */
+    --cs-keyword:#C6ACD9; --cs-string:#4ADE95; --cs-type:#4FC9EE; --cs-comment:#6E6E76;
+    --cs-number:#E4E4E7; --cs-builtin:#79B8FF; --cs-punctuation:#A6A6AD; --cs-ident:#E4E4E7;
+    --cs-error:#FF7373; --cs-prompt:#4FC9EE; --cs-mode:#C6ACD9; --cs-annotation:#6E6E76;
+    --cs-note:#E3B341; --cs-dim:#7C7C84; --cs-search:#F5B843; --cs-border:#55555C;
+  }
+
+  /* The second palette: Gruvppuccin Macchiato's nineteen tokens, so code on
+     the page reads as it does in gluon's gruvppuccin-mocha theme — Macchiato
+     and Mocha differ only in an editor background gluon does not take. Without the attribute
+     nothing here applies; the inline script in <head> sets it before the first
+     paint, and gluon.js draws the switch in the nav. */
+  :root[data-theme="gruv"]{
+    --bg:#101213; --well:#141617; --panel:#181a1b; --panel-2:#242424;
+    --line:#2e2c2b; --line-2:#413c39;
+    --ink:#d4be98; --ink-2:#bfb3a2; --ink-3:#a69a8a; --ink-4:#6e655a;
+    --accent:#7daea3; --accent-2:#97b3a0;
+    --ok:#8fb18a; --ok-2:#a9b665; --bad:#ea6962; --bad-2:#e9755b;
+    --warn:#e78a4e; --warn-2:#d8a657; --violet:#c28fd6;
+    --run-ink:var(--accent-2);
+    --cs-keyword:#C28FD6; --cs-string:#A9B665; --cs-type:#D8A657; --cs-comment:#6E655A;
+    --cs-number:#E78A4E; --cs-builtin:#7DAEA3; --cs-punctuation:#7C7269; --cs-ident:#D4BE98;
+    --cs-error:#EA6962; --cs-prompt:#7DAEA3; --cs-mode:#C28FD6; --cs-annotation:#6E655A;
+    --cs-note:#D8A657; --cs-dim:#A69A8A; --cs-search:#F5B843; --cs-border:#5A524C;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Geist",-apple-system,BlinkMacSystemFont,"Helvetica Neue",sans-serif;
+    font-size:16.5px;line-height:1.52;letter-spacing:-.008em;-webkit-font-smoothing:antialiased;
+    overflow-x:hidden;
+  }
+  ::selection{background:var(--ink);color:var(--bg)}
+
+  .field{position:fixed;inset:0;z-index:-1;pointer-events:none;
+    background:
+      radial-gradient(58% 34% at 50% 0%, color-mix(in srgb,var(--accent) 7%,transparent), transparent 70%),
+      var(--bg)}
+  .field::before{content:"";position:absolute;inset:0 0 auto 0;height:52vh;
+    background-image:radial-gradient(color-mix(in srgb,var(--ink) 5%,transparent) 1px, transparent 1px);
+    background-size:26px 26px;
+    -webkit-mask-image:radial-gradient(70% 90% at 50% 0%, #000, transparent 78%);
+    mask-image:radial-gradient(70% 90% at 50% 0%, #000, transparent 78%)}
+
+  a{color:var(--accent);text-decoration:none}
+  a:hover{text-decoration:underline;text-underline-offset:2.5px}
+  a:focus-visible,button:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:4px}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 22px}
+
+  .skip{position:fixed;top:-56px;left:14px;z-index:60;padding:9px 14px;border-radius:8px;
+    font-size:13.5px;font-weight:600;color:var(--ink);background:var(--panel-2);border:1px solid var(--line-2);transition:top .15s ease}
+  .skip:focus-visible{top:12px}
+  .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  .nav{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--bg) 85%,transparent);
+    -webkit-backdrop-filter:blur(12px) saturate(140%);backdrop-filter:blur(12px) saturate(140%);
+    border-bottom:1px solid transparent;transition:border-color .2s ease}
+  .nav.stuck{border-bottom-color:var(--line)}
+  .nav-in{display:flex;align-items:center;gap:12px;height:48px;max-width:1120px;margin:0 auto;padding:0 22px}
+  .nav-t{font-size:14.5px;font-weight:600;letter-spacing:-.01em;opacity:0;transform:translateY(6px);
+    transition:opacity .2s ease,transform .2s ease;cursor:pointer}
+  .nav.stuck .nav-t{opacity:1;transform:none}
+  .nav-sp{flex:1}
+  .nav-m{font-size:12px;color:var(--ink-3);font-family:var(--mono);letter-spacing:0}
+  @media(max-width:700px){.nav-m.opt{display:none}}
+
+  /* The palette switch. gluon.js puts it in the nav on every page, so no page
+     carries markup for it. */
+  .th{display:flex;flex:none;gap:2px;padding:2px;border-radius:7px;background:var(--panel-2);border:1px solid var(--line)}
+  .th-b{appearance:none;cursor:pointer;border:0;border-radius:5px;padding:3px 9px;font-family:var(--mono);font-size:10.5px;
+    font-weight:500;letter-spacing:.02em;color:var(--ink-3);background:transparent;transition:color .15s ease,background .15s ease}
+  .th-b:hover{color:var(--ink)}
+  .th-b.on{color:var(--accent);background:color-mix(in srgb,var(--accent) 10%,transparent)}
+
+  header.hero{padding-top:56px;padding-bottom:30px}
+  .eyebrow{font-family:var(--mono);font-size:12px;font-weight:500;color:var(--ink-3);letter-spacing:.06em;
+    text-transform:uppercase;margin:0 0 12px}
+  h1{font-size:clamp(2.2rem,5vw,3.25rem);font-weight:700;line-height:1.05;letter-spacing:-.038em;margin:0;text-wrap:balance}
+  .sub{font-size:1.03rem;color:var(--ink-2);max-width:62ch;margin:16px 0 0;letter-spacing:-.006em}
+  .sub b{color:var(--ink);font-weight:600}
+
+  .hero-grid{display:grid;grid-template-columns:minmax(0,1fr);gap:14px;margin-top:32px;align-items:start}
+  @media(min-width:1040px){
+    .hero-grid{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:16px;align-items:stretch}
+    .hero-grid .term{display:flex;flex-direction:column}
+    .hero-grid .term-body{flex:1}
+  }
+
+  .group{border-radius:var(--r-out);overflow:hidden;background:var(--panel);border:1px solid var(--line)}
+  .g-h{font-family:var(--mono);font-size:11px;font-weight:500;letter-spacing:.08em;text-transform:uppercase;color:var(--ink-3);
+    padding:12px 18px 8px;border-bottom:1px solid var(--line);background:var(--panel-2)}
+  .rows{display:grid;grid-template-columns:1fr}
+  @media(min-width:720px){.rows.two{grid-template-columns:1fr 1fr}}
+  .row{display:flex;align-items:baseline;gap:14px;padding:11px 18px;border-top:1px solid var(--line);min-width:0}
+  .rows .row:first-child{border-top:none}
+  @media(min-width:720px){.rows.two .row:nth-child(2){border-top:none}}
+  .rk{font-size:14px;color:var(--ink-2);flex:none;min-width:104px}
+  .rv{font-size:13.5px;font-weight:500;text-align:right;margin-left:auto;min-width:0;
+    font-family:var(--mono);letter-spacing:-.01em}
+  .rs{display:block;font-size:12px;color:var(--ink-3);font-weight:400}
+  .row.fast .rv{color:var(--ok)}
+  .row.attn .rv{color:var(--warn)}
+
+  .cols{display:grid;grid-template-columns:minmax(0,1fr);gap:0}
+  @media(min-width:1040px){.cols{grid-template-columns:206px minmax(0,1fr);gap:28px;align-items:start}}
+  .side{display:none}
+  @media(min-width:1040px){.side{display:block;position:sticky;top:62px;padding:26px 0}}
+  .side-in{position:relative;border-radius:var(--r-mid);padding:5px;background:transparent;
+    max-height:calc(100vh - 100px);overflow-y:auto}
+  .side a{position:relative;z-index:1;display:flex;gap:10px;align-items:baseline;padding:6.5px 10px;border-radius:6px;font-size:13.5px;
+    color:var(--ink-3);font-weight:450;transition:color .15s ease}
+  .side a .rn{font-family:var(--mono);font-size:11px;color:var(--ink-4)}
+  .side a:hover{color:var(--ink);text-decoration:none}
+  .side a.on{color:var(--ink)}
+  .side a.on .rn{color:var(--accent)}
+  .pill{position:absolute;left:5px;right:5px;top:0;height:30px;border-radius:6px;opacity:0;z-index:0;pointer-events:none;
+    background:var(--panel-2);border:1px solid var(--line-2);
+    transform:translateY(0);will-change:transform;
+    transition:transform .22s cubic-bezier(.3,.7,.3,1),height .22s cubic-bezier(.3,.7,.3,1),opacity .2s ease}
+  .pill.live{opacity:1}
+  main{padding:26px 0 78px;min-width:0}
+
+  .card{border-radius:var(--r-out);margin-bottom:14px;overflow:hidden;scroll-margin-top:64px;
+    background:var(--panel);border:1px solid var(--line)}
+  .card-head{display:flex;gap:14px;align-items:flex-start;padding:20px 24px 0}
+  @media(max-width:620px){.card-head{padding:17px 16px 0;gap:11px}}
+  .idx{flex:none;min-width:28px;height:28px;padding:0 7px;border-radius:6px;display:grid;place-items:center;
+    font-family:var(--mono);font-size:12px;font-weight:500;color:var(--ink-2);
+    background:transparent;border:1px solid var(--line-2);letter-spacing:0}
+  .hd{flex:1;min-width:0}
+  .hd h2{font-size:clamp(1.28rem,2.6vw,1.6rem);font-weight:600;letter-spacing:-.028em;line-height:1.2;margin:0;text-wrap:balance}
+  .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:9px}
+  .chip{font-family:var(--mono);font-size:10.5px;font-weight:500;letter-spacing:.05em;text-transform:uppercase;
+    padding:2.5px 8px;border-radius:5px;color:var(--ink-2);background:transparent;border:1px solid var(--line-2)}
+  .chip.h{color:var(--bad-2);border-color:color-mix(in srgb,var(--bad) 38%,transparent);background:color-mix(in srgb,var(--bad) 6%,transparent)}
+  .chip.o{color:var(--ok-2);border-color:color-mix(in srgb,var(--ok) 34%,transparent);background:color-mix(in srgb,var(--ok) 5%,transparent)}
+  .chip.a{color:var(--warn-2);border-color:color-mix(in srgb,var(--warn) 36%,transparent);background:color-mix(in srgb,var(--warn) 6%,transparent)}
+  .chip.c{color:var(--accent-2);border-color:color-mix(in srgb,var(--accent) 40%,transparent);background:color-mix(in srgb,var(--accent) 7%,transparent)}
+  .card-body{padding:15px 24px 24px}
+  @media(max-width:620px){.card-body{padding:13px 16px 19px}}
+  .lead{color:var(--ink-2);margin:0 0 16px;max-width:64ch}
+
+  h3{font-size:1.1rem;font-weight:600;letter-spacing:-.02em;margin:28px 0 9px}
+  h4{font-size:.98rem;font-weight:600;margin:20px 0 6px;color:var(--ink-2)}
+  p{margin:0 0 12px;max-width:66ch;color:var(--ink-2)}
+  strong{color:var(--ink);font-weight:600} em{color:var(--ink-2)}
+  ul,ol{margin:0 0 14px;padding-left:21px;max-width:66ch;color:var(--ink-2)}
+  li{margin-bottom:5px} li::marker{color:var(--ink-4)}
+  code:not(pre code){font-family:var(--mono);font-size:.84em;background:var(--panel-2);border:1px solid var(--line);
+    padding:.08em .34em;border-radius:5px;color:var(--ink);white-space:nowrap;letter-spacing:0}
+  kbd{font-family:var(--mono);font-size:.8em;font-weight:500;padding:.14em .5em;border-radius:5px;
+    background:var(--panel-2);border:1px solid var(--line-2);border-bottom-width:2px;color:var(--ink)}
+
+  .cmd,.repl{margin:0 0 15px;border-radius:var(--r-mid);overflow:hidden;background:var(--well);border:1px solid var(--line)}
+  .cmd-bar{display:flex;align-items:baseline;gap:9px;padding:7px 9px 7px 14px;border-bottom:1px solid var(--line);background:var(--panel)}
+  .ck{font-size:11.5px;font-weight:600;color:var(--ink-3);letter-spacing:.03em}
+  .cv{font-family:var(--mono);font-size:11.5px;color:var(--ink-2);letter-spacing:-.01em}
+  .copy{margin-left:auto;flex:none;appearance:none;cursor:pointer;border-radius:6px;padding:3px 10px;
+    font-family:"Geist",-apple-system,sans-serif;font-size:11.5px;font-weight:500;line-height:1.4;letter-spacing:.01em;
+    color:var(--ink-2);background:transparent;border:1px solid var(--line-2);
+    transition:background .15s ease,color .15s ease,transform .12s ease}
+  .copy:hover{background:var(--line);color:var(--ink)}
+  .copy:active{transform:scale(.96)}
+  .copy.ok{color:var(--ok);border-color:color-mix(in srgb,var(--ok) 40%,transparent)}
+  .cmd pre,.repl pre{margin:0;padding:13px 16px;overflow-x:auto;font-family:var(--mono);
+    font-size:12.8px;line-height:1.7;color:var(--cs-ident);tab-size:2;letter-spacing:-.005em}
+
+  /* Syntax spans are gluon's theme roles, by the --cs tokens above. */
+  .c{color:var(--cs-comment)}
+  .f{color:var(--cs-builtin)}
+  .s{color:var(--cs-string)}
+  .p{color:var(--cs-punctuation)}
+  .ty{color:var(--cs-type)}
+  .nu{color:var(--cs-number)}
+  .no{color:var(--cs-note)}
+  .an{color:var(--cs-annotation)}
+  .er{color:var(--cs-error)}
+  .pr{color:var(--cs-prompt)}
+  .kw{color:var(--cs-keyword)}
+
+  .call{border-radius:var(--r-mid);padding:13px 16px;margin:0 0 15px;background:var(--panel-2);border:1px solid var(--line)}
+  .call .lbl{display:block;font-family:var(--mono);font-size:11px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+    margin-bottom:6px;color:var(--ink-3)}
+  .call p{margin:0 0 8px;max-width:62ch} .call p:last-child{margin-bottom:0}
+  .call ul{margin:5px 0 0;max-width:62ch}
+  .call.danger{background:color-mix(in srgb,var(--bad) 5%,transparent);border-color:color-mix(in srgb,var(--bad) 32%,transparent)}
+  .call.danger .lbl{color:var(--bad-2)}
+  .call.check{background:color-mix(in srgb,var(--ok) 4.5%,transparent);border-color:color-mix(in srgb,var(--ok) 30%,transparent)}
+  .call.check .lbl{color:var(--ok-2)}
+  .call.why{background:color-mix(in srgb,var(--accent) 6%,transparent);border-color:color-mix(in srgb,var(--accent) 30%,transparent)}
+  .call.why .lbl{color:var(--accent)}
+
+  .tw{overflow-x:auto;margin:0 0 16px;border-radius:var(--r-mid);background:var(--well);border:1px solid var(--line)}
+  table{border-collapse:collapse;width:100%;min-width:470px;font-size:14px}
+  th,td{text-align:left;padding:9.5px 14px;border-bottom:1px solid var(--line);vertical-align:top;color:var(--ink-2)}
+  thead th{font-family:var(--mono);font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-3);
+    font-weight:500;white-space:nowrap;background:var(--panel-2)}
+  tbody tr:last-child td{border-bottom:none}
+  td.mono,th.mono{font-family:var(--mono);font-size:12.4px;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+  td.mono .cy{color:var(--accent-2)}
+  .yes{color:var(--ok-2);font-weight:600} .no-{color:var(--bad);font-weight:600}
+  .cost{white-space:nowrap;font-family:var(--mono);font-size:12px}
+  .cost.free{color:var(--ok-2)} .cost.build{color:var(--ink-3)} .cost.net{color:var(--warn-2)}
+
+  /* ── the hero replay ─────────────────────────────────────────────────── */
+  .term{margin:0}
+
+  /* Terminal tabs. Each panel is a complete transcript in the DOM from the
+     start, so with JS off the first one still reads as a finished session and
+     the rest are reachable — the tab strip degrades to nothing, not to a
+     broken control. */
+  .tabs{display:flex;gap:0;overflow-x:auto;scrollbar-width:none;background:var(--bg);
+    border-bottom:1px solid var(--line)}
+  .tabs::-webkit-scrollbar{display:none}
+  .tab{appearance:none;cursor:pointer;flex:none;position:relative;
+    padding:8px 14px 7px;border:0;border-right:1px solid var(--line);
+    background:transparent;color:var(--ink-4);
+    font-family:var(--mono);font-size:11.5px;font-weight:500;letter-spacing:-.01em;
+    transition:color .15s ease,background .15s ease}
+  .tab:hover{color:var(--ink-2);background:var(--panel-2)}
+  .tab.on{color:var(--ink);background:var(--well)}
+  /* the lit edge that makes the active tab read as connected to the body */
+  .tab.on::after{content:"";position:absolute;left:0;right:0;top:0;height:2px;background:var(--accent)}
+  .tab .dot{display:inline-block;width:5px;height:5px;border-radius:50%;margin-right:6px;
+    background:var(--line-2);vertical-align:1px;transition:background .15s ease}
+  .tab.on .dot{background:var(--ok)}
+  .term-body[hidden]{display:none}
+  .term-body{padding:13px 16px;overflow-x:auto;font-family:var(--mono);
+    font-size:12.6px;line-height:1.75;color:var(--cs-ident);letter-spacing:-.005em;
+    min-height:var(--term-h,268px)}
+  .tl{white-space:pre}
+  .tl[hidden]{display:none}
+  .tl .txt{display:inline-block;overflow:hidden;white-space:pre;vertical-align:bottom}
+  .term.play .tl.typing .txt{border-right:0}
+  .cur{display:inline-block;width:.6ch;height:1.05em;vertical-align:-.18em;background:var(--accent);
+    margin-left:1px;animation:blink 1.05s steps(1) infinite}
+  .term:not(.play) .cur{display:none}
+  @keyframes blink{0%,49%{opacity:1}50%,100%{opacity:0}}
+
+  .foot{border-top:1px solid var(--line);padding:32px 0 60px;color:var(--ink-3);font-size:13.5px}
+  .fgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(238px,1fr));gap:26px}
+  .fh{font-family:var(--mono);font-size:11px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2);margin-bottom:10px;font-weight:500}
+  .foot ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:6px;max-width:none}
+  .foot li{margin:0}
+
+
+  /* ── guide and reference pages ─────────────────────────────────────────
+     The landing page's system — a compact hero, the side nav, cards — and
+     the few things a page of reference entries needs that a landing page
+     does not. */
+  header.hero.page{padding-top:40px;padding-bottom:22px}
+  header.hero.page h1{font-size:clamp(1.9rem,4vw,2.6rem)}
+  .nav a.nav-m{color:var(--ink-3)}
+  .nav a.nav-m:hover{color:var(--ink);text-decoration:none}
+  a.nav-t{color:var(--ink)}
+  a.nav-t:hover{text-decoration:none}
+  .grp-h{font-family:var(--mono);font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--ink-4);margin:14px 10px 4px}
+  .grp-h:first-of-type{margin-top:4px}
+  .side a.here{color:var(--ink)}
+  .ref{padding:18px 0 20px;border-top:1px solid var(--line);scroll-margin-top:64px}
+  .ref:first-child,.flt-w+.ref{border-top:none;padding-top:4px}
+  .ref h3{margin:0 0 8px;display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 12px}
+  .ref h3 .pl{font-family:var(--mono);font-size:1.02rem;color:var(--ink)}
+  .ref-s{font-size:.95rem;font-weight:400;color:var(--ink-2);letter-spacing:-.006em}
+  pre.sig{margin:0 0 10px;padding:9px 13px;border-radius:var(--r-in);background:var(--well);border:1px solid var(--line);
+    font-family:var(--mono);font-size:12.6px;color:var(--cs-ident);white-space:pre-wrap;word-break:break-word}
+  .ref .chips{margin:0 0 12px}
+  .ref .tw{margin:0 0 12px}
+  table.kv{min-width:0}
+  table.kv td.mono{white-space:nowrap;color:var(--ink);width:1%}
+  .term-body.ex{min-height:0}
+  .tl.says{white-space:pre-wrap}
+  /* A recorded session: an entry that follows output starts a little lower,
+     the way the eye groups a terminal, and a line the prompt answers with a
+     view says so beside it rather than pretending the text was printed. */
+  .term-body.ex .tl.out+.tl:not(.out){margin-top:8px}
+  .tl:empty::before{content:"\00a0"}
+  /* A table's rows are set solid, so its verticals join as a terminal's box
+     characters do; the rest of a transcript keeps the site's open leading. */
+  .tl.bx{line-height:1.22}
+  /* What was written in the editor a line opened: marked at the left, so it
+     reads as the file's contents and not as anything gluon printed. */
+  .tl.ed{border-left:2px solid color-mix(in srgb,var(--accent) 55%,transparent);padding-left:10px;margin-left:2px;
+    background:color-mix(in srgb,var(--accent) 5%,transparent)}
+  .tl .vw{margin-left:14px;padding:1px 6px;border-radius:4px;border:1px solid var(--line-2);
+    font-family:"Geist",-apple-system,sans-serif;font-size:10px;font-weight:500;letter-spacing:.06em;
+    text-transform:uppercase;color:var(--ink-3);vertical-align:1px;cursor:help}
+  .prose p{max-width:70ch}
+  .prose pre,pre.long{margin:0 0 12px;padding:11px 14px;border-radius:var(--r-in);background:var(--well);border:1px solid var(--line);
+    font-family:var(--mono);font-size:12.2px;line-height:1.6;color:var(--ink-2);overflow-x:auto;white-space:pre}
+  pre.long{white-space:pre-wrap}
+  .see{font-size:13.5px;color:var(--ink-3);margin:6px 0 0}
+  .flt-w{position:sticky;top:56px;z-index:5;display:flex;align-items:center;gap:10px;margin:0 0 14px}
+  .flt-w[hidden]{display:none}
+  .flt{flex:1;min-width:0;appearance:none;border-radius:var(--r-mid);padding:9px 13px;font:inherit;font-size:14px;
+    color:var(--ink);background:var(--panel);border:1px solid var(--line-2)}
+  .flt:focus{outline:2px solid var(--accent);outline-offset:1px}
+  .flt-n{font-family:var(--mono);font-size:11.5px;color:var(--ink-3);white-space:nowrap}
+  .pgs{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:10px}
+  .pg{display:flex;flex-direction:column;gap:3px;padding:14px 16px;border-radius:var(--r-mid);background:var(--panel-2);
+    border:1px solid var(--line);color:var(--ink-2);transition:border-color .15s ease}
+  .pg:hover{border-color:var(--accent);text-decoration:none}
+  .pg b{color:var(--ink);font-weight:600}
+  .pg-k{font-family:var(--mono);font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-4)}
+  .pn{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:18px}
+  .pn .next{text-align:right}
+  .sw{display:flex;flex-wrap:wrap;gap:6px 12px;margin-top:8px}
+  .swatch{display:inline-flex;align-items:center;gap:6px;font-family:var(--mono);font-size:11px;color:var(--ink-3)}
+  .swatch i{width:12px;height:12px;border-radius:3px;border:1px solid var(--line-2)}
+  /* A light theme's sample sits on a light ground: gluon colours text and
+     never the background, so a light palette on a dark well would be a
+     palette nobody sees. */
+  .repl.sample.light{background:#FAFAF9;border-color:#E4E4E7}
+  .ref details summary{cursor:pointer;color:var(--ink-3);font-size:13.5px;margin:4px 0}
+  .ref details pre{margin-top:8px}
+
+  /* ── screenshots ─────────────────────────────────────────────────────────
+     A real Ghostty window, captured once in each palette. The page shows the
+     one it is in; the other is display:none and, being lazy, never fetched.
+     The well is the terminal's own background, so the image sits flush. */
+  .shot{margin:0 0 15px;border-radius:var(--r-mid);overflow:hidden;background:var(--well);border:1px solid var(--line)}
+  .shot img{display:block;width:100%;height:auto}
+  .shot a{display:block}
+  .shot .v-gruv,.shot a:has(.v-gruv){display:none}
+  :root[data-theme="gruv"] .shot .v-go,:root[data-theme="gruv"] .shot a:has(.v-go){display:none}
+  :root[data-theme="gruv"] .shot .v-gruv,:root[data-theme="gruv"] .shot a:has(.v-gruv){display:block}
+  .gallery{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  .gallery .shot{margin:0}
+  @media (max-width:720px){.gallery{grid-template-columns:minmax(0,1fr)}}
+
+  /* ── the replay visualiser ───────────────────────────────────────────────
+     Section 14's widget. Everything here re-mixes the six hues already in the
+     palette; nothing new is introduced. The shell deliberately reuses
+     .cmd-bar so a figure and a code block read as the same species of object. */
+  .viz{margin:0 0 15px;border-radius:var(--r-mid);overflow:hidden;background:var(--well);border:1px solid var(--line)}
+  .viz-b{padding:15px 16px 6px;overflow-x:auto}
+  .rg{display:grid;gap:4px;min-width:430px;font-family:var(--mono);font-size:12px}
+  .rg-h{display:grid;grid-template-columns:var(--rg-c);gap:4px;align-items:end}
+  .rg-h span{font-size:10px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-4);padding-bottom:2px}
+  .rg-h span:first-child{text-align:left}
+  .rg-h span+span{text-align:center}
+  .rg-r{display:grid;grid-template-columns:var(--rg-c);gap:4px;align-items:center}
+  .rg-l{color:var(--ink-3);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;padding-right:6px;
+    font-size:11.5px;letter-spacing:-.01em;transition:color .18s ease}
+  .rg-r.pin .rg-l{color:var(--ink-4);text-decoration:line-through;text-decoration-color:var(--ink-4)}
+  .cl{height:22px;border-radius:5px;border:1px solid var(--line-2);background:transparent;
+    display:grid;place-items:center;font-size:10px;color:var(--ink-4);
+    transition:background .18s ease,border-color .18s ease,color .18s ease}
+  .cl.mute{background:var(--panel-2);border-color:var(--line-2);color:var(--ink-4)}
+  .cl.run{background:color-mix(in srgb,var(--accent) 16%,transparent);border-color:var(--accent);color:var(--run-ink)}
+  .cl.print{background:var(--accent);border-color:var(--accent);color:var(--bg);font-weight:600}
+  .cl.skip{background:color-mix(in srgb,var(--ok) 9%,transparent);border-color:color-mix(in srgb,var(--ok) 38%,transparent);color:var(--ok-2)}
+  .cl.none{border-style:dashed;border-color:var(--line)}
+
+  .lg{display:flex;flex-wrap:wrap;gap:13px;margin-top:12px;padding-top:11px;border-top:1px solid var(--line);
+    font-size:11.5px;color:var(--ink-3)}
+  .lg span{display:inline-flex;align-items:center;gap:6px}
+  .lg i{width:15px;height:11px;border-radius:3px;border:1px solid var(--line-2);flex:none}
+  .lg i.mute{background:var(--panel-2)}
+  .lg i.run{background:color-mix(in srgb,var(--accent) 16%,transparent);border-color:var(--accent)}
+  .lg i.print{background:var(--accent);border-color:var(--accent)}
+  .lg i.skip{background:color-mix(in srgb,var(--ok) 9%,transparent);border-color:color-mix(in srgb,var(--ok) 38%,transparent)}
+
+  .ctl{display:flex;flex-wrap:wrap;align-items:center;gap:7px;padding:10px 14px;
+    border-top:1px solid var(--line);background:var(--panel)}
+  .vbtn{appearance:none;cursor:pointer;border-radius:6px;padding:3.5px 10px;
+    font-family:"Geist",-apple-system,sans-serif;font-size:11.5px;font-weight:500;line-height:1.45;
+    color:var(--ink-2);background:transparent;border:1px solid var(--line-2);
+    transition:background .15s ease,color .15s ease,border-color .15s ease,transform .12s ease}
+  .vbtn:hover:not(:disabled){background:var(--line);color:var(--ink)}
+  .vbtn:active:not(:disabled){transform:scale(.96)}
+  .vbtn:disabled{opacity:.34;cursor:default}
+  .vbtn.on{color:var(--bg);background:var(--accent);border-color:var(--accent);font-weight:600}
+  .sep{width:1px;height:16px;background:var(--line-2);flex:none;margin:0 2px}
+  .st{font-family:var(--mono);font-size:11.5px;color:var(--ink-3);letter-spacing:-.01em;
+    margin-left:auto;text-align:right;min-width:0}
+  .st b{color:var(--accent);font-weight:500}
+  .st .hot{color:var(--bad-2);font-weight:500}
+  .st .cool{color:var(--ok-2);font-weight:500}
+  @media(max-width:620px){.st{margin-left:0;text-align:left;width:100%;order:9}}
+
+  /* PUBLIC INSTALL: delete this rule to reveal the go install block in card 00. */
+
+  @media(prefers-reduced-transparency:reduce){
+    .nav{background:var(--well);-webkit-backdrop-filter:none;backdrop-filter:none}
+  }
+  @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
+    .nav{background:var(--well)}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+    .tl{display:block!important}
+    .tl .txt{width:auto!important}
+    .cur{display:none!important}
+  }
+  @media print{
+    .field,.side,.nav,.skip,.copy,.pill,.cur,.tabs{display:none!important} body{background:#fff;color:#000}
+    /* On paper there is nothing to click, so every transcript prints rather
+       than four fifths of the hero silently disappearing. */
+    .term-body[hidden]{display:block!important}
+    .cols{display:block} .card,.group{background:#fff;box-shadow:none;border:1px solid #999;page-break-inside:auto}
+    .hero-grid{display:block}
+    h1,h2,h3,h4,p,li,td,th,.rk,.rv,strong,b,em,code,kbd,.chip,.ck,.cv,.lead{color:#000!important}
+    .rs,.an,.eyebrow,.g-h,.fh,.idx{color:#333!important}
+    code:not(pre code),kbd{background:#ececec!important;border-color:#999!important}
+    .chip{background:transparent!important;border-color:#999!important}
+    .cmd-bar,.g-h,thead th{background:#ebebeb!important;border-color:#999!important}
+    .idx{border-color:#999!important}
+    .row,.rows .row,.card-head{border-color:#bbb!important}
+    .cmd,.repl,.term{background:#f6f6f6;border:1px solid #999} .cmd pre,.repl pre,.term-body{color:#000;background:#f6f6f6}
+    .shot{border:1px solid #999}
+    .term-body{min-height:0!important}
+    .tl{display:block!important} .tl .txt{width:auto!important}
+    .c,.f,.s,.p,.ty,.nu,.no,.an,.er,.pr,.kw{color:#000!important}
+    .call{background:#f4f4f4;border:1px solid #666} .call .lbl{color:#000}
+    a{color:#000} @page{margin:13mm}
+  }

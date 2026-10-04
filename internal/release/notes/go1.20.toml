@@ -1,0 +1,27 @@
+# Go 1.20 — converting a slice straight to an array.
+
+version = "1.20"
+
+[[note]]
+name = "slice-to-array"
+title = "converting a slice to an array"
+needs = "1.20"
+below = "error"
+issue = 46505
+text = """
+A slice converts directly to an array of the same element type, copying the
+elements. Go 1.17 had already allowed the conversion to an array *pointer*;
+1.20 added the value form, so [4]byte(s) is a copy where (*[4]byte)(s) is an
+alias into the same backing store.
+
+The conversion panics if the slice is shorter than the array. That is checked
+at run time, not compile time, because the length of a slice is not in its
+type — so this is a conversion that can fail, which is unusual in Go and worth
+knowing before it fails in front of you.
+"""
+snippet = """
+s := []byte{1, 2, 3, 4}
+a := [4]byte(s)
+s[0] = 9
+[]any{a, s}
+"""

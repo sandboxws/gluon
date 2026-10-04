@@ -1,0 +1,11 @@
+# The theme chooser, previewing as it moves.
+Shot theme
+Alt :theme's chooser: every theme gluon ships, with the one in use under the cursor and previewed on a sample of code
+Caption Twenty-three themes, previewed live as you move through them — or import your editor's.
+Headline A palette for every taste
+Promo 16:9
+Grid 100x24
+Type ":theme"
+Enter
+Wait Prompt
+Screenshot

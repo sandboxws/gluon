@@ -1,0 +1,139 @@
+gluon> :since
+!view
+!clip 11
+28 Go releases, newest first
+╭─────────┬─────────┬──────────┬───────────╮
+│ version │ added   │ packages │ language  │
+├─────────┼─────────┼──────────┼───────────┤
+│ 1.27 ←  │ 317     │ 24       │ 3 changes │
+│ 1.26    │ 180     │ 24       │ 2 changes │
+│ 1.25    │ 111     │ 24       │ none      │
+│ 1.24    │ 223     │ 29       │ 1 change  │
+│ 1.23    │ 135     │ 24       │ 1 change  │
+│ 1.22    │ 130     │ 25       │ 2 changes │
+│ 1.21    │ 417     │ 33       │ 1 change  │
+│ 1.20    │ 4675    │ 44       │ 1 change  │
+│ 1.19    │ 309     │ 23       │ none      │
+│ 1.18    │ 239     │ 23       │ 2 changes │
+│ 1.17    │ 118     │ 23       │ 3 gated   │
+│ 1.16    │ 4238    │ 43       │ —         │
+│ 1.15    │ 130     │ 20       │ —         │
+│ 1.14    │ 4549    │ 22       │ 1 gated   │
+│ 1.13    │ 4065    │ 30       │ 6 gated   │
+│ 1.12    │ 92      │ 18       │ —         │
+│ 1.11    │ 503     │ 20       │ —         │
+│ 1.10    │ 615     │ 27       │ —         │
+│ 1.9     │ 133     │ 27       │ 1 gated   │
+│ 1.8     │ 255     │ 28       │ —         │
+│ 1.7     │ 280     │ 26       │ —         │
+│ 1.6     │ 275     │ 26       │ —         │
+│ 1.5     │ 901     │ 49       │ —         │
+│ 1.4     │ 435     │ 33       │ —         │
+│ 1.3     │ 550     │ 20       │ —         │
+│ 1.2     │ 4797    │ 44       │ —         │
+│ 1.1     │ 7918    │ 79       │ —         │
+│ 1.0     │ 11640 * │ 126      │ —         │
+╰─────────┴─────────┴──────────┴───────────╯
+← is the go directive this session builds at. * is the original Go 1 API rather than additions to it. — under language means nobody has written notes for that release, not that it changed none.
+gluon> :since 1.27 -lang
+!view
+!clip 24
+go 1.27 · generic methods
+
+A method may declare its own type parameters, so a type can carry a generic
+operation in its own namespace rather than forcing it out into a package-level
+function. Box[int].Map to a Box[string] is the example everyone reaches for, and
+until now it could not be a method at all: the receiver's type parameters were
+the only ones a method was allowed, so Map had to become func Map[T, U any](Box[T], func(T) U) Box[U]
+and read backwards.
+
+The restriction was in the original generics design and was expected to be
+temporary. What it cost was not expressiveness — the free function always
+worked — but the ability to write a fluent chain, and to keep an operation on
+the type it belongs to.
+
+Needs go 1.27 — under a lower go directive the compiler rejects it.
+Proposal: https://go.dev/issue/77273
+
+type Box[T any] struct{ V T }
+func (b Box[T]) Map[U any](f func(T) U) Box[U] {
+	return Box[U]{V: f(b.V)}
+}
+Box[int]{V: 3}.Map(func(n int) bool { return n > 2 })
+
+────────
+
+go 1.27 · a struct literal key may be any field selector
+
+A key in a struct literal may be any valid field selector for the type, not only
+a field declared directly on it. A field promoted from an embedded struct can be
+set in the literal, which is how it could already be read and assigned — so the
+composite literal stops being the one place embedding does not apply.
+
+Before this, a literal had to name the embedded type and nest a second literal
+inside it, which meant the shape of your literals depended on which fields
+happened to be embedded rather than on what you were setting.
+
+Needs go 1.27 — under a lower go directive the compiler rejects it.
+Proposal: https://go.dev/issue/9859
+
+type Base struct{ ID int }
+type User struct {
+	Base
+	Name string
+}
+u := User{ID: 7, Name: "ada"}
+[]any{u.ID, u.Name}
+
+────────
+
+go 1.27 · type inference when a generic function is assigned or converted
+
+Function type inference now applies everywhere a generic function is assigned to
+a variable of a matching function type, or converted to one. Previously the
+contexts it applied in were enumerated, and a conversion was not among them, so
+BinOp(Pick) had to be written BinOp(Pick[int]) — spelling out an argument the
+target type already determined.
+
+Like Go 1.26's self-referential constraints, no go directive gates this: it is a
+relaxation of what the type checker will infer, so it works under any go line on
+a new enough toolchain, and there is no version below which it fails.
+
+Needs go 1.27 — no go directive gates it; only the toolchain decides.
+Proposal: https://go.dev/issue/77245
+
+func Pick[T any](a, b T) T { return a }
+type BinOp func(int, int) int
+f := BinOp(Pick)
+f(3, 9)
+gluon> :since -pkg maps
+go 1.23
+  func All[$0 interface{ ~map[$1]$2 }, $1 comparable, $2 interface{}]($0) iter.Seq2[$1, $2]  https://go.dev/issue/61900
+  func Collect[$0 comparable, $1 interface{}](iter.Seq2[$0, $1]) map[$0]$1  https://go.dev/issue/61900
+  func Insert[$0 interface{ ~map[$1]$2 }, $1 comparable, $2 interface{}]($0, iter.Seq2[$1, $2])  https://go.dev/issue/61900
+  func Keys[$0 interface{ ~map[$1]$2 }, $1 comparable, $2 interface{}]($0) iter.Seq[$1]  https://go.dev/issue/61900
+  func Values[$0 interface{ ~map[$1]$2 }, $1 comparable, $2 interface{}]($0) iter.Seq[$2]  https://go.dev/issue/61900
+
+go 1.21
+  func Clone[$0 interface{ ~map[$1]$2 }, $1 comparable, $2 interface{}]($0) $0  https://go.dev/issue/57436
+  func Copy[$0 interface{ ~map[$2]$3 }, $1 interface{ ~map[$2]$3 }, $2 comparable, $3 interface{}]($0, $1)  https://go.dev/issue/57436
+  func DeleteFunc[$0 interface{ ~map[$1]$2 }, $1 comparable, $2 interface{}]($0, func($1, $2) bool)  https://go.dev/issue/57436
+  func EqualFunc[$0 interface{ ~map[$2]$3 }, $1 interface{ ~map[$2]$4 }, $2 comparable, $3 interface{}, $4 interface{}]($0, $1, func($3, $4) bool) bool  https://go.dev/issue/57436
+  func Equal[$0 interface{ ~map[$2]$3 }, $1 interface{ ~map[$2]$3 }, $2 comparable, $3 comparable]($0, $1) bool  https://go.dev/issue/57436
+gluon> :since 1.22 -run loop-variables
+go 1.22 · loop variables are per-iteration
+
+var fs []func() int
+for _, i := range []int{0, 1, 2} {
+	fs = append(fs, func() int { return i })
+}
+[]int{fs[0](), fs[1](), fs[2]()}
+
+([]int) len=3 cap=3
+╭───┬───────╮
+│ # │ value │
+├───┼───────┤
+│ 0 │ 0     │
+│ 1 │ 1     │
+│ 2 │ 2     │
+╰───┴───────╯

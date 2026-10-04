@@ -1,0 +1,61 @@
+version: 2
+
+project_name: gluon
+
+# Not the default dist/: that directory already holds the screenshot pipeline's
+# output (dist/shots, dist/promo), and `release --clean` empties its dist.
+dist: dist/release
+
+before:
+  hooks:
+    # Fail rather than tidy: a release built from a tree it just edited is not
+    # the tree that was tagged.
+    - go mod tidy -diff
+
+builds:
+  - id: gluon
+    main: ./cmd/gluon
+    binary: gluon
+    env:
+      - CGO_ENABLED=0
+    goos: [darwin, linux]
+    goarch: [amd64, arm64]
+    # Paths in panics and stack traces are module paths, not the CI runner's
+    # checkout, and two builds of one tag are byte-identical.
+    flags: [-trimpath]
+    mod_timestamp: "{{ .CommitTimestamp }}"
+    # Only the version stamp. No -s -w: symbols keep a user's panic report
+    # readable, and stripping was measured at zero startup benefit (ROADMAP,
+    # "Permanently rejected").
+    ldflags:
+      - -X main.version={{.Version}}
+
+archives:
+  - formats: [tar.gz]
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    files: [LICENSE, README.md]
+
+checksum:
+  name_template: checksums.txt
+
+changelog:
+  sort: asc
+  filters:
+    exclude: ["^docs", "^test", "^chore", "^ci"]
+
+brews:
+  - name: gluon
+    repository:
+      owner: sandboxws
+      name: homebrew-tap
+      token: "{{ .Env.HOMEBREW_TAP_GITHUB_TOKEN }}"
+    directory: Formula
+    homepage: https://github.com/sandboxws/gluon
+    description: "A REPL and scratch runner for Go, backed by the real toolchain"
+    license: MIT
+    caveats: |
+      gluon compiles what you type with your own Go toolchain, so `go` must be
+      on your PATH.
+    test: |
+      system "#{bin}/gluon", "-version"
+    skip_upload: auto

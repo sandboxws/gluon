@@ -1,0 +1,31 @@
+# A command's page, the usage beside the line, its flags on tab, and the view.
+Shot help
+Alt :help :http opening the command's page in the help view: its synopsis, what it does, each operand and flag with its help, and its examples to put on the prompt
+Also help-hint :http typed with a space after it, and its usage shown beside the line: the method, the url, and the flags that come after them
+Also help-flags :http with a method and url typed and then a dash, the flags it takes offered beside the line
+Also help-browser :help's view filtered to http, a row per command with what it takes, its flags and what it does
+Caption Every command explains itself: :help for its page, its usage beside the line as you type, its flags on tab, and a browsable view of all of them.
+Headline Every command explains itself
+Promo 16:9
+Host shop
+Grid 100x26
+Line :help :http
+Screenshot
+Esc
+Wait Prompt
+Ctrl l
+Wait Prompt
+Type ":http "
+Wait Prompt
+Screenshot help-hint
+Type "GET http://127.0.0.1:8765/users/1 -"
+Wait Prompt
+Screenshot help-flags
+Ctrl c
+Wait Prompt
+Type ":help"
+Enter
+Wait Prompt
+Keys "/http"
+Wait Prompt
+Screenshot help-browser

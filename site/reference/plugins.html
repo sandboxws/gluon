@@ -1,0 +1,25 @@
+{% define "side" %}{% range .Reg.Families %}<a href="#{% .Anchor %}"><span class="rn">{% len .Plugins %}</span><span class="rt">{% .Name %}</span></a>
+{% end %}{% end %}
+{% define "main" %}
+<div class="flt-w" hidden><input class="flt" type="search" placeholder="/ to filter — a plugin, a module, a command" aria-label="Filter the plugins" data-filter=".ref"><span class="flt-n" aria-live="polite"></span></div>
+{% range .Reg.Families %}
+<section class="card" id="{% .Anchor %}" data-group>
+  <div class="card-head"><span class="idx">{% len .Plugins %}</span><div class="hd"><h2>{% .Name %}</h2></div></div>
+  <div class="card-body">
+  {% range .Plugins %}
+    <article class="ref" id="{% .Anchor %}" data-f="{% .Name %} {% .Module %} {% range .Commands %}{% . %} {% end %}">
+      <h3><a class="pl" href="#{% .Anchor %}">{% .Name %}</a><span class="ref-s">{% .Summary %}</span></h3>
+      <div class="chips">{% if .Module %}<span class="chip">{% .Module %}</span><span class="chip a">active when the build list has it</span>{% else %}<span class="chip o">standard library · always active</span>{% end %}</div>
+      <div class="tw"><table class="kv"><tbody>
+        {% if .Commands %}<tr><td class="mono">commands</td><td>{% range $i, $c := .Commands %}{% if $i %} {% end %}<a href="commands.html#{% anchor $c %}"><code>{% $c %}</code></a>{% end %}</td></tr>{% end %}
+        {% if .Renders %}<tr><td class="mono">renders</td><td>{% range $i, $r := .Renders %}{% if $i %}, {% end %}<code>{% $r %}</code>{% end %}</td></tr>{% end %}
+        {% if .Imports %}<tr><td class="mono">imports</td><td>{% range $i, $m := .Imports %}{% if $i %}, {% end %}<code>{% $m %}</code>{% end %}</td></tr>{% end %}
+        {% if .Aliases %}<tr><td class="mono">:get</td><td>{% range $i, $a := .Aliases %}{% if $i %}, {% end %}<code>{% $a %}</code>{% end %}</td></tr>{% end %}
+      </tbody></table></div>
+      {% with .Guide %}<details class="guide"><summary><code>:guide</code> — its cheatsheet</summary><pre>{% . %}</pre></details>{% end %}
+    </article>
+  {% end %}
+  </div>
+</section>
+{% end %}
+{% end %}

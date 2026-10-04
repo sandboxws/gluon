@@ -1,0 +1,27 @@
+{% define "side" %}{% range .Reg.Groups %}<a href="#{% .Anchor %}"><span class="rn">{% len .Commands %}</span><span class="rt">{% .Name %}</span></a>
+{% end %}{% end %}
+{% define "main" %}
+<div class="flt-w" hidden><input class="flt" type="search" placeholder="/ to filter — a name, a flag, a word, a plugin" aria-label="Filter the commands" data-filter=".ref"><span class="flt-n" aria-live="polite"></span></div>
+{% range .Reg.Groups %}
+<section class="card" id="{% .Anchor %}" data-group>
+  <div class="card-head"><span class="idx">{% len .Commands %}</span><div class="hd"><h2>{% .Name %}</h2></div></div>
+  <div class="card-body">
+  {% range .Commands %}
+    <article class="ref" id="{% .Anchor %}" data-f="{% .Filter %}">
+      <h3><a class="pl" href="#{% .Anchor %}">{% .Name %}</a><span class="ref-s">{% .Summary %}</span></h3>
+      <pre class="sig">{% .Synopsis %}</pre>
+      <div class="chips"><span class="chip">takes {% .Kind %}</span>{% with .Tool %}<span class="chip c">MCP · {% . %}</span>{% end %}{% range .Plugins %}<span class="chip o">{% . %} plugin</span>{% end %}{% range .Aliases %}<span class="chip">also {% . %}</span>{% end %}</div>
+      {% if or .Operands .Flags %}<div class="tw"><table class="kv"><tbody>
+        {% range .Operands %}<tr><td class="mono">{% .Label %}</td><td>{% .Help %}</td></tr>
+        {% end %}{% range .Flags %}<tr id="{% .Anchor %}"><td class="mono">{% .Label %}</td><td>{% .Help %}</td></tr>
+        {% end %}</tbody></table></div>{% end %}
+      {% if .Examples %}<div class="repl"><div class="term-body ex">{% range .Examples %}<div class="tl">{% .Line %}</div>{% with .Says %}<div class="tl says"><span class="an">    {% . %}</span></div>{% end %}{% end %}</div></div>{% end %}
+      <div class="prose">{% .Detail %}</div>
+      {% if .See %}<p class="see">See also {% range $i, $s := .See %}{% if $i %} · {% end %}<a href="#{% anchor $s %}"><code>{% $s %}</code></a>{% end %}</p>{% end %}
+      {% with worked .Name %}<p class="see">Worked through in {% range $i, $g := . %}{% if $i %} · {% end %}<a href="{% rel $g.Path %}">{% $g.Title %}</a>{% end %}</p>{% end %}
+    </article>
+  {% end %}
+  </div>
+</section>
+{% end %}
+{% end %}

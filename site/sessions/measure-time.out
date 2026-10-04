@@ -1,0 +1,12 @@
+gluon> :time on
+timing on
+gluon> strings.Repeat("ab", 3)
+(string) "ababab"  len=6
+  [goimports 11.1ms · typecheck 79.5ms · build 202.7ms · run 103.1ms · total 396.4ms]
+gluon> strings.Repeat("ab")
+!error error: not enough arguments in call to strings.Repeat
+!error     strings.Repeat("ab")
+!error                        ^
+!error   [gofmt 0s · typecheck 1.2ms · total 1.3ms]
+gluon> :time off
+timing off

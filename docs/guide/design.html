@@ -1,0 +1,163 @@
+<!doctype html>
+<!-- generated from site/ by `just docs`: edit the source, not this file -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>How it works — gluon</title>
+<meta name="description" content="Why the real compiler, where a line&#39;s time goes, what replaying the session costs, how gluon compares, and what it never does.">
+<meta name="theme-color" content="#0A0A0A">
+<script>(function(d,m){try{m=/[?&]palette=(gruv|go)\b/.exec(location.search);m=m?m[1]:localStorage.getItem("gluon:theme")}catch(e){}if(m==="gruv")d.documentElement.setAttribute("data-theme","gruv")})(document)</script>
+<link rel="canonical" href="https://sandboxws.github.io/gluon/guide/design.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="How it works — gluon">
+<meta property="og:description" content="Why the real compiler, where a line&#39;s time goes, what replaying the session costs, how gluon compares, and what it never does.">
+<meta property="og:url" content="https://sandboxws.github.io/gluon/guide/design.html">
+<meta property="og:image" content="https://sandboxws.github.io/gluon/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="gluon's startup screen in a Go project, beside the words: A Go REPL that stands in your project">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sandboxws.github.io/gluon/img/og.png">
+<meta name="twitter:title" content="How it works — gluon">
+<meta name="twitter:description" content="Why the real compiler, where a line&#39;s time goes, what replaying the session costs, how gluon compares, and what it never does.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A0A0A'/%3E%3Cpath d='M9 9l7 7-7 7' stroke='%2300ADD8' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M18 23h6' stroke='%2300ADD8' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/gluon.css?v=980f3e8a">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="field" aria-hidden="true"></div>
+<div class="nav" id="nav">
+  <div class="nav-in">
+    <a class="nav-t" href="../index.html">gluon</a>
+    <span class="nav-sp"></span>
+    <a class="nav-m" href="../guide/index.html">Guides</a>
+    <a class="nav-m" href="../reference/index.html">Reference</a>
+    <span class="nav-m opt">v0.1.0</span>
+  </div>
+</div>
+
+<header class="hero wrap page">
+  <p class="eyebrow">Guide 15</p>
+  <h1 id="bigTitle">How it works</h1>
+  <p class="sub">Why the real compiler, where a line&#39;s time goes, what replaying the session costs, how gluon compares, and what it never does.</p>
+</header>
+
+<div class="wrap cols">
+  <nav class="side" aria-label="Sections"><div class="side-in">
+    <p class="grp-h">This page</p>
+    <a href="#compiler"><span class="rn">1</span><span class="rt">The real compiler</span></a>
+<a href="#latency"><span class="rn">2</span><span class="rt">Where a line's time goes</span></a>
+<a href="#replay"><span class="rn">3</span><span class="rt">Replay, and its cost</span></a>
+<a href="#compare"><span class="rn">4</span><span class="rt">How it compares</span></a>
+<a href="#never"><span class="rn">5</span><span class="rt">What it never does</span></a>
+    <p class="grp-h">Guides</p>
+    <a href="../guide/index.html"><span class="rt">Guides</span></a>
+    <a href="../guide/start.html"><span class="rt">The first five minutes</span></a>
+    <a href="../guide/inspecting.html"><span class="rt">Inspecting</span></a>
+    <a href="../guide/measuring.html"><span class="rt">Measuring</span></a>
+    <a href="../guide/rendering.html"><span class="rt">Rendering</span></a>
+    <a href="../guide/session.html"><span class="rt">The session</span></a>
+    <a href="../guide/scratchpads.html"><span class="rt">Scratchpads</span></a>
+    <a href="../guide/editing.html"><span class="rt">Editing</span></a>
+    <a href="../guide/project.html"><span class="rt">In a project</span></a>
+    <a href="../guide/database.html"><span class="rt">The database</span></a>
+    <a href="../guide/plugins.html"><span class="rt">Plugins</span></a>
+    <a href="../guide/configuration.html"><span class="rt">Configuration</span></a>
+    <a href="../guide/themes.html"><span class="rt">Themes</span></a>
+    <a href="../guide/scripting.html"><span class="rt">Scripting</span></a>
+    <a href="../guide/mcp.html"><span class="rt">MCP</span></a>
+    <a href="../guide/design.html" aria-current="page" class="here"><span class="rt">How it works</span></a>
+    
+  </div></nav>
+  <main id="main">
+    
+<section class="card" id="compiler">
+  <div class="card-head"><span class="idx">1</span><div class="hd"><h2>Why it is not an interpreter</h2></div></div>
+  <div class="card-body">
+    <p class="lead">gluon compiles with your real Go toolchain. Every line re-renders the whole session into a genuine Go program and builds it, so the semantics are the compiler's — not an interpreter's approximation of them.</p>
+    <p>The alternative was embedding an interpreter, and the mature ones lag the language: yaegi's standard library tables target Go 1.21 and 1.22, and gomacro does not import generic standard library functions at all, which breaks <code>slices.Sort</code> and <code>maps.Keys</code> — most of modern Go. If you are using a REPL to learn the language, semantics that quietly differ from the compiler teach you wrong Go.</p>
+    <p>The cost is latency, and most lines do not pay it. Before anything is built, the session is type-checked in gluon's own process, from export data, in about a millisecond — so a type error, a declaration, a constant expression, and every question marked <em>no build</em> on the <a href="inspecting.html">inspecting</a> page never reach the toolchain. The checker is never an authority: when it cannot answer, the compiler is asked, and <code>GLUON_NO_TYPECHECK=1</code> turns it off entirely.</p>
+  </div>
+</section>
+
+<section class="card" id="latency">
+  <div class="card-head"><span class="idx">2</span><div class="hd"><h2>Where a line's time goes</h2></div></div>
+  <div class="card-body">
+    <p class="lead"><a href="../reference/commands.html#time"><code>:time</code></a> shows it for every line: a declaration and a constant answered by the checker, a type error answered by it, and a value that had to run.</p>
+    <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:time</span> on</div><div class="tl out">timing on</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">type</span> Point <span class="kw">struct</span><span class="p">{</span> X<span class="p">,</span> Y <span class="ty">int</span> <span class="p">}</span></div><div class="tl out">  [gofmt 300µs · typecheck 102.9ms · total 103.2ms]</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="nu">1</span> <span class="p">&lt;&lt;</span> <span class="nu">20</span></div><div class="tl out"><span class="ty">(int)</span> 1048576</div><div class="tl out">  [gofmt 100µs · typecheck 1.1ms · total 1.2ms]</div><div class="tl"><span class="pr">gluon&gt;</span> strings<span class="p">.</span>Repeat<span class="p">(</span><span class="s">&#34;ab&#34;</span><span class="p">)</span></div><div class="tl out"><span class="er">error: not enough arguments in call to strings.Repeat</span></div><div class="tl out"><span class="er">    strings.Repeat(&#34;ab&#34;)</span></div><div class="tl out"><span class="er">                       ^</span></div><div class="tl out"><span class="er">  [goimports 11.8ms · typecheck 69.2ms · total 81ms]</span></div><div class="tl"><span class="pr">gluon&gt;</span> Point<span class="p">{</span><span class="nu">1</span><span class="p">,</span> <span class="nu">2</span><span class="p">}</span></div><div class="tl out"><span class="ty">(main.Point)</span></div><div class="tl out bx"><span class="p">╭───────┬───────╮</span></div><div class="tl out bx"><span class="p">│</span> field <span class="p">│</span> value <span class="p">│</span></div><div class="tl out bx"><span class="p">├───────┼───────┤</span></div><div class="tl out bx"><span class="p">│</span> X     <span class="p">│</span> 1     <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> Y     <span class="p">│</span> 2     <span class="p">│</span></div><div class="tl out bx"><span class="p">╰───────┴───────╯</span></div><div class="tl out">  [gofmt 0s · typecheck 2ms · build 100.5ms · goimports 14.8ms · build 205.1ms · run 114.1ms · total 436.6ms]</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:time</span> off</div><div class="tl out">timing off</div></div></div>
+    <figure class="shot"><figcaption class="cmd-bar"><span class="ck">Screenshot</span><span class="cv">a line built and run, then one the checker answers</span></figcaption><a href="../img/shots/fast-errors.go.webp?v=7098ab63"><img class="v-go" src="../img/shots/fast-errors.go.webp?v=7098ab63" width="791" height="350" alt=":time on, then a call built and run by the real toolchain in about a third of a second, and the same call missing an argument, answered by the in-process type checker in about a millisecond" loading="lazy" decoding="async"></a><a href="../img/shots/fast-errors.gruv.webp?v=e2d5d018"><img class="v-gruv" src="../img/shots/fast-errors.gruv.webp?v=e2d5d018" width="791" height="350" alt=":time on, then a call built and run by the real toolchain in about a third of a second, and the same call missing an argument, answered by the in-process type checker in about a millisecond" loading="lazy" decoding="async"></a></figure>
+    <div class="tw"><table>
+      <thead><tr><th>Phase</th><th>Cost, measured on darwin/arm64</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">type check, in process, warm</td><td><strong>about 1ms</strong></td></tr>
+        <tr><td class="mono">go build, one-file module, warm cache</td><td>about 190ms</td></tr>
+        <tr><td class="mono">exec a freshly linked binary</td><td>about 105ms on macOS, most of it Gatekeeper</td></tr>
+        <tr><td class="mono">goimports</td><td>about 135ms, and only when gluon cannot resolve a name itself</td></tr>
+        <tr><td class="mono">completion, a warm keystroke</td><td>12–22µs</td></tr>
+      </tbody>
+    </table></div>
+    <p>The first row is why a type error comes back in a millisecond and a value in a third of a second. The first check of a session is slower — it loads export data — and the first line to name a package pays for goimports once. The exec row is macOS validating a binary it has never seen; <a href="start.html#install">Install</a> has how to remove it, and <code>gluon doctor</code> measures it. An attached project costs nothing a line: gluon always builds its own one-file module, and the toolchain loads the import graph, not every package the project has.</p>
+  </div>
+</section>
+
+<section class="card" id="replay">
+  <div class="card-head"><span class="idx">3</span><div class="hd"><h2>Replay, and what it costs</h2></div></div>
+  <div class="card-body">
+    <p class="lead">A Go program cannot be paused and resumed between lines, so gluon does not try: each line is a whole program, built from every entry so far, and run from the start. Output from the entries before the newest is muted at the file-descriptor level, so you see only the newest line's.</p>
+    <p>That is what makes the semantics the compiler's, and it has one honest cost: <strong>side effects repeat</strong>. A request made on line three is made again on every line after it; a file is written again; <code>time.Now()</code> moves. Muting rather than diffing is what keeps a program that ranges over a map readable — a diff breaks the moment the order changes — but the re-execution is real. <a href="../reference/commands.html#pin"><code>:pin</code></a> takes an entry out of the replay, <a href="../reference/commands.html#undo"><code>:undo</code></a> takes it out of the session, and <a href="session.html#replay">The session</a> shows both.</p>
+    <p>Two things follow from each line being a program that exits: there is no process to attach a debugger to or serve a live profile from, which is why <a href="../reference/commands.html#profile"><code>:profile</code></a> captures one from a run that happened and <code>:save -debug</code> hands you a real module; and a goroutine is waited for only briefly, and said.</p>
+  </div>
+</section>
+
+<section class="card" id="compare">
+  <div class="card-head"><span class="idx">4</span><div class="hd"><h2>How it compares</h2></div></div>
+  <div class="card-body">
+    <p><strong>gore</strong> is the closest relative — also a real-toolchain REPL, mature and MIT-licensed, with gopls-backed completion. The differences are the reasons gluon exists. gore pays a full <code>go run</code> round trip for every line, including the ones that only needed a type error; gluon type-checks in process and answers errors, <code>:t</code>, <code>:m</code>, <code>:layout</code> and constants in about a millisecond. gore prints replayed output again on every evaluation; gluon mutes it, which is what keeps non-deterministic programs readable. And gluon carries the parts of pry Go never had — <code>it</code>, <code>:doc -src</code>, a value printer that tells the truth about identity — plus attachment that reaches <code>internal/</code> packages, the database layer and the plugins. Lines that actually run cost about 300ms in both: that is the price of the real compiler, and neither can cheat it.</p>
+    <p><strong>yaegi</strong> and <strong>gomacro</strong> are a different premise — interpreters: fast, with the interpreter's semantics rather than the compiler's. <strong>gophernotes</strong> is a Jupyter kernel over gomacro, the same trade behind a different surface; gluon is a terminal tool, not a kernel. None of the three has an agent surface. <a href="mcp.html">gluon mcp</a> serves the millisecond inspectors to a coding agent, so it measures method sets, layouts and benchmarks instead of guessing.</p>
+  </div>
+</section>
+
+<section class="card" id="never">
+  <div class="card-head"><span class="idx">5</span><div class="hd"><h2>What it never does</h2></div></div>
+  <div class="card-body">
+    <div class="call check">
+      <span class="lbl">Promises the code keeps</span>
+      <ul>
+        <li><strong>Never writes into your project.</strong> It builds in its own temp module, so it can never leave a stray binary in your repository, and a line runs in the session's directory, not yours.</li>
+        <li><strong>Never edits your go.mod.</strong> A module added with <code>:get</code> belongs to the session.</li>
+        <li><strong>Never reaches the network on its own account</strong> except <code>:get</code>, which fetches a module, and <code>:share</code>, which uploads and asks every time. A line can make its own requests, as any Go program can.</li>
+        <li><strong>Never stores a password</strong>, and never puts a connection string in a program it generates.</li>
+        <li><strong>Never guesses between two answers</strong> — two databases, two of your project's packages with one name — when the wrong guess would look like a right one. It lists them and asks.</li>
+      </ul>
+    </div>
+    <p>The reasoning behind each of these, and the invariants the code is held to, are in the project's <code>ROADMAP.md</code>.</p>
+  </div>
+</section>
+
+    <nav class="pn" aria-label="Pages beside this one">
+  <a class="pg" href="../guide/mcp.html"><span class="pg-k">← previous</span><b>MCP</b></a>
+  
+</nav>
+  </main>
+</div>
+
+<footer class="foot"><div class="wrap fgrid">
+    <div><div class="fh">The site</div><ul>
+        <li><a href="../index.html">gluon</a> — what it is, in one page</li>
+        <li><a href="../guide/index.html">Guides</a> — every feature, with the lines to type</li>
+        <li><a href="../reference/index.html">Reference</a> — generated from the code that defines it</li>
+      </ul></div>
+    <div><div class="fh">This page</div><ul>
+        <li>v0.1.0 · <code>github.com/sandboxws/gluon</code></li>
+        <li>Generated from <code>site/</code> by <code>just docs</code></li>
+        <li>No analytics, no cookies; the palette choice is one localStorage key</li>
+        <li><a href="https://github.com/sandboxws/gluon">Source</a></li>
+      </ul></div>
+</div></footer>
+<script src="../assets/gluon.js?v=0b5d44bf"></script>
+</body>
+</html>

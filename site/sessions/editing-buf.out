@@ -1,0 +1,21 @@
+gluon> :buf
+!editor func greet(name string) string {
+!editor 	return "hello, " + name
+!editor }
+!editor greet("gluon")
+(string) "hello, gluon"  len=12
+gluon> :buf -show
+!lang go
+func greet(name string) string {
+	return "hello, " + name
+}
+greet("gluon")
+gluon> :buf -check
+!error buffer:1:6: greet redeclared in this block
+!error     func greet(name string) string {
+!error          ^
+!error session: 	other declaration of greet
+!error     func greet(name string) string {
+!error          ^
+gluon> :buf -clear
+buffer cleared — 4 lines dropped

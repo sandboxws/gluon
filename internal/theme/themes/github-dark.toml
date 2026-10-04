@@ -1,0 +1,41 @@
+# GitHub Dark, converted from GitHub's own VS Code theme by `gluon theme
+# import`.
+#
+# The built themes are not committed to primer/github-vscode-theme on any branch
+# or tag — they are generated at release — so this came out of the published
+# extension, and the line below is the whole recipe for getting it again.
+#
+# It is also the theme that found the loosest bug in the reader: one of its UI
+# colours, symbolIcon.constantForeground, is an array rather than a string, and
+# that one malformed entry used to refuse the entire file.
+#
+# Re-run:  gluon theme import <file> --print
+#          marketplace VSIX GitHub.github-vscode-theme 6.3.5, themes/dark-default.json
+#
+# Kept from gluon's own go, because nothing in an editor theme means
+# them: `note`, `search`.
+about      = "GitHub Dark: red keywords, pale-blue strings, orange types"
+appearance = "dark"
+source     = "GitHub Dark Default, a VS Code theme"
+
+[theme]
+# Source.
+keyword     = "#ff7b72"
+string      = "#a5d6ff"
+type        = "#ffa657"
+comment     = "#8b949e"
+number      = "#79c0ff"
+builtin     = "#79c0ff"
+punctuation = "#e6edf3"
+ident       = "#e6edf3"
+
+# Values, the REPL, and the CLI.
+error       = "#ffa198"
+prompt      = "#ffa657"
+mode        = "#79c0ff"  # the blue already in this palette, against an orange
+                         # prompt
+annotation  = "#8b949e"
+note        = "#E3B341"
+dim         = "#6e7681"
+search      = "#F5B843"
+border      = "#30363d"

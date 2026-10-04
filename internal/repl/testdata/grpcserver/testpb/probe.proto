@@ -1,0 +1,43 @@
+// probe.proto is the surface :grpc's integration tests are written against.
+//
+// It is deliberately small and deliberately mixed: one unary method for the
+// ordinary path, one that fails, one whose answer changes on every call, and
+// the three streaming shapes so that listing and refusing them is testable
+// against a real server rather than against a stub.
+syntax = "proto3";
+
+package gluontest;
+
+import "google/protobuf/duration.proto";
+
+option go_package = "gluon.test/grpcserver/testpb";
+
+message EchoRequest {
+  string text = 1;
+  // meta_key names a metadata key the server should read back, which is how a
+  // credential that reaches the wire becomes visible to a test.
+  string meta_key = 2;
+}
+
+message EchoReply {
+  string text = 1;
+  string meta = 2;
+  // count increments on every call the process serves, so two calls that
+  // returned the same number came from one cached answer.
+  int64 count = 3;
+  // conn identifies the connection the call arrived on.
+  string conn = 4;
+  // took exists to put a google.protobuf.Duration in a response, so that a
+  // field with a registered renderer can be shown to render through it.
+  google.protobuf.Duration took = 5;
+}
+
+message Empty {}
+
+service Probe {
+  rpc Echo(EchoRequest) returns (EchoReply);
+  rpc Fail(Empty) returns (Empty);
+  rpc Watch(Empty) returns (stream EchoReply);
+  rpc Upload(stream EchoRequest) returns (EchoReply);
+  rpc Chat(stream EchoRequest) returns (stream EchoReply);
+}

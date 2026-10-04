@@ -1,0 +1,13 @@
+# The startup screen, standing in a real project: what gluon found there.
+Shot hero
+Alt gluon starting in a Go project: the wordmark and version, a row each for the scratchpad it opened, the module it attached to, the database it found and the plugins the project's build list turned on, then a line of the project's own code evaluated at the prompt
+Caption gluon is a REPL for Go that compiles every line with your real toolchain — and stands in your project, internal/ packages and all.
+Headline A Go REPL that stands in your project
+Promo 16:9 og
+Host shop
+Setup gluon init -no-prompt -write -local
+Args -host .
+Banner full
+Grid 80x20
+Line pricing.Total(pricing.Sample()).String()
+Screenshot

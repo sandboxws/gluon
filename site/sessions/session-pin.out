@@ -1,0 +1,30 @@
+gluon> hit := func() { f, _ := os.OpenFile("hits", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o644); f.WriteString("x"); f.Close() }
+gluon> hit()
+gluon> b, _ := os.ReadFile("hits")
+gluon> len(b)
+(int) 3
+gluon> len(b)
+(int) 4
+gluon> :hist
+  1  hit := func() { f, _ := os.OpenFile("hits", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o644); f.WriteString("x"); f.Close() }
+  2  hit()
+  3  b, _ := os.ReadFile("hits")
+  4  len(b)   _1
+  5  len(b)   _2
+gluon> :pin 2
+pinned 2 — it will not run again
+gluon> len(b)
+(int) 4
+gluon> len(b)
+(int) 4
+gluon> :pin
+  2  hit()
+gluon> :refresh
+refreshed — 1 pinned entry ran again
+(int) 5
+gluon> len(b)
+(int) 5
+gluon> :unpin 2
+unpinned 2 — it runs again from here
+gluon> len(b)
+(int) 7

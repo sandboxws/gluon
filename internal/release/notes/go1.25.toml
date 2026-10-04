@@ -1,0 +1,8 @@
+# Go 1.25 changed nothing about the language.
+#
+# The release notes say so in as many words — "there are no language changes
+# that affect Go programs in Go 1.25" — and $GOROOT/src/go/types gates nothing
+# at go1.25. The spec dropped the notion of core types in favour of prose, which
+# is a rewording of what was already true rather than a change to the language.
+
+version = "1.25"

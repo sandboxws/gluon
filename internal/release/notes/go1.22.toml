@@ -1,0 +1,50 @@
+# Go 1.22 — the loop change, and ranging over an integer.
+
+version = "1.22"
+
+[[note]]
+name = "loop-variables"
+title = "loop variables are per-iteration"
+needs = "1.22"
+below = "behaves differently"
+issue = 60078
+text = """
+A variable declared by a for loop's init clause or by a range clause is now a
+new variable on every iteration, where it used to be one variable reused. A
+closure or a goroutine that captured it captured the loop's single variable and
+saw whatever it held when the loop finished; now each capture is its own.
+
+This is the one change in this list that is not a compile error under an older
+directive — the code below builds either way and gives [0 1 2] at go 1.22 or
+above and [2 2 2] below it. Which is why the go directive in a module's go.mod
+is not paperwork: it selects the semantics the compiler applies to that file.
+"""
+snippet = """
+var fs []func() int
+for _, i := range []int{0, 1, 2} {
+	fs = append(fs, func() int { return i })
+}
+[]int{fs[0](), fs[1](), fs[2]()}
+"""
+
+[[note]]
+name = "range-over-int"
+title = "ranging over an integer"
+needs = "1.22"
+below = "error"
+issue = 61405
+text = """
+`for i := range n` iterates from 0 to n-1, where n is any integer. It replaces
+the three-clause loop in the case that has no condition and no post statement
+worth writing, and it is the form the iterator proposal needed to exist before
+range could be generalised any further.
+
+A negative or zero n runs the body no times, the way an empty slice does.
+"""
+snippet = """
+var xs []int
+for i := range 4 {
+	xs = append(xs, i*i)
+}
+xs
+"""

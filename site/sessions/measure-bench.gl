@@ -1,0 +1,6 @@
+:bench strings.Repeat("ab", 100)
+:bench -count 5 strings.Repeat("ab", 100)
+n := 42
+:bench strconv.Itoa(n), fmt.Sprint(n)
+:bench -cpu 1,4 strings.Repeat("ab", 1024)
+:bench -profile strings.Repeat("ab", 100)

@@ -1,0 +1,35 @@
+# Catppuccin Latte, converted from the theme Catppuccin ships for `bat` by
+# `gluon theme import`.
+#
+# The light one of the four flavours. Latte accents `variable` maroon, which
+# gluon's `ident` is not — see dracula.toml for that story.
+#
+# Re-run:  gluon theme import <file> --print
+#          github.com/catppuccin/bat, themes/Catppuccin Latte.tmTheme
+#
+# Kept from gluon's own go-light, because nothing in an editor theme means
+# them: `error`, `note`, `dim`, `search`, `border`.
+about      = "Catppuccin Latte: mauve keywords, green strings, amber types"
+appearance = "light"
+source     = "Catppuccin Latte, a TextMate theme"
+
+[theme]
+# Source.
+keyword     = "#8839ef"
+string      = "#40a02b"
+type        = "#df8e1d"
+comment     = "#7c7f93"
+number      = "#fe640b"
+builtin     = "#d20f39"
+punctuation = "#7c7f93"
+ident       = "#4c4f69"
+
+# Values, the REPL, and the CLI.
+error       = "#B91C1C"
+prompt      = "#df8e1d"
+mode        = "#1e66f5"  # Latte's blue, against an amber prompt
+annotation  = "#7c7f93"
+note        = "#92400E"
+dim         = "#6E6E76"
+search      = "#9A3412"
+border      = "#C4C4CC"

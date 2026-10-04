@@ -1,0 +1,48 @@
+gluon> r := api.Routes(nil)
+gluon> :routes r
+METHOD  PATH                           HANDLER
+DELETE  /admin/cache                   —
+GET     /admin/stats                   —
+GET     /healthz                       —
+GET     /users/                        —
+GET     /users/{id}                    —
+GET     /users/{id}/orders             —
+POST    /orders/                       —
+POST    /orders/{id}/refund            —
+gluon> :grpc 127.0.0.1:50051
+127.0.0.1:50051 — 4 services, 7 methods
+
+  grpc.health.v1.Health
+    Check                 unary          HealthCheckRequest → HealthCheckResponse
+    List                  unary          HealthListRequest → HealthListResponse
+  · Watch                 server stream  HealthCheckRequest → HealthCheckResponse
+
+  grpc.reflection.v1.ServerReflection
+  · ServerReflectionInfo  bidi stream    ServerReflectionRequest → ServerReflectionResponse
+
+  grpc.reflection.v1alpha.ServerReflection
+  · ServerReflectionInfo  bidi stream    ServerReflectionRequest → ServerReflectionResponse
+
+  shop.v1.Orders
+    Get                   unary          GetRequest → Order
+  · Watch                 server stream  GetRequest → Order
+
+  · 4 of these need a connection that outlives one evaluation, so :grpc cannot call them.
+    gluon compiles each line into a program that exits; a stream has nowhere to live.
+gluon> :grpc 127.0.0.1:50051 shop.v1.Orders/Get -d '{"id": 42}'
+(map[string]interface {}) len=5
+╭──────────┬──────────────────────────────────────────────────────────────────────────────────────────╮
+│ key      │ value                                                                                    │
+├──────────┼──────────────────────────────────────────────────────────────────────────────────────────┤
+│ "email"  │ "ada@example.com"                                                                        │
+│ "id"     │ 42                                                                                       │
+│ "items"  │ [map["price":"12.50" "qty":2 "sku":"MUG-01"] map["price":"24.00" "qty":1 "sku":"TEE-M"]] │
+│ "status" │ "STATUS_PAID"                                                                            │
+│ "total"  │ "53.04"                                                                                  │
+╰──────────┴──────────────────────────────────────────────────────────────────────────────────────────╯
+gluon> :pb &shopv1.Order{Id: 42, Email: "ada@example.com", Total: "53.04"}
+26 bytes on the wire
+
+id: 42
+email: "ada@example.com"
+total: "53.04"

@@ -1,0 +1,18 @@
+gluon> x := []int{1, 2, 3}
+gluon> func f(a int) int {
+  ...>     return a + bogus
+  ...> }
+!error error: undefined: bogus
+!error         return a + bogus
+!error                 ^
+gluon> x[10]
+!error panic: runtime error: index out of range [10] with length 3
+!error 
+!error goroutine 1 [running]:
+!error main.main()
+!error 	x[10] +0x24
+!error [exit status 2]
+gluon> :undo
+undone (1 entry left)
+gluon> len(x)
+(int) 3

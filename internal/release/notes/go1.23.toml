@@ -1,0 +1,41 @@
+# Go 1.23 — range over a function, which is what an iterator is.
+
+version = "1.23"
+
+[[note]]
+name = "range-over-func"
+title = "range over a function"
+needs = "1.23"
+below = "error"
+issue = 61405
+text = """
+range accepts a function of one of three shapes — func(func() bool),
+func(func(K) bool) and func(func(K, V) bool) — and calls it, passing a yield
+function the loop body becomes. Returning false from yield is how break, return
+and a labelled continue get out, so the producer learns the consumer stopped and
+can release whatever it held.
+
+The stdlib names these shapes in iter.Seq and iter.Seq2, and the slices and maps
+packages gained functions that produce and consume them in the same release. But
+the language change is only this: a function of the right shape is a rangeable
+thing, and no interface or type assertion is involved.
+"""
+snippet = """
+func upto(n int) func(func(int) bool) {
+	return func(yield func(int) bool) {
+		for i := range n {
+			if !yield(i) {
+				return
+			}
+		}
+	}
+}
+var xs []int
+for v := range upto(6) {
+	if v > 3 {
+		break
+	}
+	xs = append(xs, v)
+}
+xs
+"""

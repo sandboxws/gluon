@@ -1,0 +1,16 @@
+# Completion from the type checker, and the signature beside the line.
+Shot completion
+Alt a struct type declared, then a composite literal of it begun, with the first field not yet set offered as ghost text after the cursor
+Also completion-hint a call to strings.Repeat typed as far as its second argument, with the signature shown beside the line and the parameter being typed in brackets
+Caption Completion comes from the type checker: a struct you declared two lines ago completes its own fields, and a call shows its signature as you type.
+Headline Completion from the type checker
+Grid 80x12
+Line type Point struct{ X, Y int }
+Type "p := Point{"
+Wait Prompt
+Screenshot
+Ctrl c
+Wait Prompt
+Type `strings.Repeat("ab", `
+Wait Prompt
+Screenshot completion-hint

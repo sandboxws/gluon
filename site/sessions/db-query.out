@@ -1,0 +1,41 @@
+gluon> :db
+databases  1 configured
+╭─────────┬────────┬─────────────────────────┬───────────┬───────╮
+│ name    │ driver │ target                  │ mode      │       │
+├─────────┼────────┼─────────────────────────┼───────────┼───────┤
+│ primary │ sqlite │ ~/src/shop/data/shop.db │ read-only │ ready │
+╰─────────┴────────┴─────────────────────────┴───────────┴───────╯
+  from ~/src/shop/gluon.toml
+gluon> :query SELECT id, email, plan FROM users ORDER BY id LIMIT 5
+╭────┬───────────────────────┬──────╮
+│ id │ email                 │ plan │
+├────┼───────────────────────┼──────┤
+│ 1  │ ada@example.com       │ free │
+│ 2  │ grace@example.com     │ free │
+│ 3  │ katherine@example.com │ pro  │
+│ 4  │ margaret@example.com  │ free │
+│ 5  │ hedy@example.com      │ free │
+╰────┴───────────────────────┴──────╯
+  5 rows · ~/src/shop/data/shop.db
+gluon> :query SELECT plan, count(*) AS customers FROM users GROUP BY plan ORDER BY customers DESC
+╭──────┬───────────╮
+│ plan │ customers │
+├──────┼───────────┤
+│ free │ 274       │
+│ pro  │ 138       │
+│ team │ 68        │
+╰──────┴───────────╯
+  3 rows · ~/src/shop/data/shop.db
+gluon> :query UPDATE users SET plan = 'team' WHERE id = 1
+!error error: UPDATE is not a read-only statement — :query -w UPDATE users SET plan = 'team' WHERE id = 1 runs it anyway.
+!error       The check is on the first word, not a parse: it is here to catch the paste you did not mean, not to prove a statement is safe
+gluon> :query -w UPDATE users SET plan = 'team' WHERE id = 1
+no rows
+  0 rows · ~/src/shop/data/shop.db
+gluon> :query SELECT id, email, plan FROM users WHERE id = 1
+╭────┬─────────────────┬──────╮
+│ id │ email           │ plan │
+├────┼─────────────────┼──────┤
+│ 1  │ ada@example.com │ team │
+╰────┴─────────────────┴──────╯
+  1 row · ~/src/shop/data/shop.db

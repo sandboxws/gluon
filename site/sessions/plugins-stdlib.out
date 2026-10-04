@@ -1,0 +1,39 @@
+gluon> st, _ := store.Default()
+gluon> users, _ := st.ByID(context.Background(), 1, 2, 3)
+gluon> :json users[0]
+!lang json
+{
+  "id": 1,
+  "email": "ada@example.com",
+  "plan": "free",
+  "created": "2024-01-02T03:00:00Z"
+}
+gluon> :csv users
+id,email,plan,created
+1,ada@example.com,free,2024-01-02 03:00:00 +0000 UTC
+2,grace@example.com,free,2024-01-02 21:00:00 +0000 UTC
+3,katherine@example.com,pro,2024-01-03 15:00:00 +0000 UTC
+gluon> :when users[0].Created
+(struct { RFC3339 string; Local string; Zone string; Unix int64 })
+╭─────────┬────────────────────────╮
+│ field   │ value                  │
+├─────────┼────────────────────────┤
+│ RFC3339 │ "2024-01-02T03:00:00Z" │
+│ Local   │ "2024-01-02 03:00:00"  │
+│ Zone    │ "UTC+00:00"            │
+│ Unix    │ 1704164400             │
+╰─────────┴────────────────────────╯
+gluon> :slog users[0]
+level=INFO msg=value v.id=1 v.plan=free v.email=a***@example.com
+gluon> type Item struct {
+  ...> 	SKU   string `xml:"sku,attr"`
+  ...> 	Name  string `xml:"name"`
+  ...> 	Price string `xml:"price>amount"`
+  ...> }
+gluon> :xml Item{SKU: "MUG-01", Name: "Mug", Price: "12.50"}
+<Item sku="MUG-01">
+  <name>Mug</name>
+  <price>
+    <amount>12.50</amount>
+  </price>
+</Item>

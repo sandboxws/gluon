@@ -1,0 +1,80 @@
+# Go 1.27 — methods take type parameters, and a struct literal key may be a path.
+
+version = "1.27"
+
+[[note]]
+name = "generic-methods"
+title = "generic methods"
+needs = "1.27"
+below = "error"
+issue = 77273
+text = """
+A method may declare its own type parameters, so a type can carry a generic
+operation in its own namespace rather than forcing it out into a package-level
+function. Box[int].Map to a Box[string] is the example everyone reaches for, and
+until now it could not be a method at all: the receiver's type parameters were
+the only ones a method was allowed, so Map had to become func Map[T, U any](Box[T], func(T) U) Box[U]
+and read backwards.
+
+The restriction was in the original generics design and was expected to be
+temporary. What it cost was not expressiveness — the free function always
+worked — but the ability to write a fluent chain, and to keep an operation on
+the type it belongs to.
+"""
+snippet = """
+type Box[T any] struct{ V T }
+func (b Box[T]) Map[U any](f func(T) U) Box[U] {
+	return Box[U]{V: f(b.V)}
+}
+Box[int]{V: 3}.Map(func(n int) bool { return n > 2 })
+"""
+
+[[note]]
+name = "promoted-field-keys"
+title = "a struct literal key may be any field selector"
+needs = "1.27"
+below = "error"
+issue = 9859
+text = """
+A key in a struct literal may be any valid field selector for the type, not only
+a field declared directly on it. A field promoted from an embedded struct can be
+set in the literal, which is how it could already be read and assigned — so the
+composite literal stops being the one place embedding does not apply.
+
+Before this, a literal had to name the embedded type and nest a second literal
+inside it, which meant the shape of your literals depended on which fields
+happened to be embedded rather than on what you were setting.
+"""
+snippet = """
+type Base struct{ ID int }
+type User struct {
+	Base
+	Name string
+}
+u := User{ID: 7, Name: "ada"}
+[]any{u.ID, u.Name}
+"""
+
+[[note]]
+name = "inference-on-conversion"
+title = "type inference when a generic function is assigned or converted"
+needs = "1.27"
+below = "toolchain only"
+issue = 77245
+text = """
+Function type inference now applies everywhere a generic function is assigned to
+a variable of a matching function type, or converted to one. Previously the
+contexts it applied in were enumerated, and a conversion was not among them, so
+BinOp(Pick) had to be written BinOp(Pick[int]) — spelling out an argument the
+target type already determined.
+
+Like Go 1.26's self-referential constraints, no go directive gates this: it is a
+relaxation of what the type checker will infer, so it works under any go line on
+a new enough toolchain, and there is no version below which it fails.
+"""
+snippet = """
+func Pick[T any](a, b T) T { return a }
+type BinOp func(int, int) int
+f := BinOp(Pick)
+f(3, 9)
+"""

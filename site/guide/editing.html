@@ -1,0 +1,89 @@
+{% define "side" %}<a href="#completion"><span class="rn">1</span><span class="rt">Completion</span></a>
+<a href="#keys"><span class="rn">2</span><span class="rt">Keys, and vim</span></a>
+<a href="#edit"><span class="rn">3</span><span class="rt">Editing the session</span></a>
+<a href="#buf"><span class="rn">4</span><span class="rt">A buffer</span></a>
+<a href="#builtin"><span class="rn">5</span><span class="rt">gluon's own editor</span></a>{% end %}
+{% define "main" %}
+<section class="card" id="completion">
+  <div class="card-head"><span class="idx">1</span><div class="hd"><h2>Completion from the type checker</h2><div class="chips"><span class="chip">12–22µs a keystroke</span></div></div></div>
+  <div class="card-body">
+    <p class="lead"><kbd>tab</kbd> completes what the session actually knows, not a word list. The candidates come from <code>go/types</code> — what {% cmd ":t" %} and {% cmd ":ls" %} answer from — so a struct you declared two lines ago completes its own fields.</p>
+    {% shot "completion" "a literal begun, and the first field not set, as ghost text" %}
+    <p>It completes names in scope, fields and methods, package members (<code>strings.To</code>), the packages you can name, and meta commands. <kbd>tab</kbd> accepts the ghost text, and <kbd>ctrl-n</kbd>/<kbd>ctrl-p</kbd> cycle when there is more than one.</p>
+    <p>Inside a composite literal it offers the fields not set yet, with the colon, because that is the next thing you type — and never a method, since <code>Point{Dist: 1}</code> does not compile. Inside a call it shows the callee's signature beside the line with the parameter you are typing in brackets, and offers the names whose type that parameter will take: the rule is <code>types.AssignableTo</code>, the compiler's own, so when nothing in scope fits, nothing is offered. The signature is a hint, never a suggestion — <kbd>tab</kbd> cannot accept it.</p>
+    {% shot "completion-hint" "inside a call: the signature, the parameter being typed in brackets" %}
+    <p>A meta command completes by what it declares it takes: its flags where a flag may go, and their values — <code>:http g</code> to <code>get</code> in the case you typed, <code>:theme g</code> to the themes that begin so, <code>:scratch -rm </code> to the scratchpads there are. The rest of its usage sits beside the line as you type, the way a signature does, and inside a flag's value it is that flag's help. <a href="start.html#help">Help</a> has the rest.</p>
+    {% shot "help-flags" "a dash where :http takes its flags" %}
+  </div>
+</section>
+
+<section class="card" id="keys">
+  <div class="card-head"><span class="idx">2</span><div class="hd"><h2>Keys, and vim</h2></div></div>
+  <div class="card-body">
+    <p class="lead">The prompt reads keys the way readline does — <kbd>ctrl-a</kbd>, <kbd>ctrl-e</kbd>, <kbd>alt-f</kbd>, <kbd>alt-b</kbd> — until {% setting "input.mode" %} says <code>vim</code>.</p>
+    <div class="tw"><table>
+      <thead><tr><th>Key</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">tab · ctrl-n · ctrl-p</td><td>accept a completion · cycle through them</td></tr>
+        <tr><td class="mono">ctrl-r</td><td>search every line typed on this machine</td></tr>
+        <tr><td class="mono">↑ ↓</td><td>walk the history, a multi-line construct as one entry</td></tr>
+        <tr><td class="mono">ctrl-c</td><td>abandon the line, keep the session</td></tr>
+        <tr><td class="mono">ctrl-l · <code>:clear</code></td><td>clear the screen, keep the session</td></tr>
+        <tr><td class="mono">ctrl-d · <code>:q</code></td><td>quit</td></tr>
+      </tbody>
+    </table></div>
+    <p>With vim on, the prompt says which mode has the keyboard — <code>gluon[i]&gt;</code> while you type, <code>gluon[n]&gt;</code> after <kbd>esc</kbd> — and the cursor says it again in the two shapes vim draws: a block on a character in normal mode, an underline under one in insert. Both take the cell they are in, so nothing on the line moves when the mode changes, and every line starts in insert, so a mode left over from the last line can never swallow the start of the next.</p>
+    <div class="cmd">
+      <div class="cmd-bar"><span class="ck">vim</span><span class="cv">normal mode, at the prompt</span></div>
+<pre>i a I A          insert before, after, at the start, at the end
+h l 0 ^ $        characters and line ends
+w W b B e E      words; the capitals are whitespace-delimited
+f t F T ; ,      to a character, and repeat
+x X s S r D C    single-key edits
+d c y + motion   operators, and dd cc yy for the whole line
+p P              put, from one unnamed register
+u ctrl-r         undo and redo of what you typed
+2d3w             counts, and they multiply
+k j              history, as ↑ and ↓ do</pre>
+    </div>
+    {% shot "keys" "normal mode: the prompt says so, and the cursor is a block" %}
+    <p><kbd>k</kbd> and <kbd>j</kbd> walk history, because a one-line prompt has no line above and <code>set -o vi</code> binds them the same way. <kbd>ctrl-r</kbd> is redo in normal mode and history search in insert. <kbd>o</kbd> and <kbd>O</kbd> do not exist — the line is one line by construction — and an unbound key is a silent no-op rather than a character typed. Use <kbd>ctrl-l</kbd> or {% cmd ":clear" %} rather than your terminal's own clear, which fights the renderer's cursor arithmetic.</p>
+  </div>
+</section>
+
+<section class="card" id="edit">
+  <div class="card-head"><span class="idx">3</span><div class="hd"><h2>Editing the session</h2></div></div>
+  <div class="card-body">
+    <p class="lead">{% cmd ":edit" %} is pry's <code>edit</code>: it opens the entries — what you typed, not the program they render into — in your editor, and replaces the session with the file when it closes.</p>
+    {% session "editing-edit" "the marked lines are what was written in the editor" %}
+    <p>If the edited session does not replay, the one you had is put back. The editor is {% setting "editor" %} if you set it, then <code>$VISUAL</code>, then <code>$EDITOR</code>, then a terminal editor on your <code>PATH</code>.</p>
+  </div>
+</section>
+
+<section class="card" id="buf">
+  <div class="card-head"><span class="idx">4</span><div class="hd"><h2>A buffer for more than a line</h2></div></div>
+  <div class="card-body">
+    <p class="lead">The prompt is one line. For twelve of them there is {% cmd ":buf" %}, which hands the terminal to the same editor and runs the whole buffer as <strong>one evaluation</strong> when you close it.</p>
+    {% session "editing-buf" %}
+    <p>It is not <code>:edit</code>: the buffer is somewhere else entirely, starts empty, and running it <em>appends</em> to the session — which is why a <code>-check</code> after the run reports <code>greet</code> as declared twice: it is in the session now, and in the buffer too. What you write stays in the buffer between opens, so the loop is write, run, fix, run again; nothing of it reaches the disk when the session ends.</p>
+    <p>What the editor opens is a real <code>main.go</code> in a real module, with the session rendered around two regions marked for you to write in — one for declarations, one for statements — so your own gopls completes, hovers and checks against the <code>x</code> the session actually has. Write between the markers, not at the bottom of <code>main</code>: that is context, and an edit there is not taken — the answer says so rather than leaving you to wonder. {% cmd ":buf" "-check" %} is the in-process type check, about two milliseconds and no build; it is an opinion rather than a gate, and {% cmd ":buf" "-run" %} never asks it. {% cmd ":buf" "-show" %} prints what gluon took, and {% cmd ":buf" "-clear" %} empties it.</p>
+  </div>
+</section>
+
+<section class="card" id="builtin">
+  <div class="card-head"><span class="idx">5</span><div class="hd"><h2>gluon's own editor</h2></div></div>
+  <div class="card-body">
+    <p class="lead">Handing the terminal to another program means gluon cannot draw while it has it, so the loop is write, quit, read, open again. {% setting "editor" %}<code> = "builtin"</code> is the other way: a full-screen editor of gluon's own that runs what you wrote and shows the answer underneath it.</p>
+    <div class="tw"><table>
+      <thead><tr><th>Key</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">ctrl-e</td><td>run it, and show the answer in a pane below, the editor still up</td></tr>
+        <tr><td class="mono">ctrl-k</td><td>the in-process type check, with a mark beside every line it names</td></tr>
+        <tr><td class="mono">ctrl-o · tab</td><td>show or hide the output · move into it to scroll</td></tr>
+        <tr><td class="mono">ZZ · ZQ</td><td>close having run · close having not</td></tr>
+      </tbody>
+    </table></div>
+    <p>The keys are vim's, and they are the prompt's own for everything on one line; a document adds <code>j k gg G</code>, <code>o</code> and <code>O</code>, linewise <code>dd yy cc</code>, and <code>v</code>/<code>V</code> with the operators. Running in place is offered where running <em>replaces</em> the session — <code>:edit</code> and <code>:scratch -edit</code> — so pressing <kbd>ctrl-e</kbd> twice leaves what pressing it once left. <code>:buf</code> appends, so there <code>ZZ</code> runs it once, on the way out. It is not a replacement for your editor, and <code>external</code> stays the default; it is for the machine that has none — a container, a fresh box, somebody else's server.</p>
+  </div>
+</section>
+{% end %}

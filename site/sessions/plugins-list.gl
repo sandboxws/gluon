@@ -1,0 +1,6 @@
+%host shop
+%attach
+%clip 30
+:plugins
+%clip 16
+:guide ent

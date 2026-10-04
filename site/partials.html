@@ -1,0 +1,18 @@
+{% define "pn" %}{% if or .Prev .Next %}<nav class="pn" aria-label="Pages beside this one">
+  {% with .Prev %}<a class="pg" href="{% rel .Path %}"><span class="pg-k">← previous</span><b>{% .Title %}</b></a>{% else %}<span></span>{% end %}
+  {% with .Next %}<a class="pg next" href="{% rel .Path %}"><span class="pg-k">next →</span><b>{% .Title %}</b></a>{% end %}
+</nav>{% end %}{% end %}
+
+{% define "foot" %}<footer class="foot"><div class="wrap fgrid">
+    <div><div class="fh">The site</div><ul>
+        <li><a href="{% rel "index.html" %}">gluon</a> — what it is, in one page</li>
+        <li><a href="{% rel "guide/index.html" %}">Guides</a> — every feature, with the lines to type</li>
+        <li><a href="{% rel "reference/index.html" %}">Reference</a> — generated from the code that defines it</li>
+      </ul></div>
+    <div><div class="fh">This page</div><ul>
+        <li>v{% .Site.Release %} · <code>github.com/sandboxws/gluon</code></li>
+        <li>Generated from <code>site/</code> by <code>just docs</code></li>
+        <li>No analytics, no cookies; the palette choice is one localStorage key</li>{% if .Site.Public %}
+        <li><a href="{% .Site.Repo %}">Source</a></li>{% end %}
+      </ul></div>
+</div></footer>{% end %}

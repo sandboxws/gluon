@@ -1,0 +1,5 @@
+gluon> type Point struct{ X, Y int }
+gluon> func (p Point) Dist2() int { return p.X*p.X + p.Y*p.Y }
+gluon> p := Point{3, 4}
+gluon> p.Dist2()
+(int) 25

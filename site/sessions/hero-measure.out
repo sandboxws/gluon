@@ -1,0 +1,21 @@
+gluon> n := 42
+gluon> :bench strconv.Itoa(n), fmt.Sprint(n)
+a  strconv.Itoa(n)
+b  fmt.Sprint(n)
+
+           a   b     b/a
+ns/op      2  38  19.00x
+B/op       0   2     n/a
+allocs/op  0   1     n/a
+gluon> :layout struct{ a bool; b int64; c bool }
+struct{a bool; b int64; c bool} 24 bytes, align 8
+╭────────┬───────────────────┬───────┬──────╮
+│ offset │ field             │ type  │ size │
+├────────┼───────────────────┼───────┼──────┤
+│      0 │ a                 │ bool  │    1 │
+│        │ ← 7 bytes padding │       │      │
+│      8 │ b                 │ int64 │    8 │
+│     16 │ c                 │ bool  │    1 │
+│        │ ← 7 bytes padding │       │      │
+╰────────┴───────────────────┴───────┴──────╯
+  reordering as b, a, c would be 16 bytes — 8 saved

@@ -1,0 +1,5 @@
+%host shop
+%serve
+:http GET http://127.0.0.1:8765/users/1
+:http get http://127.0.0.1:8765/users/1/orders -t 2s
+:http POST http://127.0.0.1:8765/orders -H 'Content-Type: application/json' -d '{"sku": "MUG-01", "qty": 2}'

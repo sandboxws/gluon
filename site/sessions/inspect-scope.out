@@ -1,0 +1,24 @@
+gluon> s := "héllo"
+gluon> x := []int{1, 2, 3}
+gluon> type Point struct{ X, Y int }
+gluon> func dist(p Point) int { return p.X*p.X + p.Y*p.Y }
+gluon> len(x)
+(int) 3
+gluon> :ls
+ variables 
+╭───┬────────╮
+│ s │ string │
+│ x │ []int  │
+╰───┴────────╯
+ funcs 
+╭──────┬───────────────╮
+│ dist │ (p Point) int │
+╰──────┴───────────────╯
+ types 
+╭───────┬──────────────────────╮
+│ Point │ struct{X int; Y int} │
+╰───────┴──────────────────────╯
+ values 
+╭────────┬──┬────╮
+│ len(x) │  │ _1 │
+╰────────┴──┴────╯

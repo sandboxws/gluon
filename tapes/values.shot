@@ -1,0 +1,13 @@
+# The first five minutes: a value, and the truth attached to it.
+Shot values
+Alt a slice sorted in place and shown as a table, then a byte of a string printed with its type, its value and its hex, and the string with its length in bytes and in runes
+Caption Every value comes back with the truth attached — its type, the byte a string index really is, the bytes and the runes a string really holds.
+Headline The truth about every value
+Promo 4:5
+Grid 64x20
+Line x := []int{3, 1, 2}
+Line slices.Sort(x)
+Line x
+Line "héllo"[1]
+Line "héllo"
+Screenshot

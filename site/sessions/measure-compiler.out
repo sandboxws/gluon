@@ -1,0 +1,52 @@
+gluon> :esc make([]byte, 32)
+  make([]byte, 32) does not escape
+    make([]byte, 32)
+        ^
+  (in this context — a value that outlives its frame escapes; one that does not, does not)
+gluon> :esc fmt.Sprint(make([]byte, 32))
+  ... argument does not escape
+    fmt.Sprint(make([]byte, 32))
+              ^
+  make([]byte, 32) escapes to heap
+    fmt.Sprint(make([]byte, 32))
+                   ^
+  make([]byte, 32) escapes to heap
+    fmt.Sprint(make([]byte, 32))
+                   ^
+  (in this context — a value that outlives its frame escapes; one that does not, does not)
+gluon> func add(a, b int) int { return a + b }
+gluon> :inline add(1, 2)
+  inlining call to add
+    add(1, 2)
+       ^
+gluon> func fizzbuzz(n int) string {
+  ...> 	var b strings.Builder
+  ...> 	for i := 1; i <= n; i++ {
+  ...> 		switch {
+  ...> 		case i%15 == 0:
+  ...> 			b.WriteString("FizzBuzz ")
+  ...> 		case i%5 == 0:
+  ...> 			b.WriteString("Buzz ")
+  ...> 		case i%3 == 0:
+  ...> 			b.WriteString("Fizz ")
+  ...> 		default:
+  ...> 			b.WriteString(strconv.Itoa(i) + " ")
+  ...> 		}
+  ...> 	}
+  ...> 	return b.String()
+  ...> }
+gluon> :inline fizzbuzz
+  cannot inline fizzbuzz: function too complex: cost 262 exceeds budget 80
+    func fizzbuzz(n int) string {
+         ^
+gluon> :asm add
+main.add STEXT size=16 align=0x0 args=0x10 locals=0x0 funcid=0x0 leaf
+	0x0000 00000 (entry 0 line 1)	TEXT	main.add(SB), LEAF|NOFRAME|ABIInternal, $0-16
+	0x0000 00000 (entry 0 line 1)	FUNCDATA	$0, gclocals·g5+hNtRBP6YXNjfog7aZjQ==(SB)
+	0x0000 00000 (entry 0 line 1)	FUNCDATA	$1, gclocals·g5+hNtRBP6YXNjfog7aZjQ==(SB)
+	0x0000 00000 (entry 0 line 1)	FUNCDATA	$5, main.add.arginfo1(SB)
+	0x0000 00000 (entry 0 line 1)	FUNCDATA	$6, main.add.argliveinfo(SB)
+	0x0000 00000 (entry 0 line 1)	PCDATA	$3, $1
+	0x0000 00000 (entry 0 line 1)	ADD	R1, R0, R0
+	0x0004 00004 (entry 0 line 1)	RET	(R30)
+	0x0000 00 00 01 8b c0 03 5f d6 00 00 00 00 00 00 00 00  ......_.........

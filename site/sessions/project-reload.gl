@@ -1,0 +1,8 @@
+%host shop
+%attach
+pricing.TaxRate.String()
+%sh perl -pi -e 's/"0.0825"/"0.09"/' internal/pricing/pricing.go
+:reload
+pricing.TaxRate.String()
+:watch on
+:watch off

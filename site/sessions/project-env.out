@@ -1,0 +1,24 @@
+gluon> :env SHOP
+environment  2 matching "SHOP"
+╭────────────────────────────┬─────────────┬──────────╮
+│ variable                   │ value       │          │
+├────────────────────────────┼─────────────┼──────────┤
+│ SHOP_ENV                   │ development │          │
+│ SHOP_PAYMENTS_WEBHOOK_AUTH │ Bearer ***  │ redacted │
+╰────────────────────────────┴─────────────┴──────────╯
+  1 value redacted by shape — not a guarantee, and never by the key's name
+gluon> :conf config.yaml
+config.yaml  8 keys
+╭───────────────────────┬─────────────────┬──────────╮
+│ key                   │ value           │          │
+├───────────────────────┼─────────────────┼──────────┤
+│ database.path         │ data/shop.db    │          │
+│ features.0            │ gift-wrap       │          │
+│ features.1            │ loyalty         │          │
+│ grpc.addr             │ 127.0.0.1:50051 │          │
+│ http.addr             │ 127.0.0.1:8765  │          │
+│ log_level             │ debug           │          │
+│ payments.provider     │ acme-pay        │          │
+│ payments.webhook_auth │ Bearer ***      │ redacted │
+╰───────────────────────┴─────────────────┴──────────╯
+  1 value redacted by shape — not a guarantee, and never by the key's name

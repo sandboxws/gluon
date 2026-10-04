@@ -1,0 +1,16 @@
+# A line with an effect has it again on every line after it, until it is
+# pinned.
+hit := func() { f, _ := os.OpenFile("hits", os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o644); f.WriteString("x"); f.Close() }
+hit()
+b, _ := os.ReadFile("hits")
+len(b)
+len(b)
+:hist
+:pin 2
+len(b)
+len(b)
+:pin
+:refresh
+len(b)
+:unpin 2
+len(b)

@@ -1,0 +1,49 @@
+gluon> :http GET http://127.0.0.1:8765/users/1
+(*http.Response) 200 OK  HTTP/1.1  99 bytes
+╭────────────────┬──────────────────╮
+│ header         │ value            │
+├────────────────┼──────────────────┤
+│ Content-Length │ 99               │
+│ Content-Type   │ application/json │
+╰────────────────┴──────────────────╯
+{
+  "id": 1,
+  "email": "ada@example.com",
+  "plan": "free",
+  "created": "2024-01-02T03:00:00Z"
+}
+gluon> :http get http://127.0.0.1:8765/users/1/orders -t 2s
+(*http.Response) 200 OK  HTTP/1.1  254 bytes
+╭────────────────┬──────────────────╮
+│ header         │ value            │
+├────────────────┼──────────────────┤
+│ Content-Length │ 254              │
+│ Content-Type   │ application/json │
+╰────────────────┴──────────────────╯
+[
+  {
+    "id": 1,
+    "user_id": 1,
+    "total": "19.83",
+    "status": "paid",
+    "placed_at": "2024-01-02T03:00:00Z"
+  },
+  {
+    "id": 2,
+    "user_id": 1,
+    "total": "23.94",
+    "status": "shipped",
+    "placed_at": "2024-01-03T09:00:00Z"
+  }
+]
+gluon> :http POST http://127.0.0.1:8765/orders -H 'Content-Type: application/json' -d '{"sku": "MUG-01", "qty": 2}'
+(*http.Response) 501 Not Implemented  HTTP/1.1  33 bytes
+╭────────────────┬──────────────────╮
+│ header         │ value            │
+├────────────────┼──────────────────┤
+│ Content-Length │ 33               │
+│ Content-Type   │ application/json │
+╰────────────────┴──────────────────╯
+{
+  "error": "not implemented"
+}

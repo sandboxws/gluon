@@ -1,0 +1,12 @@
+gluon> pricing.TaxRate.String()
+(string) "0.0825"  len=6
+gluon> :reload
+reloaded ~/src/shop
+  dropped: the type checker's export data, the import cache, every cached result
+  10 importable package(s)
+gluon> pricing.TaxRate.String()
+(string) "0.09"  len=4
+gluon> :watch on
+watching ~/src/shop — 14 Go file(s), every 300ms
+gluon> :watch off
+watching off — ~/src/shop is no longer polled

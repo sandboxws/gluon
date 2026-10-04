@@ -1,0 +1,20 @@
+# The release record, offline: what each Go release added.
+Shot since
+Alt :since's view: every Go release, newest first, with how many standard library symbols each added, across how many packages, and how many language changes
+Also since-127 :since 1.27 listing what Go 1.27 added to the language and the standard library
+Caption :since knows what every Go release added — the language changes and every standard library symbol — offline, from the toolchain on your machine.
+Headline What did Go 1.27 add?
+Promo 16:9
+Grid 100x22
+Type ":since"
+Enter
+Wait Prompt
+Screenshot
+Esc
+Wait Prompt
+Ctrl l
+Wait Prompt
+Type ":since 1.27"
+Enter
+Wait Prompt
+Screenshot since-127

@@ -1,0 +1,15 @@
+# The shop's settings. SHOP_* in the environment overrides any of them:
+# SHOP_HTTP_ADDR for http.addr, and so on.
+http:
+  addr: 127.0.0.1:8765
+grpc:
+  addr: 127.0.0.1:50051
+database:
+  path: data/shop.db
+payments:
+  provider: acme-pay
+  webhook_auth: Bearer 7f3c9a1e5b2d4f6a8c0e1d3b
+features:
+  - gift-wrap
+  - loyalty
+log_level: debug

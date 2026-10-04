@@ -1,0 +1,37 @@
+# Tokyo Night, converted from the VS Code theme by `gluon theme import`.
+#
+# `border` is gluon's own. Tokyo Night's `panel.border` is #101014 — a real rule
+# between two lit panels in a window that has its own chrome, and on a terminal
+# that has none it is a line drawn in the dark. The conversion refuses a colour
+# that cannot be seen on the ground the theme declared.
+#
+# Re-run:  gluon theme import <file> --print
+#          github.com/enkia/tokyo-night-vscode-theme, themes/tokyo-night-color-theme.json
+#
+# Kept from gluon's own go, because nothing in an editor theme means
+# them: `note`, `dim`, `search`, `border`.
+about      = "Tokyo Night: violet keywords, green strings, pale-blue types"
+appearance = "dark"
+source     = "Tokyo Night, a VS Code theme"
+
+[theme]
+# Source.
+keyword     = "#bb9af7"
+string      = "#9ece6a"
+type        = "#c0caf5"
+comment     = "#51597d"
+number      = "#ff9e64"
+builtin     = "#0db9d7"
+punctuation = "#89ddff"
+ident       = "#a9b1d6"
+
+# Values, the REPL, and the CLI.
+error       = "#ff5370"
+prompt      = "#c0caf5"
+mode        = "#ff9e64"  # the palette's orange: its prompt is nearly the
+                         # foreground
+annotation  = "#51597d"
+note        = "#E3B341"
+dim         = "#7C7C84"
+search      = "#F5B843"
+border      = "#55555C"

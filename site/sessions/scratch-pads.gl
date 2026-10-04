@@ -1,0 +1,12 @@
+:scratch parser-bug
+x := strings.Fields(" a b ")
+len(x)
+%clip 12
+:scratch
+$ gluon scratch
+$ gluon scratch show parser-bug
+:scratch -mv parser-fix
+:save
+:save -debug parser-fix
+:share
+:scratch -off

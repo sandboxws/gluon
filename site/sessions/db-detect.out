@@ -1,0 +1,10 @@
+gluon> :db
+sqlite  ~/src/shop/data/shop.db
+  from
+    config.yaml  database.path
+    data/shop.db
+  driver
+    modernc.org/sqlite  a sqlite driver, in the build list
+  not configured — gluon init records this. It stores the name of a variable, never its value.
+gluon> :query SELECT count(*) FROM users
+!error error: no database is configured

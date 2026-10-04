@@ -1,0 +1,78 @@
+{% define "side" %}<a href="#settings"><span class="rn">1</span><span class="rt">:settings</span></a>
+<a href="#file"><span class="rn">2</span><span class="rt">config.toml</span></a>
+<a href="#startup"><span class="rn">3</span><span class="rt">The startup screen</span></a>
+<a href="#env"><span class="rn">4</span><span class="rt">The environment</span></a>{% end %}
+{% define "main" %}
+<section class="card" id="settings">
+  <div class="card-head"><span class="idx">1</span><div class="hd"><h2>Every setting, from the prompt</h2><div class="chips"><span class="chip">{% .Reg.Counts.Settings %} settings</span></div></div></div>
+  <div class="card-body">
+    <p class="lead">{% cmd ":settings" %} with nothing lists every setting gluon has — what it does, what it is now, what it would be otherwise, what it accepts, and whether the value came from your file or a default. With a key it explains one; with a key and a value it changes it; with <code>-</code> it puts it back.</p>
+    {% session "config-settings" %}
+    {% shot "settings" ":settings at a prompt, filtered with /value" %}
+    <p>At the prompt the list opens in a view you can filter with <kbd>/</kbd>, and <kbd>enter</kbd> opens a setting: what it is for, what it is now and where that came from, then the values it takes or a line to type one into. Choosing submits the same <code>:settings key value</code> you could have typed, checked by the same validator. Through a pipe the whole table prints.</p>
+    <p>A change writes exactly one line of <code>config.toml</code> and leaves every other byte — your comments included — as it was, and it is checked twice before it is written: that one line moved, and that the file still loads and reads back as what you asked. A setting that takes effect now says so; one that the next run reads, like {% setting "banner" %}, says that. {% setting "imports" %}, {% setting "database" %}, {% setting "hosts" %} and {% setting "plugins.disable" %} are listed and not settable here: they are arrays, and rewriting one wholesale would take the comments inside it, so they show what they hold and say where to edit them.</p>
+  </div>
+</section>
+
+<section class="card" id="file">
+  <div class="card-head"><span class="idx">2</span><div class="hd"><h2>config.toml</h2></div></div>
+  <div class="card-body">
+    <p class="lead"><code>~/.config/gluon/config.toml</code> — or under <code>$XDG_CONFIG_HOME</code> — and every line of it optional.</p>
+    <div class="cmd">
+      <div class="cmd-bar"><span class="ck">TOML</span><span class="cv">~/.config/gluon/config.toml</span></div>
+<pre><span class="c"># Names a line may use without gluon running goimports to find them.</span>
+<span class="c"># An import nothing mentions is never written, so this costs nothing.</span>
+imports = [<span class="s">"strings"</span>, <span class="s">"slices"</span>, <span class="s">"maps"</span>]
+
+editor  = <span class="s">"nvim"</span>     <span class="c"># or "builtin", gluon's own</span>
+timeout = <span class="s">"45s"</span>      <span class="c"># how long one evaluation may take</span>
+banner  = <span class="s">"compact"</span>  <span class="c"># full, compact or off</span>
+
+[input]
+mode = <span class="s">"vim"</span>
+
+[value]
+items = <span class="nu">500</span>     <span class="c"># elements of one collection, described</span>
+
+[value.form]
+default = <span class="s">"table"</span>
+list    = <span class="s">"columns"</span>   <span class="c"># a list of structs, a column per field</span>
+
+[theme]
+name   = <span class="s">"gruvppuccin-mocha"</span>
+string = <span class="s">"#A9B665"</span>      <span class="c"># one role, over whatever the theme says</span>
+
+<span class="c"># Extra imports whenever the session is attached to this module.</span>
+[hosts.<span class="s">"example.com/shop"</span>]
+imports = [<span class="s">"example.com/shop/internal/pricing"</span>]</pre>
+    </div>
+    <p>{% setting "imports" %} is the one worth setting: preloads are a name-to-path map, not lines written into every program, so an unused one is not an unused import — it is not an import — and a used one skips the goimports pass, about a hundred milliseconds off the line that names it. An unknown key is an error rather than a shrug, because a typo in a config file is otherwise invisible — a misspelled theme role included. <a href="{% rel "reference/settings.html" %}">The settings reference</a> has every key, its default and what it accepts.</p>
+  </div>
+</section>
+
+<section class="card" id="startup">
+  <div class="card-head"><span class="idx">3</span><div class="hd"><h2>The startup screen</h2></div></div>
+  <div class="card-body">
+    <p class="lead"><code>gluon</code> opens on the wordmark, the versions, and a row for each thing the session starts with: the scratchpad and what it restored, the module it is attached to, the database it was configured to reach, the plugins the project's build list turned on, and the theme.</p>
+    <p>A row appears only where there is something to say, so a bare directory on defaults shows one and a project shows as many as it has facts. The plugins are the ones this project's build list turned on, not the standard library's, which every session has. The theme is named only when it is not the default. Nothing on the screen costs a build; opening a scratchpad does, so its row says <code>opening…</code> and becomes the answer where it stands.</p>
+    <p>{% setting "banner" %} is <code>full</code>, <code>compact</code> — the version and the hints — or <code>off</code>. Below sixty columns the wordmark drops on its own and the rows stay. A piped script, <code>gluon -e</code> and <code>gluon mcp</code> print none of it.</p>
+  </div>
+</section>
+
+<section class="card" id="env">
+  <div class="card-head"><span class="idx">4</span><div class="hd"><h2>The environment</h2></div></div>
+  <div class="card-body">
+    <div class="tw"><table>
+      <thead><tr><th>Variable</th><th>What it does</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">NO_COLOR</td><td>no colour anywhere, as a pipe gets</td></tr>
+        <tr><td class="mono">GLUON_MAX_ITEMS · GLUON_MAX_DEPTH</td><td>how much of a value is described, as {% setting "value.items" %} and {% setting "value.depth" %} — set here, they win over the file</td></tr>
+        <tr><td class="mono">GLUON_NO_TYPECHECK</td><td>skip the in-process type checker and let the compiler answer everything — the escape hatch if the checker ever disagrees with the compiler</td></tr>
+        <tr><td class="mono">GLUON_NO_UNSAFE</td><td>stop describing unexported fields</td></tr>
+        <tr><td class="mono">XDG_CONFIG_HOME · XDG_DATA_HOME · XDG_STATE_HOME</td><td>where config, scratchpads and history live</td></tr>
+      </tbody>
+    </table></div>
+    <p><code>gluon doctor</code> says when <code>GLUON_MAX_ITEMS</code> or <code>GLUON_MAX_DEPTH</code> is set, beside the toolchain, the config it read and the module it would attach to.</p>
+  </div>
+</section>
+{% end %}

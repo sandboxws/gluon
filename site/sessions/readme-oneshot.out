@@ -1,0 +1,4 @@
+$ gluon -e 'strings.ToUpper("hi")'
+(string) "HI"  len=2
+$ echo 'len("héllo")' | gluon
+(int) 6

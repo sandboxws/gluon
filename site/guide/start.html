@@ -1,0 +1,123 @@
+{% define "side" %}<a href="#install"><span class="rn">1</span><span class="rt">Install</span></a>
+<a href="#first"><span class="rn">2</span><span class="rt">The first session</span></a>
+<a href="#removed"><span class="rn">3</span><span class="rt">What it takes off Go</span></a>
+<a href="#it"><span class="rn">4</span><span class="rt">it and _N</span></a>
+<a href="#errors"><span class="rn">5</span><span class="rt">Errors</span></a>
+<a href="#paste"><span class="rn">6</span><span class="rt">Pasting</span></a>
+<a href="#help"><span class="rn">7</span><span class="rt">Help</span></a>
+<a href="#leaving"><span class="rn">8</span><span class="rt">Leaving, and coming back</span></a>{% end %}
+{% define "main" %}
+<section class="card" id="install">
+  <div class="card-head"><span class="idx">1</span><div class="hd"><h2>Install</h2><div class="chips"><span class="chip">macOS · Linux · WSL</span><span class="chip">amd64 · arm64</span></div></div></div>
+  <div class="card-body">
+    <p class="lead">The one requirement is a Go toolchain on your <code>PATH</code>, because the toolchain is the evaluator: every line you type is compiled by the same <code>go</code> that builds your projects.</p>
+{% if .Site.Public %}    <div class="cmd">
+      <div class="cmd-bar"><span class="ck">Shell</span><span class="cv">no clone needed</span></div>
+<pre>go install github.com/sandboxws/gluon/cmd/gluon@latest</pre>
+    </div>
+    <p>Or Homebrew — <code>brew install sandboxws/tap/gluon</code> — or a binary from <a href="{% .Site.Repo %}/releases">the releases page</a>. To build a checkout instead:</p>
+{% end %}    <div class="cmd">
+      <div class="cmd-bar"><span class="ck">Shell</span><span class="cv">from a clone</span></div>
+<pre>git clone git@github.com:sandboxws/gluon.git
+<span class="kw">cd</span> gluon
+go install ./cmd/gluon     <span class="c"># → ~/go/bin/gluon; `just install` is the same line</span></pre>
+    </div>
+    <p>The module declares <code>go 1.27.0</code>, so that is the oldest toolchain that builds gluon — and the toolchain it builds your lines with is whichever <code>go</code> is on your <code>PATH</code> when you start it. If the shell cannot find <code>gluon</code> afterwards, <code>go env GOBIN</code> and <code>go env GOPATH</code> say where it landed.</p>
+
+    <h3>Check the install</h3>
+    <p><code>gluon doctor</code> reports what gluon can see from where you ran it: the toolchain and its <code>GOFLAGS</code>, your config file, which plugins are active and why, and — inside a Go module — every package a session could import. It exits non-zero only when something gluon depends on is broken; standing outside a module is reported, not failed.</p>
+    <div class="cmd">
+      <div class="cmd-bar"><span class="ck">Shell</span><span class="cv">verify</span></div>
+<pre>gluon doctor
+gluon doctor -json | jq .      <span class="c"># the same report, for a script</span>
+gluon                          <span class="c"># and you are in</span></pre>
+    </div>
+    <div class="call why">
+      <span class="lbl">macOS: the 105ms you can delete</span>
+      <p>About 105ms of every line that has to run is macOS validating a Mach-O it has never seen — roughly a third of the wall clock, and nothing to do with Go. Adding your terminal under <em>System Settings → Privacy &amp; Security → Developer Tools</em> removes it. <code>gluon doctor</code> times a freshly linked binary, so measure before and after rather than trusting <code>spctl --status</code>, which reports the global setting and not your terminal.</p>
+    </div>
+    <p>Shell completion and a man page come from the command tree itself: <code>gluon completion zsh</code> (or bash, fish, powershell) and <code>gluon man</code>. <a href="{% rel "reference/cli.html" %}">The gluon command</a> lists every subcommand and flag.</p>
+  </div>
+</section>
+
+<section class="card" id="first">
+  <div class="card-head"><span class="idx">2</span><div class="hd"><h2>The first session</h2></div></div>
+  <div class="card-body">
+    <p class="lead">Type Go. What comes back is the value, its type, and the facts about it you would otherwise print a second time to find out.</p>
+    {% session "start-first" "a value, and the truth attached to it" %}
+    <p>A slice says its length and capacity, because the two differing is where most slice surprises start. Indexing a string gives a byte, not a character: <code>195</code> is the first byte of the two that encode <code>é</code>, and the hex beside it is there because a byte is usually wanted as one. A string says how many bytes it is and how many runes, since those are different numbers the moment it leaves ASCII.</p>
+    <p>Values with structure are drawn as tables; a scalar stays on its line, because a box around the number 2 is worse than the number 2. <a href="rendering.html">Rendering</a> covers the other shapes — a tree, columns, one line, or Go source you can paste into a test.</p>
+    <p>Every line re-renders the whole session into a genuine Go program and compiles it with your toolchain, so the semantics are the compiler's. Lines that do not need to run do not pay for that: an in-process type checker answers declarations, type errors and constant expressions in about a millisecond, without building anything. <a href="design.html">How it works</a> has the numbers.</p>
+    <p>Started in a project with <code>-host .</code>, the startup screen says what gluon found there — the module it attached to, the database the project configures, the plugins its build list turned on — and the project's own packages import at the prompt, <code>internal/</code> included. <a href="project.html">Your project</a> covers attaching.</p>
+    {% shot "hero" "gluon -host . in the shop project" %}
+  </div>
+</section>
+
+<section class="card" id="removed">
+  <div class="card-head"><span class="idx">3</span><div class="hd"><h2>What it takes off Go</h2></div></div>
+  <div class="card-body">
+    <p class="lead">Nothing in that session imports <code>slices</code>, and nothing uses <code>x</code> after declaring it. Go rejects both. Scratch work breaks those two rules on every other line, so gluon removes them.</p>
+    <div class="tw"><table>
+      <thead><tr><th>Go says</th><th>gluon does</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">declared and not used</td><td>writes <code>_ = x</code> after every binding</td></tr>
+        <tr><td class="mono">undefined: fmt</td><td>runs goimports, so you never type an import line</td></tr>
+        <tr><td class="mono">no new variables on left side of :=</td><td>reads a retyped <code>x := 1</code> as <code>x = 1</code>, the way irb would</td></tr>
+      </tbody>
+    </table></div>
+    <p>It also prints the trailing expression with its type, which Go would reject as an unused value. None of this is hidden: {% cmd ":src" %} shows the program your session actually became, rewrites included.</p>
+  </div>
+</section>
+
+<section class="card" id="it">
+  <div class="card-head"><span class="idx">4</span><div class="hd"><h2>Carrying a value forward</h2></div></div>
+  <div class="card-body">
+    <p class="lead"><code>it</code> is the value the previous line printed — irb's <code>_</code>, which Go cannot spell because a bare underscore is the blank identifier. <code>_1</code>, <code>_2</code> and on name every value the session has printed.</p>
+    {% session "start-it" %}
+    <p><code>_N</code> is a real variable. <code>it</code> is not: it is rewritten, when the program is rendered, to the <code>_N</code> that was newest where you typed it, so {% cmd ":src" %} shows <code>_2 + "!"</code>. That is forced by replay — the whole session is rendered again on every line, so a line that says <code>it</code> stays in the program long after it stopped being the newest, and each has to keep meaning its own predecessor, at its own type. {% cmd ":ls" %} lists the values with the expression each came from.</p>
+  </div>
+</section>
+
+<section class="card" id="errors">
+  <div class="card-head"><span class="idx">5</span><div class="hd"><h2>Errors point at what you typed</h2></div></div>
+  <div class="card-body">
+    <p class="lead">The program gluon compiles is not the one you typed, but its errors are about the one you typed. Each entry is written with a line directive, so the compiler and the runtime both name your line and column rather than a file under a temp directory you never saw.</p>
+    {% session "start-errors" "a compile error, and a panic" %}
+    <p>The compile error is the type checker's, so it came back without a build, and a line that does not compile is never kept. The panic had to run to happen, and its traceback names the entry — <code>x[10]</code> — where a real one would name <code>main.go:31</code>.</p>
+    <p>A line that panics <em>is</em> kept, because it ran: the session is the program that ran it. Since the whole session replays on every line, it would panic again on each one after it, so gluon says that instead of going quiet — and {% cmd ":undo" %} takes it back.</p>
+  </div>
+</section>
+
+<section class="card" id="paste">
+  <div class="card-head"><span class="idx">6</span><div class="hd"><h2>Pasting</h2></div></div>
+  <div class="card-body">
+    <p class="lead">A paste is echoed a construct at a time, exactly as typing would have echoed it, and evaluated as one batch: four lines cost one build, not four.</p>
+    {% session "start-paste" "four lines pasted at once" %}
+    {% shot "paste" "the same paste in a terminal, with :time on: one build" %}
+    <p>A construct that spans lines — a function, a struct — accumulates into one entry however it arrives. When a paste does not end in a newline, its last line is left on the prompt rather than run, so you can read what you pasted before any of it happens. If one line of a batch does not compile, the batch is landed a line at a time instead, so the error belongs to the line that owns it and the others still run.</p>
+  </div>
+</section>
+
+<section class="card" id="help">
+  <div class="card-head"><span class="idx">7</span><div class="hd"><h2>Help, for every command</h2></div></div>
+  <div class="card-body">
+    <p class="lead">Lines that start with a colon are gluon's own commands. {% cmd ":help" %} lists them all; <code>:help :layout</code> is one command's page — what it takes, its flags, lines to try, and where it goes next — and <code>--help</code> after any command asks for the same page.</p>
+    {% session "start-help" "one command's page, asked two ways" %}
+    {% shot "help" "the same page at a prompt: a view, whose examples are choices" %}
+    <p>At the prompt, a page longer than a screen opens in a view that scrolls, and so does bare {% cmd ":help" %}: a table of every command you can filter with <kbd>/</kbd> — by name, by flag, by what it does. Choosing one of a page's examples puts that line on the prompt without running it, so you can edit it first.</p>
+    {% shot "help-browser" ":help, filtered with /http" %}
+    <p><code>--help</code> and <code>?</code> ask for help on every command, and <code>-h</code> on every command whose argument is not Go — <code>:t -h</code> is the type of <code>-h</code>, because that is a Go expression. Asking is always safe: the question is answered before the command runs, so <code>:undo -h</code> drops nothing and <code>:q -h</code> does not quit.</p>
+    <p>While you type a command, the rest of its usage is drawn after the cursor, and <kbd>tab</kbd> completes its flags and their values — the themes <code>:theme</code> takes, the keys <code>:settings</code> knows, the methods <code>:http</code> sends. A command that comes from a plugin you have not activated still has a page: it names the plugin and the <code>:get</code> line that turns it on.</p>
+    {% shot "help-hint" ":http, and its usage after the cursor" %}
+  </div>
+</section>
+
+<section class="card" id="leaving">
+  <div class="card-head"><span class="idx">8</span><div class="hd"><h2>Leaving, and coming back</h2></div></div>
+  <div class="card-body">
+    <p class="lead"><code>:q</code> or <kbd>ctrl-d</kbd> quits. <kbd>ctrl-c</kbd> abandons the line you are typing and keeps the session.</p>
+    <p>Nothing is lost by quitting. gluon lands in a scratchpad called <code>default</code> and writes every entry down as you type it, so tomorrow's <code>gluon</code> replays it and you are where you were — the startup screen says how many entries came back. <a href="scratchpads.html">Scratchpads</a> covers keeping several, and <a href="session.html">The session</a> the commands that edit what one holds.</p>
+    <p>The history you search with <kbd>ctrl-r</kbd> is a different collection: every line typed on this machine, in one file under <code>~/.local/state/gluon</code>. <a href="editing.html">Editing a line</a> has the keys.</p>
+  </div>
+</section>
+{% end %}

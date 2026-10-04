@@ -1,0 +1,10 @@
+a := 1
+b := 2
+c := a + b
+c
+:hist
+:drop 2
+:undo
+:hist
+:reset
+:hist

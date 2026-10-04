@@ -1,0 +1,38 @@
+# Gruvbox Dark, converted from the TextMate theme by `gluon theme import`.
+#
+# Medium only. Hard, Medium and Soft differ in their background and in nothing
+# else, and gluon takes no background — the same finding that left Macchiato out
+# of the Gruvppuccin five, and `TestBuiltinsAreDistinct` is what would say so.
+#
+# Distinct from the four Gruvppuccin palettes that share gruvbox's accents: those
+# carry the softened material set (#A9B665 green), this the original (#b8bb26).
+#
+# Re-run:  gluon theme import <file> --print
+#          github.com/subnut/gruvbox-tmTheme, gruvbox (Dark) (Medium).tmTheme
+#
+# Kept from gluon's own go, because nothing in an editor theme means
+# them: `note`, `dim`, `search`, `border`.
+about      = "Gruvbox Dark: red keywords, green strings, yellow types"
+appearance = "dark"
+source     = "gruvbox (Dark) (Medium), a TextMate theme"
+
+[theme]
+# Source.
+keyword     = "#fb4934"
+string      = "#b8bb26"
+type        = "#fabd2f"
+comment     = "#928374"
+number      = "#d3869b"
+builtin     = "#8ec07c"
+punctuation = "#fbf1c7"
+ident       = "#ebdbb2"
+
+# Values, the REPL, and the CLI.
+error       = "#fb4934"
+prompt      = "#fabd2f"
+mode        = "#83a598"  # gruvbox blue, against gruvbox yellow
+annotation  = "#928374"
+note        = "#E3B341"
+dim         = "#7C7C84"
+search      = "#F5B843"
+border      = "#55555C"

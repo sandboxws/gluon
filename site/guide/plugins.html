@@ -1,0 +1,104 @@
+{% define "side" %}<a href="#what"><span class="rn">1</span><span class="rt">What a plugin is</span></a>
+<a href="#renderers"><span class="rn">2</span><span class="rt">Renderers</span></a>
+<a href="#encodings"><span class="rn">3</span><span class="rt">Encodings, time, logs</span></a>
+<a href="#web"><span class="rn">4</span><span class="rt">Routes</span></a>
+<a href="#rpc"><span class="rn">5</span><span class="rt">gRPC and protobuf</span></a>
+<a href="#data"><span class="rn">6</span><span class="rt">Data</span></a>
+<a href="#app"><span class="rn">7</span><span class="rt">Settings, containers, CLIs</span></a>
+<a href="#writing"><span class="rn">8</span><span class="rt">Writing one</span></a>{% end %}
+{% define "main" %}
+<section class="card" id="what">
+  <div class="card-head"><span class="idx">1</span><div class="hd"><h2>What a plugin is</h2><div class="chips"><span class="chip">{% .Reg.Counts.Plugins %} built in</span><span class="chip">{% .Reg.Counts.PluginCommands %} commands</span></div></div></div>
+  <div class="card-body">
+    <p class="lead">A REPL that knows only the standard library treats every library the same, which means treating none of them well. A plugin teaches gluon one library: how its values read, and the questions worth asking of them. {% cmd ":plugins" %} says which are active here, and why.</p>
+    {% session "plugins-list" "in the shop, whose build list turns on most of them" %}
+    <p>A plugin is inert until the session can see its library — in the project's build list, or added with <code>:get</code> — so a session with no gorm has no <code>:sql</code>, rather than a command that cannot work. A command whose plugin is not active still has a page: <code>:help :sql</code> names the plugin and the <code>:get</code> that turns it on. Activation is worked out when the build list changes, at <code>:use</code> and <code>:get</code>, never per line.</p>
+    <p>Plugins are compiled into gluon, and <strong>never link the library they describe</strong>. A plugin command rewrites its argument into Go source that the ordinary evaluator runs, transiently — the path {% cmd ":bench" %} takes — so it can do nothing a line you could type could not, it leaves nothing in the session, and it uses the copy of the library your build list already has. {% cmd ":guide" %} is a plugin's cheatsheet, for the one that ships one. <a href="{% rel "reference/plugins.html" %}">The plugins reference</a> lists all {% .Reg.Counts.Plugins %} with what each adds.</p>
+  </div>
+</section>
+
+<section class="card" id="renderers">
+  <div class="card-head"><span class="idx">2</span><div class="hd"><h2>Renderers: a value as what it is</h2></div></div>
+  <div class="card-body">
+    <p class="lead">A <code>uuid.UUID</code> is sixteen bytes, and without a plugin it prints as sixteen small integers. A renderer draws it as what it is, wherever it appears — on its own line, or as a field of a struct.</p>
+    {% session "plugins-renderers" %}
+    <p>A duration gets its total alongside its carry chain; a UUID its canonical form, version and variant; a <code>sql.NullString</code> reads <code>NULL</code> when it is one, and quotes the text when it is not, so the two cannot be mistaken for each other. <code>*http.Response</code> is a status line and a header table — <a href="project.html#http">Requests</a> shows it — and a pgx pool's statistics are labelled counters instead of three depths of unexported fields.</p>
+    <p><strong>Renderers see structure; commands see values.</strong> The program describes a value as JSON and gluon draws it, so a renderer can add up a duration — it has the number — but cannot read a <code>time.Time</code>, whose meaning lives in a <code>String</code> method the description walks past. So a time gets a command, {% cmd ":when" %}, which asks the program, where the value is still real. Renderers apply in the terminal and nowhere else: a pipe and <code>gluon -e</code> print gluon's own plain form, byte for byte.</p>
+  </div>
+</section>
+
+<section class="card" id="encodings">
+  <div class="card-head"><span class="idx">3</span><div class="hd"><h2>Encodings, time and logs</h2><div class="chips"><span class="chip o">standard library — always active</span></div></div></div>
+  <div class="card-body">
+    <p class="lead">Five plugins describe the standard library, so they are active in every session.</p>
+    {% session "plugins-stdlib" %}
+    <p>{% cmd ":json" %} answers what a struct's tags actually produce, which the printer cannot: it reports Go field names, and JSON reports tags. {% cmd ":xml" %} is the same question for the encoding whose tags do more — an attribute, a nested path — and returns encoding/xml's own refusal for a map rather than dropping it. {% cmd ":csv" %} writes a slice of structs as records, header from the fields or their <code>csv</code> tags, and refuses a shape that is not a table by name. {% cmd ":when" %} is a time in the forms you want to read. {% cmd ":slog" %} is how a value comes out of a real <code>slog.TextHandler</code> — which is a question about its <code>LogValue</code>, not its fields: the shop's <code>User</code> masks its own address.</p>
+  </div>
+</section>
+
+<section class="card" id="web">
+  <div class="card-head"><span class="idx">4</span><div class="hd"><h2>Routes</h2><div class="chips"><span class="chip">chi · gin · echo · fiber · hertz · iris · mux</span></div></div></div>
+  <div class="card-body">
+    <p class="lead">{% cmd ":routes" %} is the route table a router value holds: method, path and handler, the same three columns whichever of seven frameworks answers.</p>
+    {% session "plugins-web" "routes, then the shop's gRPC server on 127.0.0.1:50051" %}
+    {% shot "plugins" "chi in the build list, and :routes over the shop's router" %}
+    {% shot "grpc" "the shop's gRPC server, through reflection" %}
+    <p>The shop builds its router with <code>api.Routes(store)</code>, and the handlers read the store only when a request arrives — so a nil one is enough to list them. chi's walk descends into mounted sub-routers, so <code>/admin</code>'s routes are there, and it hands over each handler without its name, so the handler column says it is unavailable rather than going blank. When a project requires two routers, the first in the registry's order answers and <code>:plugins</code> names the other.</p>
+  </div>
+</section>
+
+<section class="card" id="rpc">
+  <div class="card-head"><span class="idx">5</span><div class="hd"><h2>gRPC and protobuf</h2></div></div>
+  <div class="card-body">
+    <p class="lead">{% cmd ":grpc" %} with an address lists what a server exposes, through server reflection; with a <code>pkg.Service/Method</code> as well, it makes one unary call. {% cmd ":pb" %} is a message's size on the wire and its text form.</p>
+    <p>A streaming method is listed and marked, because each line is a program that exits and a stream has nowhere to live — reading one message and hanging up would return a number that looks like an answer. The request in {% cmd ":grpc" "-d" %} is checked against the reflected descriptor before the call, so a field you got wrong is named here and not by the server. {% cmd ":grpc" "-H" %} adds metadata, and may name a variable instead of carrying a value; {% cmd ":grpc" "-t" %} is the deadline, and {% cmd ":grpc" "-tls" %} dials with TLS. Every call dials and hangs up, so what it measures is connecting plus the call, not gRPC, and no answer is cached.</p>
+    <p>A generated message prints as its Go struct — <code>state</code>, <code>sizeCache</code> and <code>unknownFields</code> included, the one view that says nothing about the message. <code>:pb</code> marshals it instead: the byte count is what the wire costs, and the text form is the descriptor's own view of the same value.</p>
+  </div>
+</section>
+
+<section class="card" id="data">
+  <div class="card-head"><span class="idx">6</span><div class="hd"><h2>Data: migrations, queries, schemas</h2></div></div>
+  <div class="card-body">
+    <p class="lead">Four questions about data a project's libraries can answer without anything being run against the database — and one that reads it.</p>
+    {% session "plugins-data" %}
+    <p>{% cmd ":migrations" %} reads goose's tracking table, newest first, through the project's configured database — the connection <a href="database.html">:query</a> uses, the same read-only allowlist, and never goose's own status call, which can create the table it is asked about. {% cmd ":migrations" "-d" %} picks a database by name.</p>
+    <p>{% cmd ":expand" %} is what sqlx's two rewrites do to a query: <code>IN (?)</code> flattened into as many placeholders as the slice has elements, a <code>:name</code> turned into a bindvar with the arguments reordered to match. They are pure functions over the text, so nothing is opened. {% cmd ":schema" %} reads the table set ent generates — columns, keys, and the foreign keys its edges became — as descriptors the generated package already holds, with no connection.</p>
+    <p>{% cmd ":sql" %} is the statement a gorm chain builds, and its arguments, in gorm's dry-run mode. Dry run has to be set at the <em>start</em> of a chain, so <code>:sql</code> parses what you typed and puts it there; nothing reaches the database, which is why a pool that has never connected is enough. The arguments are printed beside the statement rather than interpolated, because a query with its parameters substituted is not the query that runs. ent gets no <code>:sql</code>: its builders have no supported way to produce a statement without running it, and <code>:guide ent</code> says so.</p>
+  </div>
+</section>
+
+<section class="card" id="app">
+  <div class="card-head"><span class="idx">7</span><div class="hd"><h2>Settings, containers, CLIs, money, wire formats</h2></div></div>
+  <div class="card-body">
+    <p class="lead">The rest of what a service is built from, a question each.</p>
+    {% session "plugins-app" %}
+    <p>{% cmd ":config" %} is every key a viper — or koanf — instance resolved, and the value that won: from the file, the environment, a flag or a default. That precedence is what a config file cannot tell you, and why this is not {% cmd ":conf" %}; values shaped like secrets are masked the same way. {% cmd ":yaml" %} and {% cmd ":toml" %} are the documents a struct's tags produce, through the copy of the encoder the build list has — TOML puts every scalar of a table before its first sub-table, which is where a key lands and the part the value cannot show.</p>
+    <p>{% cmd ":dec" %} prints a decimal exactly, beside what <code>float64</code> would have made of it. {% cmd ":services" %} is what a samber/do or dig container has registered and in which scope, and {% cmd ":graph" %} how the providers depend on each other — do learns an edge when it builds a service, so a service nothing has asked for shows <code>—</code>, which is not "no dependencies". {% cmd ":tree" %} is a cobra command and everything under it, hidden commands marked rather than left out. {% cmd ":msgpack" %} is the bytes a value encodes to, as a hex dump with the keys readable beside them.</p>
+  </div>
+</section>
+
+<section class="card" id="writing">
+  <div class="card-head"><span class="idx">8</span><div class="hd"><h2>Writing one</h2></div></div>
+  <div class="card-body">
+    <p class="lead">For a library gluon does not ship a plugin for, a TOML file in <code>~/.config/gluon/plugins/</code> adds commands — everything except renderers.</p>
+    <div class="cmd">
+      <div class="cmd-bar"><span class="ck">TOML</span><span class="cv">~/.config/gluon/plugins/sqlc.toml</span></div>
+<pre>name    = <span class="s">"sqlc"</span>
+module  = <span class="s">"github.com/example/sqlc"</span>
+imports = [<span class="s">"github.com/example/sqlc"</span>]
+
+[[command]]
+name    = <span class="s">":sqlc"</span>
+arg     = <span class="s">"&lt;query&gt;"</span>
+summary = <span class="s">"the SQL a query builds"</span>
+rewrite = <span class="s">"{{.Arg}}.ToSQL()"</span>
+see     = [<span class="s">":query"</span>]
+
+[[command.example]]
+line = <span class="s">":sqlc db.Users().Where(\"id = ?\", 1)"</span>
+says = <span class="s">"the statement and its arguments"</span></pre>
+    </div>
+    <p><code>rewrite</code> is a template that produces Go source, so a TOML plugin has exactly the authority of a line you could type. A command can declare what it takes the way a builtin does — <code>kind</code> (<code>go</code>, <code>name</code>, <code>words</code>, <code>sql</code> or <code>none</code>) and <code>[[command.param]]</code>, <code>[[command.flag]]</code> and <code>[[command.example]]</code> tables — and then it gets the same page, completion and usage hint a builtin gets. <code>aliases</code>, <code>detail</code>, <code>text</code>, a <code>guide</code> markdown file and <code>[[alias]]</code> short names for <code>:get</code> are the rest. An unknown key is an error, and <code>[plugins] disable = ["http"]</code> turns a plugin off.</p>
+  </div>
+</section>
+{% end %}

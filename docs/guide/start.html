@@ -1,0 +1,217 @@
+<!doctype html>
+<!-- generated from site/ by `just docs`: edit the source, not this file -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The first five minutes — gluon</title>
+<meta name="description" content="Install gluon, type Go, and read what comes back: a value with the truth attached, it and _N, errors that name your line, and help for every command.">
+<meta name="theme-color" content="#0A0A0A">
+<script>(function(d,m){try{m=/[?&]palette=(gruv|go)\b/.exec(location.search);m=m?m[1]:localStorage.getItem("gluon:theme")}catch(e){}if(m==="gruv")d.documentElement.setAttribute("data-theme","gruv")})(document)</script>
+<link rel="canonical" href="https://sandboxws.github.io/gluon/guide/start.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="The first five minutes — gluon">
+<meta property="og:description" content="Install gluon, type Go, and read what comes back: a value with the truth attached, it and _N, errors that name your line, and help for every command.">
+<meta property="og:url" content="https://sandboxws.github.io/gluon/guide/start.html">
+<meta property="og:image" content="https://sandboxws.github.io/gluon/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="gluon's startup screen in a Go project, beside the words: A Go REPL that stands in your project">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sandboxws.github.io/gluon/img/og.png">
+<meta name="twitter:title" content="The first five minutes — gluon">
+<meta name="twitter:description" content="Install gluon, type Go, and read what comes back: a value with the truth attached, it and _N, errors that name your line, and help for every command.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A0A0A'/%3E%3Cpath d='M9 9l7 7-7 7' stroke='%2300ADD8' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M18 23h6' stroke='%2300ADD8' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/gluon.css?v=980f3e8a">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="field" aria-hidden="true"></div>
+<div class="nav" id="nav">
+  <div class="nav-in">
+    <a class="nav-t" href="../index.html">gluon</a>
+    <span class="nav-sp"></span>
+    <a class="nav-m" href="../guide/index.html">Guides</a>
+    <a class="nav-m" href="../reference/index.html">Reference</a>
+    <span class="nav-m opt">v0.1.0</span>
+  </div>
+</div>
+
+<header class="hero wrap page">
+  <p class="eyebrow">Guide 01</p>
+  <h1 id="bigTitle">The first five minutes</h1>
+  <p class="sub">Install gluon, type Go, and read what comes back: a value with the truth attached, it and _N, errors that name your line, and help for every command.</p>
+</header>
+
+<div class="wrap cols">
+  <nav class="side" aria-label="Sections"><div class="side-in">
+    <p class="grp-h">This page</p>
+    <a href="#install"><span class="rn">1</span><span class="rt">Install</span></a>
+<a href="#first"><span class="rn">2</span><span class="rt">The first session</span></a>
+<a href="#removed"><span class="rn">3</span><span class="rt">What it takes off Go</span></a>
+<a href="#it"><span class="rn">4</span><span class="rt">it and _N</span></a>
+<a href="#errors"><span class="rn">5</span><span class="rt">Errors</span></a>
+<a href="#paste"><span class="rn">6</span><span class="rt">Pasting</span></a>
+<a href="#help"><span class="rn">7</span><span class="rt">Help</span></a>
+<a href="#leaving"><span class="rn">8</span><span class="rt">Leaving, and coming back</span></a>
+    <p class="grp-h">Guides</p>
+    <a href="../guide/index.html"><span class="rt">Guides</span></a>
+    <a href="../guide/start.html" aria-current="page" class="here"><span class="rt">The first five minutes</span></a>
+    <a href="../guide/inspecting.html"><span class="rt">Inspecting</span></a>
+    <a href="../guide/measuring.html"><span class="rt">Measuring</span></a>
+    <a href="../guide/rendering.html"><span class="rt">Rendering</span></a>
+    <a href="../guide/session.html"><span class="rt">The session</span></a>
+    <a href="../guide/scratchpads.html"><span class="rt">Scratchpads</span></a>
+    <a href="../guide/editing.html"><span class="rt">Editing</span></a>
+    <a href="../guide/project.html"><span class="rt">In a project</span></a>
+    <a href="../guide/database.html"><span class="rt">The database</span></a>
+    <a href="../guide/plugins.html"><span class="rt">Plugins</span></a>
+    <a href="../guide/configuration.html"><span class="rt">Configuration</span></a>
+    <a href="../guide/themes.html"><span class="rt">Themes</span></a>
+    <a href="../guide/scripting.html"><span class="rt">Scripting</span></a>
+    <a href="../guide/mcp.html"><span class="rt">MCP</span></a>
+    <a href="../guide/design.html"><span class="rt">How it works</span></a>
+    
+  </div></nav>
+  <main id="main">
+    
+<section class="card" id="install">
+  <div class="card-head"><span class="idx">1</span><div class="hd"><h2>Install</h2><div class="chips"><span class="chip">macOS · Linux · WSL</span><span class="chip">amd64 · arm64</span></div></div></div>
+  <div class="card-body">
+    <p class="lead">The one requirement is a Go toolchain on your <code>PATH</code>, because the toolchain is the evaluator: every line you type is compiled by the same <code>go</code> that builds your projects.</p>
+    <div class="cmd">
+      <div class="cmd-bar"><span class="ck">Shell</span><span class="cv">no clone needed</span></div>
+<pre>go install github.com/sandboxws/gluon/cmd/gluon@latest</pre>
+    </div>
+    <p>Or Homebrew — <code>brew install sandboxws/tap/gluon</code> — or a binary from <a href="https://github.com/sandboxws/gluon/releases">the releases page</a>. To build a checkout instead:</p>
+    <div class="cmd">
+      <div class="cmd-bar"><span class="ck">Shell</span><span class="cv">from a clone</span></div>
+<pre>git clone git@github.com:sandboxws/gluon.git
+<span class="kw">cd</span> gluon
+go install ./cmd/gluon     <span class="c"># → ~/go/bin/gluon; `just install` is the same line</span></pre>
+    </div>
+    <p>The module declares <code>go 1.27.0</code>, so that is the oldest toolchain that builds gluon — and the toolchain it builds your lines with is whichever <code>go</code> is on your <code>PATH</code> when you start it. If the shell cannot find <code>gluon</code> afterwards, <code>go env GOBIN</code> and <code>go env GOPATH</code> say where it landed.</p>
+
+    <h3>Check the install</h3>
+    <p><code>gluon doctor</code> reports what gluon can see from where you ran it: the toolchain and its <code>GOFLAGS</code>, your config file, which plugins are active and why, and — inside a Go module — every package a session could import. It exits non-zero only when something gluon depends on is broken; standing outside a module is reported, not failed.</p>
+    <div class="cmd">
+      <div class="cmd-bar"><span class="ck">Shell</span><span class="cv">verify</span></div>
+<pre>gluon doctor
+gluon doctor -json | jq .      <span class="c"># the same report, for a script</span>
+gluon                          <span class="c"># and you are in</span></pre>
+    </div>
+    <div class="call why">
+      <span class="lbl">macOS: the 105ms you can delete</span>
+      <p>About 105ms of every line that has to run is macOS validating a Mach-O it has never seen — roughly a third of the wall clock, and nothing to do with Go. Adding your terminal under <em>System Settings → Privacy &amp; Security → Developer Tools</em> removes it. <code>gluon doctor</code> times a freshly linked binary, so measure before and after rather than trusting <code>spctl --status</code>, which reports the global setting and not your terminal.</p>
+    </div>
+    <p>Shell completion and a man page come from the command tree itself: <code>gluon completion zsh</code> (or bash, fish, powershell) and <code>gluon man</code>. <a href="../reference/cli.html">The gluon command</a> lists every subcommand and flag.</p>
+  </div>
+</section>
+
+<section class="card" id="first">
+  <div class="card-head"><span class="idx">2</span><div class="hd"><h2>The first session</h2></div></div>
+  <div class="card-body">
+    <p class="lead">Type Go. What comes back is the value, its type, and the facts about it you would otherwise print a second time to find out.</p>
+    <div class="repl"><div class="cmd-bar"><span class="ck">gluon</span><span class="cv">a value, and the truth attached to it</span></div><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> x <span class="p">:=</span> <span class="p">[</span><span class="p">]</span><span class="ty">int</span><span class="p">{</span><span class="nu">3</span><span class="p">,</span> <span class="nu">1</span><span class="p">,</span> <span class="nu">2</span><span class="p">}</span></div><div class="tl"><span class="pr">gluon&gt;</span> slices<span class="p">.</span>Sort<span class="p">(</span>x<span class="p">)</span></div><div class="tl"><span class="pr">gluon&gt;</span> x</div><div class="tl out"><span class="ty">([]int)</span> len=3 cap=3</div><div class="tl out bx"><span class="p">╭───┬───────╮</span></div><div class="tl out bx"><span class="p">│</span> # <span class="p">│</span> value <span class="p">│</span></div><div class="tl out bx"><span class="p">├───┼───────┤</span></div><div class="tl out bx"><span class="p">│</span> 0 <span class="p">│</span> 1     <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> 1 <span class="p">│</span> 2     <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> 2 <span class="p">│</span> 3     <span class="p">│</span></div><div class="tl out bx"><span class="p">╰───┴───────╯</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="s">&#34;héllo&#34;</span><span class="p">[</span><span class="nu">1</span><span class="p">]</span></div><div class="tl out"><span class="ty">(uint8)</span> 195 (0xc3)</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="s">&#34;héllo&#34;</span></div><div class="tl out"><span class="ty">(string)</span> &#34;héllo&#34;  len=6 bytes, 5 runes</div></div></div>
+    <p>A slice says its length and capacity, because the two differing is where most slice surprises start. Indexing a string gives a byte, not a character: <code>195</code> is the first byte of the two that encode <code>é</code>, and the hex beside it is there because a byte is usually wanted as one. A string says how many bytes it is and how many runes, since those are different numbers the moment it leaves ASCII.</p>
+    <p>Values with structure are drawn as tables; a scalar stays on its line, because a box around the number 2 is worse than the number 2. <a href="rendering.html">Rendering</a> covers the other shapes — a tree, columns, one line, or Go source you can paste into a test.</p>
+    <p>Every line re-renders the whole session into a genuine Go program and compiles it with your toolchain, so the semantics are the compiler's. Lines that do not need to run do not pay for that: an in-process type checker answers declarations, type errors and constant expressions in about a millisecond, without building anything. <a href="design.html">How it works</a> has the numbers.</p>
+    <p>Started in a project with <code>-host .</code>, the startup screen says what gluon found there — the module it attached to, the database the project configures, the plugins its build list turned on — and the project's own packages import at the prompt, <code>internal/</code> included. <a href="project.html">Your project</a> covers attaching.</p>
+    <figure class="shot"><figcaption class="cmd-bar"><span class="ck">Screenshot</span><span class="cv">gluon -host . in the shop project</span></figcaption><a href="../img/shots/hero.go.webp?v=7b410c2b"><img class="v-go" src="../img/shots/hero.go.webp?v=7b410c2b" width="723" height="503" alt="gluon starting in a Go project: the wordmark and version, a row each for the scratchpad it opened, the module it attached to, the database it found and the plugins the project&#39;s build list turned on, then a line of the project&#39;s own code evaluated at the prompt" loading="lazy" decoding="async"></a><a href="../img/shots/hero.gruv.webp?v=2479aef8"><img class="v-gruv" src="../img/shots/hero.gruv.webp?v=2479aef8" width="723" height="503" alt="gluon starting in a Go project: the wordmark and version, a row each for the scratchpad it opened, the module it attached to, the database it found and the plugins the project&#39;s build list turned on, then a line of the project&#39;s own code evaluated at the prompt" loading="lazy" decoding="async"></a></figure>
+  </div>
+</section>
+
+<section class="card" id="removed">
+  <div class="card-head"><span class="idx">3</span><div class="hd"><h2>What it takes off Go</h2></div></div>
+  <div class="card-body">
+    <p class="lead">Nothing in that session imports <code>slices</code>, and nothing uses <code>x</code> after declaring it. Go rejects both. Scratch work breaks those two rules on every other line, so gluon removes them.</p>
+    <div class="tw"><table>
+      <thead><tr><th>Go says</th><th>gluon does</th></tr></thead>
+      <tbody>
+        <tr><td class="mono">declared and not used</td><td>writes <code>_ = x</code> after every binding</td></tr>
+        <tr><td class="mono">undefined: fmt</td><td>runs goimports, so you never type an import line</td></tr>
+        <tr><td class="mono">no new variables on left side of :=</td><td>reads a retyped <code>x := 1</code> as <code>x = 1</code>, the way irb would</td></tr>
+      </tbody>
+    </table></div>
+    <p>It also prints the trailing expression with its type, which Go would reject as an unused value. None of this is hidden: <a href="../reference/commands.html#src"><code>:src</code></a> shows the program your session actually became, rewrites included.</p>
+  </div>
+</section>
+
+<section class="card" id="it">
+  <div class="card-head"><span class="idx">4</span><div class="hd"><h2>Carrying a value forward</h2></div></div>
+  <div class="card-body">
+    <p class="lead"><code>it</code> is the value the previous line printed — irb's <code>_</code>, which Go cannot spell because a bare underscore is the blank identifier. <code>_1</code>, <code>_2</code> and on name every value the session has printed.</p>
+    <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="nu">2</span> <span class="p">+</span> <span class="nu">2</span></div><div class="tl out"><span class="ty">(int)</span> 4</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="s">&#34;hi&#34;</span></div><div class="tl out"><span class="ty">(string)</span> &#34;hi&#34;  len=2</div><div class="tl"><span class="pr">gluon&gt;</span> it <span class="p">+</span> <span class="s">&#34;!&#34;</span></div><div class="tl out"><span class="ty">(string)</span> &#34;hi!&#34;  len=3</div><div class="tl"><span class="pr">gluon&gt;</span> _1 <span class="p">*</span> <span class="nu">10</span></div><div class="tl out"><span class="ty">(int)</span> 40</div></div></div>
+    <p><code>_N</code> is a real variable. <code>it</code> is not: it is rewritten, when the program is rendered, to the <code>_N</code> that was newest where you typed it, so <a href="../reference/commands.html#src"><code>:src</code></a> shows <code>_2 + "!"</code>. That is forced by replay — the whole session is rendered again on every line, so a line that says <code>it</code> stays in the program long after it stopped being the newest, and each has to keep meaning its own predecessor, at its own type. <a href="../reference/commands.html#ls"><code>:ls</code></a> lists the values with the expression each came from.</p>
+  </div>
+</section>
+
+<section class="card" id="errors">
+  <div class="card-head"><span class="idx">5</span><div class="hd"><h2>Errors point at what you typed</h2></div></div>
+  <div class="card-body">
+    <p class="lead">The program gluon compiles is not the one you typed, but its errors are about the one you typed. Each entry is written with a line directive, so the compiler and the runtime both name your line and column rather than a file under a temp directory you never saw.</p>
+    <div class="repl"><div class="cmd-bar"><span class="ck">gluon</span><span class="cv">a compile error, and a panic</span></div><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> x <span class="p">:=</span> <span class="p">[</span><span class="p">]</span><span class="ty">int</span><span class="p">{</span><span class="nu">1</span><span class="p">,</span> <span class="nu">2</span><span class="p">,</span> <span class="nu">3</span><span class="p">}</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">func</span> f<span class="p">(</span>a <span class="ty">int</span><span class="p">)</span> <span class="ty">int</span> <span class="p">{</span></div><div class="tl"><span class="an">  ...&gt;</span>     <span class="kw">return</span> a <span class="p">+</span> bogus</div><div class="tl"><span class="an">  ...&gt;</span> <span class="p">}</span></div><div class="tl out"><span class="er">error: undefined: bogus</span></div><div class="tl out"><span class="er">        return a + bogus</span></div><div class="tl out"><span class="er">                ^</span></div><div class="tl"><span class="pr">gluon&gt;</span> x<span class="p">[</span><span class="nu">10</span><span class="p">]</span></div><div class="tl out"><span class="er">panic: runtime error: index out of range [10] with length 3</span></div><div class="tl out"><span class="er"></span></div><div class="tl out"><span class="er">goroutine 1 [running]:</span></div><div class="tl out"><span class="er">main.main()</span></div><div class="tl out"><span class="er">	x[10] +0x24</span></div><div class="tl out"><span class="er">[exit status 2]</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:undo</span></div><div class="tl out">undone (1 entry left)</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="f">len</span><span class="p">(</span>x<span class="p">)</span></div><div class="tl out"><span class="ty">(int)</span> 3</div></div></div>
+    <p>The compile error is the type checker's, so it came back without a build, and a line that does not compile is never kept. The panic had to run to happen, and its traceback names the entry — <code>x[10]</code> — where a real one would name <code>main.go:31</code>.</p>
+    <p>A line that panics <em>is</em> kept, because it ran: the session is the program that ran it. Since the whole session replays on every line, it would panic again on each one after it, so gluon says that instead of going quiet — and <a href="../reference/commands.html#undo"><code>:undo</code></a> takes it back.</p>
+  </div>
+</section>
+
+<section class="card" id="paste">
+  <div class="card-head"><span class="idx">6</span><div class="hd"><h2>Pasting</h2></div></div>
+  <div class="card-body">
+    <p class="lead">A paste is echoed a construct at a time, exactly as typing would have echoed it, and evaluated as one batch: four lines cost one build, not four.</p>
+    <div class="repl"><div class="cmd-bar"><span class="ck">gluon</span><span class="cv">four lines pasted at once</span></div><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">type</span> Point <span class="kw">struct</span><span class="p">{</span> X<span class="p">,</span> Y <span class="ty">int</span> <span class="p">}</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">func</span> <span class="p">(</span>p Point<span class="p">)</span> Dist2<span class="p">(</span><span class="p">)</span> <span class="ty">int</span> <span class="p">{</span> <span class="kw">return</span> p<span class="p">.</span>X<span class="p">*</span>p<span class="p">.</span>X <span class="p">+</span> p<span class="p">.</span>Y<span class="p">*</span>p<span class="p">.</span>Y <span class="p">}</span></div><div class="tl"><span class="pr">gluon&gt;</span> p <span class="p">:=</span> Point<span class="p">{</span><span class="nu">3</span><span class="p">,</span> <span class="nu">4</span><span class="p">}</span></div><div class="tl"><span class="pr">gluon&gt;</span> p<span class="p">.</span>Dist2<span class="p">(</span><span class="p">)</span></div><div class="tl out"><span class="ty">(int)</span> 25</div></div></div>
+    <figure class="shot"><figcaption class="cmd-bar"><span class="ck">Screenshot</span><span class="cv">the same paste in a terminal, with :time on: one build</span></figcaption><a href="../img/shots/paste.go.webp?v=4571e4f3"><img class="v-go" src="../img/shots/paste.go.webp?v=4571e4f3" width="723" height="292" alt="four lines pasted at once — a type, a method, a value and a call — each echoed as if typed, then built and run as one program, with :time showing the one build" loading="lazy" decoding="async"></a><a href="../img/shots/paste.gruv.webp?v=a1b9e743"><img class="v-gruv" src="../img/shots/paste.gruv.webp?v=a1b9e743" width="723" height="292" alt="four lines pasted at once — a type, a method, a value and a call — each echoed as if typed, then built and run as one program, with :time showing the one build" loading="lazy" decoding="async"></a></figure>
+    <p>A construct that spans lines — a function, a struct — accumulates into one entry however it arrives. When a paste does not end in a newline, its last line is left on the prompt rather than run, so you can read what you pasted before any of it happens. If one line of a batch does not compile, the batch is landed a line at a time instead, so the error belongs to the line that owns it and the others still run.</p>
+  </div>
+</section>
+
+<section class="card" id="help">
+  <div class="card-head"><span class="idx">7</span><div class="hd"><h2>Help, for every command</h2></div></div>
+  <div class="card-body">
+    <p class="lead">Lines that start with a colon are gluon's own commands. <a href="../reference/commands.html#help"><code>:help</code></a> lists them all; <code>:help :layout</code> is one command's page — what it takes, its flags, lines to try, and where it goes next — and <code>--help</code> after any command asks for the same page.</p>
+    <div class="repl"><div class="cmd-bar"><span class="ck">gluon</span><span class="cv">one command&#39;s page, asked two ways</span></div><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:help</span> :layout</div><div class="tl out">  :layout &lt;type&gt;</div><div class="tl out"></div><div class="tl out">  field offsets, padding, and what reordering would save</div><div class="tl out"></div><div class="tl out">  type              a struct type, or a value of one</div><div class="tl out"></div><div class="tl out">  examples</div><div class="tl out">    :layout struct{ a bool; b int64; c bool }</div><div class="tl out">        24 bytes, and the order that would take 16</div><div class="tl out"></div><div class="tl out">  Answers from go/types and never builds: sizes, offsets and alignment are</div><div class="tl out">  the compiler&#39;s own for the platform gluon runs on. The suggested order is</div><div class="tl out">  the one that wastes least padding, and the saving is stated in bytes.</div><div class="tl out"></div><div class="tl out">  see also          :embeds :slice</div><div class="tl out">  tool              go_layout, served without --eval</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:t</span> <span class="p">--</span>help<span class="vw" title="At the prompt this opens a view you can scroll and filter. What it shows is below, and it is what a pipe or gluon -e prints.">opens a view</span></div><div class="tl out">  :t [-v | -d] &lt;exp&gt;</div><div class="tl out"></div><div class="tl out">  the type of an expression      (Ruby&#39;s .class)</div><div class="tl out"></div><div class="tl out">  -v                add the underlying type and its kind</div><div class="tl out">  -d                run it once for the dynamic type inside an interface</div><div class="tl out"></div><div class="tl out">  examples</div><div class="tl out">    :t strconv.Atoi(&#34;12&#34;)</div><div class="tl out">        two values: (int, error)</div><div class="tl out">    :t -v time.Second</div><div class="tl out">        the named type, what it is underneath, and its kind</div><div class="tl out">    :t -d r</div><div class="tl out">        what is inside the interface r — this one costs a build</div><div class="tl out"></div><div class="tl out">  Answers from go/types in gluon&#39;s own process, so it never builds and comes</div><div class="tl out">  back in about a millisecond.</div><div class="tl out"></div><div class="tl out">  -d is the exception: it reports the dynamic type — what is actually inside</div><div class="tl out">  an interface value — which nothing but a run can know. It costs a build and</div><div class="tl out">  an execution, and it runs your expression, so a call with a side effect has</div><div class="tl out">  it. Only at the prompt: the MCP tool stays static and ignores the flag.</div><div class="tl out"></div><div class="tl out">  see also          :m :ls :doc</div><div class="tl out">  also              :type</div><div class="tl out">  tool              go_type, served without --eval; -d only at the prompt</div></div></div>
+    <figure class="shot"><figcaption class="cmd-bar"><span class="ck">Screenshot</span><span class="cv">the same page at a prompt: a view, whose examples are choices</span></figcaption><a href="../img/shots/help.go.webp?v=eab6457e"><img class="v-go" src="../img/shots/help.go.webp?v=eab6457e" width="893" height="778" alt=":help :http opening the command&#39;s page in the help view: its synopsis, what it does, each operand and flag with its help, and its examples to put on the prompt" loading="lazy" decoding="async"></a><a href="../img/shots/help.gruv.webp?v=1d800c59"><img class="v-gruv" src="../img/shots/help.gruv.webp?v=1d800c59" width="893" height="778" alt=":help :http opening the command&#39;s page in the help view: its synopsis, what it does, each operand and flag with its help, and its examples to put on the prompt" loading="lazy" decoding="async"></a></figure>
+    <p>At the prompt, a page longer than a screen opens in a view that scrolls, and so does bare <a href="../reference/commands.html#help"><code>:help</code></a>: a table of every command you can filter with <kbd>/</kbd> — by name, by flag, by what it does. Choosing one of a page's examples puts that line on the prompt without running it, so you can edit it first.</p>
+    <figure class="shot"><figcaption class="cmd-bar"><span class="ck">Screenshot</span><span class="cv">:help, filtered with /http</span></figcaption><a href="../img/shots/help-browser.go.webp?v=4c52fbae"><img class="v-go" src="../img/shots/help-browser.go.webp?v=4c52fbae" width="893" height="778" alt=":help&#39;s view filtered to http, a row per command with what it takes, its flags and what it does" loading="lazy" decoding="async"></a><a href="../img/shots/help-browser.gruv.webp?v=c4955e8a"><img class="v-gruv" src="../img/shots/help-browser.gruv.webp?v=c4955e8a" width="893" height="778" alt=":help&#39;s view filtered to http, a row per command with what it takes, its flags and what it does" loading="lazy" decoding="async"></a></figure>
+    <p><code>--help</code> and <code>?</code> ask for help on every command, and <code>-h</code> on every command whose argument is not Go — <code>:t -h</code> is the type of <code>-h</code>, because that is a Go expression. Asking is always safe: the question is answered before the command runs, so <code>:undo -h</code> drops nothing and <code>:q -h</code> does not quit.</p>
+    <p>While you type a command, the rest of its usage is drawn after the cursor, and <kbd>tab</kbd> completes its flags and their values — the themes <code>:theme</code> takes, the keys <code>:settings</code> knows, the methods <code>:http</code> sends. A command that comes from a plugin you have not activated still has a page: it names the plugin and the <code>:get</code> line that turns it on.</p>
+    <figure class="shot"><figcaption class="cmd-bar"><span class="ck">Screenshot</span><span class="cv">:http, and its usage after the cursor</span></figcaption><a href="../img/shots/help-hint.go.webp?v=fd7e694e"><img class="v-go" src="../img/shots/help-hint.go.webp?v=fd7e694e" width="893" height="68" alt=":http typed with a space after it, and its usage shown beside the line: the method, the url, and the flags that come after them" loading="lazy" decoding="async"></a><a href="../img/shots/help-hint.gruv.webp?v=3b3df306"><img class="v-gruv" src="../img/shots/help-hint.gruv.webp?v=3b3df306" width="893" height="68" alt=":http typed with a space after it, and its usage shown beside the line: the method, the url, and the flags that come after them" loading="lazy" decoding="async"></a></figure>
+  </div>
+</section>
+
+<section class="card" id="leaving">
+  <div class="card-head"><span class="idx">8</span><div class="hd"><h2>Leaving, and coming back</h2></div></div>
+  <div class="card-body">
+    <p class="lead"><code>:q</code> or <kbd>ctrl-d</kbd> quits. <kbd>ctrl-c</kbd> abandons the line you are typing and keeps the session.</p>
+    <p>Nothing is lost by quitting. gluon lands in a scratchpad called <code>default</code> and writes every entry down as you type it, so tomorrow's <code>gluon</code> replays it and you are where you were — the startup screen says how many entries came back. <a href="scratchpads.html">Scratchpads</a> covers keeping several, and <a href="session.html">The session</a> the commands that edit what one holds.</p>
+    <p>The history you search with <kbd>ctrl-r</kbd> is a different collection: every line typed on this machine, in one file under <code>~/.local/state/gluon</code>. <a href="editing.html">Editing a line</a> has the keys.</p>
+  </div>
+</section>
+
+    <nav class="pn" aria-label="Pages beside this one">
+  <a class="pg" href="../guide/index.html"><span class="pg-k">← previous</span><b>Guides</b></a>
+  <a class="pg next" href="../guide/inspecting.html"><span class="pg-k">next →</span><b>Inspecting</b></a>
+</nav>
+  </main>
+</div>
+
+<footer class="foot"><div class="wrap fgrid">
+    <div><div class="fh">The site</div><ul>
+        <li><a href="../index.html">gluon</a> — what it is, in one page</li>
+        <li><a href="../guide/index.html">Guides</a> — every feature, with the lines to type</li>
+        <li><a href="../reference/index.html">Reference</a> — generated from the code that defines it</li>
+      </ul></div>
+    <div><div class="fh">This page</div><ul>
+        <li>v0.1.0 · <code>github.com/sandboxws/gluon</code></li>
+        <li>Generated from <code>site/</code> by <code>just docs</code></li>
+        <li>No analytics, no cookies; the palette choice is one localStorage key</li>
+        <li><a href="https://github.com/sandboxws/gluon">Source</a></li>
+      </ul></div>
+</div></footer>
+<script src="../assets/gluon.js?v=0b5d44bf"></script>
+</body>
+</html>

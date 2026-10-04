@@ -1,0 +1,38 @@
+syntax = "proto3";
+
+package shop.v1;
+
+option go_package = "example.com/shop/proto/shop/v1;shopv1";
+
+// Orders is the order book, as the storefront reads it.
+service Orders {
+  // Get returns one order.
+  rpc Get(GetRequest) returns (Order);
+  // Watch streams an order's status as it changes.
+  rpc Watch(GetRequest) returns (stream Order);
+}
+
+message GetRequest {
+  int64 id = 1;
+}
+
+message Order {
+  int64 id = 1;
+  string email = 2;
+  repeated LineItem items = 3;
+  string total = 4;
+  Status status = 5;
+}
+
+message LineItem {
+  string sku = 1;
+  int64 qty = 2;
+  string price = 3;
+}
+
+enum Status {
+  STATUS_UNSPECIFIED = 0;
+  STATUS_PLACED = 1;
+  STATUS_PAID = 2;
+  STATUS_SHIPPED = 3;
+}

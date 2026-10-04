@@ -1,0 +1,23 @@
+# vim at the prompt, and history search.
+Shot keys
+Alt the prompt in vim's normal mode, marked gluon[n]>, with a block cursor on the line being edited
+Also keys-search ctrl-r searching the history for bench, the matching line highlighted
+Caption vim keys at the prompt when you want them, and ctrl-r through every line you have ever typed.
+Config input.mode vim
+History :t strconv.Atoi("12")
+History :bench strconv.Itoa(n), fmt.Sprint(n)
+History :layout pricing.LineItem
+History n := 42
+Grid 72x10
+Line x := []string{"go", "gluon"}
+Type `strings.Join(x, ", ")`
+Esc
+Type "bb"
+Wait Prompt
+Screenshot
+Ctrl c
+Wait Prompt
+Ctrl r
+Type "bench"
+Wait Prompt
+Screenshot keys-search

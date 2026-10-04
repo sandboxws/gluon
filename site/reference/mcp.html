@@ -1,0 +1,24 @@
+{% define "side" %}{% range .Reg.MCP.Tiers %}<a href="#{% .Anchor %}"><span class="rn">{% len .Tools %}</span><span class="rt">{% .Name %}</span></a>
+{% end %}<a href="#instructions"><span class="rn">i</span><span class="rt">Instructions</span></a>{% end %}
+{% define "main" %}
+{% range $tier := .Reg.MCP.Tiers %}
+<section class="card" id="{% $tier.Anchor %}">
+  <div class="card-head"><span class="idx">{% len $tier.Tools %}</span><div class="hd"><h2>{% $tier.Name %}</h2></div></div>
+  <div class="card-body">
+    <p class="lead">{% $tier.Lead %}</p>
+    {% range $tier.Tools %}<article class="ref" id="{% .Name %}">
+      <h3><a class="pl" href="#{% .Name %}">{% .Name %}</a>{% with .Command %}<span class="ref-s">is <a href="commands.html#{% anchor . %}"><code>{% . %}</code></a></span>{% end %}</h3>
+      <pre class="long">{% .Description %}</pre>
+      <details><summary>input schema</summary><pre>{% .Schema %}</pre></details>
+    </article>{% end %}
+  </div>
+</section>
+{% end %}
+<section class="card" id="instructions">
+  <div class="card-head"><span class="idx">i</span><div class="hd"><h2>What an agent is told on connecting</h2></div></div>
+  <div class="card-body">
+    <h3>gluon mcp</h3><pre class="long">{% .Reg.MCP.StaticInstructions %}</pre>
+    <h3>gluon mcp --eval</h3><pre class="long">{% .Reg.MCP.EvalInstructions %}</pre>
+  </div>
+</section>
+{% end %}

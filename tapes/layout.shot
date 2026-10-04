@@ -1,0 +1,11 @@
+# :layout on the project's own type, answered by the type checker.
+Shot layout
+Alt :layout on the project's pricing.LineItem: each field's offset, type and size, the seven bytes of padding its order costs twice, and the order that would save eight bytes
+Caption :layout shows where a struct's bytes go — the padding its field order costs, and the order that saves it. No build: the type checker answers in a millisecond.
+Headline Where your struct's bytes go
+Promo 16:9 1:1
+Host shop
+Args -host .
+Grid 80x18
+Line :layout pricing.LineItem
+Screenshot

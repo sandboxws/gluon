@@ -1,0 +1,8 @@
+gluon> 2 + 2
+(int) 4
+gluon> "hi"
+(string) "hi"  len=2
+gluon> it + "!"
+(string) "hi!"  len=3
+gluon> _1 * 10
+(int) 40

@@ -1,0 +1,2 @@
+pkg errors, func New(string) error
+pkg fmt, func Println(...interface{}) (int, error)

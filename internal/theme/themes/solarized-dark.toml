@@ -1,0 +1,37 @@
+# Solarized Dark, converted from VS Code's own build of it by `gluon theme
+# import`.
+#
+# Ethan Schoonover's, and the reason gluon ships both halves of it: Solarized is
+# one set of eight accents over two backgrounds, so the light theme below is not
+# a second palette but the same one read on paper. The accents in the two files
+# are identical on purpose. What differs is every grey.
+#
+# Re-run:  gluon theme import <file> --print
+#          github.com/microsoft/vscode, extensions/theme-solarized-dark/themes/solarized-dark-color-theme.json
+#
+# Kept from gluon's own go, because nothing in an editor theme means
+# them: `note`, `dim`, `search`.
+about      = "Solarized Dark: olive keywords, cyan strings, orange types"
+appearance = "dark"
+source     = "Solarized Dark, a VS Code theme"
+
+[theme]
+# Source.
+keyword     = "#859900"
+string      = "#2AA198"
+type        = "#CB4B16"
+comment     = "#586E75"
+number      = "#D33682"
+builtin     = "#268BD2"
+punctuation = "#839496"
+ident       = "#839496"
+
+# Values, the REPL, and the CLI.
+error       = "#DC322F"
+prompt      = "#CB4B16"
+mode        = "#268BD2"  # solarized blue, against solarized orange
+annotation  = "#586E75"
+note        = "#E3B341"
+dim         = "#7C7C84"
+search      = "#F5B843"
+border      = "#2b2b4a"

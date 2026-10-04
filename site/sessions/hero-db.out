@@ -1,0 +1,18 @@
+gluon> :query SELECT plan, count(*) AS customers FROM users GROUP BY plan ORDER BY customers DESC
+╭──────┬───────────╮
+│ plan │ customers │
+├──────┼───────────┤
+│ free │ 274       │
+│ pro  │ 138       │
+│ team │ 68        │
+╰──────┴───────────╯
+  3 rows · ~/src/shop/data/shop.db
+gluon> :query SELECT id, email FROM users ORDER BY id LIMIT 3
+╭────┬───────────────────────╮
+│ id │ email                 │
+├────┼───────────────────────┤
+│ 1  │ ada@example.com       │
+│ 2  │ grace@example.com     │
+│ 3  │ katherine@example.com │
+╰────┴───────────────────────╯
+  3 rows · ~/src/shop/data/shop.db

@@ -1,0 +1,59 @@
+gluon> :migrations
+╭────────────┬────────────┬──────────────────────╮
+│ version_id │ is_applied │ tstamp               │
+├────────────┼────────────┼──────────────────────┤
+│ 3          │ 1          │ 2026-09-01T09:03:00Z │
+│ 2          │ 1          │ 2026-09-01T09:02:00Z │
+│ 1          │ 1          │ 2026-09-01T09:01:00Z │
+│ 0          │ 1          │ 2026-09-01T09:00:00Z │
+╰────────────┴────────────┴──────────────────────╯
+  4 rows · ~/src/shop/data/shop.db
+gluon> :expand store.UsersByID, []int64{1, 2, 3}
+!lang sql
+SELECT id, email, plan, created FROM users WHERE id IN (?, ?, ?) ORDER BY id
+args  [1 2 3]
+gluon> :expand store.UsersOnPlan, map[string]any{"plan": "pro"}
+!lang sql
+SELECT id, email, plan, created FROM users WHERE plan = ? ORDER BY id
+args  [pro]
+gluon> :schema migrate.Tables
+users
+  id                       int          pk  not null
+  email                    string       unique  not null
+  plan                     string       not null  enum(free|pro|team)
+  created                  time.Time    not null
+orders
+  id                       int          pk  not null
+  total                    string       not null
+  status                   string       not null  enum(placed|paid|shipped)
+  placed_at                time.Time    not null
+  user_orders              int          null
+  → user_orders references users(id)
+products
+  id                       int          pk  not null
+  sku                      string       unique  not null
+  price                    string       not null
+order_items
+  order_id                 int          pk  not null
+  product_id               int          pk  not null
+  → order_id references orders(id)
+  → product_id references products(id)
+gluon> :get gorm.io/gorm@v1.31.2
+added github.com/jinzhu/inflection v1.0.0
+      github.com/jinzhu/now v1.1.5
+      gorm.io/gorm v1.31.2
+gluon> :get gorm.io/driver/postgres@v1.6.3
+added github.com/jackc/pgpassfile v1.0.0
+      github.com/jackc/pgservicefile v0.0.0-20240606120523-5a60cdf6a761
+      github.com/jackc/pgx/v5 v5.10.0
+      github.com/jackc/puddle/v2 v2.2.2
+      gorm.io/driver/postgres v1.6.3
+gluon> db, _ := gorm.Open(postgres.Open("host=db.internal dbname=shop"), &gorm.Config{DisableAutomaticPing: true})
+gluon> var users []store.User
+gluon> :sql db.Where("plan = ?", "pro").Order("id").Limit(10).Find(&users)
+!lang sql
+SELECT * FROM "users" WHERE plan = $1 ORDER BY id LIMIT $2
+args  [pro 10]
+gluon> :sql db.Model(&store.User{}).Where("id = ?", 1).Update("plan", "team")
+!lang sql
+no statement was built — is this a gorm chain?

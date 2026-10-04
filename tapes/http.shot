@@ -1,0 +1,11 @@
+# A request from the prompt, and the response as a Go value.
+Shot http
+Alt :http GET against the project's running API: the status line, the headers as a table, and the JSON body pretty-printed
+Caption :http makes a request from the prompt and shows the response as Go sees it — status, headers, body — without leaving the session.
+Headline Call your API from the REPL
+Promo 4:5
+Host shop
+Serve
+Grid 72x18
+Line :http GET http://127.0.0.1:8765/users/1
+Screenshot

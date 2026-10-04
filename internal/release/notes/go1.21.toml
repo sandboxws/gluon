@@ -1,0 +1,26 @@
+# Go 1.21 — three builtins that had been written by hand in every codebase.
+
+version = "1.21"
+
+[[note]]
+name = "min-max-clear"
+title = "the min, max and clear builtins"
+needs = "1.21"
+below = "error"
+issue = 59488
+text = """
+min and max take one or more arguments of an ordered type and return the
+smallest or largest. They are builtins rather than generic functions in a
+package, so they work on untyped constants and are constant expressions when
+their arguments are.
+
+clear empties a map or zeroes a slice. On a map it is the delete-every-key loop
+the runtime could always have done in one step; on a slice it sets every
+element to the zero value without changing the length.
+"""
+snippet = """
+lo, hi := min(3, 1, 2), max(3, 1, 2)
+m := map[string]int{"a": 1, "b": 2}
+clear(m)
+[]any{lo, hi, len(m)}
+"""

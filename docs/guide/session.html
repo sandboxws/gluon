@@ -1,0 +1,171 @@
+<!doctype html>
+<!-- generated from site/ by `just docs`: edit the source, not this file -->
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The session — gluon</title>
+<meta name="description" content="The program your lines became, why every line replays and what that costs, and the commands that edit, snapshot, recall and test a session.">
+<meta name="theme-color" content="#0A0A0A">
+<script>(function(d,m){try{m=/[?&]palette=(gruv|go)\b/.exec(location.search);m=m?m[1]:localStorage.getItem("gluon:theme")}catch(e){}if(m==="gruv")d.documentElement.setAttribute("data-theme","gruv")})(document)</script>
+<link rel="canonical" href="https://sandboxws.github.io/gluon/guide/session.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="The session — gluon">
+<meta property="og:description" content="The program your lines became, why every line replays and what that costs, and the commands that edit, snapshot, recall and test a session.">
+<meta property="og:url" content="https://sandboxws.github.io/gluon/guide/session.html">
+<meta property="og:image" content="https://sandboxws.github.io/gluon/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:image:alt" content="gluon's startup screen in a Go project, beside the words: A Go REPL that stands in your project">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:image" content="https://sandboxws.github.io/gluon/img/og.png">
+<meta name="twitter:title" content="The session — gluon">
+<meta name="twitter:description" content="The program your lines became, why every line replays and what that costs, and the commands that edit, snapshot, recall and test a session.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='7' fill='%230A0A0A'/%3E%3Cpath d='M9 9l7 7-7 7' stroke='%2300ADD8' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M18 23h6' stroke='%2300ADD8' stroke-width='3' stroke-linecap='round'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600;700&family=Geist+Mono:wght@400;500&display=swap">
+<link rel="stylesheet" href="../assets/gluon.css?v=980f3e8a">
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+<div class="field" aria-hidden="true"></div>
+<div class="nav" id="nav">
+  <div class="nav-in">
+    <a class="nav-t" href="../index.html">gluon</a>
+    <span class="nav-sp"></span>
+    <a class="nav-m" href="../guide/index.html">Guides</a>
+    <a class="nav-m" href="../reference/index.html">Reference</a>
+    <span class="nav-m opt">v0.1.0</span>
+  </div>
+</div>
+
+<header class="hero wrap page">
+  <p class="eyebrow">Guide 05</p>
+  <h1 id="bigTitle">The session</h1>
+  <p class="sub">The program your lines became, why every line replays and what that costs, and the commands that edit, snapshot, recall and test a session.</p>
+</header>
+
+<div class="wrap cols">
+  <nav class="side" aria-label="Sections"><div class="side-in">
+    <p class="grp-h">This page</p>
+    <a href="#src"><span class="rn">1</span><span class="rt">The program it became</span></a>
+<a href="#replay"><span class="rn">2</span><span class="rt">Every line replays</span></a>
+<a href="#entries"><span class="rn">3</span><span class="rt">Editing the entries</span></a>
+<a href="#snapshots"><span class="rn">4</span><span class="rt">Snapshots</span></a>
+<a href="#history"><span class="rn">5</span><span class="rt">Yesterday's lines</span></a>
+<a href="#files"><span class="rn">6</span><span class="rt">From a file, into a test</span></a>
+<a href="#goroutines"><span class="rn">7</span><span class="rt">Goroutines</span></a>
+    <p class="grp-h">Guides</p>
+    <a href="../guide/index.html"><span class="rt">Guides</span></a>
+    <a href="../guide/start.html"><span class="rt">The first five minutes</span></a>
+    <a href="../guide/inspecting.html"><span class="rt">Inspecting</span></a>
+    <a href="../guide/measuring.html"><span class="rt">Measuring</span></a>
+    <a href="../guide/rendering.html"><span class="rt">Rendering</span></a>
+    <a href="../guide/session.html" aria-current="page" class="here"><span class="rt">The session</span></a>
+    <a href="../guide/scratchpads.html"><span class="rt">Scratchpads</span></a>
+    <a href="../guide/editing.html"><span class="rt">Editing</span></a>
+    <a href="../guide/project.html"><span class="rt">In a project</span></a>
+    <a href="../guide/database.html"><span class="rt">The database</span></a>
+    <a href="../guide/plugins.html"><span class="rt">Plugins</span></a>
+    <a href="../guide/configuration.html"><span class="rt">Configuration</span></a>
+    <a href="../guide/themes.html"><span class="rt">Themes</span></a>
+    <a href="../guide/scripting.html"><span class="rt">Scripting</span></a>
+    <a href="../guide/mcp.html"><span class="rt">MCP</span></a>
+    <a href="../guide/design.html"><span class="rt">How it works</span></a>
+    
+  </div></nav>
+  <main id="main">
+    
+<section class="card" id="src">
+  <div class="card-head"><span class="idx">1</span><div class="hd"><h2>The program your session became</h2></div></div>
+  <div class="card-body">
+    <p class="lead">A session is a list of entries — the lines you typed — and every line renders all of them into one Go program, builds it and runs it. <a href="../reference/commands.html#src"><code>:src</code></a> shows that program, exactly as the compiler saw it.</p>
+    <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> x <span class="p">:=</span> <span class="p">[</span><span class="p">]</span><span class="ty">int</span><span class="p">{</span><span class="nu">3</span><span class="p">,</span> <span class="nu">1</span><span class="p">,</span> <span class="nu">2</span><span class="p">}</span></div><div class="tl"><span class="pr">gluon&gt;</span> slices<span class="p">.</span>Sort<span class="p">(</span>x<span class="p">)</span></div><div class="tl"><span class="pr">gluon&gt;</span> x</div><div class="tl out"><span class="ty">([]int)</span> len=3 cap=3</div><div class="tl out bx"><span class="p">╭───┬───────╮</span></div><div class="tl out bx"><span class="p">│</span> # <span class="p">│</span> value <span class="p">│</span></div><div class="tl out bx"><span class="p">├───┼───────┤</span></div><div class="tl out bx"><span class="p">│</span> 0 <span class="p">│</span> 1     <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> 1 <span class="p">│</span> 2     <span class="p">│</span></div><div class="tl out bx"><span class="p">│</span> 2 <span class="p">│</span> 3     <span class="p">│</span></div><div class="tl out bx"><span class="p">╰───┴───────╯</span></div><div class="tl"><span class="pr">gluon&gt;</span> it<span class="p">[</span><span class="nu">0</span><span class="p">]</span></div><div class="tl out"><span class="ty">(int)</span> 1</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:src</span></div><div class="tl out"><span class="kw">package</span> main</div><div class="tl out"></div><div class="tl out"><span class="kw">import</span> <span class="p">(</span></div><div class="tl out">	<span class="s">&#34;slices&#34;</span></div><div class="tl out"><span class="p">)</span></div><div class="tl out"></div><div class="tl out"><span class="kw">func</span> main<span class="p">(</span><span class="p">)</span> <span class="p">{</span></div><div class="tl out">	x <span class="p">:=</span> <span class="p">[</span><span class="p">]</span><span class="ty">int</span><span class="p">{</span><span class="nu">3</span><span class="p">,</span> <span class="nu">1</span><span class="p">,</span> <span class="nu">2</span><span class="p">}</span></div><div class="tl out">	_ <span class="p">=</span> x</div><div class="tl out">	slices<span class="p">.</span>Sort<span class="p">(</span>x<span class="p">)</span></div><div class="tl out">	_1 <span class="p">:=</span> x</div><div class="tl out">	__gluonPrint<span class="p">(</span>_1<span class="p">)</span></div><div class="tl out">	__gluonPrint<span class="p">(</span>_1<span class="p">[</span><span class="nu">0</span><span class="p">]</span><span class="p">)</span></div><div class="tl out"><span class="p">}</span></div></div></div>
+    <p>Everything gluon does to your lines is there to read: the import it added, the <code>_ = x</code> that keeps Go from calling <code>x</code> unused, <code>it</code> rewritten to the <code>_1</code> it meant, and the call that prints the last value. Nothing is hidden, so when a line does something you did not expect, the program it ran is one command away. A long program opens in a view at the prompt and prints whole through a pipe.</p>
+  </div>
+</section>
+
+<section class="card" id="replay">
+  <div class="card-head"><span class="idx">2</span><div class="hd"><h2>Every line replays — and what that costs</h2><div class="chips"><span class="chip a">the honest limitation</span></div></div></div>
+  <div class="card-body">
+    <p class="lead">Because every line re-runs the whole session, <strong>side effects repeat</strong>: a request fires again, a file is written again, <code>time.Now()</code> moves on and <code>rand</code> changes its mind. Output from the replayed lines is muted, so you only see the newest line's — but the re-execution is real.</p>
+    <div class="repl"><div class="cmd-bar"><span class="ck">gluon</span><span class="cv">a line with an effect, and :pin</span></div><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> hit <span class="p">:=</span> <span class="kw">func</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span> f<span class="p">,</span> _ <span class="p">:=</span> os<span class="p">.</span>OpenFile<span class="p">(</span><span class="s">&#34;hits&#34;</span><span class="p">,</span> os<span class="p">.</span>O_APPEND<span class="p">|</span>os<span class="p">.</span>O_CREATE<span class="p">|</span>os<span class="p">.</span>O_WRONLY<span class="p">,</span> <span class="nu">0o644</span><span class="p">)</span><span class="p">;</span> f<span class="p">.</span>WriteString<span class="p">(</span><span class="s">&#34;x&#34;</span><span class="p">)</span><span class="p">;</span> f<span class="p">.</span>Close<span class="p">(</span><span class="p">)</span> <span class="p">}</span></div><div class="tl"><span class="pr">gluon&gt;</span> hit<span class="p">(</span><span class="p">)</span></div><div class="tl"><span class="pr">gluon&gt;</span> b<span class="p">,</span> _ <span class="p">:=</span> os<span class="p">.</span>ReadFile<span class="p">(</span><span class="s">&#34;hits&#34;</span><span class="p">)</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="f">len</span><span class="p">(</span>b<span class="p">)</span></div><div class="tl out"><span class="ty">(int)</span> 3</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="f">len</span><span class="p">(</span>b<span class="p">)</span></div><div class="tl out"><span class="ty">(int)</span> 4</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:hist</span></div><div class="tl out">  1  hit := func() { f, _ := os.OpenFile(&#34;hits&#34;, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0o644); f.WriteString(&#34;x&#34;); f.Close() }</div><div class="tl out">  2  hit()</div><div class="tl out">  3  b, _ := os.ReadFile(&#34;hits&#34;)</div><div class="tl out">  4  len(b)   _1</div><div class="tl out">  5  len(b)   _2</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:pin</span> 2</div><div class="tl out">pinned 2 — it will not run again</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="f">len</span><span class="p">(</span>b<span class="p">)</span></div><div class="tl out"><span class="ty">(int)</span> 4</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="f">len</span><span class="p">(</span>b<span class="p">)</span></div><div class="tl out"><span class="ty">(int)</span> 4</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:pin</span></div><div class="tl out">  2  hit()</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:refresh</span></div><div class="tl out">refreshed — 1 pinned entry ran again</div><div class="tl out"><span class="ty">(int)</span> 5</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="f">len</span><span class="p">(</span>b<span class="p">)</span></div><div class="tl out"><span class="ty">(int)</span> 5</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:unpin</span> 2</div><div class="tl out">unpinned 2 — it runs again from here</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="f">len</span><span class="p">(</span>b<span class="p">)</span></div><div class="tl out"><span class="ty">(int)</span> 7</div></div></div>
+    <p>Each <code>len(b)</code> is one larger than the last, because each line ran <code>hit()</code> again. <a href="../reference/commands.html#pin"><code>:pin</code></a> is the defence: it takes an entry out of the program — you are saying it has already happened — so replay stops running it. <a href="../reference/commands.html#pin"><code>:pin</code></a> on its own lists what is pinned, and <a href="../reference/commands.html#hist"><code>:hist</code></a> marks it.</p>
+    <p>A pin is refused when a later entry uses what the pinned one bound, and says which entry that is. gluon does not invent the missing value: the printer writes a display form, not a literal — a <code>uint8</code> reads <code>195 (0xc3)</code> — so rebuilding a value from what was printed would be a guess, and a guess here is a wrong answer that looks like a right one.</p>
+    <p><a href="../reference/commands.html#refresh"><code>:refresh</code></a> runs the program once with every pin lifted and puts the pins back — for when the code under a pinned entry changed and the result it holds is stale. <a href="../reference/commands.html#unpin"><code>:unpin</code></a> puts an entry back for good: unpinning replays the session, and so does every line after it, which is why the count moved by two.</p>
+  </div>
+</section>
+
+<section class="card" id="entries">
+  <div class="card-head"><span class="idx">3</span><div class="hd"><h2>Editing the entries</h2></div></div>
+  <div class="card-body">
+    <p class="lead"><a href="../reference/commands.html#hist"><code>:hist</code></a> numbers the entries, <a href="../reference/commands.html#drop"><code>:drop</code></a> removes one by its number, <a href="../reference/commands.html#undo"><code>:undo</code></a> removes the last, and <a href="../reference/commands.html#reset"><code>:reset</code></a> removes them all.</p>
+    <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> a <span class="p">:=</span> <span class="nu">1</span></div><div class="tl"><span class="pr">gluon&gt;</span> b <span class="p">:=</span> <span class="nu">2</span></div><div class="tl"><span class="pr">gluon&gt;</span> c <span class="p">:=</span> a <span class="p">+</span> b</div><div class="tl"><span class="pr">gluon&gt;</span> c</div><div class="tl out"><span class="ty">(int)</span> 3</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:hist</span></div><div class="tl out">  1  a := 1</div><div class="tl out">  2  b := 2</div><div class="tl out">  3  c := a + b</div><div class="tl out">  4  c   _1</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:drop</span> 2</div><div class="tl out"><span class="er">error: undefined: b</span></div><div class="tl out"><span class="er">    c := a + b</span></div><div class="tl out"><span class="er">             ^ — entry kept</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:undo</span></div><div class="tl out">undone (3 entries left)</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:hist</span></div><div class="tl out">  1  a := 1</div><div class="tl out">  2  b := 2</div><div class="tl out">  3  c := a + b</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:reset</span></div><div class="tl out">session cleared</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:hist</span></div><div class="tl out">nothing in the session yet</div></div></div>
+    <p>A removal that would leave the session unable to build is put back, with the reason: <code>c</code> reads <code>b</code>, so <code>b</code> stays. <code>:drop</code> is also refused when a later line reads <code>it</code>, or an <code>_N</code> the removal would renumber, because that line would silently start meaning something else.</p>
+    <p><a href="../reference/commands.html#reset"><code>:reset</code></a> clears the entries and keeps the modules you added, so trying the same library a different way does not fetch it again; <a href="../reference/commands.html#reset-deps"><code>:reset -deps</code></a> clears both. <code>u</code> in vim mode, by the way, undoes typing, not entries: the two share a name and nothing else. <a href="editing.html">Editing</a> has the keys, and <a href="../reference/commands.html#edit"><code>:edit</code></a>, which edits every entry at once.</p>
+  </div>
+</section>
+
+<section class="card" id="snapshots">
+  <div class="card-head"><span class="idx">4</span><div class="hd"><h2>Snapshots</h2></div></div>
+  <div class="card-body">
+    <p class="lead"><a href="../reference/commands.html#bookmark"><code>:bookmark</code></a> records the session under a name and takes nothing away from it. <a href="../reference/commands.html#restore"><code>:restore</code></a> puts one back and replays it. <a href="../reference/commands.html#branch"><code>:branch</code></a> is a bookmark for when you had not decided to take one.</p>
+    <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> x <span class="p">:=</span> <span class="nu">10</span></div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:bookmark</span> before</div><div class="tl out">before: 1 entry, for this session</div><div class="tl"><span class="pr">gluon&gt;</span> x <span class="p">=</span> x <span class="p">*</span> <span class="nu">2</span></div><div class="tl"><span class="pr">gluon&gt;</span> x</div><div class="tl out"><span class="ty">(int)</span> 20</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:branch</span></div><div class="tl out">b2: 3 entries, for this session</div><div class="tl out">the session is unchanged; :restore b2 comes back here</div><div class="tl"><span class="pr">gluon&gt;</span> x <span class="p">=</span> <span class="nu">99</span></div><div class="tl"><span class="pr">gluon&gt;</span> x</div><div class="tl out"><span class="ty">(int)</span> 99</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:restore</span> before</div><div class="tl out">restored before (1 entry)</div><div class="tl"><span class="pr">gluon&gt;</span> x</div><div class="tl out"><span class="ty">(int)</span> 10</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:bookmark</span></div><div class="tl out">snapshots, for this session only:</div><div class="tl out">  before  1 entry</div><div class="tl out">  b2  3 entries</div><div class="tl out">  :restore &lt;name&gt; goes back to one; :scratch keeps a session past this process</div></div></div>
+    <p><code>:branch</code> with no name makes one up and prints it, because having to invent a name is the thing it exists to remove — the state before an experiment is recoverable without having thought of it first. A snapshot holds the entries, their order and what is pinned.</p>
+    <p>A restore that fails to replay puts back the session you were leaving and says so: a restore that could destroy the state it was moving away from would be worse than none. Snapshots last for this session and never reach the disk. <a href="scratchpads.html">Scratchpads</a> are what make a session durable.</p>
+  </div>
+</section>
+
+<section class="card" id="history">
+  <div class="card-head"><span class="idx">5</span><div class="hd"><h2>Yesterday's lines</h2></div></div>
+  <div class="card-body">
+    <p class="lead"><kbd>ctrl-r</kbd> walks the history file a line at a time and <a href="../reference/commands.html#hist"><code>:hist</code></a> numbers the session; neither gets you the expression you had right in yesterday's session. <a href="../reference/commands.html#replay"><code>:replay</code></a> searches the whole file and brings the matches in.</p>
+    <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:replay</span> repeat<span class="vw" title="At the prompt this opens a view you can scroll and filter. What it shows is below, and it is what a pipe or gluon -e prints.">opens a view</span></div><div class="tl out">1 history line matching &#34;repeat&#34;, oldest first:</div><div class="tl out">  1  s := strings.Repeat(&#34;ab&#34;, 3)</div><div class="tl out">enter brings them in; nothing has run yet</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:replay</span> -run repeat</div><div class="tl out">brought in 1 line from history</div><div class="tl"><span class="pr">gluon&gt;</span> s</div><div class="tl out"><span class="ty">(string)</span> &#34;ababab&#34;  len=6</div></div></div>
+    <figure class="shot"><figcaption class="cmd-bar"><span class="ck">Screenshot</span><span class="cv">ctrl-r, searching for bench</span></figcaption><a href="../img/shots/keys-search.go.webp?v=92746712"><img class="v-go" src="../img/shots/keys-search.go.webp?v=92746712" width="654" height="82" alt="ctrl-r searching the history for bench, the matching line highlighted" loading="lazy" decoding="async"></a><a href="../img/shots/keys-search.gruv.webp?v=173a4016"><img class="v-gruv" src="../img/shots/keys-search.gruv.webp?v=173a4016" width="654" height="82" alt="ctrl-r searching the history for bench, the matching line highlighted" loading="lazy" decoding="async"></a></figure>
+    <p>The matches are shown before any of them runs. A history line is a line somebody typed, some of them wrote something, and the session replays every entry on every later line — so what is about to happen is printed verbatim rather than counted. <kbd>enter</kbd> in the view brings them in, <kbd>q</kbd> leaves without running anything, and <a href="../reference/commands.html#replay-run"><code>:replay -run</code></a> is the form to type when you already know what the pattern matches — and the form a pipe has. Meta commands are skipped: replaying a <code>:reset</code> would clear the session it was being replayed into.</p>
+  </div>
+</section>
+
+<section class="card" id="files">
+  <div class="card-head"><span class="idx">6</span><div class="hd"><h2>From a file, and into a test</h2></div></div>
+  <div class="card-body">
+    <p class="lead"><a href="../reference/commands.html#load"><code>:load</code></a> reads a file in, a construct at a time, as though each were typed. <a href="../reference/commands.html#test"><code>:test</code></a> goes the other way: it writes the expression you just checked, and the value you judged right, down as a Go test.</p>
+    <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:load</span> snippets.go</div><div class="tl out">loaded snippets.go</div><div class="tl"><span class="pr">gluon&gt;</span> price<span class="p">.</span>String<span class="p">(</span><span class="p">)</span></div><div class="tl out"><span class="ty">(string)</span> &#34;$12.50&#34;  len=6</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:test</span> price<span class="p">.</span>String<span class="p">(</span><span class="p">)</span></div><div class="tl out"><span class="c">// TestPriceString was generated by gluon from a value observed at the prompt.</span></div><div class="tl out"><span class="c">// It records what price.String() produced, not what it should produce: the</span></div><div class="tl out"><span class="c">// judgement that the answer was right was made at the prompt, and this only</span></div><div class="tl out"><span class="c">// writes it down.</span></div><div class="tl out"><span class="kw">func</span> TestPriceString<span class="p">(</span>t <span class="p">*</span>testing<span class="p">.</span>T<span class="p">)</span> <span class="p">{</span></div><div class="tl out">	<span class="c">// The session bound these at the prompt, where they are locals inside</span></div><div class="tl out">	<span class="c">// main(). The test carries them so the expression can be evaluated again.</span></div><div class="tl out">	price <span class="p">:=</span> Money<span class="p">(</span><span class="nu">1250</span><span class="p">)</span></div><div class="tl out"></div><div class="tl out">	want <span class="p">:=</span> <span class="s">&#34;$12.50&#34;</span></div><div class="tl out">	got <span class="p">:=</span> price<span class="p">.</span>String<span class="p">(</span><span class="p">)</span></div><div class="tl out">	<span class="kw">if</span> got <span class="p">!=</span> want <span class="p">{</span></div><div class="tl out">		t<span class="p">.</span>Errorf<span class="p">(</span><span class="s">&#34;price.String() = %v, want %v&#34;</span><span class="p">,</span> got<span class="p">,</span> want<span class="p">)</span></div><div class="tl out">	<span class="p">}</span></div><div class="tl out"><span class="p">}</span></div><div class="tl out"></div><div class="tl out">— <span class="nu">1</span> test held<span class="p">;</span> <span class="p">:</span>save <span class="p">-</span>test writes it beside the program</div><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">:test</span> <span class="p">-</span>table strings<span class="p">.</span>Fields<span class="p">(</span><span class="s">&#34; a b &#34;</span><span class="p">)</span></div><div class="tl out"><span class="c">// TestStringsFieldsAB was generated by gluon from a value observed at the prompt.</span></div><div class="tl out"><span class="c">// It records what strings.Fields(&#34; a b &#34;) produced, not what it should produce: the</span></div><div class="tl out"><span class="c">// judgement that the answer was right was made at the prompt, and this only</span></div><div class="tl out"><span class="c">// writes it down.</span></div><div class="tl out"><span class="kw">func</span> TestStringsFieldsAB<span class="p">(</span>t <span class="p">*</span>testing<span class="p">.</span>T<span class="p">)</span> <span class="p">{</span></div><div class="tl out">	tests <span class="p">:=</span> <span class="p">[</span><span class="p">]</span><span class="kw">struct</span> <span class="p">{</span></div><div class="tl out">		name <span class="ty">string</span></div><div class="tl out">		got  <span class="p">[</span><span class="p">]</span><span class="ty">string</span></div><div class="tl out">		want <span class="p">[</span><span class="p">]</span><span class="ty">string</span></div><div class="tl out">	<span class="p">}</span><span class="p">{</span></div><div class="tl out">		<span class="p">{</span><span class="s">&#34;strings.Fields(\&#34; a b \&#34;)&#34;</span><span class="p">,</span> strings<span class="p">.</span>Fields<span class="p">(</span><span class="s">&#34; a b &#34;</span><span class="p">)</span><span class="p">,</span> <span class="p">[</span><span class="p">]</span><span class="ty">string</span><span class="p">{</span><span class="s">&#34;a&#34;</span><span class="p">,</span> <span class="s">&#34;b&#34;</span><span class="p">}</span><span class="p">}</span><span class="p">,</span></div><div class="tl out">	<span class="p">}</span></div><div class="tl out">	<span class="kw">for</span> _<span class="p">,</span> tc <span class="p">:=</span> <span class="kw">range</span> tests <span class="p">{</span></div><div class="tl out">		t<span class="p">.</span>Run<span class="p">(</span>tc<span class="p">.</span>name<span class="p">,</span> <span class="kw">func</span><span class="p">(</span>t <span class="p">*</span>testing<span class="p">.</span>T<span class="p">)</span> <span class="p">{</span></div><div class="tl out">			<span class="c">// The value&#39;s type is not comparable with ==, so this asserts deep equality.</span></div><div class="tl out">			<span class="kw">if</span> <span class="p">!</span>reflect<span class="p">.</span>DeepEqual<span class="p">(</span>tc<span class="p">.</span>got<span class="p">,</span> tc<span class="p">.</span>want<span class="p">)</span> <span class="p">{</span></div><div class="tl out">				t<span class="p">.</span>Errorf<span class="p">(</span><span class="s">&#34;%s = %v, want %v&#34;</span><span class="p">,</span> tc<span class="p">.</span>name<span class="p">,</span> tc<span class="p">.</span>got<span class="p">,</span> tc<span class="p">.</span>want<span class="p">)</span></div><div class="tl out">			<span class="p">}</span></div><div class="tl out">		<span class="p">}</span><span class="p">)</span></div><div class="tl out">	<span class="p">}</span></div><div class="tl out"><span class="p">}</span></div><div class="tl out"></div><div class="tl out">— <span class="nu">2</span> tests held<span class="p">;</span> <span class="p">:</span>save <span class="p">-</span>test writes them beside the program</div></div></div>
+    <p><code>:load</code> stops at the first construct that fails, and leaves out an unfinished one at the end rather than reporting against text that may still be being written. The file is read once; <code>:load</code> it again after changing it.</p>
+    <p>You tried an expression, looked at the answer and decided it was right. That is <code>got</code>, <code>want</code> and a judgement — the whole content of a Go test — and gluon already holds the expression, its type and its value, so <code>:test</code> writes it, carrying the locals the expression needs. The doc comment says the expectation is what was observed, not what is correct; that judgement stays yours, which is why it prints rather than writes. <a href="../reference/commands.html#test-table"><code>:test -table</code></a> shapes it so a second case can join, <code>:save -test</code> keeps what was generated, and a value with no literal form — a pointer, a channel, a func — is refused with the part that caused it rather than emitted as a test that does not compile.</p>
+  </div>
+</section>
+
+<section class="card" id="goroutines">
+  <div class="card-head"><span class="idx">7</span><div class="hd"><h2>Goroutines</h2></div></div>
+  <div class="card-body">
+    <p class="lead">A <code>go</code> statement on its own would print nothing: <code>main</code> returns before the goroutine is ever scheduled. So gluon waits briefly for the goroutines your lines started — and says that it did, because a real <code>main</code> would not have.</p>
+    <div class="repl"><div class="term-body ex"><div class="tl"><span class="pr">gluon&gt;</span> <span class="kw">go</span> <span class="kw">func</span><span class="p">(</span><span class="p">)</span> <span class="p">{</span> fmt<span class="p">.</span>Println<span class="p">(</span><span class="s">&#34;from a goroutine&#34;</span><span class="p">)</span> <span class="p">}</span><span class="p">(</span><span class="p">)</span></div><div class="tl out">from a goroutine</div><div class="tl out">[gluon waited 137µs for 1 goroutine(s) — a real main would have exited here]</div></div></div>
+    <p>The wait is bounded at two seconds, and a goroutine still running at the deadline is reported rather than waited on for ever. It covers the goroutines the session's own code started: a library keeps goroutines of its own for as long as the value that owns them — <code>database/sql</code> one per open <code>*sql.DB</code> — and those are left alone, as a real <code>main</code> would leave them. When nothing was started, nothing is said.</p>
+  </div>
+</section>
+
+    <nav class="pn" aria-label="Pages beside this one">
+  <a class="pg" href="../guide/rendering.html"><span class="pg-k">← previous</span><b>Rendering</b></a>
+  <a class="pg next" href="../guide/scratchpads.html"><span class="pg-k">next →</span><b>Scratchpads</b></a>
+</nav>
+  </main>
+</div>
+
+<footer class="foot"><div class="wrap fgrid">
+    <div><div class="fh">The site</div><ul>
+        <li><a href="../index.html">gluon</a> — what it is, in one page</li>
+        <li><a href="../guide/index.html">Guides</a> — every feature, with the lines to type</li>
+        <li><a href="../reference/index.html">Reference</a> — generated from the code that defines it</li>
+      </ul></div>
+    <div><div class="fh">This page</div><ul>
+        <li>v0.1.0 · <code>github.com/sandboxws/gluon</code></li>
+        <li>Generated from <code>site/</code> by <code>just docs</code></li>
+        <li>No analytics, no cookies; the palette choice is one localStorage key</li>
+        <li><a href="https://github.com/sandboxws/gluon">Source</a></li>
+      </ul></div>
+</div></footer>
+<script src="../assets/gluon.js?v=0b5d44bf"></script>
+</body>
+</html>

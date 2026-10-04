@@ -1,0 +1,11 @@
+# A compile error and a panic, both pointing at what was typed; :undo takes
+# the panic back.
+x := []int{1, 2, 3}
+<<<
+func f(a int) int {
+    return a + bogus
+}
+>>>
+x[10]
+:undo
+len(x)
