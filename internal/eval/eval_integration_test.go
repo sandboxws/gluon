@@ -523,10 +523,31 @@ func TestAnalyzeDoesNotPoisonImportCache(t *testing.T) {
 	}
 }
 
+// drainWaiting is a function for a session to declare, so that a goroutine
+// can wait for the drain itself: it reports main asleep inside the drain's
+// wait, which main enters only after counting a goroutine of the session's
+// still running. A goroutine that finishes only once this is true is one the
+// drain cannot miss.
+//
+// The tests below used to race main instead. A goroutine that prints at once
+// could print and exit before the drain counted it — on a busy CI runner it
+// did — and the drain then rightly said nothing, because there was nothing
+// left to wait for. A sleep before printing only made that rarer.
+var drainWaiting = `func drainWaiting() bool {
+	buf := make([]byte, 1<<20)
+	for _, g := range strings.Split(string(buf[:runtime.Stack(buf, true)]), "\n\n") {
+		if strings.Contains(g, "time.Sleep(") && strings.Contains(g, "main.` + render.DrainFunc + `(") {
+			return true
+		}
+	}
+	return false
+}`
+
 // A goroutine's output used to be lost entirely: main returned before it was
 // ever scheduled.
 func TestGoroutineOutputIsNotLost(t *testing.T) {
-	got := run(t, `go func() { fmt.Println("from goroutine") }()`)
+	got := run(t, drainWaiting,
+		`go func() { for !drainWaiting() { time.Sleep(time.Millisecond) }; fmt.Println("from goroutine") }()`)
 	if !strings.Contains(got, "from goroutine") {
 		t.Errorf("got %q, want the goroutine's output", got)
 	}
@@ -551,7 +572,9 @@ func TestALibrarysGoroutineIsNotWaitedFor(t *testing.T) {
 // session started, even from inside a function it declared, is waited for
 // and said.
 func TestALinesGoroutineIsStillWaitedFor(t *testing.T) {
-	got := run(t, `func spawn() { go func() { time.Sleep(20 * time.Millisecond); fmt.Println("late") }() }`, `spawn()`)
+	got := run(t, drainWaiting,
+		`func spawn() { go func() { for !drainWaiting() { time.Sleep(time.Millisecond) }; fmt.Println("late") }() }`,
+		`spawn()`)
 	if !strings.Contains(got, "late") || !strings.Contains(got, "gluon waited") {
 		t.Errorf("got %q, want the goroutine's output and the wait said", got)
 	}
